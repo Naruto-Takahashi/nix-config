@@ -24,6 +24,7 @@
     pkgs.wl-clipboard
     pkgs.lazygit
     pkgs.kanata
+    pkgs.gemini-cli
 
     # Antigravity CLI (Gemini CLI の後継) を Nix で宣言的に管理
     (pkgs.stdenv.mkDerivation {

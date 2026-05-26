@@ -13,6 +13,7 @@
     ./modules/desktop.nix
     ./modules/wezterm.nix
     ./modules/neovim.nix
+    ./modules/gnome-tiling.nix
   ];
 
   # ユーザー情報・基本設定

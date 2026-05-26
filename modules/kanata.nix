@@ -12,34 +12,48 @@
 
     (defsrc
       caps  lalt  spc   ralt
-      a s e u b x
-      h j k l
+      q     w     e     r     t     y     u
+      h     j     k     l
     )
 
     (defalias
-      ;; 左右Alt単押しでのIME切り替え (AHKの挙動を再現)
-      ;; Tap: Muhenkan (IME Off) / Hold: LAlt
-      alt-eng (tap-hold 200 200 muhenkan lalt)
-      ;; Tap: Henkan (IME On) / Hold: RAlt
+      ;; 左右Alt単押しでのIME切り替え (Tap: IME / Hold: Altレイヤー)
+      alt-eng (tap-hold 200 200 muhenkan (layer-toggle alt-layer))
       alt-jp  (tap-hold 200 200 henkan ralt)
-      
-      ;; CapsLock: Tap -> Esc / Hold -> LCtrl (Vim使い向けの定番設定)
-      cap-ctrl (tap-hold 200 200 esc lctl)
 
-      ;; Space: Tap -> Space / Hold -> Navレイヤー (Vim-like navigation)
+      cap-ctrl (tap-hold 200 200 esc lctl)
       spc-nav (tap-hold 200 200 spc (layer-toggle nav))
+
+      ;; Alt + Q -> Super + Shift + Q (ウィンドウを閉じる)
+      hyp-q (multi lmet lsft q)
+
+      ;; Altレイヤーでの動作: Super + HJKL を送信
+      hyp-h (multi lmet h)
+      hyp-j (multi lmet j)
+      hyp-k (multi lmet k)
+      hyp-l (multi lmet l)
     )
 
     (deflayer base
       @cap-ctrl @alt-eng @spc-nav @alt-jp
-      _ _ _ _ _ _
-      _ _ _ _
+      q     w     e     r     t     y     u
+      h     j     k     l
     )
 
+    (deflayer alt-layer
+      _     _     _     _
+      @hyp-q _     _     _     _     _     _
+      @hyp-h @hyp-j @hyp-k @hyp-l
+    )
+
+    ;; Shiftを伴うAlt操作のためのレイヤー（もし必要なら定義可能ですが、まずは基本のAltレイヤー内でShiftが自然に扱えるか確認）
+    ;; Kanataでは Alt + Shift + H を押すと、lalt + lsft + h が届きます。
+    ;; 上記の @hyp-h は (multi lmet h) なので、Shiftを同時に押すと (multi lmet lsft h) になるはずです。
+
     (deflayer nav
-      _ _ _ _
-      home prtsc end C-z bspc del
-      left down up right
+      _     _     _     _
+      home  prtsc end   C-z   bspc  del   _
+      left  down  up    right
     )
   '';
 
