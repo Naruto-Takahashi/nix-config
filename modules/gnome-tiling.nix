@@ -51,29 +51,39 @@
       window-toggle-float = ["<Alt><Shift>space"];
       window-toggle-fullscreen = ["<Alt>f"];
 
-      # リサイズ (Kanata 経由で Alt+U/I/O/P -> Super+U/I/O/P に変換されて届く)
-      # GlazeWM: U=幅縮小, P=幅拡大, I=高さ縮小, O=高さ拡大
-      window-resize-right-decrease = ["<Super>u"];
+      # リサイズ (どこの位置の窓でも動くように両端を指定)
+      # P=拡大, U=縮小, O=高さ拡大, I=高さ縮小
       window-resize-right-increase = ["<Super>p"];
-      window-resize-bottom-decrease = ["<Super>i"];
+      window-resize-left-increase = ["<Super>p"];
+      window-resize-right-decrease = ["<Super>u"];
+      window-resize-left-decrease = ["<Super>u"];
+
       window-resize-bottom-increase = ["<Super>o"];
-    };
+      window-resize-top-increase = ["<Super>o"];
+      window-resize-bottom-decrease = ["<Super>i"];
+      window-resize-top-decrease = ["<Super>i"];
+      };
 
-    # --- アプリに吸われないための工夫 (GNOME 本体の設定) ---
+      # --- アプリに吸われないための工夫 (GNOME 本体の設定) ---
 
-    "org/gnome/desktop/wm/preferences" = {
+      "org/gnome/desktop/wm/preferences" = {
       # Alt+ドラッグ で窓が動く機能を Super に変更 (Altを自由に使うため)
       mouse-button-modifier = "<Super>";
       # 💡 GNOME 本体のタイリング機能を完全に無効化 (Forgeと衝突するため)
       edge-tiling = false;
-    };
+      };
 
-    "org/gnome/mutter" = {
+      "org/gnome/mutter" = {
       # 磁石のようなスナップ機能をオフにする
       edge-tiling = false;
-    };
+      # 💡 Super + P (ディスプレイ切替) が Forge のリサイズと衝突するのを防ぐ
+      switch-monitor = [];
+      };
 
     "org/gnome/desktop/wm/keybindings" = {
+      # 衝突を避けるために GNOME 標準のショートカットを無効化
+      minimize = [];
+
       # Alt + 1〜9 (Kanata 経由で Super+1〜9 に変換されて届く) でワークスペース切り替え
       switch-to-workspace-1 = ["<Super>1"];
       switch-to-workspace-2 = ["<Super>2"];
@@ -100,7 +110,6 @@
       close = ["<Super><Shift>q"];
       
       # 競合しがちな標準機能を無効化
-      minimize = [];
       begin-move = [];
       begin-resize = [];
     };
