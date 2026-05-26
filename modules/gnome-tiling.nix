@@ -96,6 +96,29 @@
     "org/gnome/settings-daemon/plugins/media-keys" = {
       screensaver = ["<Alt><Super>l"]; 
     };
+
+    # Ubuntu Dock が Super+数字 を奪うのを防ぐ
+    "org/gnome/shell/extensions/dash-to-dock" = {
+      app-shift-hotkey-1 = [];
+      app-shift-hotkey-2 = [];
+      app-shift-hotkey-3 = [];
+      app-shift-hotkey-4 = [];
+      app-shift-hotkey-5 = [];
+      app-shift-hotkey-6 = [];
+      app-shift-hotkey-7 = [];
+      app-shift-hotkey-8 = [];
+      app-shift-hotkey-9 = [];
+      app-ctrl-hotkey-1 = [];
+      app-ctrl-hotkey-2 = [];
+      app-ctrl-hotkey-3 = [];
+      app-ctrl-hotkey-4 = [];
+      app-ctrl-hotkey-5 = [];
+      app-ctrl-hotkey-6 = [];
+      app-ctrl-hotkey-7 = [];
+      app-ctrl-hotkey-8 = [];
+      app-ctrl-hotkey-9 = [];
+      hot-keys = false; # 数字キーによるアプリ起動全体を無効化
+    };
   };
 }
 
