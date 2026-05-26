@@ -42,7 +42,7 @@
       window-focus-up = ["<Super>k"];
       window-focus-right = ["<Super>l"];
 
-      # 今後 Kanata 側を拡張すれば移動も Alt+Shift+HJKL で可能になります
+      # 移動 (Alt+Shift+HJKL -> Super+Shift+HJKL)
       window-move-left = ["<Super><Shift>h"];
       window-move-down = ["<Super><Shift>j"];
       window-move-up = ["<Super><Shift>k"];
@@ -51,38 +51,38 @@
       window-toggle-float = ["<Alt><Shift>space"];
       window-toggle-fullscreen = ["<Alt>f"];
 
-      # リサイズ (どこの位置の窓でも動くように両端を指定)
-      # P=拡大, U=縮小, O=高さ拡大, I=高さ縮小
-      window-resize-right-increase = ["<Super>p"];
-      window-resize-left-increase = ["<Super>p"];
+      # 💡 リサイズ (端を固定して安定化: U/P=右端, I/O=下端)
       window-resize-right-decrease = ["<Super>u"];
-      window-resize-left-decrease = ["<Super>u"];
-
-      window-resize-bottom-increase = ["<Super>o"];
-      window-resize-top-increase = ["<Super>o"];
+      window-resize-right-increase = ["<Super>p"];
       window-resize-bottom-decrease = ["<Super>i"];
-      window-resize-top-decrease = ["<Super>i"];
-      };
+      window-resize-bottom-increase = ["<Super>o"];
+      
+      # 不要な割り当てを解除
+      window-resize-left-decrease = [];
+      window-resize-left-increase = [];
+      window-resize-top-decrease = [];
+      window-resize-top-increase = [];
+    };
 
-      # --- アプリに吸われないための工夫 (GNOME 本体の設定) ---
+    # --- アプリに吸われないための工夫 (GNOME 本体の設定) ---
 
-      "org/gnome/desktop/wm/preferences" = {
+    "org/gnome/desktop/wm/preferences" = {
       # Alt+ドラッグ で窓が動く機能を Super に変更 (Altを自由に使うため)
       mouse-button-modifier = "<Super>";
       # 💡 GNOME 本体のタイリング機能を完全に無効化 (Forgeと衝突するため)
       edge-tiling = false;
-      };
+    };
 
-      "org/gnome/mutter" = {
+    "org/gnome/mutter" = {
       # 磁石のようなスナップ機能をオフにする
       edge-tiling = false;
-      # 💡 Super + P (ディスプレイ切替) が Forge のリサイズと衝突するのを防ぐ
-      switch-monitor = [];
-      };
+    };
 
     "org/gnome/desktop/wm/keybindings" = {
       # 衝突を避けるために GNOME 標準のショートカットを無効化
       minimize = [];
+      # 💡 Super + P (ディスプレイ切替) の競合を解除
+      switch-monitor = [];
 
       # Alt + 1〜9 (Kanata 経由で Super+1〜9 に変換されて届く) でワークスペース切り替え
       switch-to-workspace-1 = ["<Super>1"];
@@ -122,10 +122,23 @@
     # 画面ロックの衝突回避 (Super + L を解放する)
     "org/gnome/settings-daemon/plugins/media-keys" = {
       screensaver = ["<Alt><Super>l"]; 
+      # 💡 Super + P (ディスプレイ切替) の競合を解除
+      video-out = [];
     };
 
-    # Ubuntu Dock が Super+数字 を奪うのを防ぐ
+    # Ubuntu Dock が Super+数字 を奪うのを防ぐ (徹底的に無効化)
     "org/gnome/shell/extensions/dash-to-dock" = {
+      # 💡 通常のアプリ起動キー (Super+1〜9) を解除
+      app-hotkey-1 = [];
+      app-hotkey-2 = [];
+      app-hotkey-3 = [];
+      app-hotkey-4 = [];
+      app-hotkey-5 = [];
+      app-hotkey-6 = [];
+      app-hotkey-7 = [];
+      app-hotkey-8 = [];
+      app-hotkey-9 = [];
+      
       app-shift-hotkey-1 = [];
       app-shift-hotkey-2 = [];
       app-shift-hotkey-3 = [];
@@ -148,4 +161,3 @@
     };
   };
 }
-
