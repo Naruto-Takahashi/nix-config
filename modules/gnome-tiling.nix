@@ -64,6 +64,13 @@
     "org/gnome/desktop/wm/preferences" = {
       # Alt+ドラッグ で窓が動く機能を Super に変更 (Altを自由に使うため)
       mouse-button-modifier = "<Super>";
+      # 💡 GNOME 本体のタイリング機能を完全に無効化 (Forgeと衝突するため)
+      edge-tiling = false;
+    };
+
+    "org/gnome/mutter" = {
+      # 磁石のようなスナップ機能をオフにする
+      edge-tiling = false;
     };
 
     "org/gnome/desktop/wm/keybindings" = {
