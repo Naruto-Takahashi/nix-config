@@ -13,6 +13,7 @@
     (defsrc
       caps  lalt  spc   ralt
       q     w     e     r     t     y     u
+      1     2     3     4     5     6     7     8     9
       h     j     k     l
     )
 
@@ -27,6 +28,17 @@
       ;; Alt + Q -> Super + Shift + Q (ウィンドウを閉じる)
       hyp-q (multi lmet lsft q)
 
+      ;; Alt + 1〜9 -> Super + 1〜9 (ワークスペース切り替え)
+      hyp-1 (multi lmet 1)
+      hyp-2 (multi lmet 2)
+      hyp-3 (multi lmet 3)
+      hyp-4 (multi lmet 4)
+      hyp-5 (multi lmet 5)
+      hyp-6 (multi lmet 6)
+      hyp-7 (multi lmet 7)
+      hyp-8 (multi lmet 8)
+      hyp-9 (multi lmet 9)
+
       ;; Altレイヤーでの動作: Super + HJKL を送信
       hyp-h (multi lmet h)
       hyp-j (multi lmet j)
@@ -37,22 +49,21 @@
     (deflayer base
       @cap-ctrl @alt-eng @spc-nav @alt-jp
       q     w     e     r     t     y     u
+      1     2     3     4     5     6     7     8     9
       h     j     k     l
     )
 
     (deflayer alt-layer
       _     _     _     _
       @hyp-q _     _     _     _     _     _
+      @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
       @hyp-h @hyp-j @hyp-k @hyp-l
     )
 
-    ;; Shiftを伴うAlt操作のためのレイヤー（もし必要なら定義可能ですが、まずは基本のAltレイヤー内でShiftが自然に扱えるか確認）
-    ;; Kanataでは Alt + Shift + H を押すと、lalt + lsft + h が届きます。
-    ;; 上記の @hyp-h は (multi lmet h) なので、Shiftを同時に押すと (multi lmet lsft h) になるはずです。
-
     (deflayer nav
       _     _     _     _
-      home  prtsc end   C-z   bspc  del   _
+      _     _     _     _     _     _     _
+      home  prtsc end   C-z   bspc  del   _     _     _
       left  down  up    right
     )
   '';

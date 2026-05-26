@@ -56,27 +56,27 @@
     };
 
     "org/gnome/desktop/wm/keybindings" = {
-      # Alt + 1〜9 でワークスペース切り替え
-      switch-to-workspace-1 = ["<Alt>1"];
-      switch-to-workspace-2 = ["<Alt>2"];
-      switch-to-workspace-3 = ["<Alt>3"];
-      switch-to-workspace-4 = ["<Alt>4"];
-      switch-to-workspace-5 = ["<Alt>5"];
-      switch-to-workspace-6 = ["<Alt>6"];
-      switch-to-workspace-7 = ["<Alt>7"];
-      switch-to-workspace-8 = ["<Alt>8"];
-      switch-to-workspace-9 = ["<Alt>9"];
+      # Alt + 1〜9 (Kanata 経由で Super+1〜9 に変換されて届く) でワークスペース切り替え
+      switch-to-workspace-1 = ["<Super>1"];
+      switch-to-workspace-2 = ["<Super>2"];
+      switch-to-workspace-3 = ["<Super>3"];
+      switch-to-workspace-4 = ["<Super>4"];
+      switch-to-workspace-5 = ["<Super>5"];
+      switch-to-workspace-6 = ["<Super>6"];
+      switch-to-workspace-7 = ["<Super>7"];
+      switch-to-workspace-8 = ["<Super>8"];
+      switch-to-workspace-9 = ["<Super>9"];
 
-      # Alt + Shift + 1〜9 でウィンドウをワークスペースへ移動
-      move-to-workspace-1 = ["<Alt><Shift>1"];
-      move-to-workspace-2 = ["<Alt><Shift>2"];
-      move-to-workspace-3 = ["<Alt><Shift>3"];
-      move-to-workspace-4 = ["<Alt><Shift>4"];
-      move-to-workspace-5 = ["<Alt><Shift>5"];
-      move-to-workspace-6 = ["<Alt><Shift>6"];
-      move-to-workspace-7 = ["<Alt><Shift>7"];
-      move-to-workspace-8 = ["<Alt><Shift>8"];
-      move-to-workspace-9 = ["<Alt><Shift>9"];
+      # Alt + Shift + 1〜9 (Kanata 経由で Super+Shift+1〜9 に変換されて届く) でウィンドウを移動
+      move-to-workspace-1 = ["<Super><Shift>1"];
+      move-to-workspace-2 = ["<Super><Shift>2"];
+      move-to-workspace-3 = ["<Super><Shift>3"];
+      move-to-workspace-4 = ["<Super><Shift>4"];
+      move-to-workspace-5 = ["<Super><Shift>5"];
+      move-to-workspace-6 = ["<Super><Shift>6"];
+      move-to-workspace-7 = ["<Super><Shift>7"];
+      move-to-workspace-8 = ["<Super><Shift>8"];
+      move-to-workspace-9 = ["<Super><Shift>9"];
 
       # ウィンドウを閉じる (Kanata 経由で Alt+Q が Super+Shift+Q に変換されて届く)
       close = ["<Super><Shift>q"];
