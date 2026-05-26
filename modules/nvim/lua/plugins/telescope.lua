@@ -13,6 +13,18 @@ return {
         
         -- 拡張機能の設定
         telescope.setup({
+          pickers = {
+            find_files = {
+              hidden = true,
+              -- .git ディレクトリは除外する
+              find_command = { "rg", "--files", "--hidden", "--glob", "!**/.git/*" },
+            },
+            live_grep = {
+              additional_args = function(opts)
+                return { "--hidden", "--glob", "!**/.git/*" }
+              end,
+            },
+          },
           extensions = {
             fzf = {
               fuzzy = true,                    -- false will only do exact matching

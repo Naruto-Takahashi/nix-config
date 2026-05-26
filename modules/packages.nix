@@ -18,6 +18,7 @@
     pkgs.gh
     pkgs.gcc
     pkgs.python3
+    pkgs.ripgrep
     pkgs.lazygit
     pkgs.kanata
 
