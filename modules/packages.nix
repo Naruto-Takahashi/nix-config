@@ -17,6 +17,7 @@
     pkgs.git
     pkgs.gh
     pkgs.gcc
+    pkgs.python3
     pkgs.lazygit
     pkgs.kanata
 
