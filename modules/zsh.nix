@@ -98,6 +98,9 @@
       # システム制限の解除
       ulimit -s unlimited
 
+      # 補完選択メニューキーマップ (menuselect) のロード
+      zmodload zsh/complist
+
       # 外部環境マネージャーの追従（存在する場合のみロード）
       [ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
       [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
