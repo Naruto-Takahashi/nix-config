@@ -38,7 +38,7 @@
 
     (deflayer nav
       _ _ _ _
-      home sysrq end C-z bspc del
+      home prtsc end C-z bspc del
       left down up right
     )
   '';
