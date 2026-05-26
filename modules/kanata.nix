@@ -12,7 +12,7 @@
 
     (defsrc
       caps  lalt  spc   ralt
-      a e u b x
+      a s e u b x
       h j k l
     )
 
@@ -32,13 +32,13 @@
 
     (deflayer base
       @cap-ctrl @alt-eng @spc-nav @alt-jp
-      _ _ _ _ _
+      _ _ _ _ _ _
       _ _ _ _
     )
 
     (deflayer nav
       _ _ _ _
-      home end C-z bspc del
+      home sysrq end C-z bspc del
       left down up right
     )
   '';
