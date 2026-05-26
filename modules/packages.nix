@@ -17,6 +17,7 @@
     pkgs.git
     pkgs.gh
     pkgs.gcc
+    pkgs.gnumake
     pkgs.python3
     pkgs.ripgrep
     pkgs.lazygit
