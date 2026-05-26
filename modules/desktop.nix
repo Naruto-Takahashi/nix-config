@@ -27,14 +27,7 @@
     fcitx5.addons = [ pkgs.fcitx5-mozc ];
   };
 
-  # WezTerm の有効化
-  programs.wezterm = {
-    enable = true;
-    package = pkgs.wezterm; 
-  };
 
-  # WezTerm設定用のシンボリックリンク
-  xdg.configFile."wezterm".source = config.lib.file.mkOutOfStoreSymlink "/home/nalt/projects/dotfiles/wezterm";
 
   # デスクトップエントリの登録（WezTerm）
   xdg.desktopEntries = {

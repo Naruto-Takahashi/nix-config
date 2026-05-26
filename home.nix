@@ -11,6 +11,7 @@
     ./modules/starship.nix
     ./modules/kanata.nix
     ./modules/desktop.nix
+    ./modules/wezterm.nix
   ];
 
   # ユーザー情報・基本設定
