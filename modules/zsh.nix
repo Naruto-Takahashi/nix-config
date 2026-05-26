@@ -198,7 +198,29 @@
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
-          echo "All Windows configs synced."
+      }
+
+      # 最新のスクリーンショットをAntigravityへ連携する関数
+      function agy-ss() {
+          local ss_dir="$HOME/Pictures/Screenshots"
+          # 最新の Screenshot*.png を取得
+          local latest_file=$(ls -t "$ss_dir"/Screenshot*.png 2>/dev/null | head -n 1)
+          if [ -n "$latest_file" ]; then
+              # latest.png へコピーして固定
+              cp "$latest_file" "$ss_dir/latest.png"
+              # X11 & Wayland 両対応でクリップボードへ絶対パスをコピー
+              if command -v wl-copy >/dev/null 2>&1; then
+                  echo -n "$latest_file" | wl-copy
+              elif command -v xclip >/dev/null 2>&1; then
+                  echo -n "$latest_file" | xclip -selection clipboard
+              fi
+              echo "最新のスクリーンショットを登録しました！"
+              echo "  元ファイル: $latest_file"
+              echo "  -> $ss_dir/latest.png としてコピーしました。"
+              echo "  (絶対パスをクリップボードにコピーしました。チャットへ Ctrl+V で貼り付け可能です)"
+          else
+              echo "スクリーンショットが見つかりませんでした。($ss_dir)"
+          fi
       }
 
       # ローカル固有環境変数の自動ソース化

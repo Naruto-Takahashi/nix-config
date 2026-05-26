@@ -20,6 +20,8 @@
     pkgs.gnumake
     pkgs.python3
     pkgs.ripgrep
+    pkgs.xclip
+    pkgs.wl-clipboard
     pkgs.lazygit
     pkgs.kanata
 
