@@ -1,0 +1,66 @@
+{
+  "Zenn Message": {
+    "prefix": "zmsg",
+    "body": [
+      ":::message",
+      "$1",
+      ":::"
+    ],
+    "description": "Zenn Message Box"
+  },
+  "Zenn Alert": {
+    "prefix": "zalert",
+    "body": [
+      ":::message alert",
+      "$1",
+      ":::"
+    ],
+    "description": "Zenn Alert Box"
+  },
+  "Zenn Accordion": {
+    "prefix": "zacc",
+    "body": [
+      ":::details ${1:Title}",
+      "$2",
+      ":::"
+    ],
+    "description": "Zenn Accordion (Details)"
+  },
+  "Zenn Link Card": {
+    "prefix": "zlink",
+    "body": [
+      "@[card](${1:url})"
+    ],
+    "description": "Zenn Link Card"
+  },
+  "Zenn Tweet": {
+    "prefix": "ztweet",
+    "body": [
+      "@[tweet](${1:url})"
+    ],
+    "description": "Zenn Tweet Embed"
+  },
+  "Zenn Youtube": {
+    "prefix": "zyoutube",
+    "body": [
+      "@[youtube](${1:id})"
+    ],
+    "description": "Zenn Youtube Embed"
+  },
+  "Zenn Code Block": {
+    "prefix": "zcode",
+    "body": [
+      "```${1:language}:${2:filename}",
+      "$3",
+      "```"
+    ],
+    "description": "Zenn Code Block with Filename"
+  },
+  "Zenn Image": {
+    "prefix": "zimg",
+    "body": [
+      "![](/images/$1)"
+    ],
+    "description": "Zenn Image Path"
+  }
+}

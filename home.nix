@@ -12,6 +12,7 @@
     ./modules/kanata.nix
     ./modules/desktop.nix
     ./modules/wezterm.nix
+    ./modules/neovim.nix
   ];
 
   # ユーザー情報・基本設定
