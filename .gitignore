@@ -1,0 +1,9 @@
+# Home-Manager build output
+result
+
+# Editor backup files
+*~
+*.swp
+
+# OS generated files
+.DS_Store
