@@ -16,6 +16,7 @@
     pkgs.ghq
     pkgs.git
     pkgs.gh
+    pkgs.gcc
     pkgs.lazygit
     pkgs.kanata
 
