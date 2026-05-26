@@ -15,6 +15,7 @@
     pkgs.zoxide
     pkgs.ghq
     pkgs.git
+    pkgs.gh
     pkgs.lazygit
     pkgs.kanata
 
