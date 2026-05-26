@@ -16,10 +16,14 @@
         "forge@jura.projects.gihub.com"
         "ubuntu-dock@ubuntu.com"
         "desktop-icons@csoriano"
-        "tiling-assistant@ubuntu.com"
       ];
       # 💡 拡張機能のバージョンチェックを無効化 (Nix管理をより完全にするため)
       disable-extension-version-validation = true;
+      
+      # 競合する Ubuntu 標準のタイリングアシスタントを無効化する
+      disabled-extensions = [
+        "tiling-assistant@ubuntu.com"
+      ];
     };
 
     # Forge の一般設定
@@ -32,7 +36,7 @@
     };
 
     # Forge のキーバインド (Kanata によって Alt+HJKL -> Super+HJKL に変換されて届く)
-    "org/gnome/shell/extensions/forge/keybinds" = {
+    "org/gnome/shell/extensions/forge/keybindings" = {
       window-focus-left = ["<Super>h"];
       window-focus-down = ["<Super>j"];
       window-focus-up = ["<Super>k"];
@@ -46,6 +50,13 @@
 
       window-toggle-float = ["<Alt><Shift>space"];
       window-toggle-fullscreen = ["<Alt>f"];
+
+      # リサイズ (Kanata 経由で Alt+U/I/O/P -> Super+U/I/O/P に変換されて届く)
+      # GlazeWM: U=幅縮小, P=幅拡大, I=高さ縮小, O=高さ拡大
+      window-resize-right-decrease = ["<Super>u"];
+      window-resize-right-increase = ["<Super>p"];
+      window-resize-bottom-decrease = ["<Super>i"];
+      window-resize-bottom-increase = ["<Super>o"];
     };
 
     # --- アプリに吸われないための工夫 (GNOME 本体の設定) ---
