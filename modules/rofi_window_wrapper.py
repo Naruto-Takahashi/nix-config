@@ -67,7 +67,23 @@ def main():
     }
     mainbox {
         background-color: transparent;
-        children: [ listview ];
+        children: [ inputbar, listview ]; /* 検索欄を復活 */
+    }
+    inputbar {
+        background-color: @bg-alt;
+        margin: 0px 0px 20px 0px;
+        padding: 10px;
+        border-radius: 8px;
+        children: [ prompt, entry ];
+    }
+    prompt {
+        background-color: transparent;
+        text-color: @accent;
+        padding: 0px 10px 0px 0px;
+    }
+    entry {
+        background-color: transparent;
+        text-color: @fg;
     }
     listview {
         columns: 3;
@@ -75,6 +91,8 @@ def main():
         spacing: 30px;
         background-color: transparent;
         fixed-columns: true;
+        scrollbar: false;
+        border: 0px; /* 余計な境界線を削除 */
     }
     element {
         orientation: vertical;
@@ -97,7 +115,7 @@ def main():
         vertical-align: 0.5;
         padding: 8px;
         margin: 10px 0px 0px 0px;
-        background-color: rgba(0, 0, 0, 0.7); /* テキストの視認性確保のための暗い背景 */
+        background-color: rgba(0, 0, 0, 0.7);
         color: @fg;
         border-radius: 6px;
     }
