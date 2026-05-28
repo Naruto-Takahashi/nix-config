@@ -22,6 +22,11 @@ in
   # -----------------------------------------------------------------------
   xsession.windowManager.i3 = {
     enable = true;
+    extraConfig = ''
+      # タイトルバーを非表示にし、2pxの枠線のみにする
+      default_border pixel 2
+      default_floating_border pixel 2
+    '';
     config = {
       inherit modifier;
 
