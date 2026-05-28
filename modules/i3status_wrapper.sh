@@ -31,11 +31,12 @@ i3status | while read -r line; do
 
   gpu_util=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null)
   if [ -n "$gpu_util" ]; then
-    # Make GPU block look harmonic and sleek in cyan/blue-green
-    gpu_block=$(jq -n --arg text "GPU ${gpu_util}%" --arg col "#2ac3de" '{name: "gpu_util", full_text: $text, color: $col}')
-    modified_json=$(echo "$json_array" | jq --argjson block "$new_block" --argjson gpu "$gpu_block" '[$block, $gpu] + .' -c)
+    # Make GPU block white as requested
+    gpu_block=$(jq -n --arg text "GPU ${gpu_util}%" --arg col "#ffffff" '{name: "gpu_util", full_text: $text, color: $col}')
+    # Prepend blocks and dynamically force the ethernet block color to white
+    modified_json=$(echo "$json_array" | jq --argjson block "$new_block" --argjson gpu "$gpu_block" '([$block, $gpu] + .) | map(if .name == "ethernet" then .color = "#ffffff" else . end)' -c)
   else
-    modified_json=$(echo "$json_array" | jq --argjson block "$new_block" '[$block] + .' -c)
+    modified_json=$(echo "$json_array" | jq --argjson block "$new_block" '([$block] + .) | map(if .name == "ethernet" then .color = "#ffffff" else . end)' -c)
   fi
   
   echo "${prefix}${modified_json}"
