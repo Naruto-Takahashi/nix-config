@@ -47,10 +47,10 @@
       active_titlebar_bg = "none",
     }
 
-    -- タブバーを背景色に合わせる
-    config.window_background_gradient = {
-      colors = { "#000000" },
-    }
+    -- タブバーを背景色に合わせる (透過の妨げになるグラデーションはコメントアウト)
+    -- config.window_background_gradient = {
+    --   colors = { "#000000" },
+    -- }
 
     -- タブの追加ボタンを非表示
     config.show_new_tab_button_in_tab_bar = true
