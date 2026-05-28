@@ -16,4 +16,7 @@
   # Neovim 設定ディレクトリの宣言的配置 (ディレクトリ・ソース方式)
   # -----------------------------------------------------------------------
   xdg.configFile."nvim".source = ./nvim;
+
+  # Rofi テーマ設定
+  xdg.configFile."rofi/theme.rasi".source = ./rofi_theme.rasi;
 }

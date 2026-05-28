@@ -1,0 +1,73 @@
+configuration {
+    show-icons: true;
+    display-drun: "Apps";
+    drun-display-format: "{name}";
+}
+
+* {
+    bg: #0f0f0f;
+    fg: #ffffff;
+    accent: #ffc20d;
+    bg-alt: #1a1a1a;
+    border-radius: 12px;
+    background-color: transparent;
+    text-color: @fg;
+}
+
+window {
+    width: 40%;
+    border: 1px;
+    border-color: @accent;
+    background-color: @bg;
+    padding: 30px;
+}
+
+mainbox {
+    children: [ inputbar, listview ];
+}
+
+inputbar {
+    background-color: @bg-alt;
+    margin: 0px 0px 20px 0px;
+    padding: 12px;
+    border-radius: 8px;
+    children: [ prompt, entry ];
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    placeholder: "Search applications...";
+    placeholder-color: #666666;
+}
+
+listview {
+    columns: 1;
+    lines: 8;
+    spacing: 8px;
+    scrollbar: false;
+    fixed-height: false;
+}
+
+element {
+    padding: 12px;
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: @bg-alt;
+    text-color: @accent;
+    border: 1px;
+    border-color: @accent;
+}
+
+element-icon {
+    size: 32px;
+    margin: 0px 12px 0px 0px;
+}
+
+element-text {
+    vertical-align: 0.5;
+}
