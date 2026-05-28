@@ -1,23 +1,105 @@
 # 🌌 Naruto's Declarative Desktop Configuration (Nix + Home Manager)
 
-This repository manages Naruto's Linux desktop environment declaratively using **Nix Flakes** and **Home Manager**. It provides a fully unified, modern, keyboard-driven development environment with premium gold/dark hacker-mode aesthetics.
+このリポジトリは、**Nix Flakes** と **Home Manager** を使用して、Linuxデスクトップ環境を宣言的に一元管理するための設定ファイル群（レシピ）です。
+ゴールド（`#ffc20d`）とダークテーマを基調とした、美しく、キーボード駆動で圧倒的な生産性を誇る「極上のハッカー向け開発環境」を構築します。
 
 ---
 
-## 🎨 Environment & Theme Showcase
+## 🎨 環境・機能のこだわり紹介 (Showcase)
 
-* **Window Manager**: `i3wm` (X11) with customized premium Gold (`#ffc20d`) / Dark Theme.
-* **Terminal**: `WezTerm` with 75% uniform background transparency, HackGen NF font, and sleek custom tab layout.
-* **Shell**: `Zsh` with Starship Prompt, smart syntax highlighting (valid commands in green, invalid in red), automatic `zoxide` integration, and `fzf` completion widgets.
-* **Keyboard Mapper**: `Kanata` daemon configuring Mac-style Alt Tap IME switching, and **SandS (Space and Shift)** Vim-like navigation layer (Space + HJKL/A/E/U/B/X).
-* **Compositor**: `picom` (configured with robust `xrender` backend for seamless performance on NVIDIA GPUs).
-* **Intelligence**: Custom auto-tiling wrapper script (`rofi_window_wrapper.py`) that instantly restores minimized scratchpad windows in tiled mode rather than floating when selected via Alt+Tab.
+* **ウィンドウマネージャー (`i3wm`)**: ゴールドとダークな色調で美しく統一された X11 ウィンドウ環境。
+* **ターミナル (`WezTerm`)**: 不透明度75%の美しい半透明背景。フォントには「HackGen NF」を適用し、上部タブバーも本体と同じ透過率に完璧に調和。
+* **シェル (`Zsh`)**: Starship プロンプトをベースに、コマンドの有効/無効をリアルタイム色分け（緑/赤）する構文ハイライト、`zoxide` によるディレクトリ超高速移動、`fzf` による履歴検索を完備。
+* **キーマップ管理 (`Kanata`)**: 左右Alt単押しでのIME（日本語/英語）切り替えに加え、**SandS（Space and Shift）**の思想を継承した「スペース長押しナビゲーションレイヤー」を搭載（`Space + HJKL/A/E/U/B/X` でカーソル移動・Undo・Backspace・Deleteが可能）。
+* **グラフィックス (`picom`)**: X11コンポジタ。NVIDIAグラフィックス環境でも100%クラッシュせず極めて軽量に動作する `xrender` バックエンドを採用。
+* **オートタイル復元**: 最小化（Scratchpad退避）したウィンドウを `ALT+TAB`（Rofi）で復元した際、手動でトグルせずとも自動的にタイリング表示へと瞬時に再配置する独自のラッパースクリプト（`rofi_window_wrapper.py`）を搭載。
+
+---
+
+## 🚀 新しいPCで環境を完全再現する手順（PC移行ガイド）
+
+新しく Ubuntu 等をクリーンインストールした別のPCに、この環境をそのまま100%復元するためのセットアップ手順です。
+
+### ⚙️ 事前の微調整（新しいPCのユーザー名が異なる場合）
+新しいPCのユーザー名が `nalt` 以外（例: `naruto`）の場合は、リポジトリをクローン後、以下のファイルのユーザーメタデータを事前に書き換えてください。
+* **対象ファイル**: `home.nix`（24〜25行目付近）
+  ```nix
+  home.username      = "new_username";      # 新しいユーザー名に変更
+  home.homeDirectory = "/home/new_username";# 新しいホームの絶対パスに変更
+  ```
+
+---
+
+### Step 1: Nix パッケージマネージャーのインストール
+まずはすべての基盤となる Nix をインストールします。
+
+```bash
+curl -L https://nixos.org/nix/install | sh
+```
+*画面の指示に従ってEnterを押してインストールを完了してください。完了後、一度ターミナルを開き直すか、以下を実行してNixコマンドをロードします。*
+```bash
+. ~/.nix-profile/etc/profile.d/nix.sh
+```
+
+### Step 2: Nix Flakes 機能の有効化
+設定のビルドに必要なモダン機能「Nix Flakes」および新しいNixコマンドを有効化します。
+
+```bash
+mkdir -p ~/.config/nix
+echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
+```
+
+### Step 3: 設定リポジトリのクローン
+この設定ファイル群を、ホームディレクトリの所定の位置に直接クローンします。
+
+```bash
+git clone https://github.com/Naruto-Takahashi/home-manager-config.git ~/.config/home-manager
+```
+
+### Step 4: Home Manager の適用（全自動インストール）
+Nix Flakesの力を使って、Home Manager自体のインストール、必要なアプリのダウンロード、設定ファイルの配置、シンボリックリンクの作成を一瞬で全自動実行します。
+
+```bash
+nix run github:nix-community/home-manager -- switch --flake ~/.config/home-manager --impure
+```
+> [!IMPORTANT]
+> `--impure`（不純許可）フラグは、実行マシンの物理グラフィックス（NVIDIAドライバ等）の情報をNixのサンドボックス内に一時的に取り込んで、WezTermやpicomのハードウェアアクセラレーションを最適にビルドするために必須のフラグです。
+
+### Step 5: キーボードリマッパー（Kanata）の自動起動登録
+カスタムキーマップのエンジンである Kanata はシステムサービスとして動くため、自動起動に登録し、今すぐ有効化させます。
+
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now kanata
+```
+
+### Step 6: 新しいシェルの起動
+最後に、Ubuntu標準のBashから、極上カスタマイズされたZshへと切り替えます。
+
+```bash
+exec zsh
+```
+
+---
+
+<details>
+<summary>📖 <b>English Translation (Click to expand)</b></summary>
+
+## 🌌 Overview
+
+This repository manages Naruto's Linux desktop environment declaratively using **Nix Flakes** and **Home Manager**. It provides a fully unified, modern, keyboard-driven development environment with premium gold (`#ffc20d`) / dark hacker-mode aesthetics.
+
+### 🎨 Environment & Theme Showcase
+* **Window Manager (`i3wm`)**: Custom Premium Gold (`#ffc20d`) / Dark Theme.
+* **Terminal (`WezTerm`)**: 75% uniform background transparency, HackGen NF font, and sleek custom tab layout.
+* **Shell (`Zsh`)**: Starship Prompt, smart syntax highlighting (valid in green, invalid in red), automatic `zoxide` integration, and `fzf` completion widgets.
+* **Keyboard Mapper (`Kanata`)**: Mac-style Alt Tap IME switching, and **SandS (Space and Shift)** Vim-like navigation layer (`Space + HJKL/A/E/U/B/X`).
+* **Compositor (`picom`)**: Configured with a robust `xrender` backend for seamless performance on NVIDIA GPUs.
+* **Intelligence**: Custom auto-tiling wrapper script (`rofi_window_wrapper.py`) that instantly restores minimized scratchpad windows in tiled mode when selected via Alt+Tab.
 
 ---
 
 ## 🚀 Environment Setup & Replication Guide (PC Migration)
-
-Follow these **6 steps** to replicate this exact extreme-productivity desktop environment on any fresh Linux distribution (e.g., Ubuntu).
 
 ### ⚙️ Pre-setup Customization (If your username is different)
 If your username on the new PC is different from `nalt` (e.g., `naruto`), edit the [home.nix](home.nix) file's user metadata before applying:
@@ -27,11 +109,7 @@ home.username      = "new_username";
 home.homeDirectory = "/home/new_username";
 ```
 
----
-
 ### Step 1: Install the Nix Package Manager
-Nix provides a secure, deterministic sandbox `/nix/store` for all programs to guarantee absolute stability.
-
 ```bash
 curl -L https://nixos.org/nix/install | sh
 ```
@@ -41,42 +119,30 @@ curl -L https://nixos.org/nix/install | sh
 ```
 
 ### Step 2: Enable Nix Flakes
-Enable the modern declarative Nix Flakes feature on your local system:
-
 ```bash
 mkdir -p ~/.config/nix
 echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
 ```
 
 ### Step 3: Clone this Configuration Repository
-Clone this repository directly into the required config folder path:
-
 ```bash
 git clone https://github.com/Naruto-Takahashi/home-manager-config.git ~/.config/home-manager
 ```
 
 ### Step 4: Run the First Home Manager Switch (Activation)
-Bootstraps the Home Manager client, downloads all required packages, generates configuration configurations, and creates seamless symlinks in one single command.
-
 ```bash
 nix run github:nix-community/home-manager -- switch --flake ~/.config/home-manager --impure
 ```
-> [!TIP]
-> The `--impure` flag is necessary to dynamically bind the host machine's proprietary NVIDIA graphics driver layers so that WezTerm and picom run at maximum hardware acceleration.
 
 ### Step 5: Enable Kanata User Daemon
-Register and launch the Kanata keyboard remapper service immediately to enable standard custom spacebar mappings:
-
 ```bash
 systemctl --user daemon-reload
 systemctl --user enable --now kanata
 ```
 
 ### Step 6: Start the Recreated Zsh Shell
-Replace your default shell session with the newly created, high-productivity Zsh configuration:
-
 ```bash
 exec zsh
 ```
 
-Enjoy your premium, unified, and highly optimized hacking environment! 🌌
+</details>
