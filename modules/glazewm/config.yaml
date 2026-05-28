@@ -160,6 +160,7 @@ keybindings:
 
     # Change the focused window to be floating.
     # - commands: ["wm-cycle-focus"]
+    # Note: alt+space はランチャー用に予約．ここでは alt+shift+space のみ割り当て．
     bindings: ["alt+shift+space"]
   - commands: ["toggle-tiling"]
     # Change the focused window to be tiling.
