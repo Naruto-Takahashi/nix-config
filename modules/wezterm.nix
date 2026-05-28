@@ -32,25 +32,25 @@
     ----------------------------------------------------
     -- Tab
     ----------------------------------------------------
-    -- タイトルバーを表示し、マウスでのドラッグリサイズを確実に有効化
-    config.window_decorations = "TITLE | RESIZE"
+    -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
+    config.window_decorations = "RESIZE"
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか
-    config.hide_tab_bar_if_only_one_tab = true
+    config.hide_tab_bar_if_only_one_tab = false
     -- falseにするとタブバーの透過が効かなくなる
     -- config.use_fancy_tab_bar = false
 
-    -- タブバーの透過設定 (noneからソリッドカラーに変更することで、本体と同じ75%透過が適用されます)
+    -- タブバーの透過設定
     config.window_frame = {
-      inactive_titlebar_bg = "#1a1b26",
-      active_titlebar_bg = "#1a1b26",
+      inactive_titlebar_bg = "none",
+      active_titlebar_bg = "none",
     }
 
-    -- タブバーを背景色に合わせる (透過の妨げになるグラデーションはコメントアウト)
-    -- config.window_background_gradient = {
-    --   colors = { "#000000" },
-    -- }
+    -- タブバーを背景色に合わせる
+    config.window_background_gradient = {
+      colors = { "#000000" },
+    }
 
     -- タブの追加ボタンを非表示
     config.show_new_tab_button_in_tab_bar = true
