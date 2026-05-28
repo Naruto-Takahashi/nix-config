@@ -152,8 +152,8 @@ in
       # スタートアップ起動コマンド
       # -----------------------------------------------------------------------
       startup = [
-        # 壁紙の設定 (プレミアムなゴールド/ダークテーマ壁紙)
-        { command = "${pkgs.feh}/bin/feh --bg-scale /home/nalt/Pictures/premium_wallpaper.png"; notification = false; always = true; }
+        # 壁紙の設定 (ユーザーカスタム壁紙)
+        { command = "${pkgs.feh}/bin/feh --bg-scale /home/nalt/Pictures/my-wallpaper.jpg"; notification = false; always = true; }
 
         # X11 コンポジタ (Picom) の起動 (透過表示・美化効果の有効化)
         { command = "pkill picom; ${pkgs.picom}/bin/picom --backend xrender -b"; notification = false; always = true; }
