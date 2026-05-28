@@ -82,13 +82,13 @@ in
         # 3. ウィンドウ切り替え & 最小化・復元 (Alt+Tab & Minimization)
         # =================================================================
         # Windows風の Alt + Tab (Super + Tab) による視覚的ウィンドウ切り替え
-        "${modifier}+Tab"         = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show window";
+        "${modifier}+Tab"         = "exec /home/nalt/.config/home-manager/modules/rofi_window_wrapper.py";
 
         # ウィンドウの最小化 (Scratchpadへの退避)
         "${modifier}+m"           = "move scratchpad";
 
         # 最小化したウィンドウの視覚的な一覧復元 (Rofi Window Switcherで選択)
-        "${modifier}+Shift+m"     = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show window";
+        "${modifier}+Shift+m"     = "exec /home/nalt/.config/home-manager/modules/rofi_window_wrapper.py";
 
         # =================================================================
         # 4. GlazeWM風 即時サイズ調整 (Direct Resizing)
