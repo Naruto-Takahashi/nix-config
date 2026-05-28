@@ -37,7 +37,7 @@
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか
-    config.hide_tab_bar_if_only_one_tab = false
+    config.hide_tab_bar_if_only_one_tab = true
     -- falseにするとタブバーの透過が効かなくなる
     -- config.use_fancy_tab_bar = false
 
