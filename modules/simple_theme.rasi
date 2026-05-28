@@ -41,10 +41,9 @@ element {
 }
 
 element selected {
-    background-color: @bg-alt;
+    background-color: #262626;
     text-color: @accent;
-    border: 1px;
-    border-color: @accent;
+    border: 0px;
 }
 
 element-icon {
