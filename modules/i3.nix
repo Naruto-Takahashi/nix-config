@@ -213,11 +213,11 @@ in
   programs.i3status = {
     enable = true;
     general = {
-      colors        = true;
-      interval      = 5;
-      colorGood     = "#9ece6a";
-      colorWarning  = "#e0af68";
-      colorBad      = "#f7768e";
+      colors          = true;
+      interval        = 5;
+      color_good      = "#9ece6a";
+      color_degraded  = "#e0af68";
+      color_bad       = "#f7768e";
     };
     modules = {
       "ipv6".enable            = false;
@@ -235,9 +235,9 @@ in
         enable = true;
         position = 2;
         settings = {
-          format            = "RAM %used";
-          thresholdDegraded = "10%";
-          formatDegraded    = "RAM MEMORY LOW: %free";
+          format             = "RAM %used";
+          threshold_degraded = "10%";
+          format_degraded    = "RAM MEMORY LOW: %free";
         };
       };
       "load" = {
