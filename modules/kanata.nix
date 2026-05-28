@@ -41,14 +41,13 @@
       ;; =================================================================
       ;; Alt長押し (Alt-Layer) 時の Super (lmet) ショートカットの定義
       ;; =================================================================
-      ;; 窓操作 & ランチャー
       hyp-q       (multi lmet lsft q)   ;; Alt + q   -> Super + Shift + q (閉じる)
       hyp-d       (multi lmet d)        ;; Alt + Spc -> Super + d (Rofi起動)
       hyp-ret     (multi lmet ret)      ;; Alt + Ent -> Super + Enter (端末起動)
       hyp-tab     (multi lmet tab)      ;; Alt + Tab -> Super + Tab (窓一覧切り替え)
-      hyp-sft-spc (multi lmet lsft spc) ;; Alt + d   -> Super + Shift + Space (浮動切替)
       hyp-f       (multi lmet f)        ;; Alt + f   -> Super + f (フルスクリーン)
-      hyp-t       (multi lmet t)        ;; Alt + t   -> Super + t (タイリング復元)
+      hyp-t       (multi lmet t)        ;; Alt + d   -> Super + t (タイリング復元)
+      hyp-sft-spc (multi lmet lsft spc) ;; Alt + t   -> Super + Shift + Space (浮動切替)
 
       ;; 窓の直接リサイズ
       hyp-u       (multi lmet u)        ;; Alt + u   -> Super + u (幅を縮小)
@@ -99,8 +98,8 @@
     (deflayer alt-layer
       _     _     @hyp-d       _
       @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
-      @hyp-tab @hyp-q _     _     _     @hyp-t _     @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
-      @hyp-a @hyp-s @hyp-sft-spc @hyp-f @hyp-h @hyp-j @hyp-k @hyp-l
+      @hyp-tab @hyp-q _     _     _     @hyp-sft-spc _     @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
+      @hyp-a @hyp-s @hyp-t @hyp-f @hyp-h @hyp-j @hyp-k @hyp-l
       @hyp-v @hyp-m
     )
 
