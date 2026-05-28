@@ -229,7 +229,7 @@
       # 7. Windowsとの設定同期用関数 (WSL環境用)
       function sync-win() {
           echo "Syncing WezTerm config..."
-          cp ~/dotfiles/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
+          cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
           echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
           cp -r ~/dotfiles/ahk/* /mnt/c/Users/tnaru/Tools/Customization/

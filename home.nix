@@ -13,7 +13,7 @@
     ./modules/starship.nix      # Starship プロンプト
     # ./modules/kanata.nix        # Kanata キーボードリマッパー (Alt-to-Superレイヤー)
     # ./modules/desktop.nix       # デスクトップ環境 (日本語入力Fcitx5, 環境変数)
-    # ./modules/wezterm.nix       # WezTerm ターミナル
+    ./modules/wezterm.nix       # WezTerm ターミナル
     ./modules/neovim.nix        # Neovim エディタ
     # ./modules/i3.nix            # i3 Window Manager 設定
   ];
