@@ -40,4 +40,25 @@
       terminal    = false;
     };
   };
+
+  # -----------------------------------------------------------------------
+  # Fcitx5 デザインカスタマイズ (ダサいトレイアイコンの排除 & 縦型候補リスト化)
+  # -----------------------------------------------------------------------
+  xdg.configFile."fcitx5/conf/classicui.conf".text = ''
+    # 候補選択ウィンドウを縦並びにして、MacやWindowsのように圧倒的に見やすくする
+    Vertical Candidate List=True
+
+    # トレイアイコンの「ダサい『あ』/『A』のオレンジ文字」を無効化し、
+    # バーのデザインに極めて美しく調和する「フラットな単色キーボードアイコン」に変更
+    UseInputMethodLangaugeToDisplayText=False
+    UseInputMethodLanguageToDisplayText=False
+
+    # 変換候補表示用フォントに、システム統一の「HackGen」を指定
+    Font="HackGen Console NF 12"
+    MenuFont="HackGen Console NF 12"
+    TrayFont="HackGen Console NF 10"
+
+    # 高解像度ディスプレイ（DPI）への追従を有効化
+    PerScreenDPI=True
+  '';
 }
