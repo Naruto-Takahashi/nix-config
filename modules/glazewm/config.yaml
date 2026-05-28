@@ -160,7 +160,7 @@ keybindings:
 
     # Change the focused window to be floating.
     # - commands: ["wm-cycle-focus"]
-    bindings: ["alt+shift+space", "alt+space"]
+    bindings: ["alt+shift+space"]
   - commands: ["toggle-tiling"]
     # Change the focused window to be tiling.
 
