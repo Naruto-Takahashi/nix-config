@@ -30,8 +30,9 @@ in
       # すべてのウィンドウ（CSDを使用するブラウザ等も含む）に対して強制的に2pxの枠線を適用する
       for_window [class=".*"] border pixel 2
 
-      # Rofiを強制的にフローティング表示にし、画面中央に配置する
-      for_window [class="Rofi"] floating enable, border none, move position center
+      # Rofiを強制的にフローティング表示にする
+      for_window [class="Rofi"] floating enable, border none
+      for_window [instance="rofi"] floating enable, border none
 
       # ホイール中クリック（単体）で範囲選択スクリーンショットを起動する
       bindsym --whole-window --border button2 exec --no-startup-id "sh -c '${pkgs.maim}/bin/maim -s -c 1.0,0.76,0.05,0.6 | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png'"
@@ -47,8 +48,8 @@ in
         # ターミナルの起動
         "${modifier}+Return"      = "exec ${weztermCmd}";
 
-        # アプリケーションランチャー (rofi) の起動 (洗練されたグラフィカル・スタイル)
-        "${modifier}+space"       = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -theme /home/nalt/.config/rofi/theme.rasi";
+        # アプリケーションランチャー (rofi) の起動 (Wayland誤判定防止環境変数つき)
+        "${modifier}+d"           = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons";
 
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";
