@@ -11,7 +11,7 @@
 
   programs.zoxide = {
     enable = true;
-    enableZshIntegration = true;
+    enableZshIntegration = false;
     options = [ "--cmd cd" ];
   };
 
@@ -143,7 +143,9 @@
       zmodload zsh/complist
 
       # 外部ツールチェーン環境の自動ロード
-      [ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
+      if [[ -o interactive ]]; then
+        [ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
+      fi
       [ -f "$HOME/.cargo/env" ]  && . "$HOME/.cargo/env"
 
       # 補完メニューの挙動最適化（大文字小文字の曖昧補完、カーソル選択）
@@ -265,6 +267,9 @@
 
       # 各自のローカル固有の環境変数を自動ソース化
       [ -f ~/.env ] && source ~/.env
+
+      # zoxide の初期化（nvmロード後に実行することで、nvm内部のcd処理との衝突を防ぐ）
+      eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
     '';
   };
 }
