@@ -3,13 +3,8 @@ return {
   priority = 1000,
   lazy = false,
   init = function()
-    -- プレミアムなレインボーグラデーション用ハイライトグループの定義
-    vim.api.nvim_set_hl(0, "SnacksDashboardHeader1", { fg = "#89b4fa" }) -- ブルー
-    vim.api.nvim_set_hl(0, "SnacksDashboardHeader2", { fg = "#cba6f7" }) -- ラベンダー
-    vim.api.nvim_set_hl(0, "SnacksDashboardHeader3", { fg = "#f38ba8" }) -- レッド/ピンク
-    vim.api.nvim_set_hl(0, "SnacksDashboardHeader4", { fg = "#fab387" }) -- オレンジ
-    vim.api.nvim_set_hl(0, "SnacksDashboardHeader5", { fg = "#f9e2af" }) -- イエロー
-    vim.api.nvim_set_hl(0, "SnacksDashboardHeader6", { fg = "#a6e3a1" }) -- グリーン
+    -- ハイライト定義は vim-options.lua の ColorScheme オートコマンドに移動しました
+    -- (カラースキーム変更時に上書きされるのを防ぐため)
   end,
   opts = {
     bigfile = { enabled = true },
@@ -17,14 +12,14 @@ return {
       enabled = true,
       preset = {
         keys = {
-          { icon = " ", key = "f", desc = "Find File", action = ":lua Snacks.dashboard.pick('files')" },
-          { icon = " ", key = "s", desc = "Restore Session", section = "session" },
-          { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-          { icon = " ", key = "g", desc = "Find Text", action = ":lua Snacks.dashboard.pick('live_grep')" },
-          { icon = " ", key = "r", desc = "Recent Files", action = ":lua Snacks.dashboard.pick('oldfiles')" },
-          { icon = " ", key = "c", desc = "Config", action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})" },
-          { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-          { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+          { action = ":lua Snacks.dashboard.pick('files')",           key = "f", text = { { " ", hl = "SnacksDashboardIconCyan" }, { "Find File", hl = "SnacksDashboardWhite" } } },
+          { action = ":lua Snacks.dashboard.pick('oldfiles')",        key = "r", text = { { " ", hl = "SnacksDashboardIconGreen" }, { "Recent Files", hl = "SnacksDashboardWhite" } } },
+          { action = ":lua Snacks.dashboard.pick('live_grep')",       key = "g", text = { { " ", hl = "SnacksDashboardIconYellow" }, { "Find Text", hl = "SnacksDashboardWhite" } } },
+          { action = ":ene | startinsert",                            key = "n", text = { { " ", hl = "SnacksDashboardIconOrange" }, { "New File", hl = "SnacksDashboardWhite" } } },
+          { action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})", key = "c", text = { { " ", hl = "SnacksDashboardIconPurple" }, { "Config", hl = "SnacksDashboardWhite" } } },
+          { action = ":Lazy",                                         key = "l", text = { { "󰒲 ", hl = "SnacksDashboardIconBlue" }, { "Lazy", hl = "SnacksDashboardWhite" } } },
+          { action = "session",                                       key = "s", text = { { " ", hl = "SnacksDashboardIconPink" }, { "Restore Session", hl = "SnacksDashboardWhite" } } },
+          { action = ":qa",                                           key = "q", text = { { " ", hl = "SnacksDashboardIconRed" }, { "Quit", hl = "SnacksDashboardIconRed" } } },
         },
       },
       sections = {

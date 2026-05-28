@@ -29,6 +29,24 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     hl(0, "CursorLine", { bg = "#333333" })
     hl(0, "CursorColumn", { bg = "#333333" })
     -- hl(0, "CursorLine", { bg = "none", underline = true }) -- カーソル行の背景を表示するためにコメントアウト
+
+    -- Dashboard Neon Colors
+    hl(0, "SnacksDashboardHeader1", { fg = "#ff007c", bold = true })
+    hl(0, "SnacksDashboardHeader2", { fg = "#00e5ff", bold = true })
+    hl(0, "SnacksDashboardHeader3", { fg = "#00ff9d", bold = true })
+    hl(0, "SnacksDashboardHeader4", { fg = "#ffe600", bold = true })
+    hl(0, "SnacksDashboardHeader5", { fg = "#ff8c00", bold = true })
+    hl(0, "SnacksDashboardHeader6", { fg = "#bd00ff", bold = true })
+
+    hl(0, "SnacksDashboardIconCyan", { fg = "#00e5ff" })
+    hl(0, "SnacksDashboardIconGreen", { fg = "#00ff9d" })
+    hl(0, "SnacksDashboardIconYellow", { fg = "#ffe600" })
+    hl(0, "SnacksDashboardIconOrange", { fg = "#ff8c00" })
+    hl(0, "SnacksDashboardIconPink", { fg = "#ff007c" })
+    hl(0, "SnacksDashboardIconPurple", { fg = "#bd00ff" })
+    hl(0, "SnacksDashboardIconBlue", { fg = "#0077ff" })
+    hl(0, "SnacksDashboardIconRed", { fg = "#ff3131" })
+    hl(0, "SnacksDashboardWhite", { fg = "#ffffff" })
   end,
 })
 
