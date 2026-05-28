@@ -25,14 +25,27 @@
       pkgs   = nixpkgs.legacyPackages.${system};
     in
     {
-      homeConfigurations."nalt" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
+      homeConfigurations = {
+        # WSL環境用プロファイル
+        "nalt-wsl" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home-wsl.nix ];
+          extraSpecialArgs = { inherit nixgl; };
+        };
 
-        # メイン設定ファイル (home.nix) の指定
-        modules = [ ./home.nix ];
+        # Linuxデスクトップ環境用プロファイル
+        "nalt-desktop" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home-desktop.nix ];
+          extraSpecialArgs = { inherit nixgl; };
+        };
 
-        # 各モジュールへ nixgl 引数を透過的に引き渡す
-        extraSpecialArgs = { inherit nixgl; };
+        # 互換性維持のためのデフォルトプロファイル（WSL設定を参照）
+        "nalt" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./home-wsl.nix ];
+          extraSpecialArgs = { inherit nixgl; };
+        };
       };
     };
 }
