@@ -180,7 +180,7 @@ in
       # -----------------------------------------------------------------------
       bars = [
         {
-          position = "bottom";
+          position = "top";
           statusCommand = "${pkgs.i3status}/bin/i3status";
           colors = {
             background = "#1a1b26";
