@@ -15,7 +15,6 @@
     ./modules/desktop.nix       # デスクトップ環境 (日本語入力Fcitx5, 環境変数)
     ./modules/wezterm.nix       # WezTerm ターミナル
     ./modules/neovim.nix        # Neovim エディタ
-    ./modules/gnome-tiling.nix  # GNOME タイリング拡張機能 (Forge)
     ./modules/i3.nix            # i3 Window Manager 設定
   ];
 
