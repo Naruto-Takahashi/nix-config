@@ -9,4 +9,7 @@
 
   # Zebar 設定ディレクトリの宣言的配置
   xdg.configFile."zebar".source = ./zebar;
+
+  # AutoHotkey 設定ディレクトリの宣言的配置
+  xdg.configFile."ahk".source = ./ahk;
 }

@@ -232,7 +232,7 @@
           cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
           echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-          cp -r ~/dotfiles/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
+          cp -r ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
           echo "Syncing GlazeWM config..."
           mkdir -p /mnt/c/Users/tnaru/.glzr/glazewm
           cp ~/.config/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
