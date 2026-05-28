@@ -152,8 +152,8 @@ in
       # スタートアップ起動コマンド
       # -----------------------------------------------------------------------
       startup = [
-        # 日本語入力 (fcitx5) のバックグラウンド起動 (NixでラップされたMozc付きパッケージ。トレイアイコンは無効化)
-        { command = "${config.i18n.inputMethod.package}/bin/fcitx5 --disable notificationitem -d"; notification = false; always = true; }
+        # 日本語入力 (fcitx5) のバックグラウンド起動 (NixでラップされたMozc付きパッケージ。カスタムスタイリッシュアイコンを表示)
+        { command = "${config.i18n.inputMethod.package}/bin/fcitx5 -d"; notification = false; always = true; }
 
         # Wayland誤検知バグの修正 (DBus/Systemdユーザー環境変数を強制上書き)
         { command = "dbus-update-activation-environment --systemd XDG_SESSION_TYPE=x11"; notification = false; always = true; }
