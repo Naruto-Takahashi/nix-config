@@ -4,6 +4,17 @@
 { config, pkgs, ... }:
 
 {
+  programs.fzf = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
+  programs.zoxide = {
+    enable = true;
+    enableZshIntegration = true;
+    options = [ "--cmd cd" ];
+  };
+
   programs.zsh = {
     enable = true;
     enableCompletion = true; # compinit & complist 相当の自動読み込み
@@ -87,6 +98,7 @@
       {
         name = "zsh-syntax-highlighting";
         src  = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
+        file = "zsh-syntax-highlighting.zsh";
       }
     ];
 
@@ -105,6 +117,25 @@
     # 環境固有の設定、キーバインド、カスタム関数
     # ---------------------------------------------------------------------
     initContent = ''
+      # 外部ツールなどのパス追加・設定
+      export PATH="$HOME/.local/bin:$HOME/.fzf/bin:$PATH"
+      export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/home/nalt/lib/ac-library-master
+      export PATH=$PATH:/usr/local/go/bin
+      export PATH=$PATH:$HOME/go/bin
+
+      # LS_COLORS のカラーパレット定義
+      export LS_COLORS="di=1;38;5;110:ex=1;38;5;109:ln=1;38;5;139:*.tar=1;38;5;203:*.tgz=1;38;5;203:*.zip=1;38;5;203:*.z=1;38;5;203:*.gz=1;38;5;203:*.bz2=1;38;5;203:*.deb=1;38;5;203:*.rpm=1;38;5;203:*.jar=1;38;5;203:*.rar=1;38;5;203:*.7z=1;38;5;203:*.xz=1;38;5;203:*.rs=1;38;5;151:*.js=1;38;5;151:*.ts=1;38;5;151:*.c=1;38;5;151:*.cpp=1;38;5;151:*.go=1;38;5;151:*.py=1;38;5;151:*.java=1;38;5;151:*.lua=1;38;5;151:*.html=1;38;5;151:*.css=1;38;5;151:*.md=1;38;5;151:*.json=1;38;5;151:*.toml=1;38;5;151:*.yaml=1;38;5;151:*.yml=1;38;5;151"
+
+      # ディレクトリ移動（cdなしでの移動を許可）
+      setopt auto_cd
+
+      # 履歴保存オプションの追加拡張
+      setopt EXTENDED_HISTORY
+      setopt HIST_SAVE_NO_DUPS
+      setopt HIST_REDUCE_BLANKS
+      setopt HIST_FIND_NO_DUPS
+      setopt HIST_NO_STORE
+
       # システムスタック制限の解除 (開発時等の安定化)
       ulimit -s unlimited
 
