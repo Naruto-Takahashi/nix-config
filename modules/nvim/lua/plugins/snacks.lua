@@ -2,6 +2,15 @@ return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  init = function()
+    -- プレミアムなレインボーグラデーション用ハイライトグループの定義
+    vim.api.nvim_set_hl(0, "SnacksDashboardHeader1", { fg = "#89b4fa" }) -- ブルー
+    vim.api.nvim_set_hl(0, "SnacksDashboardHeader2", { fg = "#cba6f7" }) -- ラベンダー
+    vim.api.nvim_set_hl(0, "SnacksDashboardHeader3", { fg = "#f38ba8" }) -- レッド/ピンク
+    vim.api.nvim_set_hl(0, "SnacksDashboardHeader4", { fg = "#fab387" }) -- オレンジ
+    vim.api.nvim_set_hl(0, "SnacksDashboardHeader5", { fg = "#f9e2af" }) -- イエロー
+    vim.api.nvim_set_hl(0, "SnacksDashboardHeader6", { fg = "#a6e3a1" }) -- グリーン
+  end,
   opts = {
     bigfile = { enabled = true },
     dashboard = {
@@ -19,7 +28,17 @@ return {
         },
       },
       sections = {
-        { section = "header" },
+        {
+          section = "header",
+          val = {
+            { type = "text", val = [[███╗   ██╗███████╗██╗██╗   ██╗██╗███╗   ███╗]], opts = { hl = "SnacksDashboardHeader1", position = "center" } },
+            { type = "text", val = [[████╗  ██║██╔════╝██║██║   ██║██║████╗ ████║]], opts = { hl = "SnacksDashboardHeader2", position = "center" } },
+            { type = "text", val = [[██╔██╗ ██║█████╗  ██║██║   ██║██║██╔████╔██║]], opts = { hl = "SnacksDashboardHeader3", position = "center" } },
+            { type = "text", val = [[██║╚██╗██║██╔══╝  ██║╚██╗ ██╔╝██║██║╚██╔╝██║]], opts = { hl = "SnacksDashboardHeader4", position = "center" } },
+            { type = "text", val = [[██║ ╚████║███████╗██║ ╚████╔╝ ██║██║ ╚═╝ ██║]], opts = { hl = "SnacksDashboardHeader5", position = "center" } },
+            { type = "text", val = [[╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝]], opts = { hl = "SnacksDashboardHeader6", position = "center" } },
+          },
+        },
         { section = "keys", gap = 1, padding = 1 },
         { section = "startup" },
       },
