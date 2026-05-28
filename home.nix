@@ -14,6 +14,7 @@
     ./modules/wezterm.nix
     ./modules/neovim.nix
     ./modules/gnome-tiling.nix
+    ./modules/i3.nix
   ];
 
   # ユーザー情報・基本設定
