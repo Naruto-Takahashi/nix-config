@@ -235,10 +235,10 @@
           cp -r ~/dotfiles/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
           echo "Syncing GlazeWM config..."
           mkdir -p /mnt/c/Users/tnaru/.glzr/glazewm
-          cp ~/dotfiles/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
+          cp ~/.config/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
           echo "Syncing Zebar config..."
           mkdir -p /mnt/c/Users/tnaru/.glzr/zebar
-          cp -r ~/dotfiles/zebar/* /mnt/c/Users/tnaru/.glzr/zebar/
+          cp -r ~/.config/zebar/* /mnt/c/Users/tnaru/.glzr/zebar/
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
