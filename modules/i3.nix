@@ -189,7 +189,7 @@ in
       bars = [
         {
           position = "top";
-          statusCommand = "/home/nalt/.config/home-manager/modules/i3status_wrapper.sh";
+          statusCommand = "/home/nalt/.config/home-manager/modules/i3status_wrapper.py";
           colors = {
             background = "#1a1b26";
             statusline = "#ffffff";
