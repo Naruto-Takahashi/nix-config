@@ -12,6 +12,7 @@
     pkgs.bat
     pkgs.fzf
     pkgs.feh
+    pkgs.picom
     pkgs.zoxide
     pkgs.ghq
     pkgs.git
