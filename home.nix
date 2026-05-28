@@ -10,7 +10,7 @@
   imports = [
     # ./modules/packages.nix      # パッケージ管理 (maim, slop, antigravity-cli等)
     ./modules/zsh.nix           # Zsh シェル環境 (エイリアス, カスタム関数等)
-    # ./modules/starship.nix      # Starship プロンプト
+    ./modules/starship.nix      # Starship プロンプト
     # ./modules/kanata.nix        # Kanata キーボードリマッパー (Alt-to-Superレイヤー)
     # ./modules/desktop.nix       # デスクトップ環境 (日本語入力Fcitx5, 環境変数)
     # ./modules/wezterm.nix       # WezTerm ターミナル
