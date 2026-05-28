@@ -181,7 +181,7 @@ in
       bars = [
         {
           position = "top";
-          statusCommand = "${pkgs.i3status}/bin/i3status";
+          statusCommand = "/home/nalt/.config/home-manager/modules/i3status_wrapper.sh";
           colors = {
             background = "#1a1b26";
             statusline = "#ffffff";
@@ -213,6 +213,7 @@ in
   programs.i3status = {
     enable = true;
     general = {
+      output_format   = "i3bar";
       colors          = true;
       interval        = 5;
       color_good      = "#9ece6a";
