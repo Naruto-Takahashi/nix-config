@@ -11,6 +11,8 @@
 
 * 🗔 **[i3wm キーバインド・設定詳細](docs/i3wm.md)**: 画面のレイアウト、ワークスペース切り替え、スクリーンショット、最小化・オートタイル復元の詳細。
 * ⌨️ **[Kanata キーマップ詳細](docs/kanata.md)**: スペースキー長押しによるVimライク移動、Altキーによるウィンドウ操作・Mac風IME切り替えの詳細。
+* 💻 **[WezTerm 設定・キーバインド詳細](docs/wezterm.md)**: フォント、背景の75%半透明適用、動的タブタイトル、Leaderキー（`Ctrl+Space`）によるタブ・ペイン管理。
+* 📝 **[Neovim 設定・キーマップ詳細](docs/neovim.md)**: 相対行表示や透過背景設定、`jk` によるインサート抜け、Zenn用画像貼り付けなどの高度なLuaカスタムマクロ。
 
 ---
 
@@ -102,6 +104,8 @@ This repository manages Naruto's Linux desktop environment declaratively using *
 Detailed operations and custom keymaps can be viewed in the following documents:
 * 🗔 **[i3wm Keybindings & Configurations](docs/i3wm.md)**: Details on layout structure, workspace navigation, screenshots, scratchpad minimization, and auto-tiling restoration.
 * ⌨️ **[Kanata Keyboard Remapping](docs/kanata.md)**: Details on SandS Vim-like spacebar navigation, Alt-key window commands, and Mac-style IME switching.
+* 💻 **[WezTerm Configurations & Keybindings](docs/wezterm.md)**: Font setups, 75% uniform background transparency, dynamic tab titles, and custom Leader key (`Ctrl+Space`) bindings.
+* 📝 **[Neovim Configurations & Keybindings](docs/neovim.md)**: Relative numbers, transparent editor background, `jk` escape shortcut, Zenn custom screenshot pasting macro, and robust Lazy.nvim plugin list.
 
 ---
 
