@@ -27,6 +27,7 @@
     pkgs.gemini-cli
     pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）
     pkgs.slop # maim用の美しいドラッグ範囲選択ツール
+    pkgs.vivaldi # 宣言的に管理するメインブラウザ (Vivaldi)
 
     # Antigravity CLI (Gemini CLI の後継) を Nix で宣言的に管理
     (pkgs.stdenv.mkDerivation {
