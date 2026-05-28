@@ -66,20 +66,6 @@ def main():
             
         new_blocks = []
         
-        # 1. Tiling direction
-        layout = get_tiling_layout()
-        if layout == "splith":
-            tiling_text, tiling_color = "SPLIT: H", "#ffc20d"
-        elif layout == "splitv":
-            tiling_text, tiling_color = "SPLIT: V", "#f7768e"
-        else:
-            tiling_text, tiling_color = "SPLIT: -", "#888888"
-        new_blocks.append({
-            "name": "tiling_direction",
-            "full_text": tiling_text,
-            "color": tiling_color
-        })
-        
         orig_map = {b.get("name"): b for b in blocks}
         
         def get_util_color(pct):
@@ -116,6 +102,7 @@ def main():
                 used_gb = float(match.group(1))
                 ram_pct = (used_gb / 32.0) * 100.0
                 ram_block["color"] = get_util_color(ram_pct)
+                ram_block["full_text"] = f"RAM {ram_pct:.0f}%"
             new_blocks.append(ram_block)
             
         # 5. ETH (Ethernet)
