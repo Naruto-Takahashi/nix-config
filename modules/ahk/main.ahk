@@ -21,21 +21,25 @@ SetWorkingDir %A_ScriptDir%
 
 ; --- CapsLock -> Left Control (Hold) / Escape (Tap) ---
 ; Remaps F13 (mapped from CapsLock in Registry/Software) to Left Control.
-; If F13 is released without pressing any other keys, it sends Escape.
+; If F13 is released without pressing any other keys, it sends Escape and turns IME OFF (English).
 *F13::
     Send, {LCtrl down}
     KeyWait, F13
     Send, {LCtrl up}
     if (A_PriorKey == "F13") {
-        Send, {Esc}
+        SendInput, {Esc}
+        Sleep 10
+        IME_SET(0)
     }
 Return
 
 ; --- Physical Left Control -> Escape on Tap ---
-; If the physical Left Control key is pressed and released without any other key, it sends Escape.
+; If the physical Left Control key is pressed and released without any other key, it sends Escape and turns IME OFF (English).
 ~LCtrl Up::
     if (A_PriorKey == "LControl") {
-        Send, {Esc}
+        SendInput, {Esc}
+        Sleep 10
+        IME_SET(0)
     }
 Return
 
