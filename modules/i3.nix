@@ -222,13 +222,12 @@ in
     modules = {
       "ipv6".enable            = false;
       "wireless _first_".enable = false;
-      "ethernet _first_".enable = false;
       "battery all".enable      = false;
       "disk /" = {
         enable = true;
         position = 1;
         settings = {
-          format = "💾 %avail";
+          format = "DISK %avail";
         };
       };
       "memory" = {
@@ -247,11 +246,19 @@ in
           format = "CPU %1min";
         };
       };
-      "tztime local" = {
+      "ethernet _first_" = {
         enable = true;
         position = 4;
         settings = {
-          format = "📅 %Y-%m-%d %H:%M:%S";
+          format_up = "ETH %ip (%speed)";
+          format_down = "ETH down";
+        };
+      };
+      "tztime local" = {
+        enable = true;
+        position = 5;
+        settings = {
+          format = "%Y-%m-%d %H:%M:%S";
         };
       };
     };
