@@ -27,6 +27,9 @@ in
       default_border pixel 2
       default_floating_border pixel 2
 
+      # すべてのウィンドウ（CSDを使用するブラウザ等も含む）に対して強制的に2pxの枠線を適用する
+      for_window [class=".*"] border pixel 2
+
       # ホイール中クリック（単体）で範囲選択スクリーンショットを起動する
       bindsym --whole-window --border button2 exec --no-startup-id "sh -c '${pkgs.maim}/bin/maim -s -c 1.0,0.76,0.05,0.6 | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png'"
     '';
