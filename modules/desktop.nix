@@ -61,4 +61,10 @@
     # 高解像度ディスプレイ（DPI）への追従を有効化
     PerScreenDPI=True
   '';
+
+  # トレイアイコン（インジケーター）を完全に非表示にしてステータスバーをミニマル化する
+  xdg.configFile."fcitx5/conf/panel.conf".text = ''
+    [Panel]
+    TrayIcon=False
+  '';
 }

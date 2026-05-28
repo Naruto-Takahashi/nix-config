@@ -233,16 +233,10 @@ in
       "wireless _first_".enable = false;
       "battery all".enable      = false;
       "load".enable            = false;
-      "disk /" = {
-        enable = true;
-        position = 1;
-        settings = {
-          format = "DISK %avail";
-        };
-      };
+      "disk /".enable          = false;
       "memory" = {
         enable = true;
-        position = 2;
+        position = 1;
         settings = {
           format             = "RAM %used";
           threshold_degraded = "10%";
@@ -251,14 +245,14 @@ in
       };
       "cpu_usage" = {
         enable = true;
-        position = 3;
+        position = 2;
         settings = {
           format = "CPU %usage";
         };
       };
       "ethernet _first_" = {
         enable = true;
-        position = 4;
+        position = 3;
         settings = {
           format_up = "ETH %ip (%speed)";
           format_down = "ETH down";
@@ -266,7 +260,7 @@ in
       };
       "tztime local" = {
         enable = true;
-        position = 5;
+        position = 4;
         settings = {
           format = "%Y-%m-%d %H:%M:%S";
         };
