@@ -1,0 +1,53 @@
+* {
+    bg: #0f0f0f;
+    fg: #ffffff;
+    accent: #ffc20d;
+    bg-alt: #1a1a1a;
+    border-radius: 12px;
+    background-color: transparent;
+    text-color: @fg;
+    font: "HackGen NF 12";
+}
+
+window {
+    background-color: @bg;
+    border: 1px;
+    border-color: @accent;
+}
+
+inputbar {
+    background-color: @bg-alt;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+prompt {
+    text-color: @accent;
+}
+
+entry {
+    text-color: @fg;
+}
+
+listview {
+    columns: 1;
+    lines: 8;
+    spacing: 5px;
+}
+
+element {
+    padding: 10px;
+    border-radius: 8px;
+}
+
+element selected {
+    background-color: @bg-alt;
+    text-color: @accent;
+    border: 1px;
+    border-color: @accent;
+}
+
+element-icon {
+    size: 32px;
+    margin: 0px 10px 0px 0px;
+}

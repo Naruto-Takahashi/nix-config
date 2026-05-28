@@ -49,7 +49,7 @@ in
         "${modifier}+Return"      = "exec ${weztermCmd}";
 
         # アプリケーションランチャー (rofi) の起動 (Wayland誤判定防止環境変数つき)
-        "${modifier}+d"           = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons";
+        "${modifier}+d"           = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi";
 
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";

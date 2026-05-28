@@ -18,5 +18,5 @@
   xdg.configFile."nvim".source = ./nvim;
 
   # Rofi テーマ設定
-  xdg.configFile."rofi/theme.rasi".source = ./rofi_theme.rasi;
+  xdg.configFile."rofi/simple_theme.rasi".source = ./simple_theme.rasi;
 }
