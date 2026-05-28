@@ -5,6 +5,15 @@
 
 ---
 
+## 📖 設定・キーマップの詳細解説 (Detailed Documentation)
+
+デスクトップの操作方法やキーマップの詳細は、以下の各個別ドキュメントから詳細にご確認いただけます。
+
+* 🗔 **[i3wm キーバインド・設定詳細](docs/i3wm.md)**: 画面のレイアウト、ワークスペース切り替え、スクリーンショット、最小化・オートタイル復元の詳細。
+* ⌨️ **[Kanata キーマップ詳細](docs/kanata.md)**: スペースキー長押しによるVimライク移動、Altキーによるウィンドウ操作・Mac風IME切り替えの詳細。
+
+---
+
 ## 🎨 環境・機能のこだわり紹介 (Showcase)
 
 * **ウィンドウマネージャー (`i3wm`)**: ゴールドとダークな色調で美しく統一された X11 ウィンドウ環境。
@@ -88,6 +97,13 @@ exec zsh
 ## 🌌 Overview
 
 This repository manages Naruto's Linux desktop environment declaratively using **Nix Flakes** and **Home Manager**. It provides a fully unified, modern, keyboard-driven development environment with premium gold (`#ffc20d`) / dark hacker-mode aesthetics.
+
+### 📖 Detailed Configurations & Keymaps Documentation
+Detailed operations and custom keymaps can be viewed in the following documents:
+* 🗔 **[i3wm Keybindings & Configurations](docs/i3wm.md)**: Details on layout structure, workspace navigation, screenshots, scratchpad minimization, and auto-tiling restoration.
+* ⌨️ **[Kanata Keyboard Remapping](docs/kanata.md)**: Details on SandS Vim-like spacebar navigation, Alt-key window commands, and Mac-style IME switching.
+
+---
 
 ### 🎨 Environment & Theme Showcase
 * **Window Manager (`i3wm`)**: Custom Premium Gold (`#ffc20d`) / Dark Theme.
