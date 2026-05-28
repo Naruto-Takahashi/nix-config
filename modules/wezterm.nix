@@ -122,14 +122,20 @@
     -- Shell Configuration (Updated for WSL Ubuntu)
     -- =============================================================================
 
-    -- 💡 Linux環境での標準シェル（Bash）を指定し、ホームディレクトリで開始させます
-    config.default_prog = { '/bin/bash', '-l' }
+    -- 起動時に WSL (Ubuntu) を立ち上げる設定 (ホームディレクトリで開始)
+    config.default_prog = { 'wsl.exe', '--cd', '~' }
 
     -- 「＋」ボタンをクリックしたときのメニュー
     config.launch_menu = {
       {
-        label = 'Bash (Default)',
-        args = { '/bin/bash', '-l' },
+        -- PowerShell Core (pwsh)
+        label = 'PowerShell',
+        args = { 'pwsh.exe', '-NoLogo' },
+      },
+      {
+        -- WSL Ubuntu の起動
+        label = 'WSL (Ubuntu)',
+        args = { 'wsl.exe', '--cd', '~' },
       },
     }
 
