@@ -49,8 +49,51 @@ def main():
     if tree:
         scratch_ids = find_scratchpad_ids(tree)
     
-    # Rofiウィンドウ選択を起動
-    rofi_cmd = ["rofi", "-show", "window"]
+    # Rofiウィンドウ選択を起動 (グラフィカルなグリッド形式)
+    rofi_theme = """
+    configuration {
+        show-icons: true;
+        window-format: "{w} · {c} · {t}";
+    }
+    window {
+        width: 80%;
+        border: 2px;
+        border-color: #ffc20d;
+        background-color: #1a1b26;
+    }
+    listview {
+        columns: 4;
+        lines: 2;
+        spacing: 20px;
+        padding: 20px;
+        fixed-columns: true;
+    }
+    element {
+        orientation: vertical;
+        padding: 20px;
+        border-radius: 8px;
+    }
+    element selected {
+        background-color: #333333;
+        border: 2px;
+        border-color: #ffc20d;
+    }
+    element-icon {
+        size: 128px;
+        horizontal-align: 0.5;
+    }
+    element-text {
+        horizontal-align: 0.5;
+        color: #ffffff;
+    }
+    """
+    rofi_cmd = [
+        "rofi",
+        "-show", "window",
+        "-show-icons",
+        "-window-thumbnail",
+        "-theme-str", rofi_theme
+    ]
     cmd = ["env", "XDG_SESSION_TYPE=x11"] + rofi_cmd + sys.argv[1:]
     subprocess.run(cmd)
     
