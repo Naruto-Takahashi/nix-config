@@ -82,15 +82,34 @@ def main():
             match = re.search(r"(\d+)", cpu_block.get("full_text", ""))
             if match:
                 cpu_pct = int(match.group(1))
-                cpu_block["color"] = get_util_color(cpu_pct)
-            new_blocks.append(cpu_block)
+                new_blocks.append({
+                    "name": "cpu_label",
+                    "full_text": "CPU ",
+                    "color": "#ffffff",
+                    "separator": False,
+                    "separator_block_width": 0
+                })
+                new_blocks.append({
+                    "name": "cpu_val",
+                    "full_text": f"{cpu_pct}%",
+                    "color": get_util_color(cpu_pct)
+                })
+            else:
+                new_blocks.append(cpu_block)
             
         # 3. GPU Usage
         gpu_pct = get_gpu_util()
         if gpu_pct is not None:
             new_blocks.append({
-                "name": "gpu_util",
-                "full_text": f"GPU {gpu_pct}%",
+                "name": "gpu_label",
+                "full_text": "GPU ",
+                "color": "#ffffff",
+                "separator": False,
+                "separator_block_width": 0
+            })
+            new_blocks.append({
+                "name": "gpu_val",
+                "full_text": f"{gpu_pct}%",
                 "color": get_util_color(gpu_pct)
             })
             
@@ -101,18 +120,44 @@ def main():
             if match:
                 used_gb = float(match.group(1))
                 ram_pct = (used_gb / 32.0) * 100.0
-                ram_block["color"] = get_util_color(ram_pct)
-                ram_block["full_text"] = f"RAM {ram_pct:.0f}%"
-            new_blocks.append(ram_block)
+                new_blocks.append({
+                    "name": "ram_label",
+                    "full_text": "RAM ",
+                    "color": "#ffffff",
+                    "separator": False,
+                    "separator_block_width": 0
+                })
+                new_blocks.append({
+                    "name": "ram_val",
+                    "full_text": f"{ram_pct:.0f}%",
+                    "color": get_util_color(ram_pct)
+                })
+            else:
+                new_blocks.append(ram_block)
             
         # 5. ETH (Ethernet)
         eth_block = orig_map.get("ethernet")
         if eth_block:
-            if "down" in eth_block.get("full_text", "").lower():
-                eth_block["color"] = "#f7768e"
+            full_text = eth_block.get("full_text", "")
+            if "down" in full_text.lower():
+                eth_val = "down"
+                eth_color = "#f7768e"
             else:
-                eth_block["color"] = "#9ece6a"
-            new_blocks.append(eth_block)
+                eth_val = full_text.replace("ETH ", "")
+                eth_color = "#9ece6a"
+                
+            new_blocks.append({
+                "name": "eth_label",
+                "full_text": "ETH ",
+                "color": "#ffffff",
+                "separator": False,
+                "separator_block_width": 0
+            })
+            new_blocks.append({
+                "name": "eth_val",
+                "full_text": eth_val,
+                "color": eth_color
+            })
             
         # 6. Time (tztime local)
         time_block = orig_map.get("tztime")
