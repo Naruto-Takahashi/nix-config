@@ -5,37 +5,33 @@
   description = "Home Manager configuration of nalt";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    # Nixpkgs & Home Manager の入力ソース定義
+    nixpkgs.url      = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url            = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     
-    # nixGLのリポジトリを指定
+    # nixGL の入力ソース定義 (OpenGLラッパー)
     nixgl = {
-      url = "github:nix-community/nixGL";
+      url            = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  # 💡 修正ポイント1: nixgl を関数の引数としてしっかり受け取るように追加します
   outputs = { nixpkgs, home-manager, nixgl, ... }:
     let
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs   = nixpkgs.legacyPackages.${system};
     in
     {
       homeConfigurations."nalt" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
-        # Specify your home configuration modules here, for example,
-        # the path to your home.nix.
+        # メイン設定ファイル (home.nix) の指定
         modules = [ ./home.nix ];
 
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-        # 💡 修正ポイント2: コメントアウトを外して、home.nixにnixglを引き渡します
+        # 各モジュールへ nixgl 引数を透過的に引き渡す
         extraSpecialArgs = { inherit nixgl; };
       };
     };

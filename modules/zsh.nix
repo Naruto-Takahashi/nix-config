@@ -6,144 +6,155 @@
 {
   programs.zsh = {
     enable = true;
-    enableCompletion = true; # compinit & complist 相当
+    enableCompletion = true; # compinit & complist 相当の自動読み込み
 
-    # 履歴管理（History）の設定をそのまま移植
+    # ---------------------------------------------------------------------
+    # 履歴管理（History）の設定
+    # ---------------------------------------------------------------------
     history = {
-      size = 50000;
-      save = 50000;
-      path = "$HOME/.zsh_history";
-      share = true; # SHARE_HISTORY
-      ignoreAllDups = true; # HIST_IGNORE_ALL_DUPS
-      ignoreSpace = true; # HIST_IGNORE_SPACE
+      size           = 50000;
+      save           = 50000;
+      path           = "$HOME/.zsh_history";
+      share          = true;  # SHARE_HISTORY
+      ignoreAllDups  = true;  # HIST_IGNORE_ALL_DUPS
+      ignoreSpace    = true;  # HIST_IGNORE_SPACE
     };
 
-    # 元の.zshrcに登録されていたすべての便利なエイリアス群
+    # ---------------------------------------------------------------------
+    # コマンドエイリアス (shellAliases) の定義
+    # ---------------------------------------------------------------------
     shellAliases = {
-      # WezTerm用ラッパー
+      # WezTerm用ラッパー (Nvidia環境対応)
       wezterm = "nixGL wezterm";
       
-      # ユーティリティ
-      c = "printf \"\\033[2J\\033[H\"";
-      reload = "source ~/.zshrc && echo \"Sourced .zshrc\"";
-      path = "echo $PATH | tr \":\" \"\\n\"";
+      # ユーティリティ & 表示クリア
+      c       = "printf \"\\033[2J\\033[H\"";
+      reload  = "source ~/.zshrc && echo \"Sourced .zshrc\"";
+      path    = "echo $PATH | tr \":\" \"\\n\"";
 
-      # 安全性と明示性
-      cp = "cp -iv";
-      mv = "mv -iv";
-      rm = "rm -iv";
+      # 安全性と明示性の確保
+      cp      = "cp -iv";
+      mv      = "mv -iv";
+      rm      = "rm -iv";
 
-      # 移動
-      ".." = "cd ..";
-      "..." = "cd ../..";
-      win = "cd ~/win";
+      # ディレクトリ移動の短縮
+      ".."    = "cd ..";
+      "..."   = "cd ../..";
+      win     = "cd ~/win";
 
-      # システム状況
-      df = "df -h";
-      free = "free -h";
+      # システム状況監視
+      df      = "df -h";
+      free    = "free -h";
 
       # 開発コアツール
-      g = "git";
-      ga = "git add";
-      gc = "git commit";
-      gp = "git push";
-      gs = "git status";
-      vim = "nvim";
-      lg = "lazygit";
+      g       = "git";
+      ga      = "git add";
+      gc      = "git commit";
+      gp      = "git push";
+      gs      = "git status";
+      vim     = "nvim";
+      lg      = "lazygit";
 
-      # コマンド判定なしでモダンCLIを直感的に固定呼び出し
-      ls = "eza --icons --git";
-      ll = "eza -alF --icons --git";
-      la = "eza -a --icons --git";
-      l = "eza -F --icons --git";
-      tree = "eza --tree --icons";
-      cat = "bat";
-      grep = "grep --color=auto";
+      # モダンCLIユーティリティへの置き換え
+      ls      = "eza --icons --git";
+      ll      = "eza -alF --icons --git";
+      la      = "eza -a --icons --git";
+      l       = "eza -F --icons --git";
+      tree    = "eza --tree --icons";
+      cat     = "bat";
+      grep    = "grep --color=auto";
 
-      # 各種サブツール・ブログ執筆用エイリアス
+      # サブツール・ブログ執筆関連
       vimtutor1 = "nvim -c \"Tutor ja/vim-01-beginner\"";
       vimtutor2 = "nvim -c \"Tutor ja/vim-02-beginner\"";
-      zp = "npx zenn preview";
-      zn = "npx zenn new:article";
-      zqr = "~/dotfiles/bash/zqr";
-      zstop = "pkill ngrok && echo \"ngrok stopped.\"";
-      bgemini = "cp ~/.gemini/GEMINI.md ~/dotfiles/gemini/GEMINI.md && (cd ~/dotfiles && git add gemini/GEMINI.md && git commit -m \"chore: update GEMINI.md backup\" && git push) && echo \"GEMINI.md backed up.\"";
-      gchat = "agy -i";
-      achat = "agy -i";
+      zp        = "npx zenn preview";
+      zn        = "npx zenn new:article";
+      zqr       = "~/dotfiles/bash/zqr";
+      zstop     = "pkill ngrok && echo \"ngrok stopped.\"";
+      bgemini   = "cp ~/.gemini/GEMINI.md ~/dotfiles/gemini/GEMINI.md && (cd ~/dotfiles && git add gemini/GEMINI.md && git commit -m \"chore: update GEMINI.md backup\" && git push) && echo \"GEMINI.md backed up.\"";
+      gchat     = "agy -i";
+      achat     = "agy -i";
     };
 
-    # プラグイン（Nixが安全な絶対パスで自動管理・読み込みを行います）
+    # ---------------------------------------------------------------------
+    # プラグイン (Nixによる絶対パスでの超安定自動配置)
+    # ---------------------------------------------------------------------
     plugins = [
       {
         name = "zsh-autosuggestions";
-        src = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
+        src  = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
       }
       {
         name = "zsh-syntax-highlighting";
-        src = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
+        src  = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
       }
     ];
 
-    # ディレクトリハッシュ（hash -d）の完全移植
+    # ---------------------------------------------------------------------
+    # ディレクトリハッシュ (hash -d による `~ショートカット`)
+    # ---------------------------------------------------------------------
     dirHashes = {
-      d = "$HOME/dotfiles";
-      p = "$HOME/projects";
+      d    = "$HOME/dotfiles";
+      p    = "$HOME/projects";
       zenn = "$HOME/projects/zenn-blog";
       rust = "$HOME/projects/rust-the-book";
-      win = "$HOME/win";
+      win  = "$HOME/win";
     };
 
-    # 環境固有の設定、キーバインド、関数群をすべて内包（最新仕様 of initContent）
+    # ---------------------------------------------------------------------
+    # 環境固有の設定、キーバインド、カスタム関数
+    # ---------------------------------------------------------------------
     initContent = ''
-      # システム制限の解除
+      # システムスタック制限の解除 (開発時等の安定化)
       ulimit -s unlimited
 
-      # 補完選択メニューキーマップ (menuselect) のロード
+      # 補完選択メニュー用モジュール (complist) のロード
       zmodload zsh/complist
 
-      # 外部環境マネージャーの追従（存在する場合のみロード）
+      # 外部ツールチェーン環境の自動ロード
       [ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
-      [ -f "$HOME/.cargo/env" ] && . "$HOME/.cargo/env"
+      [ -f "$HOME/.cargo/env" ]  && . "$HOME/.cargo/env"
 
-      # 補完メニューの挙動最適化（大文字小文字無視、カーソル選択）
+      # 補完メニューの挙動最適化（大文字小文字の曖昧補完、カーソル選択）
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
       zstyle ':completion:*' menu select
 
-      # fzf オプションおよびCtrl+T, Ctrl+Rのプレビュー設定の完全移植
+      # fzf オプションおよびCtrl+T, Ctrl+Rのプレビュー表示設定
       export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=pointer:#ffc20d,marker:#ffc20d,prompt:#ffc20d,info:#b48ead,hl:#b48ead,hl+:#b48ead'
       export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
       export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview,tab:down,btab:up'"
 
-      # Vi Modeの有効化と、インサートモード等でのバックスペース挙動の修正
+      # Vi Mode (Vim風キーマップ) の有効化とインサート時のバックスペース調整
       bindkey -v
       bindkey "^?" backward-delete-char
 
-      # コマンドラインのVim編集機能（Esc -> v）
+      # コマンドラインのVim編集機能（ノーマルモードで 'v' でエディタ起動）
       autoload -Uz edit-command-line
       zle -N edit-command-line
       bindkey -M vicmd 'v' edit-command-line
 
-      # 補完選択メニュー中の Vim-like (hjkl) 移動
+      # 補完選択メニュー中の Vim風 (HJKL) 移動キーマップ
       bindkey -M menuselect 'h' vi-backward-char
       bindkey -M menuselect 'j' vi-down-line-or-history
       bindkey -M menuselect 'k' vi-up-line-or-history
       bindkey -M menuselect 'l' vi-forward-char
 
-      # -------------------------------------------------------------------
-      # 各種カスタム関数群（移植）
-      # -------------------------------------------------------------------
-      # ディレクトリ作成と同時に移動
+      # ===================================================================
+      # カスタムシェル関数
+      # ===================================================================
+      
+      # 1. ディレクトリを作成して即時に移動
       mkcd() {
           mkdir -p "$1"
           cd "$1" || return
       }
       
-      # ディレクトリ移動後に自動でls（eza）を実行
+      # 2. ディレクトリ移動 (cd) 後に自動的に eza (ls) を実行
       function chpwd() {
           ls
       }
       
-      # 競技プログラミング用コンパイル＆実行
+      # 3. 競技プログラミング用 C++ コンパイル＆実行
       runcpp() {
           g++ -std=c++20 -O2 "$1" -o "''${1%.cpp}.out" && "./''${1%.cpp}.out"
       }
@@ -151,7 +162,7 @@
           g++ -std=c++20 -O2 "$1" -o "''${1%.cpp}.out" && "./''${1%.cpp}.out" < input.txt > output.txt
       }
 
-      # WezTerm OSC 7 サポート (カレントディレクトリの同期同期用)
+      # 4. WezTerm OSC 7 サポート (新しいタブを開いた際のカレントディレクトリ同期用)
       if [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
           wezterm_osc7() {
               printf "\033]7;file://%s%s\033\\" "$HOST" "$PWD"
@@ -160,7 +171,7 @@
           add-zsh-hook precmd wezterm_osc7
       fi
 
-      # ghq + fzf の高速ディレクトリ移動インタフェース
+      # 5. ghq + fzf による超高速ディレクトリジャンプ
       function ghq-fzf() {
         local src=$(ghq list | fzf --bind 'tab:down,btab:up' --preview "ls -laTp $(ghq root)/{} | tail -n+2 | head -n 200")
         if [ -n "$src" ]; then
@@ -174,7 +185,7 @@
       bindkey -M viins '^g' ghq-fzf
       bindkey -M vicmd '^g' ghq-fzf
 
-      # シンタックスハイライトのカスタムスタイル適用
+      # 6. zsh-syntax-highlighting 用のカスタムカラースタイル
       typeset -A ZSH_HIGHLIGHT_STYLES
       ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
       ZSH_HIGHLIGHT_STYLES[alias]='fg=green,bold'
@@ -182,7 +193,7 @@
       ZSH_HIGHLIGHT_STYLES[function]='fg=green,bold'
       ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
 
-      # Windowsとの設定同期関数（WSL固有パスですが資産として完全に維持します）
+      # 7. Windowsとの設定同期用関数 (WSL環境用)
       function sync-win() {
           echo "Syncing WezTerm config..."
           cp ~/dotfiles/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
@@ -200,15 +211,13 @@
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
       }
 
-      # 最新のスクリーンショットをAntigravityへ連携する関数
+      # 8. 最新のスクリーンショットを Antigravity チャットへ連携する関数
+      # (i3wmで撮影した ~/Pictures/Screenshots/ 下の最新画像を sync)
       function agy-ss() {
           local ss_dir="$HOME/Pictures/Screenshots"
-          # 最新の Screenshot*.png を取得
           local latest_file=$(ls -t "$ss_dir"/Screenshot*.png 2>/dev/null | head -n 1)
           if [ -n "$latest_file" ]; then
-              # latest.png へコピーして固定
               cp "$latest_file" "$ss_dir/latest.png"
-              # X11 & Wayland 両対応でクリップボードへ絶対パスをコピー
               if command -v wl-copy >/dev/null 2>&1; then
                   echo -n "$latest_file" | wl-copy
               elif command -v xclip >/dev/null 2>&1; then
@@ -217,13 +226,13 @@
               echo "最新のスクリーンショットを登録しました！"
               echo "  元ファイル: $latest_file"
               echo "  -> $ss_dir/latest.png としてコピーしました。"
-              echo "  (絶対パスをクリップボードにコピーしました。チャットへ Ctrl+V で貼り付け可能です)"
+              echo "  (クリップボードにコピーしたため、チャットへ Ctrl+V で直接貼り付け可能です)"
           else
               echo "スクリーンショットが見つかりませんでした。($ss_dir)"
           fi
       }
 
-      # ローカル固有環境変数の自動ソース化
+      # 各自のローカル固有の環境変数を自動ソース化
       [ -f ~/.env ] && source ~/.env
     '';
   };
