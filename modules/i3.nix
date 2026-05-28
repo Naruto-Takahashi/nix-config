@@ -152,6 +152,9 @@ in
       # スタートアップ起動コマンド
       # -----------------------------------------------------------------------
       startup = [
+        # 壁紙の設定 (プレミアムなゴールド/ダークテーマ壁紙)
+        { command = "${pkgs.feh}/bin/feh --bg-scale /home/nalt/Pictures/premium_wallpaper.png"; notification = false; always = true; }
+
         # 日本語入力 (fcitx5) のバックグラウンド起動 (NixでラップされたMozc付きパッケージ。トレイアイコンは無効化)
         { command = "${config.i18n.inputMethod.package}/bin/fcitx5 --disable notificationitem -d"; notification = false; always = true; }
 

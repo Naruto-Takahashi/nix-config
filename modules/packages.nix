@@ -8,10 +8,10 @@
     nixgl.packages.${pkgs.system}.nixGLDefault
     pkgs.hackgen-nf-font # WezTermで指定されているフォント
 
-    # 元の.zshrcで自動検知（command -v）対象になっていたモダンツール群をフルカバー！
     pkgs.eza
     pkgs.bat
     pkgs.fzf
+    pkgs.feh
     pkgs.zoxide
     pkgs.ghq
     pkgs.git
