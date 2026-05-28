@@ -49,42 +49,57 @@ def main():
     if tree:
         scratch_ids = find_scratchpad_ids(tree)
     
-    # Rofiウィンドウ選択を起動 (グラフィカルなグリッド形式)
+    # Rofiウィンドウ選択を起動 (洗練されたグラフィカル・グリッド形式)
     rofi_theme = """
-    configuration {
-        show-icons: true;
-        window-format: "{w} · {c} · {t}";
+    * {
+        bg: #0f0f0f;
+        fg: #ffffff;
+        accent: #ffc20d;
+        bg-alt: #1a1a1a;
+        border-radius: 12px;
     }
     window {
-        width: 80%;
-        border: 2px;
-        border-color: #ffc20d;
-        background-color: #1a1b26;
+        width: 75%;
+        border: 1px;
+        border-color: @accent;
+        background-color: @bg;
+        padding: 30px;
+    }
+    mainbox {
+        background-color: transparent;
+        children: [ listview ];
     }
     listview {
-        columns: 4;
+        columns: 3;
         lines: 2;
-        spacing: 20px;
-        padding: 20px;
+        spacing: 30px;
+        background-color: transparent;
         fixed-columns: true;
     }
     element {
         orientation: vertical;
-        padding: 20px;
-        border-radius: 8px;
+        padding: 15px;
+        background-color: @bg-alt;
+        border: 1px;
+        border-color: #333333;
     }
     element selected {
-        background-color: #333333;
-        border: 2px;
-        border-color: #ffc20d;
+        background-color: #262626;
+        border-color: @accent;
     }
     element-icon {
-        size: 128px;
+        size: 160px;
         horizontal-align: 0.5;
+        background-color: transparent;
     }
     element-text {
         horizontal-align: 0.5;
-        color: #ffffff;
+        vertical-align: 0.5;
+        padding: 8px;
+        margin: 10px 0px 0px 0px;
+        background-color: rgba(0, 0, 0, 0.7); /* テキストの視認性確保のための暗い背景 */
+        color: @fg;
+        border-radius: 6px;
     }
     """
     rofi_cmd = [
