@@ -58,9 +58,30 @@
     -- タブの閉じるボタンを非表示
     config.show_close_tab_button_in_tabs = true
 
-    -- タブ同士の境界線を非表示
+    -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）
     config.colors = {
       tab_bar = {
+        background = "none",
+        active_tab = {
+          bg_color = "#ffc20d",
+          fg_color = "#ffffff",
+        },
+        inactive_tab = {
+          bg_color = "#333333",
+          fg_color = "#a0a9cb",
+        },
+        inactive_tab_hover = {
+          bg_color = "#444444",
+          fg_color = "#ffffff",
+        },
+        new_tab = {
+          bg_color = "#333333",
+          fg_color = "#ffffff",
+        },
+        new_tab_hover = {
+          bg_color = "#ffc20d",
+          fg_color = "#ffffff",
+        },
         inactive_tab_edge = "none",
       },
       cursor_bg = '#ffc20d',
