@@ -41,10 +41,10 @@
     -- falseにするとタブバーの透過が効かなくなる
     -- config.use_fancy_tab_bar = false
 
-    -- タブバーの透過
+    -- タブバーの透過設定 (noneからソリッドカラーに変更することで、本体と同じ75%透過が適用されます)
     config.window_frame = {
-      inactive_titlebar_bg = "none",
-      active_titlebar_bg = "none",
+      inactive_titlebar_bg = "#1a1b26",
+      active_titlebar_bg = "#1a1b26",
     }
 
     -- タブバーを背景色に合わせる (透過の妨げになるグラデーションはコメントアウト)
