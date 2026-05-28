@@ -21,7 +21,7 @@
       grv   1     2     3     4     5     6     7     8     9
       tab   q     w     e     r     t     y     u     i     o     p     ret
       a     s     d     f     h     j     k     l
-      v     m
+      z     x     c     v     b     n     m
     )
 
     ;; -------------------------------------------------------------------
@@ -88,7 +88,7 @@
       grv   1     2     3     4     5     6     7     8     9
       tab   q     w     e     r     t     y     u     i     o     p     ret
       a     s     d     f     h     j     k     l
-      v     m
+      _     _     _     _     _     _     _
     )
 
     ;; -------------------------------------------------------------------
@@ -100,7 +100,7 @@
       @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
       @hyp-tab @hyp-q _     _     _     @hyp-sft-spc _     @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
       @hyp-a @hyp-s @hyp-t @hyp-f @hyp-h @hyp-j @hyp-k @hyp-l
-      @hyp-v @hyp-m
+      _     _     _     @hyp-v _     _     @hyp-m
     )
 
     ;; -------------------------------------------------------------------
@@ -108,10 +108,10 @@
     ;; -------------------------------------------------------------------
     (deflayer nav
       _     _     _     _
-      _     home  prtsc end   C-z   bspc  del   _     _     _
-      _     _     _     _     _     _     _     _     _     _     _     _
-      _     _     _     _     left  down  up    right
-      _     _
+      _     _     _     _     _     _     _     _     _     _
+      _     _     _     end   _     _     _     C-z   _     _     _     _
+      home  _     _     _     left  down  up    right
+      _     del   _     _     bspc  _     _
     )
   '';
 
