@@ -28,7 +28,15 @@ i3status | while read -r line; do
   fi
 
   new_block=$(jq -n --arg text "$indicator" --arg col "$color" '{name: "tiling_direction", full_text: $text, color: $col}')
-  modified_json=$(echo "$json_array" | jq --argjson block "$new_block" '[$block] + .' -c)
+
+  gpu_util=$(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits 2>/dev/null)
+  if [ -n "$gpu_util" ]; then
+    # Make GPU block look harmonic and sleek in cyan/blue-green
+    gpu_block=$(jq -n --arg text "GPU ${gpu_util}%" --arg col "#2ac3de" '{name: "gpu_util", full_text: $text, color: $col}')
+    modified_json=$(echo "$json_array" | jq --argjson block "$new_block" --argjson gpu "$gpu_block" '[$block, $gpu] + .' -c)
+  else
+    modified_json=$(echo "$json_array" | jq --argjson block "$new_block" '[$block] + .' -c)
+  fi
   
   echo "${prefix}${modified_json}"
 done

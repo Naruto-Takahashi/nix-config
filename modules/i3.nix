@@ -224,6 +224,7 @@ in
       "ipv6".enable            = false;
       "wireless _first_".enable = false;
       "battery all".enable      = false;
+      "load".enable            = false;
       "disk /" = {
         enable = true;
         position = 1;
@@ -240,11 +241,11 @@ in
           format_degraded    = "RAM MEMORY LOW: %free";
         };
       };
-      "load" = {
+      "cpu_usage" = {
         enable = true;
         position = 3;
         settings = {
-          format = "CPU %1min";
+          format = "CPU %usage";
         };
       };
       "ethernet _first_" = {
