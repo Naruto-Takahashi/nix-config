@@ -26,6 +26,9 @@ in
       # タイトルバーを非表示にし、2pxの枠線のみにする
       default_border pixel 2
       default_floating_border pixel 2
+
+      # ホイール中クリック（単体）で範囲選択スクリーンショットを起動する
+      bindsym --whole-window --border button2 exec --no-startup-id "sh -c '${pkgs.maim}/bin/maim -s -c 1.0,0.76,0.05,0.6 | ${pkgs.xclip}/bin/xclip -selection clipboard -t image/png'"
     '';
     config = {
       inherit modifier;
