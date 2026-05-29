@@ -67,4 +67,14 @@
     [Panel]
     TrayIcon=False
   '';
+
+  # -----------------------------------------------------------------------
+  # デフォルトアプリケーション（MIMEタイプ）の設定
+  # -----------------------------------------------------------------------
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "application/pdf" = [ "vivaldi-stable.desktop" ];
+    };
+  };
 }
