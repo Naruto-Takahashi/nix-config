@@ -140,25 +140,33 @@
     end)
 
     -- =============================================================================
-    -- Shell Configuration (Updated for WSL Ubuntu)
+    -- Shell Configuration (Auto-detected for OS platform)
     -- =============================================================================
+    local is_windows = wezterm.target_triple:find("windows") ~= nil
 
-    -- 起動時に WSL (Ubuntu) を立ち上げる設定 (ホームディレクトリで開始)
-    config.default_prog = { 'wsl.exe', '--cd', '~' }
+    if is_windows then
+      -- 起動時に WSL (Ubuntu) を立ち上げる設定 (ホームディレクトリで開始)
+      config.default_prog = { 'wsl.exe', '--cd', '~' }
 
-    -- 「＋」ボタンをクリックしたときのメニュー
-    config.launch_menu = {
-      {
-        -- PowerShell Core (pwsh)
-        label = 'PowerShell',
-        args = { 'pwsh.exe', '-NoLogo' },
-      },
-      {
-        -- WSL Ubuntu の起動
-        label = 'WSL (Ubuntu)',
-        args = { 'wsl.exe', '--cd', '~' },
-      },
-    }
+      -- 「＋」ボタンをクリックしたときのメニュー
+      config.launch_menu = {
+        {
+          -- PowerShell Core (pwsh)
+          label = 'PowerShell',
+          args = { 'pwsh.exe', '-NoLogo' },
+        },
+        {
+          -- WSL Ubuntu の起動
+          label = 'WSL (Ubuntu)',
+          args = { 'wsl.exe', '--cd', '~' },
+        },
+      }
+    else
+      -- Linuxネイティブ環境用のデフォルト設定 (標準ログインシェルを自動取得して立ち上げる)
+      -- デフォルトのZshがあればそれを利用し、無ければ規定の動作にします
+      config.default_prog = { 'zsh' }
+      config.launch_menu = {}
+    end
 
     ----------------------------------------------------
     -- keybinds
