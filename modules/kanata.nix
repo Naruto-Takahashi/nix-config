@@ -32,8 +32,9 @@
       alt-eng  (tap-hold 200 200 muhenkan (layer-toggle alt-layer))
       alt-jp   (tap-hold 200 200 henkan ralt)
 
-      ;; CapsLock長押しでのCtrl化 (Tap: Esc / Hold: Left Ctrl)
-      cap-ctrl (tap-hold 200 200 esc lctl)
+      ;; CapsLock長押しでのCtrl化 (Tap: Esc -> 英数 / Hold: Left Ctrl)
+      esc-eng  (macro esc muhenkan)
+      cap-ctrl (tap-hold 200 200 @esc-eng lctl)
 
       ;; スペースキー長押しでのナビゲーションレイヤー移行 (Tap: Space / Hold: Nav-Layer)
       spc-nav  (tap-hold 200 200 spc (layer-toggle nav))
