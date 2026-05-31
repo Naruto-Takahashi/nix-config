@@ -67,10 +67,10 @@
       lg      = "lazygit";
 
       # モダンCLIユーティリティへの置き換え
-      ls      = "eza --icons --git";
-      ll      = "eza -alF --icons --git";
-      la      = "eza -a --icons --git";
-      l       = "eza -F --icons --git";
+      ls      = "eza --icons";
+      ll      = "eza -alF --icons";
+      la      = "eza -a --icons";
+      l       = "eza -F --icons";
       tree    = "eza --tree --icons";
       cat     = "bat";
       grep    = "grep --color=auto";
@@ -95,6 +95,7 @@
         name = "zsh-autosuggestions";
         src  = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
       }
+      # 構文ハイライトを有効化
       {
         name = "zsh-syntax-highlighting";
         src  = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
@@ -117,6 +118,11 @@
     # 環境固有の設定、キーバインド、カスタム関数
     # ---------------------------------------------------------------------
     initContent = ''
+      # zsh-autosuggestions の検索を非同期化し，ラグをゼロにする設定
+      export ZSH_AUTOSUGGEST_USE_ASYNC="true"
+      # 入力文字数が1文字以下の場合はサジェスト探索をスキップ（空ENTER時のラグを完全にゼロにする）
+      export ZSH_AUTOSUGGEST_MIN_SIZE=2
+
       # 外部ツールなどのパス追加・設定
       export PATH="$HOME/.local/bin:$HOME/.fzf/bin:$PATH"
       export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/home/nalt/lib/ac-library-master
@@ -142,10 +148,6 @@
       # 補完選択メニュー用モジュール (complist) のロード
       zmodload zsh/complist
 
-      # 外部ツールチェーン環境の自動ロード
-      if [[ -o interactive ]]; then
-        [ -s "$HOME/.nvm/nvm.sh" ] && . "$HOME/.nvm/nvm.sh"
-      fi
       [ -f "$HOME/.cargo/env" ]  && . "$HOME/.cargo/env"
 
       # 補完メニューの挙動最適化（大文字小文字の曖昧補完、カーソル選択）
