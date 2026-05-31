@@ -11,6 +11,10 @@
 
   # アップロードされた starship.toml の設定をここに完全内包して自動生成
   xdg.configFile."starship.toml".text = ''
+    # Starship performance optimizations for WSL
+    scan_timeout = 20
+    command_timeout = 500
+
     format = """
     $directory\
     [ ](fg:#ffc20d bg:#333333)\
