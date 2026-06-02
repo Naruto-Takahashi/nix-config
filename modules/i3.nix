@@ -54,6 +54,9 @@ in
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";
 
+        # 画面をオフにする (Alt + Shift + X)
+        "Mod1+Shift+x"            = "exec xset dpms force off";
+
         # フォーカス移動 (Super + HJKL)
         "${modifier}+h"           = "focus left";
         "${modifier}+j"           = "focus down";
@@ -156,6 +159,9 @@ in
       # スタートアップ起動コマンド
       # -----------------------------------------------------------------------
       startup = [
+        # 起動時にデフォルトのワークスペースを1にする
+        { command = "i3-msg workspace 1"; notification = false; }
+
         # 壁紙の設定 (ユーザーカスタム壁紙)
         { command = "${pkgs.feh}/bin/feh --bg-scale /home/nalt/Pictures/my-wallpaper.jpg"; notification = false; always = true; }
 

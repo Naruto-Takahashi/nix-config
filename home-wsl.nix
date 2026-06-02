@@ -13,6 +13,7 @@
     ./modules/wezterm.nix       # WezTerm ターミナル
     ./modules/neovim.nix        # Neovim エディタ
     ./modules/glazewm.nix       # GlazeWM & Zebar 設定
+    ./modules/direnv.nix        # direnv 設定 (nix-direnv対応)
   ];
 
   # -----------------------------------------------------------------------

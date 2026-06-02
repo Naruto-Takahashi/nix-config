@@ -30,7 +30,7 @@
     (defalias
       ;; 左右Alt単押しでのIME切り替え (Tap: 英数/かな / Hold: 隠しレイヤー)
       alt-eng  (tap-hold 200 200 muhenkan (layer-toggle alt-layer))
-      alt-jp   (tap-hold 200 200 henkan ralt)
+      alt-jp   (tap-hold 200 200 henkan (layer-toggle alt-layer))
 
       ;; CapsLock長押しでのCtrl化 (Tap: Esc -> 英数 / Hold: Left Ctrl)
       esc-eng  (macro esc muhenkan)

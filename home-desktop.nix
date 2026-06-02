@@ -16,6 +16,7 @@
     ./modules/wezterm.nix       # WezTerm ターミナル
     ./modules/neovim.nix        # Neovim エディタ
     ./modules/i3.nix            # i3 Window Manager 設定
+    ./modules/direnv.nix        # direnv 設定 (nix-direnv対応)
   ];
 
   # -----------------------------------------------------------------------
