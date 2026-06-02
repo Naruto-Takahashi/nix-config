@@ -69,7 +69,7 @@ Space & u:: Send, ^z          ; Undo
 Space & b:: Send, {Backspace} ; Backspace
 Space & x:: Send, {Delete}    ; Delete
 ^Space::    Send, ^{Space}    ; Ctrl + Space (Pass-through)
-; !Space::    return                ; Alt + Space (ランチャー用に無効化)
+!Space::    Send, !{Space}    ; Alt + Space (Pass-through)
 
 
 ; =============================================================================
