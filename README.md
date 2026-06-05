@@ -101,6 +101,48 @@ exec zsh
 
 ---
 
+## 🖥️ リモートアクセス環境の構築 (WindowsノートPCからXRDP接続)
+
+WindowsのノートPCからこのUbuntuデスクトップに安全・快適にリモートデスクトップ接続するための手順です。
+Nix（Home Manager）でセッション設定や画面スケーリングを一元管理しつつ、SSHトンネル経由で接続します。
+
+### 1. ホストPC（Ubuntu）側での事前準備（初回のみ）
+ターミナルで以下のコマンドを実行し、必要なサービスをインストール・有効化し、自動スリープを防止します。
+
+```bash
+# 1. XRDP & SSH サーバーのインストール
+sudo apt update
+sudo apt install xrdp openssh-server -y
+
+# 2. 各サービスの自動起動と起動
+sudo systemctl enable --now xrdp ssh
+
+# 3. 自動スリープ（サスペンド）の完全無効化（再起動後も永続）
+sudo systemctl mask suspend.target hibernate.target hybrid-sleep.target suspend-then-hibernate.target
+```
+
+### 2. Nix（Home Manager）設定の適用
+本設定ファイルを適用して、リモートデスクトップ接続時用の `~/.xsession` や、接続時専用のDPIスケーリング（192 DPI = 2倍拡大）およびブラウザ（Vivaldi）の多重起動用プロファイル分離ラッパーを有効化します。
+
+```bash
+nix run github:nix-community/home-manager -- switch --flake ~/.config/home-manager#nalt-desktop --impure
+```
+*適用後、i3wm上で `Super + Shift + r` を押してリロードします。*
+
+### 3. WindowsノートPCからの接続手順
+1. Windows側でコマンドプロンプトまたはPowerShellを開き、SSHトンネル（ポート転送）を実行します。
+   ```cmd
+   ssh -L 33890:localhost:3389 nalt@<UbuntuのIPアドレス>
+   ```
+   *※このターミナルウィンドウは、接続している間は閉じずに開いたままにしてください。*
+2. `Win + R` キーを押し、`mstsc` と入力してエンターを押し、**「リモートデスクトップ接続」**を開きます。
+3. コンピューター名に **`localhost:33890`** と入力して接続します。
+4. ログイン画面でユーザー名 `nalt` とパスワードを入力すると、リモート側に適した解像度・操作感で `i3wm` が起動します。
+
+---
+
+---
+
 <details>
 <summary>📖 <b>English Translation (Click to expand)</b></summary>
 
