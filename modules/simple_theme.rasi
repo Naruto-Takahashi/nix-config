@@ -18,7 +18,7 @@ window {
 
 inputbar {
     background-color: @bg-alt;
-    padding: 10px;
+    padding: 14px;
     border-radius: 8px;
 }
 
@@ -32,12 +32,12 @@ entry {
 
 listview {
     columns: 1;
-    lines: 8;
-    spacing: 5px;
+    lines: 18;
+    spacing: 8px;
 }
 
 element {
-    padding: 10px;
+    padding: 14px;
     border-radius: 8px;
 }
 
