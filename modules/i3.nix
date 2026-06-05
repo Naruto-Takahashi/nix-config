@@ -11,15 +11,20 @@ let
 in
 {
   # -----------------------------------------------------------------------
-  # X11セッション用環境変数の修正 (Wayland判定バグ回避)
-  # -----------------------------------------------------------------------
   xsession.profileExtra = ''
     export XDG_SESSION_TYPE=x11
+
+    # DISPLAY番号が10以上（XRDPセッション）の場合のみ、DPIを大きく設定して文字を大きくする（192 DPI = 200%スケール）
+    display_num=$(echo $DISPLAY | cut -d: -f2 | cut -d. -f1)
+    if [ -n "$display_num" ] && [ "$display_num" -ge 10 ]; then
+      echo "Xft.dpi: 192" | ${pkgs.xrdb}/bin/xrdb -merge
+    fi
   '';
 
   # -----------------------------------------------------------------------
-  # i3 Window Manager 設定
+  # i3 Window Manager 設定 (xsession の有効化を含む)
   # -----------------------------------------------------------------------
+  xsession.enable = true;
   xsession.windowManager.i3 = {
     enable = true;
     extraConfig = ''
@@ -47,12 +52,15 @@ in
         # =================================================================
         # ターミナルの起動
         "${modifier}+Return"      = "exec ${weztermCmd}";
+        "Mod1+Return"             = "exec ${weztermCmd}"; # リモート環境用 (Alt + Enter)
 
         # アプリケーションランチャー (rofi) の起動 (Wayland誤判定防止環境変数つき)
         "${modifier}+d"           = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi";
+        "Mod1+space"              = "exec --no-startup-id \"sleep 0.2 && env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # リモート環境用 (Alt + Space)
 
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";
+        "Mod1+Shift+q"            = "kill"; # リモート環境用 (Alt + Shift + q)
 
         # 画面をオフにする (Alt + Shift + X)
         "Mod1+Shift+x"            = "exec xset dpms force off";
@@ -62,18 +70,28 @@ in
         "${modifier}+j"           = "focus down";
         "${modifier}+k"           = "focus up";
         "${modifier}+l"           = "focus right";
+        "Mod1+h"                  = "focus left"; # リモート環境用
+        "Mod1+j"                  = "focus down"; # リモート環境用
+        "Mod1+k"                  = "focus up";   # リモート環境用
+        "Mod1+l"                  = "focus right";# リモート環境用
 
         # ウィンドウ移動 (Super + Shift + HJKL)
         "${modifier}+Shift+h"     = "move left";
         "${modifier}+Shift+j"     = "move down";
         "${modifier}+Shift+k"     = "move up";
         "${modifier}+Shift+l"     = "move right";
+        "Mod1+Shift+h"            = "move left";  # リモート環境用
+        "Mod1+Shift+j"            = "move down";  # リモート環境用
+        "Mod1+Shift+k"            = "move up";    # リモート環境用
+        "Mod1+Shift+l"            = "move right"; # リモート環境用
 
         # フローティング切り替え
         "${modifier}+Shift+space" = "floating toggle";
+        "Mod1+Shift+space"        = "floating toggle"; # リモート環境用 (Alt + Shift + Space)
 
         # フルスクリーン切り替え
         "${modifier}+f"           = "fullscreen toggle";
+        "Mod1+f"                  = "fullscreen toggle"; # リモート環境用 (Alt + f)
 
         # =================================================================
         # 2. 高品質スクリーンショット (Premium Screenshots - maim + xclip)
@@ -90,12 +108,15 @@ in
         # =================================================================
         # Windows風の Alt + Tab (Super + Tab) による視覚的ウィンドウ切り替え
         "${modifier}+Tab"         = "exec /home/nalt/.config/home-manager/modules/rofi_window_wrapper.py";
+        "Mod1+Tab"                = "exec /home/nalt/.config/home-manager/modules/rofi_window_wrapper.py"; # リモート環境用 (Alt + Tab)
 
         # ウィンドウの最小化 (Scratchpadへの退避)
         "${modifier}+m"           = "move scratchpad";
+        "Mod1+m"                  = "move scratchpad"; # リモート環境用 (Alt + m)
 
         # 最小化したウィンドウの視覚的な一覧復元 (Rofi Window Switcherで選択)
         "${modifier}+Shift+m"     = "exec /home/nalt/.config/home-manager/modules/rofi_window_wrapper.py";
+        "Mod1+Shift+m"            = "exec /home/nalt/.config/home-manager/modules/rofi_window_wrapper.py"; # リモート環境用
 
         # =================================================================
         # 4. GlazeWM風 即時サイズ調整 (Direct Resizing)
@@ -104,6 +125,10 @@ in
         "${modifier}+p"           = "resize grow width 2 px or 2 ppt";
         "${modifier}+o"           = "resize grow height 2 px or 2 ppt";
         "${modifier}+i"           = "resize shrink height 2 px or 2 ppt";
+        "Mod1+u"                  = "resize shrink width 2 px or 2 ppt";  # リモート環境用
+        "Mod1+p"                  = "resize grow width 2 px or 2 ppt";    # リモート環境用
+        "Mod1+o"                  = "resize grow height 2 px or 2 ppt";   # リモート環境用
+        "Mod1+i"                  = "resize shrink height 2 px or 2 ppt";  # リモート環境用
 
         # =================================================================
         # 5. ワークスペース操作 (Workspace Navigation & Follow)
@@ -112,6 +137,9 @@ in
         "${modifier}+s"           = "workspace next";
         "${modifier}+a"           = "workspace prev";
         "${modifier}+grave"       = "workspace back_and_forth";
+        "Mod1+s"                  = "workspace next"; # リモート環境用
+        "Mod1+a"                  = "workspace prev"; # リモート環境用
+        "Mod1+grave"              = "workspace back_and_forth"; # リモート環境用
 
         # ウィンドウを別ワークスペースへ移動し、自動的に追従 (Move and Follow)
         "${modifier}+Shift+1"     = "move container to workspace number 1; workspace number 1";
@@ -130,6 +158,7 @@ in
         # =================================================================
         # タイリング分割方向の切り替え (トグル)
         "${modifier}+v"           = "layout toggle split";
+        "Mod1+v"                  = "layout toggle split"; # リモート環境用 (Alt + v)
       };
 
       # -----------------------------------------------------------------------
@@ -166,13 +195,17 @@ in
         { command = "${pkgs.feh}/bin/feh --bg-scale /home/nalt/Pictures/my-wallpaper.jpg"; notification = false; always = true; }
 
         # X11 コンポジタ (Picom) の起動 (透過表示・美化効果の有効化)
-        { command = "pkill picom; ${pkgs.picom}/bin/picom --backend xrender -b"; notification = false; always = true; }
+        # ※現在の DISPLAY に属する picom インスタンスのみを特定して kill してから再起動することで、物理画面に干渉せずリモートでも透過を有効化します
+        { command = "for pid in \$(pgrep picom); do [ -r /proc/\$pid/environ ] && [ \"\$(cat /proc/\$pid/environ | tr '\\0' '\\n' | grep '^DISPLAY=' | cut -d= -f2)\" = \"\$DISPLAY\" ] && kill \$pid; done; ${pkgs.picom}/bin/picom --backend xrender -b"; notification = false; always = true; }
 
         # 日本語入力 (fcitx5) のバックグラウンド起動 (NixでラップされたMozc付きパッケージ。トレイアイコンは無効化)
         { command = "${config.i18n.inputMethod.package}/bin/fcitx5 --disable notificationitem -d"; notification = false; always = true; }
 
         # Wayland誤検知バグの修正 (DBus/Systemdユーザー環境変数を強制上書き)
         { command = "dbus-update-activation-environment --systemd XDG_SESSION_TYPE=x11"; notification = false; always = true; }
+
+        # XRDPセッションの場合のみ、DPIを大きく設定して文字を大きくする（192 DPI = 200%スケール）
+        { command = "display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then echo \"Xft.dpi: 192\" | ${pkgs.xrdb}/bin/xrdb -merge; fi"; notification = false; always = true; }
       ];
 
       # -----------------------------------------------------------------------

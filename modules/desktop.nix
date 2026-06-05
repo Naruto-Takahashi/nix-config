@@ -39,6 +39,27 @@
       categories  = [ "System" "TerminalEmulator" "Utility" ];
       terminal    = false;
     };
+    vivaldi-stable = {
+      name        = "Vivaldi";
+      genericName = "Web Browser";
+      exec        = "/home/nalt/.nix-profile/bin/vivaldi %U";
+      icon        = "vivaldi";
+      mimeType    = [
+        "text/html"
+        "text/xml"
+        "application/xhtml+xml"
+        "application/xml"
+        "image/gif"
+        "image/jpeg"
+        "image/png"
+        "image/webp"
+        "application/x-xpinstall"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+      ];
+      categories  = [ "Network" "WebBrowser" ];
+      terminal    = false;
+    };
   };
 
   # -----------------------------------------------------------------------
