@@ -39,9 +39,9 @@
 #!/bin/bash
 display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1)
 if [ -n "\$display_num" ] && [ "\$display_num" -ge 10 ]; then
-  exec ${pkgs.vivaldi}/bin/vivaldi --user-data-dir="\$HOME/.config/vivaldi-remote" "\$@"
+  exec /usr/bin/vivaldi-stable --user-data-dir="\$HOME/.config/vivaldi-remote" "\$@"
 else
-  exec ${pkgs.vivaldi}/bin/vivaldi "\$@"
+  exec /usr/bin/vivaldi-stable "\$@"
 fi
 EOF
         chmod +x $out/bin/vivaldi
