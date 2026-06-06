@@ -41,6 +41,20 @@
     };
   };
 
+  # Rofi 等で確実に優先されるよう ~/.local/share/applications/ に直接配置してシステム側をオーバーライドする
+  home.file.".local/share/applications/vivaldi-stable.desktop".text = ''
+    [Desktop Entry]
+    Categories=Network;WebBrowser;
+    Exec=/home/nalt/.nix-profile/bin/vivaldi %U
+    GenericName=Web Browser
+    Icon=vivaldi
+    MimeType=text/html;text/xml;application/xhtml+xml;application/xml;image/gif;image/jpeg;image/png;image/webp;application/x-xpinstall;x-scheme-handler/http;x-scheme-handler/https;
+    Name=Vivaldi
+    Terminal=false
+    Type=Application
+    Version=1.5
+  '';
+
   # -----------------------------------------------------------------------
   # Fcitx5 デザインカスタマイズ (ダサいトレイアイコンの排除 & 縦型候補リスト化)
   # -----------------------------------------------------------------------

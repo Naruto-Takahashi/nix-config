@@ -6,18 +6,19 @@
     border-radius: 12px;
     background-color: transparent;
     text-color: @fg;
-    font: "HackGen NF 12";
+    font: "HackGen NF 20";
 }
 
 window {
     background-color: @bg;
-    border: 1px;
+    border: 2px;
     border-color: @accent;
+    width: 60%;
 }
 
 inputbar {
     background-color: @bg-alt;
-    padding: 10px;
+    padding: 14px;
     border-radius: 8px;
 }
 
@@ -31,12 +32,12 @@ entry {
 
 listview {
     columns: 1;
-    lines: 8;
-    spacing: 5px;
+    lines: 18;
+    spacing: 8px;
 }
 
 element {
-    padding: 10px;
+    padding: 14px;
     border-radius: 8px;
 }
 
