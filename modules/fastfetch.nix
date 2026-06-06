@@ -1,5 +1,5 @@
 # =========================================================================
-# fastfetch 設定モジュール (壁紙グラデーション再現版)
+# fastfetch 設定モジュール (罫線グループ化・壁紙グラデーション再現版)
 # =========================================================================
 { config, pkgs, ... }:
 
@@ -11,7 +11,7 @@
       "display": {
         "separator": ": ",
         "key": {
-          "width": 12
+          "width": 14
         },
         "color": {
           "separator": "38;2;245;239;201",
@@ -28,79 +28,92 @@
           }
         },
         "separator",
+        // --- System Group ---
         {
           "type": "os",
-          "key": "OS",
+          "key": "┌ OS",
           "keyColor": "38;2;165;208;245"
         },
         {
           "type": "host",
-          "key": "Host",
+          "key": "├ Host",
           "keyColor": "38;2;205;224;223"
         },
         {
           "type": "kernel",
-          "key": "Kernel",
+          "key": "├ Kernel",
           "keyColor": "38;2;245;239;201"
         },
         {
           "type": "uptime",
-          "key": "Uptime",
+          "key": "└ Uptime",
           "keyColor": "38;2;255;208;112"
         },
+        // --- Blank line ---
+        {
+          "type": "custom",
+          "format": ""
+        },
+        // --- Environment/Shell Group ---
         {
           "type": "packages",
-          "key": "Packages",
+          "key": "┌ Packages",
           "keyColor": "38;2;255;181;117"
         },
         {
           "type": "shell",
-          "key": "Shell",
+          "key": "├ Shell",
           "keyColor": "38;2;255;154;122"
         },
         {
           "type": "de",
-          "key": "DE",
+          "key": "├ DE",
           "keyColor": "38;2;255;127;143"
         },
         {
           "type": "wm",
-          "key": "WM",
+          "key": "├ WM",
           "keyColor": "38;2;245;112;165"
         },
         {
           "type": "terminal",
-          "key": "Terminal",
+          "key": "└ Terminal",
           "keyColor": "38;2;218;108;188"
         },
+        // --- Blank line ---
+        {
+          "type": "custom",
+          "format": ""
+        },
+        // --- Hardware Group ---
         {
           "type": "display",
-          "key": "Display",
+          "key": "┌ Display",
           "keyColor": "38;2;190;108;211"
         },
         {
           "type": "cpu",
-          "key": "CPU",
+          "key": "├ CPU",
           "keyColor": "38;2;161;108;233"
         },
         {
           "type": "gpu",
-          "key": "GPU",
+          "key": "├ GPU",
           "keyColor": "38;2;130;108;255"
         },
         {
           "type": "memory",
-          "key": "Memory",
+          "key": "├ Memory",
           "keyColor": "38;2;98;115;233"
         },
         {
           "type": "disk",
-          "key": "Disk",
+          "key": "├ Disk",
           "keyColor": "38;2;75;122;211"
         },
         {
           "type": "localip",
-          "key": "Local IP",
+          "key": "└ Local IP",
           "keyColor": "38;2;58;126;189"
         }
       ]
