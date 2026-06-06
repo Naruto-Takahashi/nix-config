@@ -9,7 +9,7 @@
       "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/dev/doc/json_schema.json",
       "logo": "none",
       "display": {
-        "separator": ": ",
+        "separator": "",
         "key": {
           "width": 12
         },
@@ -25,31 +25,31 @@
         },
         {
           "type": "title",
-          "key": "  \u001b[38;2;165;208;245mUser      "
+          "key": "  \u001b[38;2;165;208;245mUser      \u001b[38;2;245;239;201m: "
         },
         {
           "type": "host",
-          "key": "  \u001b[38;2;165;208;245mHost      "
+          "key": "  \u001b[38;2;165;208;245mHost      \u001b[38;2;245;239;201m: "
         },
         {
           "type": "display",
-          "key": "  \u001b[38;2;205;224;223mDisplay   "
+          "key": "  \u001b[38;2;205;224;223mDisplay   \u001b[38;2;245;239;201m: "
         },
         {
           "type": "cpu",
-          "key": "  \u001b[38;2;245;239;201mCPU       "
+          "key": "  \u001b[38;2;245;239;201mCPU       \u001b[38;2;245;239;201m: "
         },
         {
           "type": "gpu",
-          "key": "  \u001b[38;2;255;208;112mGPU       "
+          "key": "  \u001b[38;2;255;208;112mGPU       \u001b[38;2;245;239;201m: "
         },
         {
           "type": "memory",
-          "key": "  \u001b[38;2;255;181;117mMemory    "
+          "key": "  \u001b[38;2;255;181;117mMemory    \u001b[38;2;245;239;201m: "
         },
         {
           "type": "disk",
-          "key": "  \u001b[38;2;255;154;122mDisk      "
+          "key": "  \u001b[38;2;255;154;122mDisk      \u001b[38;2;245;239;201m: "
         },
         {
           "type": "custom",
@@ -67,31 +67,31 @@
         },
         {
           "type": "os",
-          "key": "  \u001b[38;2;255;140;130mOS        "
+          "key": "  \u001b[38;2;255;140;130mOS        \u001b[38;2;245;239;201m: "
         },
         {
           "type": "kernel",
-          "key": "  \u001b[38;2;255;127;143mKernel    "
+          "key": "  \u001b[38;2;255;127;143mKernel    \u001b[38;2;245;239;201m: "
         },
         {
           "type": "de",
-          "key": "  \u001b[38;2;245;112;165mDE        "
+          "key": "  \u001b[38;2;245;112;165mDE        \u001b[38;2;245;239;201m: "
         },
         {
           "type": "wm",
-          "key": "  \u001b[38;2;218;108;188mWM        "
+          "key": "  \u001b[38;2;218;108;188mWM        \u001b[38;2;245;239;201m: "
         },
         {
           "type": "terminal",
-          "key": "  \u001b[38;2;190;108;211mTerminal  "
+          "key": "  \u001b[38;2;190;108;211mTerminal  \u001b[38;2;245;239;201m: "
         },
         {
           "type": "packages",
-          "key": "  \u001b[38;2;161;108;233mPackages  "
+          "key": "  \u001b[38;2;161;108;233mPackages  \u001b[38;2;245;239;201m: "
         },
         {
           "type": "shell",
-          "key": "  \u001b[38;2;130;108;255mShell     "
+          "key": "  \u001b[38;2;130;108;255mShell     \u001b[38;2;245;239;201m: "
         },
         {
           "type": "custom",
@@ -109,11 +109,11 @@
         },
         {
           "type": "uptime",
-          "key": "  \u001b[38;2;98;115;233mUptime    "
+          "key": "  \u001b[38;2;98;115;233mUptime    \u001b[38;2;245;239;201m: "
         },
         {
           "type": "localip",
-          "key": "  \u001b[38;2;75;122;211mLocal IP  "
+          "key": "  \u001b[38;2;75;122;211mLocal IP  \u001b[38;2;245;239;201m: "
         },
         {
           "type": "custom",
