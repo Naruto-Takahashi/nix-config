@@ -12,11 +12,6 @@
         "separator": "",
         "color": {
           "separator": "38;2;245;239;201"
-        },
-        "bar": {
-          "char": { "elapsed": "█", "total": "░" },
-          "border": { "left": "[", "right": "]" },
-          "width": 10
         }
       },
       "modules": [
@@ -49,12 +44,12 @@
         {
           "type": "memory",
           "key": "  \u001b[38;2;255;181;117mMemory    \u001b[38;2;245;239;201m: ",
-          "percent": { "green": 50, "yellow": 80, "type": 10 }
+          "percent": { "type": 1 }
         },
         {
           "type": "disk",
           "key": "  \u001b[38;2;255;154;122mDisk      \u001b[38;2;245;239;201m: ",
-          "percent": { "green": 60, "yellow": 85, "type": 10 }
+          "percent": { "type": 1 }
         },
         {
           "type": "custom",
