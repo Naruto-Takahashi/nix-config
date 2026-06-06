@@ -1,5 +1,5 @@
 # =========================================================================
-# fastfetch 設定モジュール (罫線グループ化・壁紙グラデーション再現版)
+# fastfetch 設定モジュール (カテゴリ連結ボックス・壁紙グラデーション再現版)
 # =========================================================================
 { config, pkgs, ... }:
 
@@ -30,91 +30,98 @@
         "separator",
         // --- System Group ---
         {
+          "type": "custom",
+          "format": "\\u001b[38;2;160;169;203m┌─── System ──────────────────────────────────────────\\u001b[0m"
+        },
+        {
           "type": "os",
-          "key": "┌ OS",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mOS",
           "keyColor": "38;2;165;208;245"
         },
         {
           "type": "host",
-          "key": "├ Host",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mHost",
           "keyColor": "38;2;205;224;223"
         },
         {
           "type": "kernel",
-          "key": "├ Kernel",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mKernel",
           "keyColor": "38;2;245;239;201"
         },
         {
           "type": "uptime",
-          "key": "└ Uptime",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mUptime",
           "keyColor": "38;2;255;208;112"
-        },
-        // --- Blank line ---
-        {
-          "type": "custom",
-          "format": ""
         },
         // --- Environment/Shell Group ---
         {
+          "type": "custom",
+          "format": "\\u001b[38;2;160;169;203m├─── Environment ─────────────────────────────────────\\u001b[0m"
+        },
+        {
           "type": "packages",
-          "key": "┌ Packages",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mPackages",
           "keyColor": "38;2;255;181;117"
         },
         {
           "type": "shell",
-          "key": "├ Shell",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mShell",
           "keyColor": "38;2;255;154;122"
         },
         {
           "type": "de",
-          "key": "├ DE",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mDE",
           "keyColor": "38;2;255;127;143"
         },
         {
           "type": "wm",
-          "key": "├ WM",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mWM",
           "keyColor": "38;2;245;112;165"
         },
         {
           "type": "terminal",
-          "key": "└ Terminal",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mTerminal",
           "keyColor": "38;2;218;108;188"
-        },
-        // --- Blank line ---
-        {
-          "type": "custom",
-          "format": ""
         },
         // --- Hardware Group ---
         {
+          "type": "custom",
+          "format": "\\u001b[38;2;160;169;203m├─── Hardware ────────────────────────────────────────\\u001b[0m"
+        },
+        {
           "type": "display",
-          "key": "┌ Display",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mDisplay",
           "keyColor": "38;2;190;108;211"
         },
         {
           "type": "cpu",
-          "key": "├ CPU",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mCPU",
           "keyColor": "38;2;161;108;233"
         },
         {
           "type": "gpu",
-          "key": "├ GPU",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mGPU",
           "keyColor": "38;2;130;108;255"
         },
         {
           "type": "memory",
-          "key": "├ Memory",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mMemory",
           "keyColor": "38;2;98;115;233"
         },
         {
           "type": "disk",
-          "key": "├ Disk",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mDisk",
           "keyColor": "38;2;75;122;211"
         },
         {
           "type": "localip",
-          "key": "└ Local IP",
+          "key": "\\u001b[38;2;160;169;203m│ \\u001b[0mLocal IP",
           "keyColor": "38;2;58;126;189"
+        },
+        // --- End Border ---
+        {
+          "type": "custom",
+          "format": "\\u001b[38;2;160;169;203m└─────────────────────────────────────────────────────\\u001b[0m"
         }
       ]
     }
