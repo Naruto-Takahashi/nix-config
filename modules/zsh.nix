@@ -277,6 +277,12 @@
 
       # zoxide の初期化（nvmロード後に実行することで、nvm内部のcd処理との衝突を防ぐ）
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
+
+      # Run fastfetch on interactive shell startup
+      if [[ -o interactive ]] && command -v fastfetch >/dev/null; then
+          fastfetch
+      fi
     '';
   };
 }
+

@@ -8,6 +8,7 @@
   # 各種機能・アプリケーションモジュールの読み込み
   # -----------------------------------------------------------------------
   imports = [
+    ./modules/fastfetch.nix     # fastfetch 設定
     ./modules/packages.nix      # パッケージ管理 (maim, slop, antigravity-cli等)
     ./modules/zsh.nix           # Zsh シェル環境 (エイリアス, カスタム関数等)
     ./modules/starship.nix      # Starship プロンプト

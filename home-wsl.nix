@@ -8,6 +8,7 @@
   # 各種機能・アプリケーションモジュールの読み込み
   # -----------------------------------------------------------------------
   imports = [
+    ./modules/fastfetch.nix     # fastfetch 設定
     ./modules/zsh.nix           # Zsh シェル環境 (エイリアス, カスタム関数等)
     ./modules/starship.nix      # Starship プロンプト
     ./modules/wezterm.nix       # WezTerm ターミナル
@@ -34,5 +35,9 @@
   home.packages = with pkgs; [
     gemini-cli-bin
     codex
+    fastfetch
+    cowsay
+    fortune
+    lolcat
   ];
 }
