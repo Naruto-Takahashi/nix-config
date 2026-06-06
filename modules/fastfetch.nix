@@ -18,43 +18,38 @@
         }
       },
       "modules": [
-        {
-          "type": "title",
-          "color": {
-            "user": "38;2;165;208;245",
-            "at": "38;2;165;208;245",
-            "host": "38;2;165;208;245"
-          }
-        },
-        "separator",
         // --- Hardware Group ---
         {
           "type": "custom",
           "format": "\u001b[38;2;160;169;203m┌────────────────────────────── Hardware ──────────────────────────────┐\u001b[0m"
         },
         {
+          "type": "title",
+          "key": "  \u001b[38;2;165;208;245mUser      "
+        },
+        {
           "type": "host",
-          "key": "  \u001b[38;2;165;208;245mHost"
+          "key": "  \u001b[38;2;165;208;245mHost      "
         },
         {
           "type": "display",
-          "key": "  \u001b[38;2;205;224;223mDisplay"
+          "key": "  \u001b[38;2;205;224;223mDisplay   "
         },
         {
           "type": "cpu",
-          "key": "  \u001b[38;2;245;239;201mCPU"
+          "key": "  \u001b[38;2;245;239;201mCPU       "
         },
         {
           "type": "gpu",
-          "key": "  \u001b[38;2;255;208;112mGPU"
+          "key": "  \u001b[38;2;255;208;112mGPU       "
         },
         {
           "type": "memory",
-          "key": "  \u001b[38;2;255;181;117mMemory"
+          "key": "  \u001b[38;2;255;181;117mMemory    "
         },
         {
           "type": "disk",
-          "key": "  \u001b[38;2;255;154;122mDisk"
+          "key": "  \u001b[38;2;255;154;122mDisk      "
         },
         {
           "type": "custom",
@@ -72,31 +67,31 @@
         },
         {
           "type": "os",
-          "key": "  \u001b[38;2;255;140;130mOS"
+          "key": "  \u001b[38;2;255;140;130mOS        "
         },
         {
           "type": "kernel",
-          "key": "  \u001b[38;2;255;127;143mKernel"
+          "key": "  \u001b[38;2;255;127;143mKernel    "
         },
         {
           "type": "de",
-          "key": "  \u001b[38;2;245;112;165mDE"
+          "key": "  \u001b[38;2;245;112;165mDE        "
         },
         {
           "type": "wm",
-          "key": "  \u001b[38;2;218;108;188mWM"
+          "key": "  \u001b[38;2;218;108;188mWM        "
         },
         {
           "type": "terminal",
-          "key": "  \u001b[38;2;190;108;211mTerminal"
+          "key": "  \u001b[38;2;190;108;211mTerminal  "
         },
         {
           "type": "packages",
-          "key": "  \u001b[38;2;161;108;233mPackages"
+          "key": "  \u001b[38;2;161;108;233mPackages  "
         },
         {
           "type": "shell",
-          "key": "  \u001b[38;2;130;108;255mShell"
+          "key": "  \u001b[38;2;130;108;255mShell     "
         },
         {
           "type": "custom",
@@ -114,11 +109,11 @@
         },
         {
           "type": "uptime",
-          "key": "  \u001b[38;2;98;115;233mUptime"
+          "key": "  \u001b[38;2;98;115;233mUptime    "
         },
         {
           "type": "localip",
-          "key": "  \u001b[38;2;75;122;211mLocal IP"
+          "key": "  \u001b[38;2;75;122;211mLocal IP  "
         },
         {
           "type": "custom",
