@@ -1,5 +1,5 @@
 # =========================================================================
-# fastfetch 設定モジュール (Starship ゴールドカラー統一版)
+# fastfetch 設定モジュール (壁紙グラデーション再現版)
 # =========================================================================
 { config, pkgs, ... }:
 
@@ -14,93 +14,93 @@
           "width": 12
         },
         "color": {
-          "separator": "38;2;255;194;13"
+          "separator": "38;2;245;239;201"
         }
       },
       "modules": [
         {
           "type": "title",
           "color": {
-            "user": "38;2;255;194;13",
-            "at": "38;2;255;194;13",
-            "host": "38;2;255;194;13"
+            "user": "38;2;165;208;245",
+            "at": "38;2;205;224;223",
+            "host": "38;2;255;208;112"
           }
         },
         "separator",
         {
           "type": "os",
           "key": "OS",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;165;208;245"
         },
         {
           "type": "host",
           "key": "Host",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;205;224;223"
         },
         {
           "type": "kernel",
           "key": "Kernel",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;245;239;201"
         },
         {
           "type": "uptime",
           "key": "Uptime",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;255;208;112"
         },
         {
           "type": "packages",
           "key": "Packages",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;255;181;117"
         },
         {
           "type": "shell",
           "key": "Shell",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;255;154;122"
         },
         {
           "type": "de",
           "key": "DE",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;255;127;143"
         },
         {
           "type": "wm",
           "key": "WM",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;245;112;165"
         },
         {
           "type": "terminal",
           "key": "Terminal",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;218;108;188"
         },
         {
           "type": "display",
           "key": "Display",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;190;108;211"
         },
         {
           "type": "cpu",
           "key": "CPU",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;161;108;233"
         },
         {
           "type": "gpu",
           "key": "GPU",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;130;108;255"
         },
         {
           "type": "memory",
           "key": "Memory",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;98;115;233"
         },
         {
           "type": "disk",
           "key": "Disk",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;75;122;211"
         },
         {
           "type": "localip",
           "key": "Local IP",
-          "keyColor": "38;2;255;194;13"
+          "keyColor": "38;2;58;126;189"
         }
       ]
     }
