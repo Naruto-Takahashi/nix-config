@@ -43,11 +43,15 @@
         },
         {
           "type": "memory",
-          "key": "  \u001b[38;2;255;181;117mMemory    \u001b[38;2;245;239;201m: "
+          "key": "  \u001b[38;2;255;181;117mMemory    \u001b[38;2;245;239;201m: ",
+          "percent": { "green": 50, "yellow": 80 },
+          "percentType": 1
         },
         {
           "type": "disk",
-          "key": "  \u001b[38;2;255;154;122mDisk      \u001b[38;2;245;239;201m: "
+          "key": "  \u001b[38;2;255;154;122mDisk      \u001b[38;2;245;239;201m: ",
+          "percent": { "green": 60, "yellow": 85 },
+          "percentType": 1
         },
         {
           "type": "custom",
