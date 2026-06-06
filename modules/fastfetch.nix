@@ -10,9 +10,6 @@
       "logo": "none",
       "display": {
         "separator": "",
-        "key": {
-          "width": 12
-        },
         "color": {
           "separator": "38;2;245;239;201"
         }
