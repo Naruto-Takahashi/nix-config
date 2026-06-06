@@ -23,7 +23,7 @@
         {
           "type": "title",
           "key": "  \u001b[38;2;165;208;245mUser      \u001b[38;2;245;239;201m: ",
-          "format": "\u001b[38;2;255;255;255m{user-name}@{host-name}\u001b[0m"
+          "format": "{user-name}@{host-name}"
         },
         {
           "type": "host",
