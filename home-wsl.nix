@@ -15,6 +15,7 @@
     ./modules/neovim.nix        # Neovim エディタ
     ./modules/glazewm.nix       # GlazeWM & Zebar 設定
     ./modules/direnv.nix        # direnv 設定 (nix-direnv対応)
+    ./modules/yazi.nix          # Yazi ファイルマネージャ設定
   ];
 
   # -----------------------------------------------------------------------
@@ -40,5 +41,6 @@
     cowsay
     fortune
     lolcat
+    wsl-open # Windowsの規定のアプリでファイルを開くためのコマンド
   ];
 }

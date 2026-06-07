@@ -13,11 +13,12 @@
     ./modules/zsh.nix           # Zsh シェル環境 (エイリアス, カスタム関数等)
     ./modules/starship.nix      # Starship プロンプト
     ./modules/kanata.nix        # Kanata キーボードリマッパー (Alt-to-Superレイヤー)
-    ./modules/desktop.nix       # デスクトップ環境 (日本語入力Fcitx5, 環境変数)
+    ./modules/desktop.nix       # デスクトップ環境 (日本語入力Fcitx5, Environment variables)
     ./modules/wezterm.nix       # WezTerm ターミナル
     ./modules/neovim.nix        # Neovim エディタ
     ./modules/i3.nix            # i3 Window Manager 設定
     ./modules/direnv.nix        # direnv 設定 (nix-direnv対応)
+    ./modules/yazi.nix          # Yazi ファイルマネージャ設定
   ];
 
   # -----------------------------------------------------------------------
