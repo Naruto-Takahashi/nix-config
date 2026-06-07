@@ -99,11 +99,11 @@
     ]
 
     # 選択されている行（current）と親ディレクトリ行（parent）の背景色を
-    # nvimのcyberdreamパレット（bg_alt = #1e2124）に合わせて設定
+    # nvimのCursorLine（cyberdream bg_highlight = #3c4048）に合わせて設定
     # 両サイドの半円（rounded shapes）を取り除くために padding をスペース（" "）に設定
     [indicator]
-    current = { bg = "#1e2124" }
-    parent  = { bg = "#1e2124" }
+    current = { bg = "#3c4048" }
+    parent  = { bg = "#3c4048" }
     preview = { bg = "reset", underline = true }
     padding = { open = " ", close = " " }
 
