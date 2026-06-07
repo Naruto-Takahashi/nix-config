@@ -83,19 +83,19 @@
         { fg = "#5eff6c", mime = "application/pdf" },
         { fg = "#5eff6c", mime = "application/rtf" },
         { fg = "#5eff6c", mime = "application/vnd.*" },
-        # フォルダ（ディレクトリ）テキストの色を落ち着いたスカイブルー（#5fa0e6）に設定
-        { fg = "#5fa0e6", url = "*/" },
+        # フォルダ（ディレクトリ）テキストの色をcyberdream Directoryハイライト（#5ea1ff）に統一
+        { fg = "#5ea1ff", url = "*/" },
         { fg = "#ffffff", url = "*" }
     ]
 
-    # ディレクトリアイコンの色を落ち着いたスカイブルー（#5fa0e6）に
+    # ディレクトリアイコンを塗りつぶし（󰉋）にし，色をcyberdream Directoryハイライト（#5ea1ff）に統一
     [icon]
     prepend_conds = [
-        { if = "dir", text = "", fg = "#5fa0e6" }
+        { if = "dir", text = "󰉋", fg = "#5ea1ff" }
     ]
     prepend_dirs = [
-        { name = ".config", text = "", fg = "#ff9800" },
-        { name = ".git", text = "", fg = "#00bcd4" }
+        { name = ".config", text = "󰉋", fg = "#ff9800" },
+        { name = ".git", text = "󰉋", fg = "#00bcd4" }
     ]
 
     # 選択されている行（current）と親ディレクトリ行（parent）の背景色を
