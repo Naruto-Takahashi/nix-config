@@ -16,8 +16,8 @@ return {
     -- ここに言語ごとのフォーマッターを指定します
     -- 未指定の場合は lsp_format = "fallback" により、LSP のフォーマッターが自動的に使われます
     formatters_by_ft = {
+      python = { "isort", "black" },
       -- デフォルトでは LSP によるフォーマットを優先・使用します
-      -- 必要に応じて言語ごとのフォーマッター（例: python = { "isort", "black" }）を追加できます
     },
     -- 保存時の自動フォーマット設定
     format_on_save = {

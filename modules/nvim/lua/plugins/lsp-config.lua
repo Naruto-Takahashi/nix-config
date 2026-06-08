@@ -22,10 +22,27 @@ return {
       local capabilities = require("cmp_nvim_lsp").default_capabilities()
       
       -- 1. 普通のサーバー (特別な設定不要)
-      local servers = { "lua_ls", "pylsp", "marksman" }
+      local servers = { "lua_ls", "marksman" }
       for _, server in ipairs(servers) do
         vim.lsp.enable(server)
       end
+
+      -- pylsp の設定 (Line too long 警告を無効化 または 制限を緩和)
+      vim.lsp.config["pylsp"] = vim.tbl_deep_extend("force", vim.lsp.config["pylsp"] or {}, {
+        capabilities = capabilities,
+        settings = {
+          pylsp = {
+            plugins = {
+              pycodestyle = {
+                maxLineLength = 120, -- 文字数制限を緩和
+                ignore = { "E501" },  -- あるいは E501 自体を無視する
+              },
+              -- 必要に応じて flake8 などの設定もここに追加
+            },
+          },
+        },
+      })
+      vim.lsp.enable("pylsp")
       
       -- 2. clangd (C++) 個別設定
       local clangd_cmd = { "clangd", "--background-index" }
@@ -69,12 +86,12 @@ return {
       vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
       vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {})
 
-      -- 診断の表示設定 (Warning以下の破線を表示しない)
-      vim.diagnostic.config({
-        underline = {
-          severity = { min = vim.diagnostic.severity.ERROR }
-        }
-      })
+      -- 診断の表示設定 (Warning以下の破線を表示しない設定を解除)
+      -- vim.diagnostic.config({
+      --   underline = {
+      --     severity = { min = vim.diagnostic.severity.ERROR }
+      --   }
+      -- })
     end,
   },
 }
