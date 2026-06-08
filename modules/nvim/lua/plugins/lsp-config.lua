@@ -34,10 +34,13 @@ return {
           pylsp = {
             plugins = {
               pycodestyle = {
-                maxLineLength = 120, -- 文字数制限を緩和
-                ignore = { "E501" },  -- あるいは E501 自体を無視する
+                enabled = true,
+                maxLineLength = 120,
+                ignore = { "E501", "W503", "W293", "E203" },
               },
-              -- 必要に応じて flake8 などの設定もここに追加
+              flake8 = {
+                enabled = false,
+              },
             },
           },
         },
