@@ -16,6 +16,7 @@
     ./modules/glazewm.nix       # GlazeWM & Zebar 設定
     ./modules/direnv.nix        # direnv 設定 (nix-direnv対応)
     ./modules/yazi.nix          # Yazi ファイルマネージャ設定
+    ./modules/obsidian-mcp.nix  # Obsidian MCP連携 & agy-brain 設定
   ];
 
   # -----------------------------------------------------------------------
