@@ -68,6 +68,13 @@ return {
       vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
       vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
       vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {})
+
+      -- 診断の表示設定 (Warning以下の破線を表示しない)
+      vim.diagnostic.config({
+        underline = {
+          severity = { min = vim.diagnostic.severity.ERROR }
+        }
+      })
     end,
   },
 }
