@@ -6,7 +6,7 @@ let
     runtimeInputs = [ pkgs.gum pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
     excludeShellChecks = [ "SC2012" ];
     text = ''
-      VAULT_PATH="$HOME/Obsidian/Vault"
+      VAULT_PATH="/mnt/c/Users/tnaru/Obsidian/Vault"
       mkdir -p "$VAULT_PATH"
 
       echo "=== Obsidian 外部脳連携 Antigravity CLI ==="
@@ -153,7 +153,7 @@ in
         command = "npx";
         args = [ "-y" "mcpvault" ];
         env = {
-          OBSIDIAN_VAULT = "${config.home.homeDirectory}/Obsidian/Vault";
+          OBSIDIAN_VAULT = "/mnt/c/Users/tnaru/Obsidian/Vault";
         };
       };
     };
@@ -162,7 +162,7 @@ in
   # ObsidianのVaultディレクトリを初期作成するフック
   home.activation = {
     createObsidianVault = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "$HOME/Obsidian/Vault"
+      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "/mnt/c/Users/tnaru/Obsidian/Vault"
     '';
   };
 }
