@@ -82,16 +82,29 @@ return {
 
       -- 診断 (Diagnostics) 関連
       vim.keymap.set("n", "<leader>d", vim.diagnostic.open_float, {})
-      vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {})
-      vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {})
+      vim.keymap.set("n", "[d", function()
+        if vim.diagnostic.jump then
+          vim.diagnostic.jump({ count = -1 })
+        else
+          vim.diagnostic.goto_prev()
+        end
+      end, {})
+      vim.keymap.set("n", "]d", function()
+        if vim.diagnostic.jump then
+          vim.diagnostic.jump({ count = 1 })
+        else
+          vim.diagnostic.goto_next()
+        end
+      end, {})
       vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {})
 
-      -- 診断の表示設定 (Warning以下の破線を表示しない設定を解除)
-      -- vim.diagnostic.config({
-      --   underline = {
-      --     severity = { min = vim.diagnostic.severity.ERROR }
-      --   }
-      -- })
+      -- 診断の表示設定 (明示的に全ての波線とアイコンを有効化)
+      vim.diagnostic.config({
+        underline = true,
+        virtual_text = true,
+        signs = true,
+        update_in_insert = false,
+      })
     end,
   },
 }
