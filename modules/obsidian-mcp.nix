@@ -4,26 +4,91 @@ let
   agy-brain = pkgs.writeShellApplication {
     name = "agy-brain";
     runtimeInputs = [ pkgs.gum pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
+    excludeShellChecks = [ "SC2012" ];
     text = ''
       VAULT_PATH="$HOME/Obsidian/Vault"
       mkdir -p "$VAULT_PATH"
 
       echo "=== Obsidian 外部脳連携 Antigravity CLI ==="
       
-      # 1. 参照するメモの選択
-      SELECTED_NOTE=""
-      NOTE_CONTENT=""
-      
-      # Vaultが存在し、中にMarkdownファイルがあるか確認
-      if [ -d "$VAULT_PATH" ] && [ "$(find "$VAULT_PATH" -name "*.md" | wc -l)" -gt 0 ]; then
-        if gum confirm "Obsidianのメモをコンテキストとして参照しますか？"; then
-          SELECTED_NOTE=$(find "$VAULT_PATH" -name "*.md" | sed "s|$VAULT_PATH/||" | gum filter --placeholder "参照するメモを選択してください...")
-          if [ -n "$SELECTED_NOTE" ] && [ -f "$VAULT_PATH/$SELECTED_NOTE" ]; then
-            echo "-> メモ「$SELECTED_NOTE」をコンテキストとして読み込みました．"
-            NOTE_CONTENT=$(cat "$VAULT_PATH/$SELECTED_NOTE")
-          fi
+      # 0. 初期セットアップ (フォルダ・ファイルの作成チェック)
+      CREATED_ANY=false
+      for folder in "Knowledge" "Decisions" "Projects" "Preferences"; do
+        if [ ! -d "$VAULT_PATH/$folder" ]; then
+          mkdir -p "$VAULT_PATH/$folder"
+          touch "$VAULT_PATH/$folder/.gitkeep"
+          echo "-> ディレクトリを作成しました: $folder/"
+          CREATED_ANY=true
         fi
+      done
+      
+      if [ ! -f "$VAULT_PATH/Knowledge/mistakes.md" ]; then
+        touch "$VAULT_PATH/Knowledge/mistakes.md"
+        echo "-> ファイルを作成しました: Knowledge/mistakes.md"
+        CREATED_ANY=true
       fi
+
+      if [ "$CREATED_ANY" = true ]; then
+        echo "=========================================="
+        echo "初期セットアップが完了しました．"
+        echo "自己紹介を Preferences/profile.md に書いておくと，AIがあなたのことを覚えやすくなります．"
+        echo "=========================================="
+      fi
+
+      # 1. 参照ルールの定義とインジェクション
+      RULE_PROMPT="あなたは私のAIアシスタントです．
+ObsidianのVaultを「外部脳」として扱い，セッションを跨いで知識を引き継いでください．
+MCP経由（obsidianツール）でObsidianを読み書きできます．
+
+---
+
+【行動ルール】
+1. 読み取り（セッション開始時に必ず実行）：
+   - 行動ルール（Knowledge/mistakes.md）と，Preferences/ 配下のユーザープロファイルを最初に必ず読み込んでください．
+   - 私の質問に関連するキーワードでVaultを検索し，ヒットしたノートを読んでその内容を踏まえて回答してください（※無関係な単発質問はスキップ可）．
+
+2. 書き込み（その場でVaultに書き込む。「後で書く」はしない）：
+   - バグ解決，設定ハマり対策，新しい発見などは「Knowledge/」に書き込む．
+   - 判断・設計の方針決定は「Decisions/」に書き込む．
+   - プロジェクトの状態変更は「Projects/」に書き込む．
+   - ユーザーの好みの発見は「Preferences/」に書き込む．
+
+3. 書き込みフォーマット：
+   ノートには必ず以下のYAMLフロントマターを付与してください：
+   ---
+   date: YYYY-MM-DD
+   tags: [relevant, tags]
+   project: project-name
+   related: [[Other Note]]
+   ---
+   タイトル
+   本文。関連ノートには [[wiki link]] でリンクする．
+
+4. ファイル命名規則：
+   - Knowledge: topic-subtopic.md （例: nextjs-auth-cookie.md）
+   - Decisions: YYYY-MM-DD-topic.md （例: 2026-05-16-database-choice.md）
+   - Preferences: category.md （例: coding-style.md）
+   - Projects: project-name.md
+
+5. mistakes.md への追記ルール：
+   ユーザーから明示的な訂正を受け，かつ「繰り返し起こり得るパターン」「具体的な『する/しない』で書ける」を満たす場合，即座に Knowledge/mistakes.md に追記してください．
+   形式：
+   YYYY-MM-DD: [一言で何を間違えたか]
+   **NG Action**: 実際にやってしまった間違い
+   **Correct Action**: 次回からの正しい対応
+   **Trigger**: このルールが適用される状況
+
+6. 報告：
+   Obsidianを読み書きしたら，必ず「Obsidian: [ファイルパス] を読みました/書き込みました」と明示的にユーザーに伝えてください．サイレントで読み書きしないこと．
+
+7. 作業スタイル：
+   - シンプルで読みやすいものを優先する．
+   - 不要な装飾・冗長な説明は省く．
+   - 既存のパターン・命名規則に合わせる．
+   - デプロイや動作確認は自分で完結させ，ユーザーに頼まない．
+
+---
+それでは，まずは指示通り『Knowledge/mistakes.md』と『Preferences/』配下のファイルを読み込んでから回答を開始してください．"
 
       # 2. Antigravity CLIの起動
       # 対話セッションをバックグラウンド実行して終了時にログを保存するため、セッション実行前の最新IDを記録
@@ -33,13 +98,8 @@ let
         PREV_LATEST=$(ls -td "$BRAIN_DIR"/*/ 2>/dev/null | head -n 1)
       fi
 
-      if [ -n "$NOTE_CONTENT" ]; then
-        # 初期プロンプトにメモ内容を含めて対話起動
-        INITIAL_PROMPT="以下のObsidianメモの内容をコンテキスト（参照情報）として理解してください．\n\n=== メモ: $SELECTED_NOTE ===\n$NOTE_CONTENT\n=======================\n\n上記メモのコンテキストを踏まえて，回答を開始してください．"
-        antigravity-cli --prompt-interactive "$INITIAL_PROMPT"
-      else
-        antigravity-cli
-      fi
+      # ルールプロンプトを初期値として引き渡して起動
+      antigravity-cli --prompt-interactive "$RULE_PROMPT"
 
       # 3. セッション終了後のログ保存
       echo "対話セッションが終了しました．会話履歴をObsidianに保存します..."
