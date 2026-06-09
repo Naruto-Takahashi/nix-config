@@ -11,14 +11,14 @@ let
 
     【行動ルール】
     1. 読み取り（セッション開始時に必ず実行）：
-       - 行動ルール（30_Library/Knowledge/mistakes.md）と，40_Profile/ 配下のユーザープロファイルを最初に必ず読み込んでください．
+       - 行動ルール（04_Library/Knowledge/mistakes.md）と，05_Profile/ 配下のユーザープロファイルを最初に必ず読み込んでください．
        - 私の質問に関連するキーワードでVaultを検索し，ヒットしたノートを読んでその内容を踏まえて回答してください．
 
     2. 書き込み（その場でVaultに書き込む。「後で書く」はしない）：
-       - バグ解決，設定ハマり対策，新しい発見などは「30_Library/Knowledge/」に書き込む．
-       - 判断・設計の方針決定は「30_Library/Decisions/」に書き込む．
-       - プロジェクトの状態変更は「20_Projects/」に書き込む．
-       - ユーザーの好みの発見は「40_Profile/」に書き込む．
+       - バグ解決，設定ハマり対策，新しい発見などは「04_Library/Knowledge/」に書き込む．
+       - 判断・設計の方針決定は「04_Library/Decisions/」に書き込む．
+       - プロジェクトの状態変更は「03_Projects/」に書き込む．
+       - ユーザーの好みの発見は「05_Profile/」に書き込む．
 
     3. 書き込みフォーマット：
        ノートには必ず以下のYAMLフロントマターを付与してください：
@@ -32,7 +32,7 @@ let
        本文。関連ノートには [[wiki link]] でリンクする．
 
     4. mistakes.md への追記ルール：
-       ユーザーから明示的な訂正を受け，かつ「繰り返し起こり得るパターン」を満たす場合，即座に 30_Library/Knowledge/mistakes.md に追記してください．
+       ユーザーから明示的な訂正を受け，かつ「繰り返し起こり得るパターン」を満たす場合，即座に 04_Library/Knowledge/mistakes.md に追記してください．
 
     5. 報告：
        Obsidianを読み書きしたら，必ずユーザーに伝えてください．
@@ -65,14 +65,14 @@ let
       if [ -d "$BRAIN_DIR" ]; then
         NEW_LATEST=$(ls -td "$BRAIN_DIR"/*/ 2>/dev/null | head -n 1)
         if [ -n "$NEW_LATEST" ] && [ "$NEW_LATEST" != "$PREV_LATEST" ]; then
-          SESSION_ID=$(basename "$NEW_LATEST")
           DATE_STR=$(date "+%Y-%m-%d_%H-%M-%S")
-          LOG_DIR="$VAULT_PATH/10_Journal/Antigravity"
+          LOG_DIR="$VAULT_PATH/02_Journal/Antigravity"
           mkdir -p "$LOG_DIR"
-          LOG_FILE="$LOG_DIR/Chat-$SESSION_ID-$DATE_STR.md"
+          LOG_FILE="$LOG_DIR/$DATE_STR.md"
 
           TRANSCRIPT_PATH="$NEW_LATEST/transcript.jsonl"
           if [ -f "$TRANSCRIPT_PATH" ]; then
+            SESSION_ID=$(basename "$NEW_LATEST")
             {
               echo "---"
               echo "date: $(date "+%Y-%m-%d")"
@@ -123,9 +123,9 @@ let
         NEW_LATEST=$(ls -t "$HISTORY_DIR"/session-*.jsonl 2>/dev/null | head -n 1)
         if [ -n "$NEW_LATEST" ] && [ "$NEW_LATEST" != "$PREV_LATEST" ]; then
           DATE_STR=$(date "+%Y-%m-%d_%H-%M-%S")
-          LOG_DIR="$VAULT_PATH/10_Journal/Gemini"
+          LOG_DIR="$VAULT_PATH/02_Journal/Gemini"
           mkdir -p "$LOG_DIR"
-          LOG_FILE="$LOG_DIR/Chat-$DATE_STR.md"
+          LOG_FILE="$LOG_DIR/$DATE_STR.md"
 
           {
             echo "---"
