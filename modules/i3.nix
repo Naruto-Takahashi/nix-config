@@ -60,8 +60,6 @@ in
 
         # アプリケーションランチャー (rofi) の起動 (リモート判定ラッパー経由)
         "${modifier}+d"           = "exec /home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi";
-        "${modifier}+space"       = "exec --no-startup-id \"/home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # 代替 (Super + Space)
-        "F13"                     = "exec --no-startup-id \"/home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # CRDマッピング用 (Alt+SpaceをF13に振る)
         "Mod1+space"              = "exec --no-startup-id \"/home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # リモート環境用 (Alt + Space)
         "--release Mod1+space"    = "exec --no-startup-id \"/home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # 確実な起動用
 
