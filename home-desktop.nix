@@ -19,6 +19,7 @@
     ./modules/i3.nix            # i3 Window Manager 設定
     ./modules/direnv.nix        # direnv 設定 (nix-direnv対応)
     ./modules/yazi.nix          # Yazi ファイルマネージャ設定
+    ./modules/chrome-remote-desktop.nix # Chrome Remote Desktop 設定
   ];
 
   # -----------------------------------------------------------------------

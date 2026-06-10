@@ -15,6 +15,7 @@
 * 💻 **[WezTerm 設定・キーバインド詳細](docs/wezterm.md)**: フォント、背景の75%半透明適用、動的タブタイトル、Leaderキー（`Ctrl+Space`）によるタブ・ペイン管理。
 * 📝 **[Neovim 設定・キーマップ詳細](docs/neovim.md)**: 相対行表示や透過背景設定、`jk` によるインサート抜け、Zenn用画像貼り付けなどの高度なLuaカスタムマクロ。
 * 📁 **[Yazi 設定・使い方詳細](docs/yazi.md)**: Cyberdreamテーマカスタマイズ・透過設定、Vim風キーバインド全一覧、シェル統合によるディレクトリ移動連携。
+* 🌐 **[Chrome Remote Desktop 設定詳細](docs/chrome-remote-desktop.md)**: 自宅から研究室PCへセキュアにアクセスするための、Google経由のリモートデスクトップ設定手順。
 
 ---
 

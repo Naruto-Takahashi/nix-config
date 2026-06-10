@@ -20,7 +20,12 @@
     config.automatically_reload_config = true
     config.scrollback_lines = 10000
     config.font = wezterm.font 'HackGen Console NF'
-    config.font_size = 12.0
+
+    -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
+    local display = os.getenv("DISPLAY") or ""
+    local is_remote = display:match(":[1-9]%d") ~= nil
+    config.font_size = is_remote and 10.0 or 12.0
+
     config.initial_cols = 120
     config.initial_rows = 35
     config.use_ime = true

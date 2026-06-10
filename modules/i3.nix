@@ -14,10 +14,10 @@ in
   xsession.profileExtra = ''
     export XDG_SESSION_TYPE=x11
 
-    # DISPLAY番号が10以上（XRDPセッション）の場合のみ、DPIを大きく設定して文字を大きくする（192 DPI = 200%スケール）
+    # DISPLAY番号が10以上（XRDPセッション）の場合のみ、DPIを標準に設定（96 DPI = 100%スケール）
     display_num=$(echo $DISPLAY | cut -d: -f2 | cut -d. -f1)
     if [ -n "$display_num" ] && [ "$display_num" -ge 10 ]; then
-      echo "Xft.dpi: 192" | ${pkgs.xrdb}/bin/xrdb -merge
+      echo "Xft.dpi: 96" | ${pkgs.xrdb}/bin/xrdb -merge
     fi
   '';
 
@@ -44,6 +44,10 @@ in
     '';
     config = {
       inherit modifier;
+      fonts = {
+        names = [ "HackGen NF" ];
+        size = 11.0;
+      };
 
       # 独自キーバインドの割り当て
       keybindings = lib.mkOptionDefault {
@@ -55,8 +59,9 @@ in
         "Mod1+Return"             = "exec ${weztermCmd}"; # リモート環境用 (Alt + Enter)
 
         # アプリケーションランチャー (rofi) の起動 (Wayland誤判定防止環境変数つき)
-        "${modifier}+d"           = "exec env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi";
-        "Mod1+space"              = "exec --no-startup-id \"sleep 0.2 && env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # リモート環境用 (Alt + Space)
+        # リモート時はフォントを小さくする動的判定を追加
+        "${modifier}+d"           = "exec sh -c 'display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then font_arg=\"-font \\\"HackGen NF 11\\\"\"; else font_arg=\"\"; fi; env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi \$font_arg -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi'";
+        "Mod1+space"              = "exec --no-startup-id \"sleep 0.2 && sh -c 'display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then font_arg=\"-font \\\"HackGen NF 11\\\"\"; else font_arg=\"\"; fi; env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi \$font_arg -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi'\""; # リモート環境用 (Alt + Space)
 
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";
@@ -192,7 +197,7 @@ in
         { command = "i3-msg workspace 1"; notification = false; }
 
         # 壁紙の設定 (ユーザーカスタム壁紙)
-        { command = "${pkgs.feh}/bin/feh --bg-scale /home/nalt/Pictures/my-wallpaper.jpg"; notification = false; always = true; }
+        { command = "${pkgs.feh}/bin/feh --bg-fill /home/nalt/Pictures/my-wallpaper.jpg"; notification = false; always = true; }
 
         # X11 コンポジタ (Picom) の起動 (透過表示・美化効果の有効化)
         # ※現在の DISPLAY に属する picom インスタンスのみを特定して kill してから再起動することで、物理画面に干渉せずリモートでも透過を有効化します
@@ -204,8 +209,8 @@ in
         # Wayland誤検知バグの修正 (DBus/Systemdユーザー環境変数を強制上書き)
         { command = "dbus-update-activation-environment --systemd XDG_SESSION_TYPE=x11"; notification = false; always = true; }
 
-        # XRDPセッションの場合のみ、DPIを大きく設定して文字を大きくする（192 DPI = 200%スケール）
-        { command = "display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then echo \"Xft.dpi: 192\" | ${pkgs.xrdb}/bin/xrdb -merge; fi"; notification = false; always = true; }
+        # XRDPセッションの場合のみ、DPIを標準に設定（96 DPI = 100%スケール）し、i3本体とバーのフォントをさらに小さくする
+        { command = "display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then echo \"Xft.dpi: 96\" | ${pkgs.xrdb}/bin/xrdb -merge; i3-msg 'font pango:HackGen NF 9'; i3-msg 'bar mainbar font pango:HackGen NF 8'; fi"; notification = false; always = true; }
       ];
 
       # -----------------------------------------------------------------------
@@ -240,7 +245,12 @@ in
       # -----------------------------------------------------------------------
       bars = [
         {
+          id = "mainbar";
           position = "top";
+          fonts = {
+            names = [ "HackGen NF" ];
+            size = 10.0;
+          };
           statusCommand = "/home/nalt/.config/home-manager/modules/i3status_wrapper.py";
           colors = {
             background = "#1a1b26";
