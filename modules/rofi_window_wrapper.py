@@ -59,11 +59,11 @@ def main():
         border-radius: 12px;
     }
     window {
-        width: 75%;
+        width: 50%;
         border: 1px;
         border-color: @accent;
         background-color: @bg;
-        padding: 30px;
+        padding: 20px;
     }
     mainbox {
         background-color: transparent;
@@ -71,7 +71,7 @@ def main():
     }
     inputbar {
         background-color: @bg-alt;
-        margin: 0px 0px 20px 0px;
+        margin: 0px 0px 15px 0px;
         padding: 10px;
         border-radius: 8px;
         children: [ prompt, entry ];
@@ -87,8 +87,8 @@ def main():
     }
     listview {
         columns: 3;
-        lines: 2;
-        spacing: 30px;
+        lines: 3;
+        spacing: 15px;
         background-color: transparent;
         fixed-columns: true;
         scrollbar: false;
@@ -96,7 +96,7 @@ def main():
     }
     element {
         orientation: vertical;
-        padding: 15px;
+        padding: 10px;
         background-color: @bg-alt;
         border: 1px;
         border-color: #333333;
@@ -106,7 +106,7 @@ def main():
         border-color: @accent;
     }
     element-icon {
-        size: 160px;
+        size: 96px;
         horizontal-align: 0.5;
         background-color: transparent;
     }
