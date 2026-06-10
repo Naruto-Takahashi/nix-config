@@ -58,10 +58,9 @@ in
         "${modifier}+Return"      = "exec ${weztermCmd}";
         "Mod1+Return"             = "exec ${weztermCmd}"; # リモート環境用 (Alt + Enter)
 
-        # アプリケーションランチャー (rofi) の起動 (Wayland誤判定防止環境変数つき)
-        # リモート時はフォントを小さくする動的判定を追加
-        "${modifier}+d"           = "exec sh -c 'display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then font_arg=\"-font \\\"HackGen NF 11\\\"\"; else font_arg=\"\"; fi; env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi \$font_arg -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi'";
-        "Mod1+space"              = "exec --no-startup-id \"sleep 0.2 && sh -c 'display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1); if [ -n \"\$display_num\" ] && [ \"\$display_num\" -ge 10 ]; then font_arg=\"-font \\\"HackGen NF 11\\\"\"; else font_arg=\"\"; fi; env XDG_SESSION_TYPE=x11 ${pkgs.rofi}/bin/rofi \$font_arg -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi'\""; # リモート環境用 (Alt + Space)
+        # アプリケーションランチャー (rofi) の起動 (リモート判定ラッパー経由)
+        "${modifier}+d"           = "exec /home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi";
+        "Mod1+space"              = "exec --no-startup-id \"sleep 0.2 && /home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # リモート環境用 (Alt + Space)
 
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";
