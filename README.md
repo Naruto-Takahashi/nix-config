@@ -103,12 +103,39 @@ exec zsh
 
 ---
 
-## 🖥️ リモートアクセス環境の構築 (WindowsノートPCからXRDP接続)
+## 🖥️ リモートアクセス環境の構築
 
-WindowsのノートPCからこのUbuntuデスクトップに安全・快適にリモートデスクトップ接続するための手順です。
-Nix（Home Manager）でセッション設定や画面スケーリングを一元管理しつつ、SSHトンネル経由で接続します。
+自宅の Windows ノート PC 等から研究室の Ubuntu デスクトップに安全・快適にアクセスするための手順です。
 
-### 1. ホストPC（Ubuntu）側での事前準備（初回のみ）
+### 1. Chrome Remote Desktop (推奨)
+
+Google 経由で最も簡単に、かつ高画質・低遅延でアクセスできる方法です。i3wm のセッション設定や動的フォントスケーリングにも対応しています。
+
+#### ホスト PC (Ubuntu) 側での準備
+1. **本体のインストールとグループ追加**:
+   ```bash
+   wget https://dl.google.com/linux/direct/chrome-remote-desktop_current_amd64.deb
+   sudo apt install ./chrome-remote-desktop_current_amd64.deb
+   sudo usermod -a -G chrome-remote-desktop $USER
+   ```
+2. **Nix 設定の適用**:
+   本リポジトリの設定を適用すると、`~/.chrome-remote-desktop-session` が自動生成され、リモート接続時に i3wm が適切な設定（DPI 96, コンパクトフォント）で起動するようになります。
+   ```bash
+   home-manager switch --flake .#nalt-desktop --impure
+   ```
+3. **リモートアクセスの有効化**:
+   [Chrome Remote Desktop (Headless)](https://remotedesktop.google.com/headless) にアクセスし、指示に従ってコマンドを実行・PIN を設定してください。
+
+#### Windows クライアント側でのコツ
+- **アプリ化**: ブラウザのタブではなく PWA（アプリ）としてインストールすると、`Alt+Tab` 等の競合が減り快適になります。
+- **全画面表示**: CRD のサイドメニューから「全画面表示」と「システムのショートカットキーを送信」をオンにしてください。
+- **キーバインド**: リモート時は `Win` (Super) キーが奪われやすいため、`Alt` (Mod1) を使った代替バインド（`Alt+Enter` でターミナル等）も活用してください。
+
+---
+
+### 2. XRDP (SSHトンネル経由)
+
+Windows 標準のリモートデスクトップ接続 (mstsc) を使用する方法です。
 ターミナルで以下のコマンドを実行し、必要なサービスをインストール・有効化し、自動スリープを防止します。
 
 ```bash
