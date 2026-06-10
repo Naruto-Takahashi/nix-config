@@ -60,7 +60,8 @@ in
 
         # アプリケーションランチャー (rofi) の起動 (リモート判定ラッパー経由)
         "${modifier}+d"           = "exec /home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi";
-        "Mod1+space"              = "exec --no-startup-id \"sleep 0.2 && /home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # リモート環境用 (Alt + Space)
+        "Mod1+space"              = "exec --no-startup-id \"/home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # リモート環境用 (Alt + Space)
+        "--release Mod1+space"    = "exec --no-startup-id \"/home/nalt/.config/home-manager/modules/rofi_launcher.sh -show drun -show-icons -theme /home/nalt/.config/rofi/simple_theme.rasi\""; # 確実な起動用
 
         # ウィンドウを閉じる (GNOME Forgeと統一)
         "${modifier}+Shift+q"     = "kill";
