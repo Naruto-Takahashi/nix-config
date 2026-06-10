@@ -9,6 +9,13 @@
     enableZshIntegration = true;
 
     settings = {
+      manager = {
+        ratio = [
+          1
+          2
+          4
+        ];
+      };
       opener = {
         open = [
           {
