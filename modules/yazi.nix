@@ -165,7 +165,7 @@
       { url = "**.js", fg = "#e6c384" },
       { url = "**.ts", fg = "#7fb4ca" },
       # デフォルト設定 (kanagawa-dragonの基本色を維持)
-      { url = "*/", fg = "#8ba4b0" }, # ディレクトリ
+      { url = "*/", fg = "#e6c384" }, # ディレクトリを薄黄色(carpYellow)に変更
       { url = "*", fg = "#c5c9c5" }  # その他
     ]
 
