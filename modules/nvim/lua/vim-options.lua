@@ -10,75 +10,75 @@ vim.cmd("set number")
 vim.cmd("set relativenumber") -- 動画では relative number を使うことが多いので合わせますが、お好みで変えてください
 vim.cmd("set clipboard=unnamedplus")
 vim.cmd("set mouse=a")
-vim.cmd("set cursorline") -- カーソル行をハイライト
+vim.cmd("set cursorline")   -- カーソル行をハイライト
 vim.cmd("set cursorcolumn") -- カーソル列をハイライト
-vim.g.mapleader = " " -- スペースキーをリーダーキーにする（Typecraft推奨）
+vim.g.mapleader = " "       -- スペースキーをリーダーキーにする（Typecraft推奨）
 
 -- Transparency settings (背景透過設定)
 vim.api.nvim_create_autocmd("ColorScheme", {
-  pattern = "*",
-  callback = function()
-    local hl = vim.api.nvim_set_hl
-    local no_bg = { bg = "none" }
-    hl(0, "Normal", no_bg)
-    hl(0, "NormalFloat", no_bg)
-    hl(0, "NormalNC", no_bg)
-    hl(0, "SignColumn", no_bg)
-    hl(0, "LineNr", { bg = "none" })
-    hl(0, "CursorLineNr", { bg = "none", bold = true })
-    hl(0, "CursorLine", { bg = "#333333" })
-    hl(0, "CursorColumn", { bg = "#333333" })
-    -- hl(0, "CursorLine", { bg = "none", underline = true }) -- カーソル行の背景を表示するためにコメントアウト
+    pattern = "*",
+    callback = function()
+        local hl = vim.api.nvim_set_hl
+        local no_bg = { bg = "none" }
+        hl(0, "Normal", no_bg)
+        hl(0, "NormalFloat", no_bg)
+        hl(0, "NormalNC", no_bg)
+        hl(0, "SignColumn", no_bg)
+        hl(0, "LineNr", { bg = "none" })
+        hl(0, "CursorLineNr", { bg = "none", bold = true })
+        hl(0, "CursorLine", { bg = "#222222" })
+        hl(0, "CursorColumn", { bg = "#222222" })
+        -- hl(0, "CursorLine", { bg = "none", underline = true }) -- カーソル行の背景を表示するためにコメントアウト
 
-    -- Telescope Transparency (Telescope の背景透過)
-    hl(0, "TelescopeNormal", no_bg)
-    hl(0, "TelescopeBorder", no_bg)
-    hl(0, "TelescopePromptNormal", no_bg)
-    hl(0, "TelescopePromptBorder", no_bg)
-    hl(0, "TelescopeResultsNormal", no_bg)
-    hl(0, "TelescopeResultsBorder", no_bg)
-    hl(0, "TelescopePreviewNormal", no_bg)
-    hl(0, "TelescopePreviewBorder", no_bg)
+        -- Telescope Transparency (Telescope の背景透過)
+        hl(0, "TelescopeNormal", no_bg)
+        hl(0, "TelescopeBorder", no_bg)
+        hl(0, "TelescopePromptNormal", no_bg)
+        hl(0, "TelescopePromptBorder", no_bg)
+        hl(0, "TelescopeResultsNormal", no_bg)
+        hl(0, "TelescopeResultsBorder", no_bg)
+        hl(0, "TelescopePreviewNormal", no_bg)
+        hl(0, "TelescopePreviewBorder", no_bg)
 
-    -- Diagnostic Colors (エラーを赤，警告・情報・ヒントをゴールド化)
-    hl(0, "DiagnosticError", { fg = "#fb4934" })
-    hl(0, "DiagnosticWarn", { fg = "#ffc20d" })
-    hl(0, "DiagnosticInfo", { fg = "#ffc20d" })
-    hl(0, "DiagnosticHint", { fg = "#ffc20d" })
-    hl(0, "DiagnosticFloatingError", { fg = "#fb4934" })
-    hl(0, "DiagnosticFloatingWarn", { fg = "#ffc20d" })
-    hl(0, "DiagnosticFloatingInfo", { fg = "#ffc20d" })
-    hl(0, "DiagnosticFloatingHint", { fg = "#ffc20d" })
-    hl(0, "DiagnosticSignError", { fg = "#fb4934" })
-    hl(0, "DiagnosticSignWarn", { fg = "#ffc20d" })
-    hl(0, "DiagnosticSignInfo", { fg = "#ffc20d" })
-    hl(0, "DiagnosticSignHint", { fg = "#ffc20d" })
-    hl(0, "DiagnosticUnderlineError", { sp = "#fb4934", undercurl = true })
-    hl(0, "DiagnosticUnderlineWarn", { sp = "#ffc20d", undercurl = true })
-    hl(0, "DiagnosticUnderlineInfo", { sp = "#ffc20d", undercurl = true })
-    hl(0, "DiagnosticUnderlineHint", { sp = "#ffc20d", undercurl = true })
+        -- Diagnostic Colors (エラーを赤，警告・情報・ヒントをゴールド化)
+        hl(0, "DiagnosticError", { fg = "#fb4934" })
+        hl(0, "DiagnosticWarn", { fg = "#ffc20d" })
+        hl(0, "DiagnosticInfo", { fg = "#ffc20d" })
+        hl(0, "DiagnosticHint", { fg = "#ffc20d" })
+        hl(0, "DiagnosticFloatingError", { fg = "#fb4934" })
+        hl(0, "DiagnosticFloatingWarn", { fg = "#ffc20d" })
+        hl(0, "DiagnosticFloatingInfo", { fg = "#ffc20d" })
+        hl(0, "DiagnosticFloatingHint", { fg = "#ffc20d" })
+        hl(0, "DiagnosticSignError", { fg = "#fb4934" })
+        hl(0, "DiagnosticSignWarn", { fg = "#ffc20d" })
+        hl(0, "DiagnosticSignInfo", { fg = "#ffc20d" })
+        hl(0, "DiagnosticSignHint", { fg = "#ffc20d" })
+        hl(0, "DiagnosticUnderlineError", { sp = "#fb4934", undercurl = true })
+        hl(0, "DiagnosticUnderlineWarn", { sp = "#ffc20d", undercurl = true })
+        hl(0, "DiagnosticUnderlineInfo", { sp = "#ffc20d", undercurl = true })
+        hl(0, "DiagnosticUnderlineHint", { sp = "#ffc20d", undercurl = true })
 
-    -- Mode Message (-- INSERT -- などのモード表示をゴールド化)
-    hl(0, "ModeMsg", { fg = "#ffc20d", bold = true })
+        -- Mode Message (-- INSERT -- などのモード表示をゴールド化)
+        hl(0, "ModeMsg", { fg = "#ffc20d", bold = true })
 
-    -- Dashboard Neon Colors
-    hl(0, "SnacksDashboardHeader1", { fg = "#ff007c", bold = true })
-    hl(0, "SnacksDashboardHeader2", { fg = "#00e5ff", bold = true })
-    hl(0, "SnacksDashboardHeader3", { fg = "#00ff9d", bold = true })
-    hl(0, "SnacksDashboardHeader4", { fg = "#ffe600", bold = true })
-    hl(0, "SnacksDashboardHeader5", { fg = "#ff8c00", bold = true })
-    hl(0, "SnacksDashboardHeader6", { fg = "#bd00ff", bold = true })
+        -- Dashboard Neon Colors
+        hl(0, "SnacksDashboardHeader1", { fg = "#ff007c", bold = true })
+        hl(0, "SnacksDashboardHeader2", { fg = "#00e5ff", bold = true })
+        hl(0, "SnacksDashboardHeader3", { fg = "#00ff9d", bold = true })
+        hl(0, "SnacksDashboardHeader4", { fg = "#ffe600", bold = true })
+        hl(0, "SnacksDashboardHeader5", { fg = "#ff8c00", bold = true })
+        hl(0, "SnacksDashboardHeader6", { fg = "#bd00ff", bold = true })
 
-    hl(0, "SnacksDashboardIconCyan", { fg = "#00e5ff" })
-    hl(0, "SnacksDashboardIconGreen", { fg = "#00ff9d" })
-    hl(0, "SnacksDashboardIconYellow", { fg = "#ffe600" })
-    hl(0, "SnacksDashboardIconOrange", { fg = "#ff8c00" })
-    hl(0, "SnacksDashboardIconPink", { fg = "#ff007c" })
-    hl(0, "SnacksDashboardIconPurple", { fg = "#bd00ff" })
-    hl(0, "SnacksDashboardIconBlue", { fg = "#0077ff" })
-    hl(0, "SnacksDashboardIconRed", { fg = "#ff3131" })
-    hl(0, "SnacksDashboardWhite", { fg = "#ffffff" })
-  end,
+        hl(0, "SnacksDashboardIconCyan", { fg = "#00e5ff" })
+        hl(0, "SnacksDashboardIconGreen", { fg = "#00ff9d" })
+        hl(0, "SnacksDashboardIconYellow", { fg = "#ffe600" })
+        hl(0, "SnacksDashboardIconOrange", { fg = "#ff8c00" })
+        hl(0, "SnacksDashboardIconPink", { fg = "#ff007c" })
+        hl(0, "SnacksDashboardIconPurple", { fg = "#bd00ff" })
+        hl(0, "SnacksDashboardIconBlue", { fg = "#0077ff" })
+        hl(0, "SnacksDashboardIconRed", { fg = "#ff3131" })
+        hl(0, "SnacksDashboardWhite", { fg = "#ffffff" })
+    end,
 })
 
 -- Keymaps
@@ -86,17 +86,17 @@ vim.keymap.set("n", "<leader>cd", ":Ex<CR>", { desc = "Open Netrw Explorer" })
 
 -- OS Specific Settings
 if vim.fn.has("win32") == 1 then
-  -- [Windows]
-  vim.opt.makeprg = "mingw32-make"
-  -- Shell configuration (PowerShell)
-  vim.opt.shell = "powershell.exe"
-  vim.opt.shellcmdflag = "-NoProfile -NoLogo -NonInteractive -Command"
-  vim.opt.shellquote = ""
-  vim.opt.shellxquote = ""
+    -- [Windows]
+    vim.opt.makeprg = "mingw32-make"
+    -- Shell configuration (PowerShell)
+    vim.opt.shell = "powershell.exe"
+    vim.opt.shellcmdflag = "-NoProfile -NoLogo -NonInteractive -Command"
+    vim.opt.shellquote = ""
+    vim.opt.shellxquote = ""
 else
-  -- [Linux / WSL]
-  vim.opt.makeprg = "make"
-  -- Shell is usually bash/zsh by default, so no need to change
+    -- [Linux / WSL]
+    vim.opt.makeprg = "make"
+    -- Shell is usually bash/zsh by default, so no need to change
 end
 
 -- Window Navigation
@@ -117,15 +117,15 @@ vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear Highlight" })
 
 -- Open KEYBINDINGS on GitHub
 vim.keymap.set("n", "<leader>m", function()
-  local url = "https://github.com/Naruto-Takahashi/dotfiles/blob/main/nvim/KEYBINDINGS.md"
-  local cmd
-  if vim.fn.has("win32") == 1 then
-    cmd = "start " .. url
-  else
-    -- WSL / Linux: Use powershell.exe to open the browser on Windows
-    cmd = string.format("powershell.exe -Command Start-Process '%s'", url)
-  end
-  vim.fn.jobstart(cmd, { detach = true })
+    local url = "https://github.com/Naruto-Takahashi/dotfiles/blob/main/nvim/KEYBINDINGS.md"
+    local cmd
+    if vim.fn.has("win32") == 1 then
+        cmd = "start " .. url
+    else
+        -- WSL / Linux: Use powershell.exe to open the browser on Windows
+        cmd = string.format("powershell.exe -Command Start-Process '%s'", url)
+    end
+    vim.fn.jobstart(cmd, { detach = true })
 end, { desc = "Open KEYBINDINGS.md on GitHub" })
 
 -- ==========================================================================
@@ -135,60 +135,61 @@ end, { desc = "Open KEYBINDINGS.md on GitHub" })
 -- 現在のZenn記事プロジェクトの images ディレクトリに保存し、Markdownリンクを挿入します。
 
 local function paste_zenn_image()
-  -- プロジェクトルート検出（.gitがある場所、なければカレント）
-  local root = vim.fs.dirname(vim.fs.find(".git", { path = vim.fn.expand("%:p:h"), upward = true })[1]) or vim.fn.getcwd()
+    -- プロジェクトルート検出（.gitがある場所、なければカレント）
+    local root = vim.fs.dirname(vim.fs.find(".git", { path = vim.fn.expand("%:p:h"), upward = true })[1]) or
+    vim.fn.getcwd()
 
-  -- 現在のファイル名（拡張子なし）をslugとして取得
-  local slug = vim.fn.expand("%:t:r")
-  
-  -- デフォルトファイル名の生成
-  local date = os.date("%Y%m%d%H%M%S")
-  local default_name
-  
-  -- slugが取得できればフォルダ分けする
-  if slug and slug ~= "" then
-    default_name = slug .. "/image-" .. date
-  else
-    default_name = "image-" .. date
-  end
+    -- 現在のファイル名（拡張子なし）をslugとして取得
+    local slug = vim.fn.expand("%:t:r")
 
-  -- ファイル名（パス）の入力
-  vim.ui.input({ prompt = "Image name (under /images/): ", default = default_name }, function(input)
-    if not input or input == "" then
-      return -- キャンセルまたは空入力
-    end
+    -- デフォルトファイル名の生成
+    local date = os.date("%Y%m%d%H%M%S")
+    local default_name
 
-    -- 拡張子 .png がなければ付与（get-clip-imgがpngを出力するため）
-    if not input:match("%.png$") then
-      input = input .. ".png"
-    end
-
-    -- Zenn推奨の images ディレクトリ配下に保存
-    local img_rel_path = "/images/" .. input
-    local fullpath = root .. img_rel_path
-    local img_dir = vim.fs.dirname(fullpath)
-
-    -- ディレクトリが存在しない場合は作成
-    if vim.fn.isdirectory(img_dir) == 0 then
-      vim.fn.mkdir(img_dir, "p")
-    end
-
-    -- スクリプト実行
-    local cmd = "get-clip-img " .. vim.fn.shellescape(fullpath)
-
-    vim.notify("Saving image to " .. img_rel_path .. " ...", vim.log.levels.INFO)
-    local result = vim.fn.system(cmd)
-
-    if vim.v.shell_error == 0 then
-      -- 成功時: 相対パスでMarkdownリンクを挿入
-      local insert_text = "![](" .. img_rel_path .. ")"
-      vim.api.nvim_put({insert_text}, "c", true, true)
-      vim.notify("Saved: " .. img_rel_path, vim.log.levels.INFO)
+    -- slugが取得できればフォルダ分けする
+    if slug and slug ~= "" then
+        default_name = slug .. "/image-" .. date
     else
-      -- 失敗時
-      vim.notify("Failed: " .. result, vim.log.levels.ERROR)
+        default_name = "image-" .. date
     end
-  end)
+
+    -- ファイル名（パス）の入力
+    vim.ui.input({ prompt = "Image name (under /images/): ", default = default_name }, function(input)
+        if not input or input == "" then
+            return -- キャンセルまたは空入力
+        end
+
+        -- 拡張子 .png がなければ付与（get-clip-imgがpngを出力するため）
+        if not input:match("%.png$") then
+            input = input .. ".png"
+        end
+
+        -- Zenn推奨の images ディレクトリ配下に保存
+        local img_rel_path = "/images/" .. input
+        local fullpath = root .. img_rel_path
+        local img_dir = vim.fs.dirname(fullpath)
+
+        -- ディレクトリが存在しない場合は作成
+        if vim.fn.isdirectory(img_dir) == 0 then
+            vim.fn.mkdir(img_dir, "p")
+        end
+
+        -- スクリプト実行
+        local cmd = "get-clip-img " .. vim.fn.shellescape(fullpath)
+
+        vim.notify("Saving image to " .. img_rel_path .. " ...", vim.log.levels.INFO)
+        local result = vim.fn.system(cmd)
+
+        if vim.v.shell_error == 0 then
+            -- 成功時: 相対パスでMarkdownリンクを挿入
+            local insert_text = "![](" .. img_rel_path .. ")"
+            vim.api.nvim_put({ insert_text }, "c", true, true)
+            vim.notify("Saved: " .. img_rel_path, vim.log.levels.INFO)
+        else
+            -- 失敗時
+            vim.notify("Failed: " .. result, vim.log.levels.ERROR)
+        end
+    end)
 end
 
 -- キーバインド設定: <leader>ip
@@ -198,31 +199,32 @@ vim.keymap.set("n", "<leader>ip", paste_zenn_image, { desc = "Paste Image (Zenn/
 --  TOhtml Auto-Save
 -- ==========================================================================
 vim.api.nvim_create_user_command("ToHtmlSave", function()
-  -- 現在のファイルパスを取得
-  local current_file = vim.fn.expand("%:p")
-  local current_dir = vim.fn.expand("%:p:h")
-  local file_name = vim.fn.expand("%:t")
-  
-  if current_file == "" then
-    vim.notify("No file associated with this buffer.", vim.log.levels.ERROR)
-    return
-  end
+    -- 現在のファイルパスを取得
+    local current_file = vim.fn.expand("%:p")
+    local current_dir = vim.fn.expand("%:p:h")
+    local file_name = vim.fn.expand("%:t")
 
-  -- HTMLファイル名を決定 (拡張子を .html に変更、なければ追加)
-  local html_name = file_name:gsub("%.%w+$", "") .. ".html"
-  if html_name == file_name then html_name = file_name .. ".html" end
-  local output_path = current_dir .. "/" .. html_name
+    if current_file == "" then
+        vim.notify("No file associated with this buffer.", vim.log.levels.ERROR)
+        return
+    end
 
-  -- TOhtml実行
-  vim.cmd("TOhtml")
-  
-  -- 生成されたHTMLバッファで保存を実行
-  vim.cmd("w! " .. vim.fn.fnameescape(output_path))
-  
-  -- HTMLバッファを閉じる（今のバッファがHTMLになっているので）
-  vim.cmd("bd") 
-  
-  vim.notify("HTML saved to: " .. output_path, vim.log.levels.INFO)
+    -- HTMLファイル名を決定 (拡張子を .html に変更、なければ追加)
+    local html_name = file_name:gsub("%.%w+$", "") .. ".html"
+    if html_name == file_name then html_name = file_name .. ".html" end
+    local output_path = current_dir .. "/" .. html_name
+
+    -- TOhtml実行
+    vim.cmd("TOhtml")
+
+    -- 生成されたHTMLバッファで保存を実行
+    vim.cmd("w! " .. vim.fn.fnameescape(output_path))
+
+    -- HTMLバッファを閉じる（今のバッファがHTMLになっているので）
+    vim.cmd("bd")
+
+    vim.notify("HTML saved to: " .. output_path, vim.log.levels.INFO)
 end, { desc = "Convert to HTML and save in the same directory" })
 
 vim.keymap.set("n", "<leader>th", ":ToHtmlSave<CR>", { desc = "TOhtml and Save" })
+
