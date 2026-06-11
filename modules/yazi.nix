@@ -98,6 +98,7 @@
     if h then
         h.render = function(self, area)
             local chunks = self:layout(area)
+            if not chunks or not chunks[1] then return {} end
             local left = ui.Line {
                 ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(true),
                 ui.Span(":"):fg("#ebdbb2"),
@@ -110,14 +111,18 @@
     end
   '';
 
-
-
   # フレーバーリポジトリの配置
   xdg.configFile."yazi/flavors/kanagawa-dragon.yazi".source = kanagawa-dragon-yazi;
 
   # スクリーンショットの色使いを再現したテーマ設定
   xdg.configFile."yazi/theme.toml".text = ''
     #:schema https://yazi-rs.github.io/schemas/theme.json
+
+    [manager]
+    cwd = { fg = "#e46876" }
+
+    [mgr]
+    cwd = { fg = "#e46876" }
 
     [filetype]
     rules = [
@@ -279,17 +284,6 @@
     ]
     prepend_conds = [
       { if = "dir", text = "󰉋", fg = "#e6c384" }
-    ]
-
-    append_conds = [
-      { if = "exec", text = "", fg = "#76946a" },
-      { if = "link", text = "", fg = "#7fb4ca" },
-      { if = "mime", mime = "image/*", text = "󰈟", fg = "#e6c384" },
-      { if = "mime", mime = "video/*", text = "󰈫", fg = "#a292a3" },
-      { if = "mime", mime = "audio/*", text = "󰎈", fg = "#a292a3" },
-      { if = "mime", mime = "application/pdf", text = "󰈦", fg = "#76946a" },
-      # 一般ファイルのデフォルト（ホワイト）
-      { if = "!dir", text = "", fg = "#c5c9c5" }
     ]
   '';
 }
