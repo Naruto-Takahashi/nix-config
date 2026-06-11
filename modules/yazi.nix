@@ -121,7 +121,52 @@
 
     [filetype]
     rules = [
-      { url = "*", fg = "#ff0000" }
+      # 特定ファイル
+      { url = "**/Cargo.toml", fg = "#76946a" },
+      { url = "**/config.toml", fg = "#76946a" },
+      { url = "**/theme.toml", fg = "#76946a" },
+      { url = "**/yazi.toml", fg = "#76946a" },
+      { url = "**/desktop.ini", fg = "#76946a" },
+      # ドキュメント・テキスト系
+      { url = "**.md", fg = "#76946a" },
+      { url = "**.pdf", fg = "#76946a" },
+      { url = "**.docx", fg = "#76946a" },
+      { url = "**.xlsx", fg = "#76946a" },
+      { url = "**.ini", fg = "#76946a" },
+      { url = "**.s", fg = "#76946a" },
+      { url = "**.sln", fg = "#76946a" },
+      { url = "**.out", fg = "#76946a" },
+      { url = "**.mp4", fg = "#a292a3" },
+      { url = "**.txt", fg = "#76946a" },
+      { url = "**.html", fg = "#76946a" },
+      { url = "**.exe", fg = "#76946a" },
+      { url = "**.json", fg = "#e6c384" },
+      { url = "**.toml", fg = "#76946a" },
+      { url = "**.yaml", fg = "#e6c384" },
+      { url = "**.yml", fg = "#e6c384" },
+      # 画像ファイル
+      { url = "**.png", fg = "#e6c384" },
+      { url = "**.jpg", fg = "#e6c384" },
+      { url = "**.jpeg", fg = "#e6c384" },
+      { url = "**.gif", fg = "#e6c384" },
+      # 圧縮アーカイブ
+      { url = "**.zip", fg = "#e46876" },
+      { url = "**.tar", fg = "#e46876" },
+      { url = "**.gz", fg = "#e46876" },
+      { url = "**.7z", fg = "#e46876" },
+      { url = "**.rar", fg = "#e46876" },
+      # プログラミング言語・スクリプト系
+      { url = "**.nix", fg = "#7fb4ca" },
+      { url = "**.go", fg = "#7fb4ca" },
+      { url = "**.py", fg = "#76946a" },
+      { url = "**.sh", fg = "#76946a" },
+      { url = "**.lua", fg = "#7fb4ca" },
+      { url = "**.rs", fg = "#e46876" },
+      { url = "**.js", fg = "#e6c384" },
+      { url = "**.ts", fg = "#7fb4ca" },
+      # デフォルト設定 (kanagawa-dragonの基本色を維持)
+      { url = "*/", fg = "#8ba4b0" }, # ディレクトリ
+      { url = "*", fg = "#c5c9c5" }  # その他
     ]
 
     [flavor]
