@@ -26,8 +26,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "SignColumn", no_bg)
         hl(0, "LineNr", { bg = "none" })
         hl(0, "CursorLineNr", { bg = "none", bold = true })
-        hl(0, "CursorLine", { bg = "#222222" })
-        hl(0, "CursorColumn", { bg = "#222222" })
+        hl(0, "CursorLine", { bg = "#444444" })
+        hl(0, "CursorColumn", { bg = "#444444" })
         -- hl(0, "CursorLine", { bg = "none", underline = true }) -- カーソル行の背景を表示するためにコメントアウト
 
         -- Telescope Transparency (Telescope の背景透過)
@@ -137,7 +137,7 @@ end, { desc = "Open KEYBINDINGS.md on GitHub" })
 local function paste_zenn_image()
     -- プロジェクトルート検出（.gitがある場所、なければカレント）
     local root = vim.fs.dirname(vim.fs.find(".git", { path = vim.fn.expand("%:p:h"), upward = true })[1]) or
-    vim.fn.getcwd()
+        vim.fn.getcwd()
 
     -- 現在のファイル名（拡張子なし）をslugとして取得
     local slug = vim.fn.expand("%:t:r")
@@ -227,4 +227,3 @@ vim.api.nvim_create_user_command("ToHtmlSave", function()
 end, { desc = "Convert to HTML and save in the same directory" })
 
 vim.keymap.set("n", "<leader>th", ":ToHtmlSave<CR>", { desc = "TOhtml and Save" })
-
