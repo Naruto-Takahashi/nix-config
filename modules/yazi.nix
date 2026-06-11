@@ -96,7 +96,7 @@
     -- ヘッダーのカスタマイズ (パスを赤色に)
     local h = Header or header
     if h then
-        h.render = function(self, area)
+        function h:render(area)
             local chunks = self:layout(area)
             if not chunks or not chunks[1] then return {} end
             local left = ui.Line {
@@ -238,52 +238,53 @@
       { name = "pnpm-lock.yaml", text = "󰘦", fg = "#e6c384" },
       { name = "flake.lock", text = "󰘦", fg = "#e6c384" }
     ]
-    prepend_exts = [
+    prepend_globs = [
       # ドキュメント・テキスト系 (Green: #76946a)
-      { name = "md", text = "󰍔", fg = "#76946a" },
-      { name = "pdf", text = "󰈦", fg = "#76946a" },
-      { name = "txt", text = "", fg = "#76946a" },
-      { name = "log", text = "", fg = "#76946a" },
-      { name = "csv", text = "󰈛", fg = "#76946a" },
-      { name = "ini", text = "", fg = "#76946a" },
-      { name = "toml", text = "", fg = "#76946a" },
-      { name = "exe", text = "", fg = "#76946a" },
-      { name = "out", text = "", fg = "#76946a" },
+      { name = "*.md", text = "󰍔", fg = "#76946a" },
+      { name = "*.pdf", text = "󰈦", fg = "#76946a" },
+      { name = "*.txt", text = "", fg = "#76946a" },
+      { name = "*.log", text = "", fg = "#76946a" },
+      { name = "*.csv", text = "󰈛", fg = "#76946a" },
+      { name = "*.ini", text = "", fg = "#76946a" },
+      { name = "*.toml", text = "", fg = "#76946a" },
+      { name = "*.exe", text = "", fg = "#76946a" },
+      { name = "*.out", text = "", fg = "#76946a" },
       # スクリプト・メディア系 (Purple: #a292a3)
-      { name = "py", text = "", fg = "#a292a3" },
-      { name = "sh", text = "", fg = "#a292a3" },
-      { name = "lua", text = "", fg = "#a292a3" },
-      { name = "rb", text = "", fg = "#a292a3" },
-      { name = "mp4", text = "󰈫", fg = "#a292a3" },
-      { name = "mkv", text = "󰈫", fg = "#a292a3" },
-      { name = "webm", text = "󰈫", fg = "#a292a3" },
-      { name = "mp3", text = "󰎈", fg = "#a292a3" },
-      { name = "wav", text = "󰎈", fg = "#a292a3" },
+      { name = "*.py", text = "", fg = "#a292a3" },
+      { name = "*.sh", text = "", fg = "#a292a3" },
+      { name = "*.lua", text = "", fg = "#a292a3" },
+      { name = "*.rb", text = "", fg = "#a292a3" },
+      { name = "*.mp4", text = "󰈫", fg = "#a292a3" },
+      { name = "*.mkv", text = "󰈫", fg = "#a292a3" },
+      { name = "*.webm", text = "󰈫", fg = "#a292a3" },
+      { name = "*.mp3", text = "󰎈", fg = "#a292a3" },
+      { name = "*.wav", text = "󰎈", fg = "#a292a3" },
       # Web・データ系 (Yellow: #e6c384)
-      { name = "html", text = "", fg = "#e6c384" },
-      { name = "htm", text = "", fg = "#e6c384" },
-      { name = "js", text = "", fg = "#e6c384" },
-      { name = "ts", text = "", fg = "#e6c384" },
-      { name = "json", text = "󰘦", fg = "#e6c384" },
-      { name = "yaml", text = "󰘦", fg = "#e6c384" },
-      { name = "yml", text = "󰘦", fg = "#e6c384" },
-      { name = "lock", text = "󰘦", fg = "#e6c384" },
-      { name = "css", text = "", fg = "#e6c384" },
-      { name = "png", text = "󰈟", fg = "#e6c384" },
-      { name = "jpg", text = "󰈟", fg = "#e6c384" },
-      { name = "svg", text = "󰈟", fg = "#e6c384" },
+      { name = "*.html", text = "", fg = "#e6c384" },
+      { name = "*.htm", text = "", fg = "#e6c384" },
+      { name = "*.js", text = "", fg = "#e6c384" },
+      { name = "*.ts", text = "", fg = "#e6c384" },
+      { name = "*.json", text = "󰘦", fg = "#e6c384" },
+      { name = "*.yaml", text = "󰘦", fg = "#e6c384" },
+      { name = "*.yml", text = "󰘦", fg = "#e6c384" },
+      { name = "*.lock", text = "󰘦", fg = "#e6c384" },
+      { name = "*.css", text = "", fg = "#e6c384" },
+      { name = "*.png", text = "󰈟", fg = "#e6c384" },
+      { name = "*.jpg", text = "󰈟", fg = "#e6c384" },
+      { name = "*.svg", text = "󰈟", fg = "#e6c384" },
       # システム・低レイヤ言語 (Blue: #7fb4ca)
-      { name = "nix", text = "", fg = "#7fb4ca" },
-      { name = "go", text = "", fg = "#7fb4ca" },
-      { name = "cpp", text = "", fg = "#7fb4ca" },
-      { name = "c", text = "", fg = "#7fb4ca" },
+      { name = "*.nix", text = "", fg = "#7fb4ca" },
+      { name = "*.go", text = "", fg = "#7fb4ca" },
+      { name = "*.cpp", text = "", fg = "#7fb4ca" },
+      { name = "*.c", text = "", fg = "#7fb4ca" },
       # コンパイル言語・アーカイブ (Red: #e46876)
-      { name = "rs", text = "", fg = "#e46876" },
-      { name = "zip", text = "", fg = "#e46876" },
-      { name = "tar", text = "", fg = "#e46876" }
+      { name = "*.rs", text = "", fg = "#e46876" },
+      { name = "*.zip", text = "", fg = "#e46876" },
+      { name = "*.tar", text = "", fg = "#e46876" }
     ]
     prepend_conds = [
-      { if = "dir", text = "󰉋", fg = "#e6c384" }
+      { if = "dir", text = "󰉋", fg = "#e6c384" },
+      { if = "link", text = "", fg = "#7fb4ca" }
     ]
   '';
 }
