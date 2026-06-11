@@ -164,8 +164,17 @@
       { url = "**.rs", fg = "#e46876" },
       { url = "**.js", fg = "#e6c384" },
       { url = "**.ts", fg = "#7fb4ca" },
-      # デフォルト設定 (kanagawa-dragonの基本色を維持)
-      { url = "*/", fg = "#e6c384" }, # ディレクトリを薄黄色(carpYellow)に変更
+      # システムディレクトリ (これらのみを薄黄色に)
+      { url = "**/Desktop/", fg = "#e6c384" },
+      { url = "**/Downloads/", fg = "#e6c384" },
+      { url = "**/Documents/", fg = "#e6c384" },
+      { url = "**/Pictures/", fg = "#e6c384" },
+      { url = "**/Music/", fg = "#e6c384" },
+      { url = "**/Videos/", fg = "#e6c384" },
+      { url = "**/Public/", fg = "#e6c384" },
+      { url = "**/Templates/", fg = "#e6c384" },
+      # デフォルト設定 (ディレクトリは元のシアンに戻す)
+      { url = "*/", fg = "#8ba4b0" }, # ディレクトリ
       { url = "*", fg = "#c5c9c5" }  # その他
     ]
 
