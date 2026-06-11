@@ -119,6 +119,53 @@
   xdg.configFile."yazi/theme.toml".text = ''
     #:schema https://yazi-rs.github.io/schemas/theme.json
 
+    [filetype]
+    prepend_rules = [
+      # 特定ファイル
+      { name = "Cargo.toml", fg = "#76946a" },
+      { name = "config.toml", fg = "#76946a" },
+      { name = "theme.toml", fg = "#76946a" },
+      { name = "yazi.toml", fg = "#76946a" },
+      { name = "desktop.ini", fg = "#76946a" },
+      # ドキュメント・テキスト系
+      { name = "*.md", fg = "#76946a" },
+      { name = "*.pdf", fg = "#76946a" },
+      { name = "*.docx", fg = "#76946a" },
+      { name = "*.xlsx", fg = "#76946a" },
+      { name = "*.ini", fg = "#76946a" },
+      { name = "*.s", fg = "#76946a" },
+      { name = "*.sln", fg = "#76946a" },
+      { name = "*.out", fg = "#76946a" },
+      { name = "*.mp4", fg = "#a292a3" },
+      { name = "*.txt", fg = "#76946a" },
+      { name = "*.html", fg = "#76946a" },
+      { name = "*.exe", fg = "#76946a" },
+      { name = "*.json", fg = "#e6c384" },
+      { name = "*.toml", fg = "#76946a" },
+      { name = "*.yaml", fg = "#e6c384" },
+      { name = "*.yml", fg = "#e6c384" },
+      # 画像ファイル
+      { name = "*.png", fg = "#e6c384" },
+      { name = "*.jpg", fg = "#e6c384" },
+      { name = "*.jpeg", fg = "#e6c384" },
+      { name = "*.gif", fg = "#e6c384" },
+      # 圧縮アーカイブ
+      { name = "*.zip", fg = "#e46876" },
+      { name = "*.tar", fg = "#e46876" },
+      { name = "*.gz", fg = "#e46876" },
+      { name = "*.7z", fg = "#e46876" },
+      { name = "*.rar", fg = "#e46876" },
+      # プログラミング言語・スクリプト系
+      { name = "*.nix", fg = "#7fb4ca" },
+      { name = "*.go", fg = "#7fb4ca" },
+      { name = "*.py", fg = "#76946a" },
+      { name = "*.sh", fg = "#76946a" },
+      { name = "*.lua", fg = "#7fb4ca" },
+      { name = "*.rs", fg = "#e46876" },
+      { name = "*.js", fg = "#e6c384" },
+      { name = "*.ts", fg = "#7fb4ca" }
+    ]
+
     [flavor]
     dark = "kanagawa-dragon"
 
