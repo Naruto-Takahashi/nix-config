@@ -127,14 +127,14 @@
     [filetype]
     rules = [
       # 特定ファイル
-      { url = "**/Cargo.toml", fg = "#76946a" },
+      { url = "**/Cargo.toml", fg = "#e46876" },
       { url = "**/config.toml", fg = "#e6c384" },
       { url = "**/theme.toml", fg = "#e6c384" },
       { url = "**/yazi.toml", fg = "#e6c384" },
       { url = "**/desktop.ini", fg = "#76946a" },
       { url = "**/.env*", fg = "#e6c384" },
-      { url = "**/Dockerfile", fg = "#7fb4ca" },
-      # ドキュメント・テキスト系 (Green: #76946a)
+      { url = "**/Dockerfile", fg = "#76946a" },
+      # ドキュメント・テキスト・インフラ系 (Green: #76946a)
       { url = "**.md", fg = "#76946a" },
       { url = "**.pdf", fg = "#76946a" },
       { url = "**.txt", fg = "#76946a" },
@@ -147,8 +147,11 @@
       { url = "**.pptx", fg = "#76946a" },
       { url = "**.ppt", fg = "#76946a" },
       { url = "**.ini", fg = "#76946a" },
+      { url = "**.toml", fg = "#76946a" },
       { url = "**.tex", fg = "#76946a" },
       { url = "**.bib", fg = "#76946a" },
+      { url = "**.nix", fg = "#76946a" },
+      { url = "**.sql", fg = "#76946a" },
       # スクリプト・メディア系 (Purple: #a292a3)
       { url = "**.py", fg = "#a292a3" },
       { url = "**.sh", fg = "#a292a3" },
@@ -187,16 +190,13 @@
       { url = "**.gif", fg = "#e6c384" },
       { url = "**.webp", fg = "#e6c384" },
       { url = "**.svg", fg = "#e6c384" },
-      # システム・低レイヤ言語 (Blue: #7fb4ca)
-      { url = "**.nix", fg = "#7fb4ca" },
-      { url = "**.go", fg = "#7fb4ca" },
-      { url = "**.cpp", fg = "#7fb4ca" },
-      { url = "**.c", fg = "#7fb4ca" },
-      { url = "**.h", fg = "#7fb4ca" },
-      { url = "**.hpp", fg = "#7fb4ca" },
-      { url = "**.sql", fg = "#7fb4ca" },
       # コンパイル言語・アーカイブ (Red: #e46876)
       { url = "**.rs", fg = "#e46876" },
+      { url = "**.cpp", fg = "#e46876" },
+      { url = "**.c", fg = "#e46876" },
+      { url = "**.h", fg = "#e46876" },
+      { url = "**.hpp", fg = "#e46876" },
+      { url = "**.go", fg = "#e46876" },
       { url = "**.java", fg = "#e46876" },
       { url = "**.kt", fg = "#e46876" },
       { url = "**.cs", fg = "#e46876" },
