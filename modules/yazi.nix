@@ -1,7 +1,7 @@
 # =========================================================================
 # Yazi CUI ファイルマネージャ設定モジュール
 # =========================================================================
-{ config, pkgs, ... }:
+{ config, pkgs, kanagawa-dragon-yazi, ... }:
 
 {
   programs.yazi = {
@@ -108,69 +108,79 @@
             end)
         end
     end
-
-    -- ステータスバーの無効化
-    local s = Status or status
-    if s then
-        s.render = function(self, area)
-            return ui.Line {}
-        end
-    end
   '';
 
 
+
+  # フレーバーリポジトリの配置
+  xdg.configFile."yazi/flavors/kanagawa-dragon.yazi".source = kanagawa-dragon-yazi;
 
   # スクリーンショットの色使いを再現したテーマ設定
   xdg.configFile."yazi/theme.toml".text = ''
     #:schema https://yazi-rs.github.io/schemas/theme.json
 
-    [mgr]
-    border_style = { fg = "#665c54" }
-
-    [mode]
-    # 選択時のティール色の背景 (#5f8787)
-    normal_main = { fg = "#1d2021", bg = "#5f8787", bold = true }
-    select_main = { fg = "#1d2021", bg = "#fabd2f", bold = true }
-    unset_main  = { fg = "#1d2021", bg = "#fb4934", bold = true }
-
-    [filetype]
-    rules = [
-        # ディレクトリは白文字、アイコンは黄色
-        { mime = "*/", fg = "#ffffff", bold = true },
-        # メディア・アーカイブは赤/ピンク系
-        { mime = "image/*", fg = "#fb4934" },
-        { mime = "video/*", fg = "#fb4934" },
-        { mime = "application/{zip,rar,7z*,tar,gzip,xz}", fg = "#fb4934" },
-        # その他は白
-        { mime = "*", fg = "#ffffff" },
-    ]
-
-    [indicator]
-    # 選択行をシャープな四角形にする
-    current = { bg = "#5f8787" }
-    parent  = { bg = "#3c3836" }
-    preview = { bg = "#5f8787" }
-    padding = { open = "", close = "" }
+    [flavor]
+    dark = "kanagawa-dragon"
 
     [icon]
     prepend_dirs = [
-        { name = "*", text = "󰉋", fg = "#fabd2f" },
+      { name = "*", text = "󰉋", fg = "#e6c384" }
     ]
-    conds = [
-        { if = "dir",  text = "󰉋", fg = "#fabd2f" },
-        { if = "exec", text = "", fg = "#b8bb26" },
-        { if = "link", text = "", fg = "#83a598" },
-        { if = "!dir", text = "", fg = "#ebdbb2" },
+    prepend_files = [
+      { name = "Cargo.toml", text = "", fg = "#76946a" },
+      { name = "config.toml", text = "", fg = "#76946a" },
+      { name = "theme.toml", text = "", fg = "#76946a" },
+      { name = "yazi.toml", text = "", fg = "#76946a" },
+      { name = "desktop.ini", text = "", fg = "#76946a" }
+    ]
+    prepend_exts = [
+      # ドキュメント・テキスト系 (ホワイト/ゴールド/グリーン)
+      { name = "md", text = "󰍔", fg = "#76946a" },
+      { name = "pdf", text = "󰈦", fg = "#76946a" },
+      { name = "docx", text = "󰈬", fg = "#76946a" },
+      { name = "xlsx", text = "󰈛", fg = "#76946a" },
+      { name = "ini", text = "", fg = "#76946a" },
+      { name = "s", text = "󰘦", fg = "#76946a" },
+      { name = "sln", text = "󰘦", fg = "#76946a" },
+      { name = "out", text = "", fg = "#76946a" },
+      { name = "mp4", text = "󰈫", fg = "#a292a3" },
+      { name = "txt", text = "", fg = "#76946a" },
+      { name = "html", text = "", fg = "#76946a" },
+      { name = "exe", text = "", fg = "#76946a" },
+      { name = "json", text = "󰘦", fg = "#e6c384" },
+      { name = "toml", text = "", fg = "#76946a" },
+      { name = "yaml", text = "󰘦", fg = "#e6c384" },
+      { name = "yml", text = "󰘦", fg = "#e6c384" },
+      # 画像ファイル (イエロー)
+      { name = "png", text = "󰈟", fg = "#e6c384" },
+      { name = "jpg", text = "󰈟", fg = "#e6c384" },
+      { name = "jpeg", text = "󰈟", fg = "#e6c384" },
+      { name = "gif", text = "󰈟", fg = "#e6c384" },
+      # 圧縮アーカイブ (レッド)
+      { name = "zip", text = "", fg = "#e46876" },
+      { name = "tar", text = "", fg = "#e46876" },
+      { name = "gz", text = "", fg = "#e46876" },
+      { name = "7z", text = "", fg = "#e46876" },
+      { name = "rar", text = "", fg = "#e46876" },
+      # プログラミング言語・スクリプト系 (ブルー/グリーン/レッド)
+      { name = "nix", text = "", fg = "#7fb4ca" },
+      { name = "go", text = "", fg = "#7fb4ca" },
+      { name = "py", text = "", fg = "#76946a" },
+      { name = "sh", text = "", fg = "#76946a" },
+      { name = "lua", text = "", fg = "#7fb4ca" },
+      { name = "rs", text = "", fg = "#e46876" },
+      { name = "js", text = "", fg = "#e6c384" },
+      { name = "ts", text = "", fg = "#7fb4ca" }
     ]
     prepend_conds = [
-        { if = "mime", mime = "image/*", text = "󰈟", fg = "#fb4934" },
-        { if = "mime", mime = "video/*", text = "󰈫", fg = "#fb4934" },
-        { if = "mime", mime = "application/pdf", text = "󰈦", fg = "#fb4934" },
+      { if = "dir", text = "󰉋", fg = "#e6c384" },
+      { if = "exec", text = "", fg = "#76946a" },
+      { if = "link", text = "", fg = "#7fb4ca" },
+      { if = "mime", mime = "image/*", text = "󰈟", fg = "#e6c384" },
+      { if = "mime", mime = "video/*", text = "󰈫", fg = "#a292a3" },
+      { if = "mime", mime = "application/pdf", text = "󰈦", fg = "#6a9589" },
+      # 一般ファイルのデフォルト（ホワイト）
+      { if = "!dir", text = "", fg = "#c5c9c5" }
     ]
   '';
-
-
-
-
-
 }

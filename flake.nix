@@ -17,9 +17,15 @@
       url            = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Yazi Kanagawa Dragon フレーバーの入力ソース定義
+    kanagawa-dragon-yazi = {
+      url   = "github:marcosvnmelo/kanagawa-dragon.yazi";
+      flake = false;
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, kanagawa-dragon-yazi, ... }:
     let
       system = "x86_64-linux";
       pkgs   = nixpkgs.legacyPackages.${system};
@@ -30,21 +36,21 @@
         "nalt-wsl" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home-wsl.nix ];
-          extraSpecialArgs = { inherit nixgl; };
+          extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
 
         # Linuxデスクトップ環境用プロファイル
         "nalt-desktop" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home-desktop.nix ];
-          extraSpecialArgs = { inherit nixgl; };
+          extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
 
         # 互換性維持のためのデフォルトプロファイル（WSL設定を参照）
         "nalt" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules = [ ./home-wsl.nix ];
-          extraSpecialArgs = { inherit nixgl; };
+          extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
       };
     };

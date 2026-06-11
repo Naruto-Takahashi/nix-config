@@ -38,6 +38,22 @@
         "type": "github"
       }
     },
+    "kanagawa-dragon-yazi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1780180572,
+        "narHash": "sha256-7aOpuC7QYlrRdY0HC3kWD8q3apS88sQkcjkUPdGjzu8=",
+        "owner": "marcosvnmelo",
+        "repo": "kanagawa-dragon.yazi",
+        "rev": "b433f4a9784aa2622471db2fd3236c272ce57f11",
+        "type": "github"
+      },
+      "original": {
+        "owner": "marcosvnmelo",
+        "repo": "kanagawa-dragon.yazi",
+        "type": "github"
+      }
+    },
     "nixgl": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -78,6 +94,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "kanagawa-dragon-yazi": "kanagawa-dragon-yazi",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs"
       }
