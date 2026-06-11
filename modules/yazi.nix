@@ -121,14 +121,15 @@
 
     [filetype]
     rules = [
-      # 特定ファイル (Config/Infrastructure: Blue or Yellow)
+      # 特定ファイル
       { url = "**/Cargo.toml", fg = "#76946a" },
       { url = "**/config.toml", fg = "#e6c384" },
       { url = "**/theme.toml", fg = "#e6c384" },
       { url = "**/yazi.toml", fg = "#e6c384" },
       { url = "**/desktop.ini", fg = "#76946a" },
       { url = "**/.env*", fg = "#e6c384" },
-      # ドキュメント・テキスト系 (Green: #76946a - 純粋な文書に限定)
+      { url = "**/Dockerfile", fg = "#7fb4ca" },
+      # ドキュメント・テキスト系 (Green: #76946a)
       { url = "**.md", fg = "#76946a" },
       { url = "**.pdf", fg = "#76946a" },
       { url = "**.txt", fg = "#76946a" },
@@ -143,29 +144,43 @@
       { url = "**.ini", fg = "#76946a" },
       { url = "**.tex", fg = "#76946a" },
       { url = "**.bib", fg = "#76946a" },
-      # スクリプト・メディア系 (Purple: #a292a3 - 頻度の高いスクリプトをここへ)
+      # スクリプト・メディア系 (Purple: #a292a3)
       { url = "**.py", fg = "#a292a3" },
       { url = "**.sh", fg = "#a292a3" },
       { url = "**.lua", fg = "#a292a3" },
       { url = "**.rb", fg = "#a292a3" },
       { url = "**.php", fg = "#a292a3" },
+      { url = "**.pl", fg = "#a292a3" },
       { url = "**.mp4", fg = "#a292a3" },
       { url = "**.mkv", fg = "#a292a3" },
+      { url = "**.avi", fg = "#a292a3" },
+      { url = "**.mov", fg = "#a292a3" },
+      { url = "**.webm", fg = "#a292a3" },
       { url = "**.mp3", fg = "#a292a3" },
+      { url = "**.wav", fg = "#a292a3" },
       { url = "**.flac", fg = "#a292a3" },
+      { url = "**.m4a", fg = "#a292a3" },
+      { url = "**.ogg", fg = "#a292a3" },
       # Web・データ系 (Yellow: #e6c384)
       { url = "**.js", fg = "#e6c384" },
       { url = "**.ts", fg = "#e6c384" },
+      { url = "**.jsx", fg = "#e6c384" },
+      { url = "**.tsx", fg = "#e6c384" },
       { url = "**.json", fg = "#e6c384" },
       { url = "**.jsonc", fg = "#e6c384" },
       { url = "**.yaml", fg = "#e6c384" },
       { url = "**.yml", fg = "#e6c384" },
       { url = "**.toml", fg = "#e6c384" },
+      { url = "**.lock", fg = "#e6c384" },
       { url = "**.html", fg = "#e6c384" },
       { url = "**.htm", fg = "#e6c384" },
+      { url = "**.css", fg = "#e6c384" },
+      { url = "**.scss", fg = "#e6c384" },
       { url = "**.png", fg = "#e6c384" },
       { url = "**.jpg", fg = "#e6c384" },
       { url = "**.jpeg", fg = "#e6c384" },
+      { url = "**.gif", fg = "#e6c384" },
+      { url = "**.webp", fg = "#e6c384" },
       { url = "**.svg", fg = "#e6c384" },
       # システム・低レイヤ言語 (Blue: #7fb4ca)
       { url = "**.nix", fg = "#7fb4ca" },
@@ -178,12 +193,15 @@
       # コンパイル言語・アーカイブ (Red: #e46876)
       { url = "**.rs", fg = "#e46876" },
       { url = "**.java", fg = "#e46876" },
+      { url = "**.kt", fg = "#e46876" },
       { url = "**.cs", fg = "#e46876" },
+      { url = "**.swift", fg = "#e46876" },
       { url = "**.zip", fg = "#e46876" },
       { url = "**.tar", fg = "#e46876" },
       { url = "**.gz", fg = "#e46876" },
       { url = "**.7z", fg = "#e46876" },
       { url = "**.rar", fg = "#e46876" },
+      { url = "**.xz", fg = "#e46876" },
       # バイナリ・その他 (Fallback)
       { url = "**.exe", fg = "#76946a" },
       { url = "**.out", fg = "#76946a" },
@@ -210,7 +228,10 @@
       { name = "config.toml", text = "", fg = "#e6c384" },
       { name = "theme.toml", text = "", fg = "#e6c384" },
       { name = "yazi.toml", text = "", fg = "#e6c384" },
-      { name = "desktop.ini", text = "", fg = "#76946a" }
+      { name = "desktop.ini", text = "", fg = "#76946a" },
+      { name = "package-lock.json", text = "󰘦", fg = "#e6c384" },
+      { name = "pnpm-lock.yaml", text = "󰘦", fg = "#e6c384" },
+      { name = "flake.lock", text = "󰘦", fg = "#e6c384" }
     ]
     prepend_exts = [
       # ドキュメント・テキスト系 (Green: #76946a)
@@ -224,15 +245,20 @@
       { name = "sh", text = "", fg = "#a292a3" },
       { name = "lua", text = "", fg = "#a292a3" },
       { name = "mp4", text = "󰈫", fg = "#a292a3" },
+      { name = "mkv", text = "󰈫", fg = "#a292a3" },
+      { name = "webm", text = "󰈫", fg = "#a292a3" },
       { name = "mp3", text = "󰎈", fg = "#a292a3" },
+      { name = "wav", text = "󰎈", fg = "#a292a3" },
       # Web・データ系 (Yellow: #e6c384)
       { name = "js", text = "", fg = "#e6c384" },
       { name = "ts", text = "", fg = "#e6c384" },
       { name = "json", text = "󰘦", fg = "#e6c384" },
       { name = "toml", text = "", fg = "#e6c384" },
       { name = "yaml", text = "󰘦", fg = "#e6c384" },
+      { name = "lock", text = "󰘦", fg = "#e6c384" },
       { name = "png", text = "󰈟", fg = "#e6c384" },
       { name = "jpg", text = "󰈟", fg = "#e6c384" },
+      { name = "svg", text = "󰈟", fg = "#e6c384" },
       # システム・低レイヤ言語 (Blue: #7fb4ca)
       { name = "nix", text = "", fg = "#7fb4ca" },
       { name = "go", text = "", fg = "#7fb4ca" },
