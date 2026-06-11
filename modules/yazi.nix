@@ -253,7 +253,7 @@
       { url = "*.ppt", text = "󰈫", fg = "#76946a" },
       { url = "*.ini", text = "", fg = "#76946a" },
       { url = "*.toml", text = "", fg = "#76946a" },
-      { name = "Cargo.toml", text = "", fg = "#76946a" },
+      { url = "Cargo.toml", text = "", fg = "#76946a" },
       { url = "*.tex", text = "󰙩", fg = "#76946a" },
       { url = "*.bib", text = "󰙩", fg = "#76946a" },
       { url = "*.exe", text = "", fg = "#76946a" },
@@ -301,7 +301,7 @@
       { url = "*.h", text = "", fg = "#7fb4ca" },
       { url = "*.hpp", text = "", fg = "#7fb4ca" },
       { url = "*.sql", text = "", fg = "#7fb4ca" },
-      { name = "Dockerfile", text = "󰡨", fg = "#7fb4ca" },
+      { url = "Dockerfile", text = "󰡨", fg = "#7fb4ca" },
       # コンパイル言語・アーカイブ (Red: #e46876)
       { url = "*.rs", text = "", fg = "#e46876" },
       { url = "*.java", text = "", fg = "#e46876" },
