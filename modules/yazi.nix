@@ -38,6 +38,31 @@
         ];
       };
     };
+
+    keymap = {
+      manager.prepend_keymap = [
+        {
+          on = [ "K" ];
+          run = "seek -5";
+          desc = "Seek up 5 units in the preview";
+        }
+        {
+          on = [ "J" ];
+          run = "seek 5";
+          desc = "Seek down 5 units in the preview";
+        }
+        {
+          on = [ "<C-y>" ];
+          run = "seek -1";
+          desc = "Seek up 1 unit in the preview";
+        }
+        {
+          on = [ "<C-e>" ];
+          run = "seek 1";
+          desc = "Seek down 1 unit in the preview";
+        }
+      ];
+    };
   };
 
   # 公式の Cyberdream Yaziテーマをベースに透過・アイコン色・セパレータを調整して適用
