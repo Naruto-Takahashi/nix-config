@@ -72,41 +72,34 @@
     ---@diagnostic disable: undefined-global
 
     -- Full borders and vertical separators logic
-    -- Yaziのバージョンによって Manager または mgr がグローバルに存在するため、両方に対応
-    local m = Manager or mgr
-    if m then
-        m.render = function(self, area)
-            local chunks = self:layout(area)
-            return ya.flat {
-                -- 全体の枠線
-                ui.Border(area, ui.Border.ALL):fg("#665c54"),
-                -- 垂直セパレータ (ParentとCurrentの間)
-                ui.Bar(chunks[1]:right() - 1, chunks[1].y, 1, chunks[1].h, ui.Bar.VERTICAL):symbol("│"):fg("#665c54"),
-                -- 垂直セパレータ (CurrentとPreviewの間)
-                ui.Bar(chunks[2]:right() - 1, chunks[2].y, 1, chunks[2].h, ui.Bar.VERTICAL):symbol("│"):fg("#665c54"),
+    function Manager:render(area)
+        local chunks = self:layout(area)
+        return ya.flat {
+            -- 全体の枠線
+            ui.Border(area, ui.Border.ALL):fg("#665c54"),
+            -- 垂直セパレータ (ParentとCurrentの間)
+            ui.Bar(chunks[1]:right() - 1, chunks[1].y, 1, chunks[1].h, ui.Bar.VERTICAL):symbol("│"):fg("#665c54"),
+            -- 垂直セパレータ (CurrentとPreviewの間)
+            ui.Bar(chunks[2]:right() - 1, chunks[2].y, 1, chunks[2].h, ui.Bar.VERTICAL):symbol("│"):fg("#665c54"),
 
-                -- 各ペインのレンダリング
-                Parent:render(chunks[1]:padding(ui.Padding.y(1))),
-                Current:render(chunks[2]:padding(ui.Padding.y(1))),
-                Preview:render(chunks[3]:padding(ui.Padding.y(1))),
-            }
-        end
+            -- 各ペインのレンダリング
+            Parent:render(chunks[1]:padding(ui.Padding.y(1))),
+            Current:render(chunks[2]:padding(ui.Padding.y(1))),
+            Preview:render(chunks[3]:padding(ui.Padding.y(1))),
+        }
     end
 
-    -- ヘッダーのカスタマイズ
-    local h = Header or header
-    if h then
-        h.render = function(self, area)
-            local chunks = self:layout(area)
-            local left = ui.Line {
-                ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(true),
-                ui.Span(":"):fg("#ebdbb2"),
-                ui.Span(ya.readable_path(tostring(self._current.cwd))):fg("#e46876"),
-            }
-            return ui.Canvas(area, function(c)
-                c:draw_str(left, chunks[1].x, chunks[1].y)
-            end)
-        end
+    -- ヘッダーのカスタマイズ (パスを赤色に)
+    function Header:render(area)
+        local chunks = self:layout(area)
+        local left = ui.Line {
+            ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(true),
+            ui.Span(":"):fg("#ebdbb2"),
+            ui.Span(ya.readable_path(tostring(self._current.cwd))):fg("#e46876"),
+        }
+        return ui.Canvas(area, function(c)
+            c:draw_str(left, chunks[1].x, chunks[1].y)
+        end)
     end
   '';
 
@@ -278,7 +271,10 @@
       { name = "tar", text = "", fg = "#e46876" }
     ]
     prepend_conds = [
-      { if = "dir", text = "󰉋", fg = "#e6c384" },
+      { if = "dir", text = "󰉋", fg = "#e6c384" }
+    ]
+
+    append_conds = [
       { if = "exec", text = "", fg = "#76946a" },
       { if = "link", text = "", fg = "#7fb4ca" },
       { if = "mime", mime = "image/*", text = "󰈟", fg = "#e6c384" },
