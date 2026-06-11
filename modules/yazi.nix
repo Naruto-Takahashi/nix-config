@@ -164,16 +164,7 @@
       { url = "**.rs", fg = "#e46876" },
       { url = "**.js", fg = "#e6c384" },
       { url = "**.ts", fg = "#7fb4ca" },
-      # システムディレクトリ (これらのみを薄黄色に)
-      { url = "**/Desktop/", fg = "#e6c384" },
-      { url = "**/Downloads/", fg = "#e6c384" },
-      { url = "**/Documents/", fg = "#e6c384" },
-      { url = "**/Pictures/", fg = "#e6c384" },
-      { url = "**/Music/", fg = "#e6c384" },
-      { url = "**/Videos/", fg = "#e6c384" },
-      { url = "**/Public/", fg = "#e6c384" },
-      { url = "**/Templates/", fg = "#e6c384" },
-      # デフォルト設定 (ディレクトリは元のシアンに戻す)
+      # デフォルト設定 (ディレクトリはすべて元のシアンに)
       { url = "*/", fg = "#8ba4b0" }, # ディレクトリ
       { url = "*", fg = "#c5c9c5" }  # その他
     ]
@@ -183,7 +174,14 @@
 
     [icon]
     prepend_dirs = [
-      { name = "*", text = "󰉋", fg = "#e6c384" }
+      { name = "Desktop", text = "󰉋", fg = "#e6c384" },
+      { name = "Downloads", text = "󰉋", fg = "#e6c384" },
+      { name = "Documents", text = "󰉋", fg = "#e6c384" },
+      { name = "Pictures", text = "󰉋", fg = "#e6c384" },
+      { name = "Music", text = "󰉋", fg = "#e6c384" },
+      { name = "Videos", text = "󰉋", fg = "#e6c384" },
+      { name = "Public", text = "󰉋", fg = "#e6c384" },
+      { name = "Templates", text = "󰉋", fg = "#e6c384" }
     ]
     prepend_files = [
       { name = "Cargo.toml", text = "", fg = "#76946a" },
