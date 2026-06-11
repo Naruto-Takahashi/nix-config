@@ -61,6 +61,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         -- Mode Message (-- INSERT -- などのモード表示をゴールド化)
         hl(0, "ModeMsg", { fg = "#ffc20d", bold = true })
 
+        -- Lazygit Active Border Color
+        hl(0, "LazygitActiveBorder", { fg = "#ffc20d", bold = true })
+
         -- Dashboard Neon Colors
         hl(0, "SnacksDashboardHeader1", { fg = "#ff007c", bold = true })
         hl(0, "SnacksDashboardHeader2", { fg = "#00e5ff", bold = true })

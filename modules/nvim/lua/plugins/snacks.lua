@@ -46,7 +46,12 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     terminal = { enabled = true },
-    lazygit = { enabled = true },
+    lazygit = {
+      enabled = true,
+      theme = {
+        [ "activeBorderColor" ] = { fg = "LazygitActiveBorder", bold = true },
+      },
+    },
   },
   keys = {
     { "<leader>lg", function() Snacks.lazygit() end, desc = "Lazygit" },
