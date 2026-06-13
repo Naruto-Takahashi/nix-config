@@ -19,7 +19,6 @@
 
     config.automatically_reload_config = true
     config.scrollback_lines = 3000
-    config.max_free_images = 10
     config.font = wezterm.font 'HackGen Console NF'
 
     -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
