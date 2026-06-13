@@ -192,9 +192,22 @@
               )}
             </div>
 
-            <div className="center">{output.date?.formatted}</div>
+            <div className="center">
+              {output.glazewm?.focusedWindow && (
+                <span>
+                  <i className="nf nf-md-window_restore" style={{ color: '#ffc20d', marginRight: '5px' }}></i>
+                  {output.glazewm.focusedWindow.title}
+                </span>
+              )}
+            </div>
 
             <div className="right">
+              {output.date && (
+                <div className="date" style={{ marginRight: '15px' }}>
+                  <i className="nf nf-fa-clock_o"></i>
+                  {output.date.formatted}
+                </div>
+              )}
               {output.network && (
                 <div className={`network ${getNetworkClass(output.network)}`}>
                   {getNetworkIcon(output.network)}

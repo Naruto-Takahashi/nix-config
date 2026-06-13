@@ -29,10 +29,10 @@
         {
           "name": "default",
           "anchor": "top_left",
-          "offsetX": "0px",
-          "offsetY": "0px",
-          "width": "100%",
-          "height": "24px",
+          "offsetX": "8px",
+          "offsetY": "4px",
+          "width": "calc(100% - 16px)",
+          "height": "28px",
           "monitorSelection": {
             "type": "all"
           },
