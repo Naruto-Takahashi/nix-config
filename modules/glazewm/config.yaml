@@ -19,13 +19,13 @@ general:
     trigger: "window_focus"
 gaps:
   # Gap between adjacent windows.
-  inner_gap: "2px"
+  inner_gap: "6px"
   # Gap between windows and the screen edge.
   outer_gap:
     top: "2px"
-    right: "2px"
-    bottom: "2px"
-    left: "2px"
+    right: "6px"
+    bottom: "6px"
+    left: "6px"
 window_effects:
   # Visual effects to apply to the focused window.
   focused_window:

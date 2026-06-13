@@ -33,7 +33,7 @@
 
               cpu: { type: "cpu" },
 
-              date: { type: "date", formatting: "EEE d MMM t" },
+              date: { type: "date", formatting: "EEE d MMM ' | ' t" },
 
               battery: { type: "battery" },
 
@@ -170,99 +170,150 @@
 
         return (
           <div className="app">
-            {/* ── Left island: workspaces + active window ── */}
-            <div className="left">
-              <i className="logo nf nf-fa-windows"></i>
+            <div className="left-group">
+              {/* ── Logo & Tiling Direction Toggle ── */}
               {output.glazewm && (
-                <button
-                  className="tiling-direction"
-                  onClick={() => output.glazewm.runCommand('toggle-tiling-direction')}
-                >
-                  {output.glazewm.tilingDirection === 'horizontal' ? (
-                    <i className="nf nf-md-swap_horizontal"></i>
-                  ) : (
-                    <i className="nf nf-md-swap_vertical"></i>
-                  )}
-                </button>
-              )}
-              {output.glazewm && (
-                <div className="workspaces">
-                  {output.glazewm.currentWorkspaces.map(workspace => (
-                    <button
-                      key={workspace.name}
-                      className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}`}
-                      onClick={() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
-                    >
-                      {workspace.displayName ?? workspace.name}
-                    </button>
-                  ))}
+                <div className="island" style={{ background: '#4c8c4c' }}>
+                  <i className="logo nf nf-fa-windows" style={{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
+                  <button
+                    className="tiling-direction"
+                    onClick={() => output.glazewm.runCommand('toggle-tiling-direction')}
+                    style={{ background: 'transparent', color: '#000000', padding: 0 }}
+                  >
+                    {output.glazewm.tilingDirection === 'horizontal' ? (
+                      <i className="nf nf-md-swap_horizontal" style={{ color: '#000000' }}></i>
+                    ) : (
+                      <i className="nf nf-md-swap_vertical" style={{ color: '#000000' }}></i>
+                    )}
+                  </button>
                 </div>
               )}
-              {output.glazewm?.focusedWorkspace && (() => {
-                const wins = getWindows(output.glazewm.focusedWorkspace);
-                if (wins.length === 0) return null;
-                return (
-                  <div className="window-tabs">
-                    {wins.map((win, i) => (
-                      <span
-                        key={i}
-                        className={`window-tab${win.hasFocus ? ' focused' : ''}`}
-                        title={win.title}
+
+              {/* ── Workspaces ── */}
+              <div className="island">
+                {output.glazewm && (
+                  <div className="workspaces">
+                    {output.glazewm.currentWorkspaces.map(workspace => (
+                      <button
+                        key={workspace.name}
+                        className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}`}
+                        onClick={() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
                       >
-                        {win.title?.length > 22
-                          ? win.title.slice(0, 21) + '…'
-                          : win.title}
-                      </span>
+                        {workspace.displayName ?? workspace.name}
+                      </button>
                     ))}
                   </div>
+                )}
+              </div>
+
+              {/* ── Window tabs ── */}
+              {output.glazewm?.displayedWorkspace && (() => {
+                const wins = getWindows(output.glazewm.displayedWorkspace);
+                if (wins.length === 0) return null;
+                return (
+                  <>
+                    {wins.map((win, i) => (
+                      <div 
+                        key={i} 
+                        className="island"
+                        style={win.hasFocus ? { background: '#ffc20d', color: '#000000' } : {}}
+                      >
+                        <span
+                          className="window-tab"
+                          title={win.title || win.processName}
+                          style={{ 
+                            padding: 0, 
+                            margin: 0, 
+                            color: win.hasFocus ? '#000000' : undefined,
+                            fontWeight: win.hasFocus ? 600 : 'normal'
+                          }}
+                        >
+                          {(() => {
+                            const displayTitle = win.title || win.processName || 'Window';
+                            return displayTitle.length > 22
+                              ? displayTitle.slice(0, 21) + '…'
+                              : displayTitle;
+                          })()}
+                        </span>
+                      </div>
+                    ))}
+                  </>
                 );
               })()}
             </div>
 
-            {/* ── Center island: date & time ── */}
-            <div className="center">
-              <i className="nf nf-fa-clock_o"></i>
-              {output.date?.formatted}
+            <div className="center-group">
+              {/* ── Center island: date & time ── */}
+              <div className="island center" style={{ background: '#cba6f7', color: '#000000' }}>
+                {output.date?.formatted}
+              </div>
             </div>
 
-            {/* ── Right island: resource stats ── */}
-            <div className="right">
-              {output.network && (
-                <div className={`network ${getNetworkClass(output.network)}`}>
-                  {getNetworkIcon(output.network)}
-                  {output.network.defaultGateway?.ssid}
-                </div>
-              )}
-              {output.memory && (
-                <div className={`memory ${getMemoryClass(output.memory)}`}>
-                  <i className="nf nf-fae-chip"></i>
-                  {Math.round(output.memory.usage)}%
-                </div>
-              )}
-              {output.cpu && (
-                <div className={`cpu ${getCpuClass(output.cpu)}`}>
-                  <i className="nf nf-oct-cpu"></i>
-                  {Math.round(output.cpu.usage)}%
-                </div>
-              )}
+            <div className="right-group">
+              {/* ── Resource stats ── */}
+              <div className="island">
+                {output.network && (
+                  <>
+                    <div className={`network ${getNetworkClass(output.network)}`}>
+                      {getNetworkIcon(output.network)}
+                      <span className="resource-text">{output.network.defaultGateway?.ssid}</span>
+                    </div>
+                    {(output.memory || output.cpu) && <span className="sep">|</span>}
+                  </>
+                )}
+                {output.memory && (
+                  <>
+                    <div className={`memory ${getMemoryClass(output.memory)}`}>
+                      <i className="nf nf-fae-chip"></i>
+                      <span className="resource-text">{Math.round(output.memory.usage)}%</span>
+                    </div>
+                    {output.cpu && <span className="sep">|</span>}
+                  </>
+                )}
+                {output.cpu && (
+                  <div className={`cpu ${getCpuClass(output.cpu)}`}>
+                    <i className="nf nf-oct-cpu"></i>
+                    <span className="resource-text">{Math.round(output.cpu.usage)}%</span>
+                  </div>
+                )}
+              </div>
+              
               {output.battery && (
-                <div className={`battery ${getBatteryClass(output.battery)}`}>
+                <div className={`island battery ${getBatteryClass(output.battery)}`}>
                   {output.battery.isCharging && (
                     <i className="nf nf-md-power_plug charging-icon"></i>
                   )}
                   {getBatteryIcon(output.battery)}
-                  {Math.round(output.battery.chargePercent)}%
+                  <span className="resource-text">{Math.round(output.battery.chargePercent)}%</span>
                 </div>
               )}
-              <button
-                className="tiling-direction"
-                style={{ color: '#f38ba8' }}
-                onClick={() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
-                title="Restart System"
-              >
-                <i className="nf nf-md-power"></i>
-              </button>
+              
+              <div className="island" style={{ background: '#ffc20d' }}>
+                <button
+                  className="tiling-direction"
+                  onClick={() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
+                  title="Lock System"
+                >
+                  <i className="nf nf-fa-lock" style={{ color: '#000000' }}></i>
+                </button>
+              </div>
+              <div className="island" style={{ background: '#a86c6c' }}>
+                <button
+                  className="tiling-direction"
+                  onClick={() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
+                  title="Restart System"
+                >
+                  <i className="nf nf-md-power" style={{ color: '#000000' }}></i>
+                </button>
+              </div>
             </div>
+          </div>
+        );
+      }    </script>
+
+  </body>
+</html>
+       </div>
           </div>
         );
       }    </script>
