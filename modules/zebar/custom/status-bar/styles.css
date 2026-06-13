@@ -1,129 +1,167 @@
 @import "https://www.nerdfonts.com/assets/css/webfont.css";
 
-body {
-  color: rgb(255 255 255 / 90%);
-  font-family: ui-monospace, monospace;
-  font-size: 11px;
-  overflow: hidden;
+/* ── Reset ──────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body,
 #root {
   height: 100%;
+  background: transparent;
+  overflow: hidden;
 }
 
-#root {
-  background: rgba(0, 0, 0, 75%);
-  border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 12%);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 35%);
+body {
+  color: rgb(255 255 255 / 90%);
+  font-family: ui-monospace, monospace;
+  font-size: 11px;
 }
 
+/* ── App container (transparent spacer) ─────────────── */
 .app {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
   height: 100%;
-  padding: 0 0.5vw 0 1vw;
+  padding: 0 2px;
+  background: transparent;
 }
 
+/* ── Island base style ──────────────────────────────── */
 .left,
 .center,
 .right {
   display: flex;
   align-items: center;
-}
-
-.center {
-  justify-self: center;
-  font-weight: bold;
-}
-
-.focused-window-title {
-  margin-left: 15px;
-  font-weight: bold;
-  color: #ffc20d;
+  gap: 5px;
+  height: 22px;
+  padding: 0 8px;
+  background: rgba(0, 0, 0, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
   white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 25vw;
-  display: flex;
-  align-items: center;
 }
 
-.right {
-  justify-self: end;
+/* ── Icon base ──────────────────────────────────────── */
+i {
+  color: rgb(255 255 255 / 85%);
+  font-size: 11px;
+  line-height: 1;
 }
 
-.logo,
-.binding-mode,
-.tiling-direction,
-.network,
-.memory,
-.cpu,
-.battery {
-  margin-right: 10px;
-}
-
-.right > :last-child {
-  margin-right: 0;
+/* ── Left island ────────────────────────────────────── */
+.logo {
+  opacity: 0.5;
+  font-size: 12px;
 }
 
 .workspaces {
   display: flex;
   align-items: center;
+  gap: 3px;
 }
 
 .workspace {
-  background: rgb(255 255 255 / 5%);
-  margin-right: 4px;
-  padding: 0;
-  width: 22px;
-  height: 18px;
+  background: rgb(255 255 255 / 6%);
+  width: 18px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(255 255 255 / 90%);
+  color: rgb(255 255 255 / 65%);
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
   cursor: pointer;
+  font-family: ui-monospace, monospace;
+  font-size: 10px;
+  padding: 0;
+  transition: background 0.15s;
 
   &.displayed {
-    background: rgb(255 255 255 / 15%);
+    background: rgb(255 255 255 / 14%);
+    color: rgb(255 255 255 / 90%);
   }
 
   &.focused,
   &:hover {
     background: #a86c6c;
+    color: white;
   }
 }
 
 .binding-mode,
 .tiling-direction {
-  background: rgb(255 255 255 / 5%);
-  margin-right: 4px;
-  padding: 0;
-  width: 22px;
-  height: 18px;
+  background: rgb(255 255 255 / 6%);
+  width: 18px;
+  height: 16px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(255 255 255 / 90%);
+  color: rgb(255 255 255 / 85%);
   border: none;
-  border-radius: 2px;
+  border-radius: 3px;
   cursor: pointer;
+  padding: 0;
   line-height: 1;
+  transition: background 0.15s;
 }
 
 .binding-mode:hover,
 .tiling-direction:hover {
-  background: rgb(255 255 255 / 50%);
+  background: rgb(255 255 255 / 35%);
 }
 
-.text-green i { color: #929c79; }
+.focused-window-title {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #ffc20d;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 24vw;
+  border-left: 1px solid rgba(255, 255, 255, 0.13);
+  padding-left: 6px;
+  margin-left: 1px;
+}
+
+.focused-window-title i {
+  color: #ffc20d;
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+/* ── Center island ──────────────────────────────────── */
+.center {
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  gap: 5px;
+  color: rgb(255 255 255 / 85%);
+}
+
+/* ── Right island ───────────────────────────────────── */
+.right {
+  gap: 7px;
+}
+
+.network,
+.memory,
+.cpu,
+.battery {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.text-green i  { color: #929c79; }
 .text-yellow i { color: #ceab88; }
-.text-red i { color: #a86c6c; }
+.text-red i    { color: #a86c6c; }
 
 .battery {
   position: relative;
@@ -133,10 +171,18 @@ body,
   position: absolute;
   font-size: 7px;
   left: -8px;
-  top: 3px;
+  top: 2px;
 }
 
-i {
-  color: rgb(255 255 255 / 90%);
-  margin-right: 7px;
+/* restart button inside right island */
+.right > button.tiling-direction {
+  background: transparent;
+  border: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+}
+
+.right > button.tiling-direction:hover {
+  background: transparent;
 }

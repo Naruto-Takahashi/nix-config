@@ -163,6 +163,7 @@
 
         return (
           <div className="app">
+            {/* ── Left island: workspaces + active window ── */}
             <div className="left">
               <i className="logo nf nf-fa-windows"></i>
               {output.glazewm && (
@@ -171,9 +172,9 @@
                   onClick={() => output.glazewm.runCommand('toggle-tiling-direction')}
                 >
                   {output.glazewm.tilingDirection === 'horizontal' ? (
-                    <i className="nf nf-md-swap_horizontal" style={{ marginRight: 0 }}></i>
+                    <i className="nf nf-md-swap_horizontal"></i>
                   ) : (
-                    <i className="nf nf-md-swap_vertical" style={{ marginRight: 0 }}></i>
+                    <i className="nf nf-md-swap_vertical"></i>
                   )}
                 </button>
               )}
@@ -192,16 +193,19 @@
               )}
               {output.glazewm?.focusedWindow && (
                 <div className="focused-window-title">
-                  <i className="nf nf-md-window_restore" style={{ color: '#ffc20d', marginRight: '5px' }}></i>
+                  <i className="nf nf-md-window_restore"></i>
                   {output.glazewm.focusedWindow.title}
                 </div>
               )}
             </div>
 
+            {/* ── Center island: date & time ── */}
             <div className="center">
+              <i className="nf nf-fa-clock_o"></i>
               {output.date?.formatted}
             </div>
 
+            {/* ── Right island: resource stats ── */}
             <div className="right">
               {output.network && (
                 <div className={`network ${getNetworkClass(output.network)}`}>
@@ -209,24 +213,20 @@
                   {output.network.defaultGateway?.ssid}
                 </div>
               )}
-
               {output.memory && (
                 <div className={`memory ${getMemoryClass(output.memory)}`}>
                   <i className="nf nf-fae-chip"></i>
                   {Math.round(output.memory.usage)}%
                 </div>
               )}
-
               {output.cpu && (
                 <div className={`cpu ${getCpuClass(output.cpu)}`}>
                   <i className="nf nf-oct-cpu"></i>
                   {Math.round(output.cpu.usage)}%
                 </div>
               )}
-
               {output.battery && (
                 <div className={`battery ${getBatteryClass(output.battery)}`}>
-                  {/* Show icon for whether battery is charging. */}
                   {output.battery.isCharging && (
                     <i className="nf nf-md-power_plug charging-icon"></i>
                   )}
@@ -234,18 +234,18 @@
                   {Math.round(output.battery.chargePercent)}%
                 </div>
               )}
-
               <button
                 className="tiling-direction"
                 style={{ color: '#f38ba8' }}
                 onClick={() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
                 title="Restart System"
               >
-                <i className="nf nf-md-power" style={{ marginRight: 0 }}></i>
+                <i className="nf nf-md-power"></i>
               </button>
             </div>
           </div>
         );
       }    </script>
+
   </body>
 </html>
