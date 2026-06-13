@@ -1,25 +1,15 @@
 # =========================================================================
 # GlazeWM & Zebar 宣言的設定モジュール
 # =========================================================================
-{ config, dotfilesPath, ... }:
+{ config, ... }:
 
 {
   # GlazeWM 設定ディレクトリの宣言的配置
-  # mkOutOfStoreSymlink を使用して、リポジトリ内のファイルを直接リンクします。
-  xdg.configFile."glazewm" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/glazewm";
-    force = true;
-  };
+  xdg.configFile."glazewm".source = ./glazewm;
 
   # Zebar 設定ディレクトリの宣言的配置
-  xdg.configFile."zebar" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/zebar";
-    force = true;
-  };
+  xdg.configFile."zebar".source = ./zebar;
 
   # AutoHotkey 設定ディレクトリの宣言的配置
-  xdg.configFile."ahk" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/ahk";
-    force = true;
-  };
+  xdg.configFile."ahk".source = ./ahk;
 }
