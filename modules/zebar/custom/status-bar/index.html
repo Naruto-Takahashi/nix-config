@@ -191,10 +191,10 @@
                   ))}
                 </div>
               )}
-              {output.glazewm?.focusedWorkspace?.focusedContainer?.type === 'window' && (
+              {output.glazewm?.focusedContainer?.type === 'window' && (
                 <div className="focused-window-title">
                   <i className="nf nf-md-window_restore"></i>
-                  {output.glazewm.focusedWorkspace.focusedContainer.title}
+                  {output.glazewm.focusedContainer.title}
                 </div>
               )}
             </div>
@@ -203,6 +203,12 @@
             <div className="center">
               <i className="nf nf-fa-clock_o"></i>
               {output.date?.formatted}
+              {/* DEBUG: remove after confirming */}
+              <span style={{fontSize:'9px', marginLeft:'8px', opacity:0.6}}>
+                {output.glazewm
+                  ? `fc:${output.glazewm.focusedContainer?.type ?? 'null'}`
+                  : 'no-gwm'}
+              </span>
             </div>
 
             {/* ── Right island: resource stats ── */}
