@@ -188,9 +188,9 @@ i {
   gap: 3px;
 }
 
-.text-green i  { color: #4c8c4c; }
-.text-yellow i { color: #ffc20d; }
-.text-red i    { color: #a86c6c; }
+.text-green i  { color: #66a366; }
+.text-yellow i { color: #ffd147; }
+.text-red i    { color: #b87d7d; }
 
 .resource-text {
   color: rgb(255 255 255 / 50%);
