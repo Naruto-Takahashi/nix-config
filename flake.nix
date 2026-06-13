@@ -35,21 +35,21 @@
         # WSL環境用プロファイル
         "nalt-wsl" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home-wsl.nix ];
+          modules = [ ./hosts/wsl ];
           extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
 
         # Linuxデスクトップ環境用プロファイル
         "nalt-desktop" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home-desktop.nix ];
+          modules = [ ./hosts/desktop ];
           extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
 
         # 互換性維持のためのデフォルトプロファイル（WSL設定を参照）
         "nalt" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home-wsl.nix ];
+          modules = [ ./hosts/wsl ];
           extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
       };
