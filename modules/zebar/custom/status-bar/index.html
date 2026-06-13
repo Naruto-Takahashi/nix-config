@@ -191,10 +191,10 @@
                   ))}
                 </div>
               )}
-              {output.glazewm?.focusedWindow && (
+              {output.glazewm?.focusedWorkspace?.focusedContainer?.type === 'window' && (
                 <div className="focused-window-title">
                   <i className="nf nf-md-window_restore"></i>
-                  {output.glazewm.focusedWindow.title}
+                  {output.glazewm.focusedWorkspace.focusedContainer.title}
                 </div>
               )}
             </div>

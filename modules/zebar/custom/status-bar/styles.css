@@ -23,8 +23,8 @@ body {
 
 /* ── App container (transparent spacer) ─────────────── */
 .app {
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   height: 100%;
   padding: 0 2px;
@@ -40,12 +40,16 @@ body {
   gap: 5px;
   height: 22px;
   padding: 0 8px;
-  background: rgba(0, 0, 0, 0.78);
+  background: rgba(0, 0, 0, 0.75);
   border: 1px solid rgba(255, 255, 255, 0.10);
   border-radius: 6px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.45);
   white-space: nowrap;
 }
+
+.left   { justify-self: start; }
+.center { justify-self: center; }
+.right  { justify-self: end; }
 
 /* ── Icon base ──────────────────────────────────────── */
 i {
