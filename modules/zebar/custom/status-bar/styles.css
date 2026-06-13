@@ -38,11 +38,18 @@ body,
 .center {
   justify-self: center;
   font-weight: bold;
+}
+
+.focused-window-title {
+  margin-left: 15px;
+  font-weight: bold;
   color: #ffc20d;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 35vw;
+  max-width: 25vw;
+  display: flex;
+  align-items: center;
 }
 
 .right {
