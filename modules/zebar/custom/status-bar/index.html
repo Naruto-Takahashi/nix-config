@@ -161,6 +161,13 @@
                 return 'text-green';
               }
 
+              // Recursively collect all window containers from the workspace tree
+              function getWindows(container) {
+                if (!container) return [];
+                if (container.type === 'window') return [container];
+                return (container.children ?? []).flatMap(c => getWindows(c));
+              }
+
         return (
           <div className="app">
             {/* ── Left island: workspaces + active window ── */}
@@ -191,12 +198,25 @@
                   ))}
                 </div>
               )}
-              {output.glazewm?.focusedContainer?.title && (
-                <div className="focused-window-title">
-                  <i className="nf nf-md-window_restore"></i>
-                  {output.glazewm.focusedContainer.title}
-                </div>
-              )}
+              {output.glazewm?.focusedWorkspace && (() => {
+                const wins = getWindows(output.glazewm.focusedWorkspace);
+                if (wins.length === 0) return null;
+                return (
+                  <div className="window-tabs">
+                    {wins.map((win, i) => (
+                      <span
+                        key={i}
+                        className={`window-tab${win.hasFocus ? ' focused' : ''}`}
+                        title={win.title}
+                      >
+                        {win.title?.length > 22
+                          ? win.title.slice(0, 21) + '…'
+                          : win.title}
+                      </span>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
 
             {/* ── Center island: date & time ── */}
