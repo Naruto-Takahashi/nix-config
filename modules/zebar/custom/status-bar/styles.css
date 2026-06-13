@@ -39,10 +39,10 @@ body {
   top: 50%;
   left: 0;
   right: 0;
-  height: 14px;
+  height: 24px;
   transform: translateY(-50%);
   background: rgba(0, 0, 0, 0.28);
-  border-radius: 7px;
+  border-radius: 9px;
   z-index: 0;
   pointer-events: none;
 }
@@ -174,9 +174,21 @@ i {
   color: rgb(255 255 255 / 85%);
 }
 
+.center i {
+  color: #ffc20d;
+}
+
 /* ── Right island ───────────────────────────────────── */
 .right {
-  gap: 7px;
+  gap: 6px;
+}
+
+/* Vertical separator between groups */
+.sep {
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 9px;
+  user-select: none;
+  padding: 0 1px;
 }
 
 .network,
