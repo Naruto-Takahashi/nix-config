@@ -251,7 +251,7 @@ in
             names = [ "HackGen NF" ];
             size = 10.0;
           };
-          statusCommand = "/home/nalt/.config/home-manager/modules/i3status_wrapper.py";
+          statusCommand = "${./i3status_wrapper.py}";
           colors = {
             background = "#1a1b26";
             statusline = "#ffffff";

@@ -204,7 +204,7 @@ Detailed operations and custom keymaps can be viewed in the following documents:
 
 ### ⚙️ Pre-setup Customization (If your username is different)
 If your username on the new PC is different from `nalt` (e.g., `naruto`), edit the user metadata in the configuration file corresponding to your environment before applying:
-* **Target File**: `home-desktop.nix` (for Desktop) or `home-wsl.nix` (for WSL)
+* **Target File**: `hosts/desktop/default.nix` (for Desktop) or `hosts/wsl/default.nix` (for WSL)
 ```nix
 home.username      = "new_username";
 home.homeDirectory = "/home/new_username";
@@ -234,6 +234,32 @@ git clone https://github.com/Naruto-Takahashi/home-manager-config.git ~/.config/
 Choose the profile that matches your target environment.
 
 **For Ubuntu Desktop environment (`nalt-desktop`)**:
+```bash
+nix run github:nix-community/home-manager -- switch --flake ~/.config/home-manager#nalt-desktop --impure
+```
+
+**For WSL environment (`nalt-wsl`)**:
+```bash
+nix run github:nix-community/home-manager -- switch --flake ~/.config/home-manager#nalt-wsl --impure
+```
+
+> [!IMPORTANT]
+> The `--impure` flag is required because it allows Nix to temporarily query the hardware/driver environment (such as NVIDIA drivers) of the host system to correctly build/configure graphics-accelerated applications like WezTerm and picom.
+
+### Step 5: Enable Kanata User Daemon (Desktop only)
+Since Kanata (the keyboard remapper) runs as a user-level service, enable it so it starts automatically (not needed for WSL):
+```bash
+systemctl --user daemon-reload
+systemctl --user enable --now kanata
+```
+
+### Step 6: Start the Recreated Zsh Shell
+```bash
+exec zsh
+```
+
+</details>
+ environment (`nalt-desktop`)**:
 ```bash
 nix run github:nix-community/home-manager -- switch --flake ~/.config/home-manager#nalt-desktop --impure
 ```
