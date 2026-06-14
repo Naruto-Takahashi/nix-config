@@ -79,12 +79,14 @@ widgets:
   lock_button:
     type: "yasb.custom.CustomWidget"
     options:
+      class_name: "lock-button"
       label: "\uf023"
       callbacks:
         on_left: "exec rundll32.exe user32.dll,LockWorkStation"
   power_button:
     type: "yasb.custom.CustomWidget"
     options:
+      class_name: "power-button"
       label: "\uf011"
       callbacks:
         on_left: "exec shutdown /r /t 0"
