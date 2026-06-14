@@ -7,40 +7,15 @@
     <link rel="icon" href="data:;" />
   </head>
   <body>
-    <div id="root" style="color:white; font-family:monospace; padding:10px;">Loading status bar...</div>
-
-    <script>
-      // 画面が真っ白な場合にエラーを画面上に表示するための救急処置
-      window.onerror = function(msg, url, line, col, error) {
-        var el = document.getElementById('root');
-        if (el) {
-          el.innerHTML = '<div style="color:#f38ba8; background:rgba(0,0,0,0.8); padding:10px; border:1px solid #f38ba8; border-radius:5px;">' +
-            '<strong>Runtime Error:</strong><br>' + msg + '<br>' +
-            '<small>at ' + url + ':' + line + ':' + col + '</small>' +
-            '</div>';
-        }
-        return false;
-      };
-    </script>
-
-    <script type="importmap">
-      {
-        "imports": {
-          "preact": "./lib/preact.js",
-          "preact/hooks": "./lib/hooks.js",
-          "htm": "./lib/htm.js",
-          "zebar": "./lib/zebar.js"
-        }
-      }
-    </script>
+    <div id="root"></div>
 
     <script type="module">
-      import { h, render } from "preact";
-      import { useState, useEffect } from "preact/hooks";
-      import htm from "htm";
-      import * as zebar from "zebar";
+      import React, { useState, useEffect } from "https://esm.sh/react@18?bundle";
+      import { createRoot } from "https://esm.sh/react-dom@18/client?bundle";
+      import htm from "https://esm.sh/htm?bundle";
+      import * as zebar from "https://esm.sh/zebar@2?bundle";
 
-      const html = htm.bind(h);
+      const html = htm.bind(React.createElement);
 
       const providers = zebar.createProviderGroup({
         glazewm: { type: 'glazewm' },
@@ -61,25 +36,25 @@
 
         const getNetworkIcon = (networkOutput) => {
           switch (networkOutput.defaultInterface?.type) {
-            case "ethernet": return html`<i class="nf nf-md-ethernet_cable"></i>`;
+            case "ethernet": return html`<i className="nf nf-md-ethernet_cable"></i>`;
             case "wifi":
               const signal = networkOutput.defaultGateway?.signalStrength;
-              if (signal >= 80) return html`<i class="nf nf-md-wifi_strength_4"></i>`;
-              if (signal >= 65) return html`<i class="nf nf-md-wifi_strength_3"></i>`;
-              if (signal >= 40) return html`<i class="nf nf-md-wifi_strength_2"></i>`;
-              if (signal >= 25) return html`<i class="nf nf-md-wifi_strength_1"></i>`;
-              return html`<i class="nf nf-md-wifi_strength_outline"></i>`;
-            default: return html`<i class="nf nf-md-wifi_strength_off_outline"></i>`;
+              if (signal >= 80) return html`<i className="nf nf-md-wifi_strength_4"></i>`;
+              if (signal >= 65) return html`<i className="nf nf-md-wifi_strength_3"></i>`;
+              if (signal >= 40) return html`<i className="nf nf-md-wifi_strength_2"></i>`;
+              if (signal >= 25) return html`<i className="nf nf-md-wifi_strength_1"></i>`;
+              return html`<i className="nf nf-md-wifi_strength_outline"></i>`;
+            default: return html`<i className="nf nf-md-wifi_strength_off_outline"></i>`;
           }
         };
 
         const getBatteryIcon = (batteryOutput) => {
           const percent = batteryOutput.chargePercent;
-          if (percent > 90) return html`<i class="nf nf-fa-battery_4"></i>`;
-          if (percent > 70) return html`<i class="nf nf-fa-battery_3"></i>`;
-          if (percent > 40) return html`<i class="nf nf-fa-battery_2"></i>`;
-          if (percent > 20) return html`<i class="nf nf-fa-battery_1"></i>`;
-          return html`<i class="nf nf-fa-battery_0"></i>`;
+          if (percent > 90) return html`<i className="nf nf-fa-battery_4"></i>`;
+          if (percent > 70) return html`<i className="nf nf-fa-battery_3"></i>`;
+          if (percent > 40) return html`<i className="nf nf-fa-battery_2"></i>`;
+          if (percent > 20) return html`<i className="nf nf-fa-battery_1"></i>`;
+          return html`<i className="nf nf-fa-battery_0"></i>`;
         };
 
         const getWindows = (container) => {
@@ -106,31 +81,31 @@
         };
 
         return html`
-          <div class="app">
-            <div class="left-group">
+          <div className="app">
+            <div className="left-group">
               ${output.glazewm && html`
-                <div class="island" style=${{ background: '#66a366' }}>
-                  <i class="logo nf nf-fa-windows" style=${{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
+                <div className="island" style=${{ background: '#66a366' }}>
+                  <i className="logo nf nf-fa-windows" style=${{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
                   <button
-                    class="tiling-direction"
+                    className="tiling-direction"
                     onClick=${() => output.glazewm.runCommand('toggle-tiling-direction')}
                     style=${{ background: 'transparent', color: '#000000', padding: 0 }}
                   >
                     ${output.glazewm.tilingDirection === 'horizontal' 
-                      ? html`<i class="nf nf-md-swap_horizontal" style=${{ color: '#000000' }}></i>`
-                      : html`<i class="nf nf-md-swap_vertical" style=${{ color: '#000000' }}></i>`
+                      ? html`<i className="nf nf-md-swap_horizontal" style=${{ color: '#000000' }}></i>`
+                      : html`<i className="nf nf-md-swap_vertical" style=${{ color: '#000000' }}></i>`
                     }
                   </button>
                 </div>
               `}
 
-              <div class="island">
+              <div className="island">
                 ${output.glazewm && html`
-                  <div class="workspaces">
+                  <div className="workspaces">
                     ${output.glazewm.currentWorkspaces.map(workspace => html`
                       <button
                         key=${workspace.name}
-                        class=${`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}`}
+                        className=${`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}`}
                         onClick=${() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
                       >
                         ${workspace.displayName ?? workspace.name}
@@ -143,11 +118,11 @@
               ${output.glazewm?.displayedWorkspace && getWindows(output.glazewm.displayedWorkspace).map((win, i) => html`
                 <div 
                   key=${i} 
-                  class="island"
+                  className="island"
                   style=${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}
                 >
                   <span
-                    class="window-tab"
+                    className="window-tab"
                     title=${win.title || win.processName}
                     style=${{ 
                       padding: 0, 
@@ -165,60 +140,60 @@
               `)}
             </div>
 
-            <div class="center-group">
-              <div class="island center" style=${{ background: '#cba6f7', color: '#000000' }}>
+            <div className="center-group">
+              <div className="island center" style=${{ background: '#cba6f7', color: '#000000' }}>
                 ${output.date?.formatted}
               </div>
             </div>
 
-            <div class="right-group">
-              <div class="island">
+            <div className="right-group">
+              <div className="island">
                 ${output.network && html`
-                  <div class=${`network ${output.network.defaultInterface?.type === 'wifi' && output.network.defaultGateway?.signalStrength < 40 ? 'text-red' : ''}`}>
+                  <div className=${`network ${output.network.defaultInterface?.type === 'wifi' && output.network.defaultGateway?.signalStrength < 40 ? 'text-red' : ''}`}>
                     ${getNetworkIcon(output.network)}
-                    <span class="resource-text">${output.network.defaultGateway?.ssid}</span>
+                    <span className="resource-text">${output.network.defaultGateway?.ssid}</span>
                   </div>
                 `}
-                ${output.network && (output.memory || output.cpu) && html`<span class="sep">|</span>`}
+                ${output.network && (output.memory || output.cpu) && html`<span className="sep">|</span>`}
                 ${output.memory && html`
-                  <div class=${`memory ${output.memory.usage >= 80 ? 'text-red' : output.memory.usage >= 50 ? 'text-yellow' : 'text-green'}`}>
-                    <i class="nf nf-fae-chip"></i>
-                    <span class="resource-text">${Math.round(output.memory.usage)}%</span>
+                  <div className=${`memory ${output.memory.usage >= 80 ? 'text-red' : output.memory.usage >= 50 ? 'text-yellow' : 'text-green'}`}>
+                    <i className="nf nf-fae-chip"></i>
+                    <span className="resource-text">${Math.round(output.memory.usage)}%</span>
                   </div>
                 `}
-                ${output.memory && output.cpu && html`<span class="sep">|</span>`}
+                ${output.memory && output.cpu && html`<span className="sep">|</span>`}
                 ${output.cpu && html`
-                  <div class=${`cpu ${output.cpu.usage >= 80 ? 'text-red' : output.cpu.usage >= 50 ? 'text-yellow' : 'text-green'}`}>
-                    <i class="nf nf-oct-cpu"></i>
-                    <span class="resource-text">${Math.round(output.cpu.usage)}%</span>
+                  <div className=${`cpu ${output.cpu.usage >= 80 ? 'text-red' : output.cpu.usage >= 50 ? 'text-yellow' : 'text-green'}`}>
+                    <i className="nf nf-oct-cpu"></i>
+                    <span className="resource-text">${Math.round(output.cpu.usage)}%</span>
                   </div>
                 `}
               </div>
               
               ${output.battery && html`
-                <div class=${`island battery ${output.battery.chargePercent < 20 ? 'text-red' : ''}`}>
-                  ${output.battery.isCharging && html`<i class="nf nf-md-power_plug charging-icon"></i>`}
+                <div className=${`island battery ${output.battery.chargePercent < 20 ? 'text-red' : ''}`}>
+                  ${output.battery.isCharging && html`<i className="nf nf-md-power_plug charging-icon"></i>`}
                   ${getBatteryIcon(output.battery)}
-                  <span class="resource-text">${Math.round(output.battery.chargePercent)}%</span>
+                  <span className="resource-text">${Math.round(output.battery.chargePercent)}%</span>
                 </div>
               `}
               
-              <div class="island" style=${{ background: '#ffd147' }}>
+              <div className="island" style=${{ background: '#ffd147' }}>
                 <button
-                  class="tiling-direction"
+                  className="tiling-direction"
                   onClick=${() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
                   title="Lock System"
                 >
-                  <i class="nf nf-fa-lock" style=${{ color: '#000000' }}></i>
+                  <i className="nf nf-fa-lock" style=${{ color: '#000000' }}></i>
                 </button>
               </div>
-              <div class="island" style=${{ background: '#b87d7d' }}>
+              <div className="island" style=${{ background: '#b87d7d' }}>
                 <button
-                  class="tiling-direction"
+                  className="tiling-direction"
                   onClick=${() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
                   title="Restart System"
                 >
-                  <i class="nf nf-md-power" style=${{ color: '#000000' }}></i>
+                  <i className="nf nf-md-power" style=${{ color: '#000000' }}></i>
                 </button>
               </div>
             </div>
@@ -226,11 +201,7 @@
         `;
       }
 
-      try {
-        render(html`<${App} />`, document.getElementById("root"));
-      } catch (e) {
-        alert("Mount Error: " + e);
-      }
+      createRoot(document.getElementById("root")).render(html`<${App} />`);
     </script>
   </body>
 </html>
