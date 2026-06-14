@@ -17,7 +17,7 @@ bars:
 
 widgets:
   komorebi_workspaces:
-    type: "yasb.komorebi.WorkspacesWidget"
+    type: "komorebi.workspaces.WorkspaceWidget"
     options:
       label_offline: "K"
       label_workspace_btn: "{index}"
