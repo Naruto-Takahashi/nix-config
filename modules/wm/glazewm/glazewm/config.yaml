@@ -129,14 +129,6 @@ keybindings:
     bindings: ["alt+shift+k", "alt+shift+up"]
   - commands: ["move --direction down"]
     bindings: ["alt+shift+j", "alt+shift+down"]
-  - commands: ["swap --direction left"]
-    bindings: ["alt+ctrl+shift+h"]
-  - commands: ["swap --direction right"]
-    bindings: ["alt+ctrl+shift+l"]
-  - commands: ["swap --direction up"]
-    bindings: ["alt+ctrl+shift+k"]
-  - commands: ["swap --direction down"]
-    bindings: ["alt+ctrl+shift+j"]
   - commands: ["resize --width -2%"]
     # Resize focused window by a percentage or pixel amount.
 
