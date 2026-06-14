@@ -132,20 +132,39 @@
                 `}
               </div>
 
-              ${output.glazewm?.displayedWorkspace && getWindows(output.glazewm.displayedWorkspace).map((win, i) => html`
-                <div key=${i} className="island" style=${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}>
-                  <span
-                    className="window-tab"
-                    title=${win.title || win.processName}
-                    style=${{ color: win.hasFocus ? '#000000' : undefined, fontWeight: win.hasFocus ? 600 : 'normal' }}
-                  >
-                    ${(() => {
-                      const displayTitle = formatWindowTitle(win);
-                      return displayTitle.length > 22 ? displayTitle.slice(0, 21) + '…' : displayTitle;
-                    })()}
-                  </span>
-                </div>
-              `)}
+              ${output.glazewm?.displayedWorkspace && (() => {
+                const wins = getWindows(output.glazewm.displayedWorkspace);
+                if (wins.length === 0) return null;
+                return html`
+                  <div className="island window-tabs-container" style=${{ padding: '0 4px' }}>
+                    ${wins.map((win, i) => html`
+                      <div 
+                        key=${i} 
+                        style=${{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          background: win.hasFocus ? '#ffd147' : 'transparent', 
+                          borderRadius: '4px', 
+                          padding: '1px 6px',
+                          margin: '0 1px'
+                        }}
+                      >
+                        <span
+                          className="window-tab"
+                          title=${win.title || win.processName}
+                          style=${{ color: win.hasFocus ? '#000000' : undefined, fontWeight: win.hasFocus ? 600 : 'normal' }}
+                        >
+                          ${(() => {
+                            const displayTitle = formatWindowTitle(win);
+                            return displayTitle.length > 22 ? displayTitle.slice(0, 21) + '…' : displayTitle;
+                          })()}
+                        </span>
+                      </div>
+                      ${i < wins.length - 1 ? html`<span className="sep">|</span>` : ''}
+                    `)}
+                  </div>
+                `;
+              })()}
             </div>
 
             <div className="center-group">
