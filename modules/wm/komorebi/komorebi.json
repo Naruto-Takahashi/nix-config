@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/main/schema.json",
   "focus_follows_mouse": "Komorebi",
-  "window_hiding_behaviour": "Cloak",
+  "window_hiding_behaviour": "Hide",
   "cross_monitor_move_behaviour": "Swap",
   "default_workspace_padding": 4,
   "default_container_padding": 4,

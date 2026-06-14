@@ -15,8 +15,8 @@ bars:
       always_on_top: false
     widgets:
       left: ["komorebi_workspaces", "taskbar"]
-      center: []
-      right: ["cpu", "memory", "battery", "clock"]
+      center: ["clock"]
+      right: ["cpu", "memory", "battery"]
 
 widgets:
   komorebi_workspaces:
