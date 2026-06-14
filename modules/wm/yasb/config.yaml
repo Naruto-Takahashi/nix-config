@@ -22,11 +22,10 @@ widgets:
       label_offline: "K"
       label_workspace_btn: "{index}"
       label_workspace_active_btn: "{index}"
-      label_workspace_empty_btn: "{index}"
   clock:
     type: "yasb.clock.ClockWidget"
     options:
-      format: "%a %d %b | %H:%M:%S"
+      label: "{%a %d %b | %H:%M:%S}"
   cpu:
     type: "yasb.cpu.CpuWidget"
   memory:
