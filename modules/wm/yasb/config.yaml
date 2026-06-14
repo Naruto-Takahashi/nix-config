@@ -40,10 +40,10 @@ widgets:
     type: "komorebi.workspaces.WorkspaceWidget"
     options:
       label_offline: ""
-      label_workspace_btn: "{index}"
-      label_workspace_active_btn: "{index}"
-      label_workspace_populated_btn: "{index}"
-      label_default_name: "{index}"
+      label_workspace_btn: "{name}"
+      label_workspace_active_btn: "{name}"
+      label_workspace_populated_btn: "{name}"
+      label_default_name: "{name}"
       label_zero_index: false
       hide_empty_workspaces: true
       hide_if_offline: true
@@ -81,12 +81,12 @@ widgets:
     options:
       class_name: "lock-button"
       label: ""
-      callbacks:
-        on_left: "exec cmd /c rundll32.exe user32.dll,LockWorkStation"
+    callbacks:
+      on_left: "exec cmd /c rundll32.exe user32.dll,LockWorkStation"
   power_button:
     type: "yasb.custom.CustomWidget"
     options:
       class_name: "power-button"
       label: ""
-      callbacks:
-        on_left: "exec cmd /c shutdown /r /t 0"
+    callbacks:
+      on_left: "exec cmd /c shutdown /r /t 0"

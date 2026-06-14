@@ -28,10 +28,10 @@ SetWorkingDir %A_ScriptDir%
 !3::Run, komorebic focus-monitor-workspace 0 2, , Hide
 !4::Run, komorebic focus-monitor-workspace 0 3, , Hide
 !5::Run, komorebic focus-monitor-workspace 0 4, , Hide
-!6::Run, komorebic focus-monitor-workspace 0 5, , Hide
-!7::Run, komorebic focus-monitor-workspace 0 6, , Hide
-!8::Run, komorebic focus-monitor-workspace 0 7, , Hide
-!9::Run, komorebic focus-monitor-workspace 0 8, , Hide
+!6::Run, komorebic focus-monitor-workspace 1 0, , Hide
+!7::Run, komorebic focus-monitor-workspace 1 1, , Hide
+!8::Run, komorebic focus-monitor-workspace 1 2, , Hide
+!9::Run, komorebic focus-monitor-workspace 1 3, , Hide
 
 ; --- Workspaces (Move Window) ---
 !+1::Run, komorebic move-to-monitor-workspace 0 0, , Hide
@@ -39,10 +39,10 @@ SetWorkingDir %A_ScriptDir%
 !+3::Run, komorebic move-to-monitor-workspace 0 2, , Hide
 !+4::Run, komorebic move-to-monitor-workspace 0 3, , Hide
 !+5::Run, komorebic move-to-monitor-workspace 0 4, , Hide
-!+6::Run, komorebic move-to-monitor-workspace 0 5, , Hide
-!+7::Run, komorebic move-to-monitor-workspace 0 6, , Hide
-!+8::Run, komorebic move-to-monitor-workspace 0 7, , Hide
-!+9::Run, komorebic move-to-monitor-workspace 0 8, , Hide
+!+6::Run, komorebic move-to-monitor-workspace 1 0, , Hide
+!+7::Run, komorebic move-to-monitor-workspace 1 1, , Hide
+!+8::Run, komorebic move-to-monitor-workspace 1 2, , Hide
+!+9::Run, komorebic move-to-monitor-workspace 1 3, , Hide
 
 ; --- Layout & Window Ops ---
 !t::Run, komorebic toggle-tiling, , Hide

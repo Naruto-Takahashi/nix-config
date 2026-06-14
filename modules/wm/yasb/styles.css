@@ -1,6 +1,6 @@
 /* YASB Styles - Replicating Original ZEBAR Design */
 * {
-    font-family: ui-monospace, monospace;
+    font-family: "JetBrainsMono NFP", "HackGen Console NF", ui-monospace, monospace;
     font-size: 11px;
 }
 
