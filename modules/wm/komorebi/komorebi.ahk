@@ -23,26 +23,26 @@ SetWorkingDir %A_ScriptDir%
 !+j::Run, komorebic move down, , Hide
 
 ; --- Workspaces (Focus) ---
-!1::Run, komorebic focus-workspace 0, , Hide
-!2::Run, komorebic focus-workspace 1, , Hide
-!3::Run, komorebic focus-workspace 2, , Hide
-!4::Run, komorebic focus-workspace 3, , Hide
-!5::Run, komorebic focus-workspace 4, , Hide
-!6::Run, komorebic focus-workspace 5, , Hide
-!7::Run, komorebic focus-workspace 6, , Hide
-!8::Run, komorebic focus-workspace 7, , Hide
-!9::Run, komorebic focus-workspace 8, , Hide
+!1::Run, komorebic focus-monitor-workspace 0 0, , Hide
+!2::Run, komorebic focus-monitor-workspace 0 1, , Hide
+!3::Run, komorebic focus-monitor-workspace 0 2, , Hide
+!4::Run, komorebic focus-monitor-workspace 0 3, , Hide
+!5::Run, komorebic focus-monitor-workspace 0 4, , Hide
+!6::Run, komorebic focus-monitor-workspace 0 5, , Hide
+!7::Run, komorebic focus-monitor-workspace 0 6, , Hide
+!8::Run, komorebic focus-monitor-workspace 0 7, , Hide
+!9::Run, komorebic focus-monitor-workspace 0 8, , Hide
 
 ; --- Workspaces (Move Window) ---
-!+1::Run, komorebic move-to-workspace 0, , Hide
-!+2::Run, komorebic move-to-workspace 1, , Hide
-!+3::Run, komorebic move-to-workspace 2, , Hide
-!+4::Run, komorebic move-to-workspace 3, , Hide
-!+5::Run, komorebic move-to-workspace 4, , Hide
-!+6::Run, komorebic move-to-workspace 5, , Hide
-!+7::Run, komorebic move-to-workspace 6, , Hide
-!+8::Run, komorebic move-to-workspace 7, , Hide
-!+9::Run, komorebic move-to-workspace 8, , Hide
+!+1::Run, komorebic move-to-monitor-workspace 0 0, , Hide
+!+2::Run, komorebic move-to-monitor-workspace 0 1, , Hide
+!+3::Run, komorebic move-to-monitor-workspace 0 2, , Hide
+!+4::Run, komorebic move-to-monitor-workspace 0 3, , Hide
+!+5::Run, komorebic move-to-monitor-workspace 0 4, , Hide
+!+6::Run, komorebic move-to-monitor-workspace 0 5, , Hide
+!+7::Run, komorebic move-to-monitor-workspace 0 6, , Hide
+!+8::Run, komorebic move-to-monitor-workspace 0 7, , Hide
+!+9::Run, komorebic move-to-monitor-workspace 0 8, , Hide
 
 ; --- Layout & Window Ops ---
 !t::Run, komorebic toggle-tiling, , Hide
