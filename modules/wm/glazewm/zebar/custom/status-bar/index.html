@@ -217,7 +217,11 @@
               <div className="island" style=${{ background: '#b87d7d' }}>
                 <button
                   className="tiling-direction"
-                  onClick=${() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
+                  onClick=${() => {
+                    if (window.confirm('システムを再起動しますか？ (Restart System)')) {
+                      output.glazewm.runCommand('shell-exec shutdown /r /t 0');
+                    }
+                  }}
                   title="Restart System"
                 >
                   <i className="nf nf-md-power" style=${{ color: '#000000' }}></i>
