@@ -30,6 +30,7 @@
 
       function App() {
         const [output, setOutput] = useState(providers.outputMap);
+        const [restartClicks, setRestartClicks] = useState(0);
 
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
@@ -214,17 +215,21 @@
                   <i className="nf nf-fa-lock" style=${{ color: '#000000' }}></i>
                 </button>
               </div>
-              <div className="island" style=${{ background: '#b87d7d' }}>
+              <div className="island" style=${{ background: restartClicks > 0 ? '#ff8888' : '#b87d7d' }}>
                 <button
                   className="tiling-direction"
                   onClick=${() => {
-                    if (window.confirm('システムを再起動しますか？ (Restart System)')) {
+                    if (restartClicks === 0) {
+                      setRestartClicks(1);
+                      setTimeout(() => setRestartClicks(0), 3000);
+                    } else {
                       output.glazewm.runCommand('shell-exec shutdown /r /t 0');
                     }
                   }}
-                  title="Restart System"
+                  title=${restartClicks === 0 ? "Restart System" : "Click again to confirm"}
                 >
-                  <i className="nf nf-md-power" style=${{ color: '#000000' }}></i>
+                  <i className=${restartClicks === 0 ? "nf nf-md-power" : "nf nf-fa-warning"} style=${{ color: '#000000' }}></i>
+                  ${restartClicks > 0 ? html`<span style=${{color: '#000', fontSize: '10px', marginLeft: '4px', fontWeight: 'bold'}}>Sure?</span>` : ''}
                 </button>
               </div>
             </div>
