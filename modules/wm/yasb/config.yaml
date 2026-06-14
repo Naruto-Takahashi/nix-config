@@ -5,10 +5,11 @@ bars:
     screens: ["*"]
     class_name: "yasb-bar"
     alignment:
-      top: true
-      left: true
-      right: true
-    height: 26
+      position: "top"
+      center: false
+    dimensions:
+      width: "100%"
+      height: 30
     widgets:
       left: ["komorebi_workspaces"]
       center: ["clock"]
