@@ -1,6 +1,5 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/main/schema.json",
-  "app_specific_configuration_path": "~/.config/komorebi/applications.json",
   "window_hiding_behaviour": "Minimize",
   "cross_monitor_move_behaviour": "Swap",
   "default_workspace_padding": 4,

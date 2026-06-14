@@ -11,4 +11,10 @@
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/komorebi.ahk";
     force = true;
   };
+
+  # komorebi のアプリケーション個別設定
+  xdg.configFile."komorebi/applications.json" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/applications.json";
+    force = true;
+  };
 }

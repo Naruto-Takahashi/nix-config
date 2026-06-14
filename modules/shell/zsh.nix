@@ -244,8 +244,10 @@
           mkdir -p /mnt/c/Users/tnaru/.config/komorebi
           cp ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
           cp ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
+          cp ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
           # 読み込みの確実性を高めるため、ホーム直下にも配置
           cp ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
+          cp ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
           echo "Syncing YASB config..."
           mkdir -p /mnt/c/Users/tnaru/.config/yasb
           cp -r ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
