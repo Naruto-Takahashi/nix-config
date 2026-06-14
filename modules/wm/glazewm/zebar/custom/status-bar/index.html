@@ -3,261 +3,180 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-    <!-- Custom styles. -->
     <link rel="stylesheet" type="text/css" href="./styles.css" />
-
-    <!-- Add empty favicon to suppress not found errors. -->
     <link rel="icon" href="data:;" />
-
-    <!-- Allows React to be run buildless via "text/babel" script below. -->
-    <script
-      src="https://unpkg.com/@babel/standalone@7.25.6/babel.min.js"
-      integrity="sha256-aS0B0wnsaDByLfE16h4MDCP1fQFccysd1YWOcV+gbBo="
-      crossorigin="anonymous"
-    ></script>
   </head>
   <body>
     <div id="root"></div>
 
-    <script type="text/babel" data-type="module">
-      import React, { useState, useEffect } from "https://esm.sh/react@18?dev";
-      import { createRoot } from "https://esm.sh/react-dom@18/client?dev";
+    <script type="module">
+      import React, { useState, useEffect } from "https://esm.sh/react@18";
+      import { createRoot } from "https://esm.sh/react-dom@18/client";
+      import htm from "https://esm.sh/htm";
       import * as zebar from "https://esm.sh/zebar@2";
 
-            const providers = zebar.createProviderGroup({
+      const html = htm.bind(React.createElement);
 
-              glazewm: { type: 'glazewm' },
+      const providers = zebar.createProviderGroup({
+        glazewm: { type: 'glazewm' },
+        network: { type: "network" },
+        cpu: { type: "cpu" },
+        date: { type: "date", formatting: "EEE d MMM ' | ' t" },
+        battery: { type: "battery" },
+        memory: { type: "memory" },
+        keyboard: { type: "keyboard" },
+      });
 
-              network: { type: "network" },
+      createRoot(document.getElementById("root")).render(html`<${App} />`);
 
-              cpu: { type: "cpu" },
+      function App() {
+        const [output, setOutput] = useState(providers.outputMap);
 
-              date: { type: "date", formatting: "EEE d MMM ' | ' t" },
+        useEffect(() => {
+          providers.onOutput(() => setOutput(providers.outputMap));
+        }, []);
 
-              battery: { type: "battery" },
+        function getNetworkIcon(networkOutput) {
+          switch (networkOutput.defaultInterface?.type) {
+            case "ethernet":
+              return html`<i className="nf nf-md-ethernet_cable"></i>`;
+            case "wifi":
+              const signal = networkOutput.defaultGateway?.signalStrength;
+              if (signal >= 80) return html`<i className="nf nf-md-wifi_strength_4"></i>`;
+              if (signal >= 65) return html`<i className="nf nf-md-wifi_strength_3"></i>`;
+              if (signal >= 40) return html`<i className="nf nf-md-wifi_strength_2"></i>`;
+              if (signal >= 25) return html`<i className="nf nf-md-wifi_strength_1"></i>`;
+              return html`<i className="nf nf-md-wifi_strength_outline"></i>`;
+            default:
+              return html`<i className="nf nf-md-wifi_strength_off_outline"></i>`;
+          }
+        }
 
-              memory: { type: "memory" },
+        function getBatteryIcon(batteryOutput) {
+          const percent = batteryOutput.chargePercent;
+          if (percent > 90) return html`<i className="nf nf-fa-battery_4"></i>`;
+          if (percent > 70) return html`<i className="nf nf-fa-battery_3"></i>`;
+          if (percent > 40) return html`<i className="nf nf-fa-battery_2"></i>`;
+          if (percent > 20) return html`<i className="nf nf-fa-battery_1"></i>`;
+          return html`<i className="nf nf-fa-battery_0"></i>`;
+        }
 
-              keyboard: { type: "keyboard" },
+        function getNetworkClass(networkOutput) {
+          if (networkOutput.defaultInterface?.type === 'wifi' && networkOutput.defaultGateway?.signalStrength) {
+            const strength = networkOutput.defaultGateway.signalStrength;
+            if (strength >= 60) return 'text-green';
+            if (strength >= 40) return 'text-yellow';
+            return 'text-red';
+          }
+          return '';
+        }
 
-            });
+        function getMemoryClass(memoryOutput) {
+          if (memoryOutput.usage >= 80) return 'text-red';
+          if (memoryOutput.usage >= 50) return 'text-yellow';
+          return 'text-green';
+        }
 
-      
+        function getCpuClass(cpuOutput) {
+          if (cpuOutput.usage >= 80) return 'text-red';
+          if (cpuOutput.usage >= 50) return 'text-yellow';
+          return 'text-green';
+        }
 
-            createRoot(document.getElementById("root")).render(<App />);
+        function getBatteryClass(batteryOutput) {
+          if (batteryOutput.chargePercent < 20 && !batteryOutput.isCharging) return 'text-red';
+          if (batteryOutput.chargePercent < 50 && !batteryOutput.isCharging) return 'text-yellow';
+          return 'text-green';
+        }
 
-      
+        function getWindows(container) {
+          if (!container) return [];
+          if (container.type === 'window') return [container];
+          return (container.children ?? []).flatMap(c => getWindows(c));
+        }
 
-            function App() {
+        function formatWindowTitle(win) {
+          if (!win.title) {
+            if (!win.processName) return "Window";
+            if (win.processName.toLowerCase() === "wezterm-gui") return "WezTerm";
+            if (win.processName.toLowerCase() === "code") return "VS Code";
+            return win.processName.charAt(0).toUpperCase() + win.processName.slice(1);
+          }
+          let t = win.title;
+          const suffixes = [' - Vivaldi', ' - Google Chrome', ' - Microsoft\u200b Edge', ' - Visual Studio Code', ' - Discord', ' - WezTerm'];
+          for (const suffix of suffixes) {
+            if (t.endsWith(suffix)) {
+              t = t.slice(0, -suffix.length);
+              break;
+            }
+          }
+          const cliMatch = t.match(/^(Yazi|nvim|zsh|bash|fish|tmux|btop|htop|vim|lazygit):/i);
+          if (cliMatch) {
+            t = cliMatch[1];
+            return t.charAt(0).toUpperCase() + t.slice(1);
+          }
+          t = t.replace(/:\s*nalt\b.*/i, '');
+          return t;
+        }
 
-              const [output, setOutput] = useState(providers.outputMap);
-
-      
-
-              useEffect(() => {
-
-                providers.onOutput(() => setOutput(providers.outputMap));
-
-              }, []);
-
-      
-
-              // Get icon to show for current network status.
-
-              function getNetworkIcon(networkOutput) {
-
-                switch (networkOutput.defaultInterface?.type) {
-
-                  case "ethernet":
-
-                    return <i className="nf nf-md-ethernet_cable"></i>;
-
-                  case "wifi":
-
-                    if (networkOutput.defaultGateway?.signalStrength >= 80) {
-
-                      return <i className="nf nf-md-wifi_strength_4"></i>;
-
-                    } else if (networkOutput.defaultGateway?.signalStrength >= 65) {
-
-                      return <i className="nf nf-md-wifi_strength_3"></i>;
-
-                    } else if (networkOutput.defaultGateway?.signalStrength >= 40) {
-
-                      return <i className="nf nf-md-wifi_strength_2"></i>;
-
-                    } else if (networkOutput.defaultGateway?.signalStrength >= 25) {
-
-                      return <i className="nf nf-md-wifi_strength_1"></i>;
-
-                    } else {
-
-                      return <i className="nf nf-md-wifi_strength_outline"></i>;
-
-                    }
-
-                  default:
-
-                    return <i className="nf nf-md-wifi_strength_off_outline"></i>;
-
-                }
-
-              }
-
-      
-
-              // Get icon to show for how much of the battery is charged.
-
-              function getBatteryIcon(batteryOutput) {
-
-                if (batteryOutput.chargePercent > 90)
-
-                  return <i className="nf nf-fa-battery_4"></i>;
-
-                if (batteryOutput.chargePercent > 70)
-
-                  return <i className="nf nf-fa-battery_3"></i>;
-
-                if (batteryOutput.chargePercent > 40)
-
-                  return <i className="nf nf-fa-battery_2"></i>;
-
-                if (batteryOutput.chargePercent > 20)
-
-                  return <i className="nf nf-fa-battery_1"></i>;
-
-                return <i className="nf nf-fa-battery_0"></i>;
-
-              }
-
-      
-
-              function getNetworkClass(networkOutput) {
-                if (networkOutput.defaultInterface?.type === 'wifi' && networkOutput.defaultGateway?.signalStrength) {
-                  const strength = networkOutput.defaultGateway.signalStrength;
-                  if (strength >= 60) return 'text-green';
-                  if (strength >= 40) return 'text-yellow';
-                  return 'text-red';
-                }
-                return '';
-              }
-
-              function getMemoryClass(memoryOutput) {
-                if (memoryOutput.usage >= 80) return 'text-red';
-                if (memoryOutput.usage >= 50) return 'text-yellow';
-                return 'text-green';
-              }
-
-              function getCpuClass(cpuOutput) {
-                if (cpuOutput.usage >= 80) return 'text-red';
-                if (cpuOutput.usage >= 50) return 'text-yellow';
-                return 'text-green';
-              }
-
-              function getBatteryClass(batteryOutput) {
-                if (batteryOutput.chargePercent < 20 && !batteryOutput.isCharging) return 'text-red';
-                if (batteryOutput.chargePercent < 50 && !batteryOutput.isCharging) return 'text-yellow';
-                return 'text-green';
-              }
-
-              // Recursively collect all window containers from the workspace tree
-              function getWindows(container) {
-                if (!container) return [];
-                if (container.type === 'window') return [container];
-                return (container.children ?? []).flatMap(c => getWindows(c));
-              }
-
-              function formatWindowTitle(win) {
-                if (!win.title) {
-                  if (!win.processName) return "Window";
-                  if (win.processName.toLowerCase() === "wezterm-gui") return "WezTerm";
-                  if (win.processName.toLowerCase() === "code") return "VS Code";
-                  return win.processName.charAt(0).toUpperCase() + win.processName.slice(1);
-                }
-                let t = win.title;
-                const suffixes = [' - Vivaldi', ' - Google Chrome', ' - Microsoft\u200b Edge', ' - Visual Studio Code', ' - Discord', ' - WezTerm'];
-                for (const suffix of suffixes) {
-                  if (t.endsWith(suffix)) {
-                    t = t.slice(0, -suffix.length);
-                    break;
-                  }
-                }
-
-                // Clean up terminal tool titles (e.g. "Yazi: nalt" -> "Yazi", "nvim: ~/dir" -> "Nvim")
-                const cliMatch = t.match(/^(Yazi|nvim|zsh|bash|fish|tmux|btop|htop|vim|lazygit):/i);
-                if (cliMatch) {
-                  t = cliMatch[1];
-                  return t.charAt(0).toUpperCase() + t.slice(1);
-                }
-
-                // General cleanup for trailing username/host just in case
-                t = t.replace(/:\s*nalt\b.*/i, '');
-
-                return t;
-              }
-
-        return (
+        return html`
           <div className="app">
             <div className="left-group">
-              {/* ── Logo & Tiling Direction Toggle ── */}
-              {output.glazewm && (
-                <div className="island" style={{ background: '#66a366' }}>
-                  <i className="logo nf nf-fa-windows" style={{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
+              \${output.glazewm && html`
+                <div className="island" style=\${{ background: '#66a366' }}>
+                  <i className="logo nf nf-fa-windows" style=\${{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
                   <button
                     className="tiling-direction"
-                    onClick={() => output.glazewm.runCommand('toggle-tiling-direction')}
-                    style={{ background: 'transparent', color: '#000000', padding: 0 }}
+                    onClick=\${() => output.glazewm.runCommand('toggle-tiling-direction')}
+                    style=\${{ background: 'transparent', color: '#000000', padding: 0 }}
                   >
-                    {output.glazewm.tilingDirection === 'horizontal' ? (
-                      <i className="nf nf-md-swap_horizontal" style={{ color: '#000000' }}></i>
-                    ) : (
-                      <i className="nf nf-md-swap_vertical" style={{ color: '#000000' }}></i>
-                    )}
+                    \${output.glazewm.tilingDirection === 'horizontal' ? html`
+                      <i className="nf nf-md-swap_horizontal" style=\${{ color: '#000000' }}></i>
+                    ` : html`
+                      <i className="nf nf-md-swap_vertical" style=\${{ color: '#000000' }}></i>
+                    `}
                   </button>
                 </div>
-              )}
+              `}
 
-              {/* ── Workspaces ── */}
               <div className="island">
-                {output.glazewm && (
+                \${output.glazewm && html`
                   <div className="workspaces">
-                    {output.glazewm.currentWorkspaces.map(workspace => (
+                    \${output.glazewm.currentWorkspaces.map(workspace => html`
                       <button
-                        key={workspace.name}
-                        className={`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}`}
-                        onClick={() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
+                        key=\${workspace.name}
+                        className="workspace \${workspace.hasFocus ? 'focused' : ''} \${workspace.isVisible ? 'displayed' : ''}"
+                        onClick=\${() => output.glazewm.runCommand(\`focus --workspace \${workspace.name}\`)}
                       >
-                        {workspace.displayName ?? workspace.name}
+                        \${workspace.displayName ?? workspace.name}
                       </button>
-                    ))}
+                    `)}
                   </div>
-                )}
+                `}
               </div>
 
-              {/* ── Window tabs ── */}
-              {output.glazewm?.displayedWorkspace && (() => {
+              \${output.glazewm?.displayedWorkspace && (() => {
                 const wins = getWindows(output.glazewm.displayedWorkspace);
                 if (wins.length === 0) return null;
-                return (
-                  <>
-                    {wins.map((win, i) => (
+                return html`
+                  <React.Fragment>
+                    \${wins.map((win, i) => html`
                       <div 
-                        key={i} 
+                        key=\${i} 
                         className="island"
-                        style={win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}
+                        style=\${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}
                       >
                         <span
                           className="window-tab"
-                          title={win.title || win.processName}
-                          style={{ 
+                          title=\${win.title || win.processName}
+                          style=\${{ 
                             padding: 0, 
                             margin: 0, 
                             color: win.hasFocus ? '#000000' : undefined,
                             fontWeight: win.hasFocus ? 600 : 'normal'
                           }}
                         >
-                          {(() => {
+                          \${(() => {
                             const displayTitle = formatWindowTitle(win);
                             return displayTitle.length > 22
                               ? displayTitle.slice(0, 21) + '…'
@@ -265,87 +184,78 @@
                           })()}
                         </span>
                       </div>
-                    ))}
-                  </>
-                );
+                    `)}
+                  </React.Fragment>
+                `;
               })()}
             </div>
 
             <div className="center-group">
-              {/* ── Center island: date & time ── */}
-              <div className="island center" style={{ background: '#cba6f7', color: '#000000' }}>
-                {output.date?.formatted}
+              <div className="island center" style=\${{ background: '#cba6f7', color: '#000000' }}>
+                \${output.date?.formatted}
               </div>
             </div>
 
             <div className="right-group">
-              {/* ── Resource stats ── */}
               <div className="island">
-                {output.network && (
-                  <>
-                    <div className={`network ${getNetworkClass(output.network)}`}>
-                      {getNetworkIcon(output.network)}
-                      <span className="resource-text">{output.network.defaultGateway?.ssid}</span>
+                \${output.network && html`
+                  <React.Fragment>
+                    <div className="network \${getNetworkClass(output.network)}">
+                      \${getNetworkIcon(output.network)}
+                      <span className="resource-text">\${output.network.defaultGateway?.ssid}</span>
                     </div>
-                    {(output.memory || output.cpu) && <span className="sep">|</span>}
-                  </>
-                )}
-                {output.memory && (
-                  <>
-                    <div className={`memory ${getMemoryClass(output.memory)}`}>
+                    \${(output.memory || output.cpu) && html`<span className="sep">|</span>`}
+                  </React.Fragment>
+                `}
+                \${output.memory && html`
+                  <React.Fragment>
+                    <div className="memory \${getMemoryClass(output.memory)}">
                       <i className="nf nf-fae-chip"></i>
-                      <span className="resource-text">{Math.round(output.memory.usage)}%</span>
+                      <span className="resource-text">\${Math.round(output.memory.usage)}%</span>
                     </div>
-                    {output.cpu && <span className="sep">|</span>}
-                  </>
-                )}
-                {output.cpu && (
-                  <div className={`cpu ${getCpuClass(output.cpu)}`}>
+                    \${output.cpu && html`<span className="sep">|</span>`}
+                  </React.Fragment>
+                `}
+                \${output.cpu && html`
+                  <div className="cpu \${getCpuClass(output.cpu)}">
                     <i className="nf nf-oct-cpu"></i>
-                    <span className="resource-text">{Math.round(output.cpu.usage)}%</span>
+                    <span className="resource-text">\${Math.round(output.cpu.usage)}%</span>
                   </div>
-                )}
+                `}
               </div>
               
-              {output.battery && (
-                <div className={`island battery ${getBatteryClass(output.battery)}`}>
-                  {output.battery.isCharging && (
+              \${output.battery && html`
+                <div className="island battery \${getBatteryClass(output.battery)}">
+                  \${output.battery.isCharging && html`
                     <i className="nf nf-md-power_plug charging-icon"></i>
-                  )}
-                  {getBatteryIcon(output.battery)}
-                  <span className="resource-text">{Math.round(output.battery.chargePercent)}%</span>
+                  `}
+                  \${getBatteryIcon(output.battery)}
+                  <span className="resource-text">\${Math.round(output.battery.chargePercent)}%</span>
                 </div>
-              )}
+              `}
               
-              <div className="island" style={{ background: '#ffd147' }}>
+              <div className="island" style=\${{ background: '#ffd147' }}>
                 <button
                   className="tiling-direction"
-                  onClick={() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
+                  onClick=\${() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
                   title="Lock System"
                 >
-                  <i className="nf nf-fa-lock" style={{ color: '#000000' }}></i>
+                  <i className="nf nf-fa-lock" style=\${{ color: '#000000' }}></i>
                 </button>
               </div>
-              <div className="island" style={{ background: '#b87d7d' }}>
+              <div className="island" style=\${{ background: '#b87d7d' }}>
                 <button
                   className="tiling-direction"
-                  onClick={() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
+                  onClick=\${() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
                   title="Restart System"
                 >
-                  <i className="nf nf-md-power" style={{ color: '#000000' }}></i>
+                  <i className="nf nf-md-power" style=\${{ color: '#000000' }}></i>
                 </button>
               </div>
             </div>
           </div>
-        );
-      }    </script>
-
-  </body>
-</html>
-       </div>
-          </div>
-        );
-      }    </script>
-
+        `;
+      }
+    </script>
   </body>
 </html>
