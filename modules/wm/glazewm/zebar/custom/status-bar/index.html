@@ -122,61 +122,61 @@
         return html`
           <div className="app">
             <div className="left-group">
-              \${output.glazewm && html`
-                <div className="island" style=\${{ background: '#66a366' }}>
-                  <i className="logo nf nf-fa-windows" style=\${{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
+              ${output.glazewm && html`
+                <div className="island" style=${{ background: '#66a366' }}>
+                  <i className="logo nf nf-fa-windows" style=${{ color: '#000000', marginRight: '4px', opacity: 0.8 }}></i>
                   <button
                     className="tiling-direction"
-                    onClick=\${() => output.glazewm.runCommand('toggle-tiling-direction')}
-                    style=\${{ background: 'transparent', color: '#000000', padding: 0 }}
+                    onClick=${() => output.glazewm.runCommand('toggle-tiling-direction')}
+                    style=${{ background: 'transparent', color: '#000000', padding: 0 }}
                   >
-                    \${output.glazewm.tilingDirection === 'horizontal' ? html`
-                      <i className="nf nf-md-swap_horizontal" style=\${{ color: '#000000' }}></i>
+                    ${output.glazewm.tilingDirection === 'horizontal' ? html`
+                      <i className="nf nf-md-swap_horizontal" style=${{ color: '#000000' }}></i>
                     ` : html`
-                      <i className="nf nf-md-swap_vertical" style=\${{ color: '#000000' }}></i>
+                      <i className="nf nf-md-swap_vertical" style=${{ color: '#000000' }}></i>
                     `}
                   </button>
                 </div>
               `}
 
               <div className="island">
-                \${output.glazewm && html`
+                ${output.glazewm && html`
                   <div className="workspaces">
-                    \${output.glazewm.currentWorkspaces.map(workspace => html`
+                    ${output.glazewm.currentWorkspaces.map(workspace => html`
                       <button
-                        key=\${workspace.name}
-                        className="workspace \${workspace.hasFocus ? 'focused' : ''} \${workspace.isVisible ? 'displayed' : ''}"
-                        onClick=\${() => output.glazewm.runCommand(\`focus --workspace \${workspace.name}\`)}
+                        key=${workspace.name}
+                        className="workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}"
+                        onClick=${() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
                       >
-                        \${workspace.displayName ?? workspace.name}
+                        ${workspace.displayName ?? workspace.name}
                       </button>
                     `)}
                   </div>
                 `}
               </div>
 
-              \${output.glazewm?.displayedWorkspace && (() => {
+              ${output.glazewm?.displayedWorkspace && (() => {
                 const wins = getWindows(output.glazewm.displayedWorkspace);
                 if (wins.length === 0) return null;
                 return html`
                   <React.Fragment>
-                    \${wins.map((win, i) => html`
+                    ${wins.map((win, i) => html`
                       <div 
-                        key=\${i} 
+                        key=${i} 
                         className="island"
-                        style=\${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}
+                        style=${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}
                       >
                         <span
                           className="window-tab"
-                          title=\${win.title || win.processName}
-                          style=\${{ 
+                          title=${win.title || win.processName}
+                          style=${{ 
                             padding: 0, 
                             margin: 0, 
                             color: win.hasFocus ? '#000000' : undefined,
                             fontWeight: win.hasFocus ? 600 : 'normal'
                           }}
                         >
-                          \${(() => {
+                          ${(() => {
                             const displayTitle = formatWindowTitle(win);
                             return displayTitle.length > 22
                               ? displayTitle.slice(0, 21) + '…'
@@ -191,65 +191,65 @@
             </div>
 
             <div className="center-group">
-              <div className="island center" style=\${{ background: '#cba6f7', color: '#000000' }}>
-                \${output.date?.formatted}
+              <div className="island center" style=${{ background: '#cba6f7', color: '#000000' }}>
+                ${output.date?.formatted}
               </div>
             </div>
 
             <div className="right-group">
               <div className="island">
-                \${output.network && html`
+                ${output.network && html`
                   <React.Fragment>
-                    <div className="network \${getNetworkClass(output.network)}">
-                      \${getNetworkIcon(output.network)}
-                      <span className="resource-text">\${output.network.defaultGateway?.ssid}</span>
+                    <div className="network ${getNetworkClass(output.network)}">
+                      ${getNetworkIcon(output.network)}
+                      <span className="resource-text">${output.network.defaultGateway?.ssid}</span>
                     </div>
-                    \${(output.memory || output.cpu) && html`<span className="sep">|</span>`}
+                    ${(output.memory || output.cpu) && html`<span className="sep">|</span>`}
                   </React.Fragment>
                 `}
-                \${output.memory && html`
+                ${output.memory && html`
                   <React.Fragment>
-                    <div className="memory \${getMemoryClass(output.memory)}">
+                    <div className="memory ${getMemoryClass(output.memory)}">
                       <i className="nf nf-fae-chip"></i>
-                      <span className="resource-text">\${Math.round(output.memory.usage)}%</span>
+                      <span className="resource-text">${Math.round(output.memory.usage)}%</span>
                     </div>
-                    \${output.cpu && html`<span className="sep">|</span>`}
+                    ${output.cpu && html`<span className="sep">|</span>`}
                   </React.Fragment>
                 `}
-                \${output.cpu && html`
-                  <div className="cpu \${getCpuClass(output.cpu)}">
+                ${output.cpu && html`
+                  <div className="cpu ${getCpuClass(output.cpu)}">
                     <i className="nf nf-oct-cpu"></i>
-                    <span className="resource-text">\${Math.round(output.cpu.usage)}%</span>
+                    <span className="resource-text">${Math.round(output.cpu.usage)}%</span>
                   </div>
                 `}
               </div>
               
-              \${output.battery && html`
-                <div className="island battery \${getBatteryClass(output.battery)}">
-                  \${output.battery.isCharging && html`
+              ${output.battery && html`
+                <div className="island battery ${getBatteryClass(output.battery)}">
+                  ${output.battery.isCharging && html`
                     <i className="nf nf-md-power_plug charging-icon"></i>
                   `}
-                  \${getBatteryIcon(output.battery)}
-                  <span className="resource-text">\${Math.round(output.battery.chargePercent)}%</span>
+                  ${getBatteryIcon(output.battery)}
+                  <span className="resource-text">${Math.round(output.battery.chargePercent)}%</span>
                 </div>
               `}
               
-              <div className="island" style=\${{ background: '#ffd147' }}>
+              <div className="island" style=${{ background: '#ffd147' }}>
                 <button
                   className="tiling-direction"
-                  onClick=\${() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
+                  onClick=${() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
                   title="Lock System"
                 >
-                  <i className="nf nf-fa-lock" style=\${{ color: '#000000' }}></i>
+                  <i className="nf nf-fa-lock" style=${{ color: '#000000' }}></i>
                 </button>
               </div>
-              <div className="island" style=\${{ background: '#b87d7d' }}>
+              <div className="island" style=${{ background: '#b87d7d' }}>
                 <button
                   className="tiling-direction"
-                  onClick=\${() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
+                  onClick=${() => output.glazewm.runCommand('shell-exec shutdown /r /t 0')}
                   title="Restart System"
                 >
-                  <i className="nf nf-md-power" style=\${{ color: '#000000' }}></i>
+                  <i className="nf nf-md-power" style=${{ color: '#000000' }}></i>
                 </button>
               </div>
             </div>
