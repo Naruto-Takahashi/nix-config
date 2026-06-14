@@ -17,19 +17,19 @@ bars:
 
 widgets:
   komorebi_workspaces:
-    type: "komorebi_workspaces"
+    type: "komorebi.workspaces.WorkspaceWidget"
     options:
       label_offline: "K"
-      label_workspace: "{index}"
-      label_workspace_active: "{index}"
-      label_workspace_empty: "{index}"
+      label_workspace_btn: "{index}"
+      label_workspace_active_btn: "{index}"
+      label_workspace_empty_btn: "{index}"
   clock:
-    type: "clock"
+    type: "clock.ClockWidget"
     options:
-      label: "{%a %d %b | %H:%M:%S}"
+      format: "%a %d %b | %H:%M:%S"
   cpu:
-    type: "cpu"
+    type: "cpu.CpuWidget"
   memory:
-    type: "memory"
+    type: "memory.MemoryWidget"
   battery:
-    type: "battery"
+    type: "battery.BatteryWidget"
