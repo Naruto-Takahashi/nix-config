@@ -34,7 +34,6 @@ window_effects:
     border:
       enabled: true
       color: "#ffc20d"
-      size: 8
   # Visual effects to apply to non-focused windows.
 
   other_windows:
