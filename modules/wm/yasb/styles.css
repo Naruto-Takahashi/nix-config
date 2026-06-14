@@ -1,0 +1,16 @@
+/* YASB Styles */
+.yasb-bar {
+    background-color: rgba(0, 0, 0, 0.65);
+    color: #ffffff;
+    font-family: "HackGen NF";
+    font-size: 12px;
+}
+
+.widget {
+    padding: 0 10px;
+}
+
+.komorebi-workspaces .active {
+    background-color: #ffc20d;
+    color: #000000;
+}

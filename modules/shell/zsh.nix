@@ -240,12 +240,13 @@
           echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
           cp -r ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
-          echo "Syncing GlazeWM config..."
-          mkdir -p /mnt/c/Users/tnaru/.glzr/glazewm
-          cp ~/.config/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
-          echo "Syncing Zebar config..."
-          mkdir -p /mnt/c/Users/tnaru/.glzr/zebar
-          cp -r ~/.config/zebar/* /mnt/c/Users/tnaru/.glzr/zebar/
+          echo "Syncing Komorebi config..."
+          mkdir -p /mnt/c/Users/tnaru/.config/komorebi
+          cp ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
+          cp ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
+          echo "Syncing YASB config..."
+          mkdir -p /mnt/c/Users/tnaru/.config/yasb
+          cp -r ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css

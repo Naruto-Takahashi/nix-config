@@ -1,0 +1,38 @@
+watch_config: true
+bars:
+  main_bar:
+    enabled: true
+    screens: ["*"]
+    class_name: "yasb-bar"
+    alignment:
+      top: true
+      left: true
+      right: true
+    height: 26
+    widgets:
+      left: ["komorebi_workspaces", "komorebi_layout"]
+      center: ["clock"]
+      right: ["network", "cpu", "memory", "battery"]
+
+widgets:
+  komorebi_workspaces:
+    type: "komorebi_workspaces"
+    options:
+      label_offline: "K"
+      label_workspace: "{index}"
+      label_workspace_active: "{index}"
+      label_workspace_empty: "{index}"
+  komorebi_layout:
+    type: "komorebi_layout"
+  clock:
+    type: "clock"
+    options:
+      label: "{%a %d %b | %H:%M:%S}"
+  network:
+    type: "network"
+  cpu:
+    type: "cpu"
+  memory:
+    type: "memory"
+  battery:
+    type: "battery"
