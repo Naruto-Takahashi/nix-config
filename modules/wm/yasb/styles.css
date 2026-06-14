@@ -121,3 +121,8 @@
 .battery-widget .label {
     color: #b87d7d;
 }
+
+/* Center alignment support for YASB layout */
+.container-center {
+    qproperty-alignment: 'AlignCenter';
+}
