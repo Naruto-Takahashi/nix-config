@@ -32,9 +32,12 @@ body {
   background: transparent;
 }
 
-.left-group, .right-group {
+.left-group,
+.center-group,
+.right-group {
   display: flex;
   align-items: center;
+  height: 100%;
   gap: 5px;
 }
 .left-group { justify-self: start; }
