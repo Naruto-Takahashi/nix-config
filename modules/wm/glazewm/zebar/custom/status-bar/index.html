@@ -9,11 +9,22 @@
   <body>
     <div id="root"></div>
 
+    <script type="importmap">
+      {
+        "imports": {
+          "react": "./lib/react.js",
+          "react-dom": "./lib/react-dom.js",
+          "htm": "./lib/htm.js",
+          "zebar": "./lib/zebar.js",
+          "/react@18.3.1/es2022/react.mjs": "./lib/react.js"
+        }
+      }
+    </script>
     <script type="module">
-      import React, { useState, useEffect } from "./lib/react.js";
-      import { createRoot } from "./lib/react-dom.js";
-      import htm from "./lib/htm.js";
-      import * as zebar from "./lib/zebar.js";
+      import React, { useState, useEffect } from "react";
+      import { createRoot } from "react-dom";
+      import htm from "htm";
+      import * as zebar from "zebar";
 
       const html = htm.bind(React.createElement);
 

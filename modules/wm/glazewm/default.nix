@@ -10,23 +10,23 @@ let
   libs = {
     react = fetchLib {
       name = "react.js";
-      url = "https://esm.sh/react@18?bundle";
-      sha256 = "075hv0yxg1vana0x4mc97bm1rhq0qwmlvbxd3kr9y1fmw1zv3778";
+      url = "https://esm.sh/react@18.3.1/es2022/react.bundle.mjs";
+      sha256 = "1npvsxa9razhz3k385qbf8rq1pf64jj10yqj93jigggwhdqa4v9g";
     };
     react-dom = fetchLib {
       name = "react-dom.js";
-      url = "https://esm.sh/react-dom@18/client?bundle";
-      sha256 = "0g794wqgwggz94q83f1b34xgdviv5lk0y20mhqvpf73jskxpqvgp";
+      url = "https://esm.sh/react-dom@18.3.1/es2022/client.bundle.mjs";
+      sha256 = "00afyhh4rgizk7i79d1awzis1bxwrp1jvhifmk4k47fhi45lr3qk";
     };
     htm = fetchLib {
       name = "htm.js";
-      url = "https://esm.sh/htm?bundle";
-      sha256 = "0ryir6qsr0xilr781mrgqr13rd9xaw52z5i5ccdk8036nhz5wnv7";
+      url = "https://esm.sh/htm@3.1.1/es2022/htm.bundle.mjs";
+      sha256 = "1diw4ldzk8sj0gp6c8mrsy35kr76hc2jnj8ww5rl7s87wzgaiac1";
     };
     zebar = fetchLib {
       name = "zebar.js";
-      url = "https://esm.sh/zebar@2?bundle";
-      sha256 = "1mq20xvp2wd9rnv9lc68naqk74abp6ajc117fsw6c7g17p412mzq";
+      url = "https://esm.sh/zebar@2.7.0/es2022/zebar.bundle.mjs";
+      sha256 = "1iky6hxnvgx58azk5pa3fgrfxnvi00mszf53nyn0vvms9qadyamd";
     };
   };
 in
