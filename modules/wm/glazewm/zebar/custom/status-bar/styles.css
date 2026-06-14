@@ -178,12 +178,24 @@ i {
   gap: 3px;
 }
 
-.text-green i  { color: #66a366; }
-.text-yellow i { color: #ffd147; }
-.text-red i    { color: #b87d7d; }
+.network i, .memory i, .cpu i, .battery i:not(.charging-icon) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 16px;
+  border-radius: 4px;
+  color: #000;
+  margin-right: 2px;
+}
+
+.text-green i:not(.charging-icon)  { background: #66a366; }
+.text-yellow i:not(.charging-icon) { background: #ffd147; }
+.text-red i:not(.charging-icon)    { background: #b87d7d; }
 
 .resource-text {
-  color: rgb(255 255 255 / 50%);
+  color: rgb(255 255 255 / 90%);
+  font-weight: 600;
 }
 
 .battery {
