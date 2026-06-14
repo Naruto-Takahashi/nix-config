@@ -10,10 +10,10 @@
     <div id="root"></div>
 
     <script type="module">
-      import React, { useState, useEffect } from "https://esm.sh/react@18";
-      import { createRoot } from "https://esm.sh/react-dom@18/client";
-      import htm from "https://esm.sh/htm";
-      import * as zebar from "https://esm.sh/zebar@2";
+      import React, { useState, useEffect } from "./lib/react.js";
+      import { createRoot } from "./lib/react-dom.js";
+      import htm from "./lib/htm.js";
+      import * as zebar from "./lib/zebar.js";
 
       const html = htm.bind(React.createElement);
 
