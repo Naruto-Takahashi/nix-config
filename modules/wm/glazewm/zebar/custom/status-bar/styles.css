@@ -98,7 +98,7 @@ i {
 
 .workspace.displayed {
   background: rgb(255 255 255 / 14%);
-  color: rgb(255 255 255 / 90%);
+  color: rgb(255 255 255 / 65%);
 }
 
 .workspace.focused,
@@ -194,8 +194,7 @@ i {
 .text-red i:not(.charging-icon)    { background: #b87d7d; }
 
 .resource-text {
-  color: rgb(255 255 255 / 90%);
-  font-weight: 600;
+  color: rgb(255 255 255 / 65%);
 }
 
 .battery {
@@ -220,4 +219,6 @@ i {
 
 .tiling-direction:hover {
   background: transparent;
+}
+und: transparent;
 }
