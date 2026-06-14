@@ -21,7 +21,7 @@ body {
   font-size: 11px;
 }
 
-/* ── App container (transparent, with full-width backdrop bar) */
+/* ── App container ──────────────────────────────────── */
 .app {
   position: relative;
   display: grid;
@@ -37,12 +37,8 @@ body {
 .right-group {
   display: flex;
   align-items: center;
-  height: 24px;
-  gap: 2px;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 0 4px;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.03);
+  height: 100%;
+  gap: 5px;
 }
 .left-group { justify-self: start; }
 .center-group { justify-self: center; }
@@ -55,12 +51,12 @@ body {
   display: flex;
   align-items: center;
   gap: 5px;
-  height: 18px;
-  padding: 0 6px;
-  background: rgba(0, 0, 0, 0.60);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 6px;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  height: 22px;
+  padding: 0 8px;
+  background: rgba(0, 0, 0, 0.65);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   white-space: nowrap;
 }
 
@@ -133,16 +129,7 @@ i {
   background: rgb(255 255 255 / 35%);
 }
 
-/* ── Window tabs (all windows in focused workspace) ─── */
-.window-tabs {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  border-left: 1px solid rgba(255, 255, 255, 0.13);
-  padding-left: 6px;
-  margin-left: 1px;
-}
-
+/* ── Window tabs ─── */
 .window-tab {
   color: rgb(255 255 255 / 50%);
   font-size: 10px;
@@ -167,10 +154,6 @@ i {
   letter-spacing: 0.02em;
   gap: 5px;
   color: rgb(255 255 255 / 50%);
-}
-
-.center i {
-  color: #ffc20d;
 }
 
 /* ── Right island ───────────────────────────────────── */
@@ -215,7 +198,7 @@ i {
 }
 
 /* restart button inside right island */
-.right > button.tiling-direction {
+.tiling-direction {
   background: transparent;
   border: none;
   width: auto;
@@ -223,6 +206,6 @@ i {
   padding: 0;
 }
 
-.right > button.tiling-direction:hover {
+.tiling-direction:hover {
   background: transparent;
 }

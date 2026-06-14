@@ -28,10 +28,11 @@
       "presets": [
         {
           "name": "default",
-          "offsetX": "5px",
-          "offsetY": "5px",
-          "width": "calc(100% - 10px)",
-          "height": "32px",
+          "anchor": "top_left",
+          "offsetX": "8px",
+          "offsetY": "4px",
+          "width": "calc(100% - 16px)",
+          "height": "26px",
           "monitorSelection": {
             "type": "all"
           },
