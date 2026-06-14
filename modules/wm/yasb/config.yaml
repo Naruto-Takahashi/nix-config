@@ -12,7 +12,7 @@ bars:
       height: 30
     window_flags:
       windows_app_bar: true
-      always_on_top: true
+      always_on_top: false
     widgets:
       left: ["komorebi_workspaces", "taskbar"]
       center: []
@@ -22,7 +22,7 @@ widgets:
   komorebi_workspaces:
     type: "komorebi.workspaces.WorkspaceWidget"
     options:
-      label_offline: "K"
+      label_offline: ""
       label_workspace_btn: "{index}"
       label_workspace_active_btn: "{index}"
   clock:
@@ -32,7 +32,7 @@ widgets:
   cpu:
     type: "yasb.cpu.CpuWidget"
     options:
-      label: "CPU: {info[histograms][cpu_percent]}%"
+      label: "CPU: {percent}%"
   memory:
     type: "yasb.memory.MemoryWidget"
     options:
