@@ -8,20 +8,20 @@ let
   fetchLib = { name, url, sha256 }: pkgs.fetchurl { inherit name url sha256; };
   
   libs = {
-    react = fetchLib {
-      name = "react.js";
-      url = "https://esm.sh/react@18.3.1/es2022/react.bundle.mjs";
-      sha256 = "1npvsxa9razhz3k385qbf8rq1pf64jj10yqj93jigggwhdqa4v9g";
+    preact = fetchLib {
+      name = "preact.js";
+      url = "https://unpkg.com/preact@10.22.0/dist/preact.mjs";
+      sha256 = "0c2ald5g40i4656s7ks9915va0vz5170qbmv79mdwx1syjv44y88";
     };
-    react-dom = fetchLib {
-      name = "react-dom.js";
-      url = "https://esm.sh/react-dom@18.3.1/es2022/client.bundle.mjs";
-      sha256 = "00afyhh4rgizk7i79d1awzis1bxwrp1jvhifmk4k47fhi45lr3qk";
+    hooks = fetchLib {
+      name = "hooks.js";
+      url = "https://unpkg.com/preact@10.22.0/hooks/dist/hooks.mjs";
+      sha256 = "09m9wdln52qsyaxja3n3y0dj693p42wz5f4fwdp106ypmcvn47pj";
     };
     htm = fetchLib {
       name = "htm.js";
-      url = "https://esm.sh/htm@3.1.1/es2022/htm.bundle.mjs";
-      sha256 = "1diw4ldzk8sj0gp6c8mrsy35kr76hc2jnj8ww5rl7s87wzgaiac1";
+      url = "https://unpkg.com/htm@3.1.1/dist/htm.mjs";
+      sha256 = "1r798xcaffwbksfvw2sfkiimc8zvxql02dgmspj9p6q570zxscxb";
     };
     zebar = fetchLib {
       name = "zebar.js";
@@ -41,8 +41,8 @@ in
   };
 
   # ライブラリファイルを配置
-  xdg.configFile."zebar/custom/status-bar/lib/react.js".source = libs.react;
-  xdg.configFile."zebar/custom/status-bar/lib/react-dom.js".source = libs.react-dom;
+  xdg.configFile."zebar/custom/status-bar/lib/preact.js".source = libs.preact;
+  xdg.configFile."zebar/custom/status-bar/lib/hooks.js".source = libs.hooks;
   xdg.configFile."zebar/custom/status-bar/lib/htm.js".source = libs.htm;
   xdg.configFile."zebar/custom/status-bar/lib/zebar.js".source = libs.zebar;
 

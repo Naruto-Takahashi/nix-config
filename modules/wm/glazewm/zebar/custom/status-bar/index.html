@@ -7,26 +7,40 @@
     <link rel="icon" href="data:;" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root" style="color:white; font-family:monospace; padding:10px;">Loading status bar...</div>
+
+    <script>
+      // 画面が真っ白な場合にエラーを画面上に表示するための救急処置
+      window.onerror = function(msg, url, line, col, error) {
+        var el = document.getElementById('root');
+        if (el) {
+          el.innerHTML = '<div style="color:#f38ba8; background:rgba(0,0,0,0.8); padding:10px; border:1px solid #f38ba8; border-radius:5px;">' +
+            '<strong>Runtime Error:</strong><br>' + msg + '<br>' +
+            '<small>at ' + url + ':' + line + ':' + col + '</small>' +
+            '</div>';
+        }
+        return false;
+      };
+    </script>
 
     <script type="importmap">
       {
         "imports": {
-          "react": "./lib/react.js",
-          "react-dom": "./lib/react-dom.js",
+          "preact": "./lib/preact.js",
+          "preact/hooks": "./lib/hooks.js",
           "htm": "./lib/htm.js",
-          "zebar": "./lib/zebar.js",
-          "/react@18.3.1/es2022/react.mjs": "./lib/react.js"
+          "zebar": "./lib/zebar.js"
         }
       }
     </script>
+
     <script type="module">
-      import React, { useState, useEffect } from "react";
-      import { createRoot } from "react-dom";
+      import { h, render } from "preact";
+      import { useState, useEffect } from "preact/hooks";
       import htm from "htm";
       import * as zebar from "zebar";
 
-      const html = htm.bind(React.createElement);
+      const html = htm.bind(h);
 
       const providers = zebar.createProviderGroup({
         glazewm: { type: 'glazewm' },
@@ -212,7 +226,11 @@
         `;
       }
 
-      createRoot(document.getElementById("root")).render(html`<${App} />`);
+      try {
+        render(html`<${App} />`, document.getElementById("root"));
+      } catch (e) {
+        alert("Mount Error: " + e);
+      }
     </script>
   </body>
 </html>
