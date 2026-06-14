@@ -25,6 +25,11 @@ widgets:
       label_offline: ""
       label_workspace_btn: "{index}"
       label_workspace_active_btn: "{index}"
+      label_workspace_populated_btn: "{index}"
+      label_default_name: "{index}"
+      label_zero_index: false
+      hide_empty_workspaces: false
+      hide_if_offline: true
   clock:
     type: "yasb.clock.ClockWidget"
     options:
@@ -32,15 +37,18 @@ widgets:
   cpu:
     type: "yasb.cpu.CpuWidget"
     options:
-      label: "CPU: {info[percent][total]}%"
+      label: "CPU: {info[percent][total]:.0f}%"
+      update_interval: 2000
   memory:
     type: "yasb.memory.MemoryWidget"
     options:
       label: "RAM: {virtual_mem_percent}%"
+      update_interval: 5000
   battery:
     type: "yasb.battery.BatteryWidget"
     options:
       label: "BAT: {percent}%"
+      update_interval: 5000
   taskbar:
     type: "yasb.taskbar.TaskbarWidget"
     options:

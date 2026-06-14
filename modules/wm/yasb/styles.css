@@ -1,46 +1,72 @@
-/* YASB Styles */
-.yasb-bar {
-    background-color: rgba(0, 0, 0, 0.65);
-    color: #ffffff;
-    font-family: "HackGen NF", "Segoe UI", sans-serif;
+/* YASB Styles - Replicating Original ZEBAR Design */
+* {
+    font-family: ui-monospace, monospace;
     font-size: 11px;
 }
 
-.widget {
+.yasb-bar {
+    background-color: transparent;
     padding: 0 4px;
+    margin: 0;
+}
+
+/* Island style template used for widgets */
+.komorebi-workspaces,
+.clock-widget .widget-container,
+.cpu-widget .widget-container,
+.memory-widget .widget-container,
+.battery-widget .widget-container {
+    background-color: rgba(0, 0, 0, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 2px 4px;
 }
 
 /* Workspaces Widget */
+.komorebi-workspaces {
+    padding: 2px 6px;
+    margin-right: 2px;
+}
+
 .komorebi-workspaces .ws-btn {
     background-color: rgba(255, 255, 255, 0.06);
     color: rgba(255, 255, 255, 0.65);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 4px;
+    border: none;
+    border-radius: 3px;
     padding: 2px 6px;
-    margin: 2px;
+    margin: 0 2px;
     font-size: 10px;
 }
 
-.komorebi-workspaces .ws-btn.active {
-    background-color: #ffc20d;
-    color: #000000;
-    font-weight: bold;
-    border: 1px solid #ffc20d;
-}
-
 .komorebi-workspaces .ws-btn.populated {
-    background-color: rgba(255, 255, 255, 0.15);
-    color: rgba(255, 255, 255, 0.95);
+    background-color: rgba(255, 255, 255, 0.14);
+    color: rgba(255, 255, 255, 0.90);
 }
 
-/* Taskbar Widget (Window Tabs) */
+.komorebi-workspaces .ws-btn.active {
+    background-color: #a86c6c;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+.komorebi-workspaces .ws-btn:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+/* Taskbar Widget (Window Tabs as Islands) */
+.taskbar-widget {
+    padding: 0;
+    margin: 0;
+}
+
 .taskbar-widget .app-container {
     background-color: rgba(0, 0, 0, 0.65);
     color: rgba(255, 255, 255, 0.50);
     border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 6px;
+    border-radius: 8px;
     padding: 2px 8px;
-    margin: 2px;
+    margin: 2px 2px;
     font-size: 10px;
 }
 
@@ -61,24 +87,37 @@
     font-weight: inherit;
 }
 
+.taskbar-widget .app-container .app-icon {
+    margin-right: 4px;
+}
+
 /* Clock Widget (Center Island) */
 .clock-widget .widget-container {
     background-color: #cba6f7;
     color: #000000;
+    border: 1px solid #cba6f7;
     font-weight: bold;
-    border-radius: 6px;
-    padding: 2px 10px;
-    margin: 2px 0;
+    padding: 2px 12px;
 }
 
-/* Right System Resource Widgets (CPU, Memory, Battery) */
-.cpu-widget .widget-container,
-.memory-widget .widget-container,
-.battery-widget .widget-container {
-    background-color: rgba(0, 0, 0, 0.65);
-    color: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(255, 255, 255, 0.10);
-    border-radius: 6px;
-    padding: 2px 8px;
-    margin: 2px 0 2px 4px;
+/* Right Resource Widgets colors */
+.cpu-widget {
+    color: #66a366;
+}
+.cpu-widget .label {
+    color: #66a366;
+}
+
+.memory-widget {
+    color: #ffd147;
+}
+.memory-widget .label {
+    color: #ffd147;
+}
+
+.battery-widget {
+    color: #b87d7d;
+}
+.battery-widget .label {
+    color: #b87d7d;
 }
