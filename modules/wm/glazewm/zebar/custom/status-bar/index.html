@@ -84,6 +84,16 @@
           return t;
         };
 
+        const getNetworkClass = (networkOutput) => {
+          if (networkOutput.defaultInterface?.type === 'wifi' && networkOutput.defaultGateway?.signalStrength) {
+            const strength = networkOutput.defaultGateway.signalStrength;
+            if (strength >= 60) return 'text-green';
+            if (strength >= 40) return 'text-yellow';
+            return 'text-red';
+          }
+          return '';
+        };
+
         const getMemoryClass = (m) => m && m.usage >= 80 ? 'text-red' : m && m.usage >= 50 ? 'text-yellow' : 'text-green';
         const getCpuClass = (c) => c && c.usage >= 80 ? 'text-red' : c && c.usage >= 50 ? 'text-yellow' : 'text-green';
         const getBatteryClass = (b) => b && b.chargePercent < 20 && !b.isCharging ? 'text-red' : b && b.chargePercent < 50 && !b.isCharging ? 'text-yellow' : 'text-green';
@@ -148,7 +158,7 @@
             <div className="right-group">
               <div className="island">
                 ${output.network && html`
-                  <div className="network">
+                  <div className=${`network ${getNetworkClass(output.network)}`}>
                     ${getNetworkIcon(output.network)}
                     <span className="resource-text">${output.network.defaultGateway?.ssid}</span>
                   </div>
