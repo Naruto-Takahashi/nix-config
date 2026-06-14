@@ -10,9 +10,12 @@ bars:
     dimensions:
       width: "100%"
       height: 30
+    window_flags:
+      windows_app_bar: true
+      always_on_top: true
     widgets:
-      left: ["komorebi_workspaces"]
-      center: ["active_window"]
+      left: ["komorebi_workspaces", "taskbar"]
+      center: []
       right: ["cpu", "memory", "battery", "clock"]
 
 widgets:
@@ -38,8 +41,13 @@ widgets:
     type: "yasb.battery.BatteryWidget"
     options:
       label: "BAT: {percent}%"
-  active_window:
-    type: "yasb.active_window.ActiveWindowWidget"
+  taskbar:
+    type: "yasb.taskbar.TaskbarWidget"
     options:
-      label: "{win[title]}"
-      max_length: 50
+      show_only_visible: true
+      strict_filtering: true
+      icon_size: 14
+      title_label:
+        enabled: true
+        show: "always"
+        max_length: 20

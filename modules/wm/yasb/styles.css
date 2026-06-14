@@ -32,8 +32,29 @@
     color: rgba(255, 255, 255, 0.95);
 }
 
-/* Active Window Widget */
-.active-window-widget {
-    color: #ffffff;
-    font-weight: normal;
+/* Taskbar Widget */
+.taskbar-widget .app-container {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    border-radius: 6px;
+    padding: 2px 6px;
+    margin: 2px;
+    font-size: 10px;
+}
+
+.taskbar-widget .app-container.foreground {
+    background-color: #ffd147;
+    color: #000000;
+    font-weight: bold;
+}
+
+.taskbar-widget .app-container.running {
+    background-color: rgba(255, 255, 255, 0.12);
+    color: rgba(255, 255, 255, 0.85);
+}
+
+.taskbar-widget .app-container .app-title {
+    color: inherit;
+    font-weight: inherit;
 }
