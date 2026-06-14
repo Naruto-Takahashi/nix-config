@@ -123,6 +123,17 @@ Return
 
 
 ; =============================================================================
+; Application Shortcuts
+; =============================================================================
+
+; --- Alt+Enter to open WezTerm (Exclude Excel to preserve in-cell newline) ---
+#IfWinNotActive ahk_exe EXCEL.EXE
+!Enter::
+    Run, wezterm-gui
+Return
+#IfWinNotActive
+
+; =============================================================================
 ; Explorer Integration (Everything Search)
 ; =============================================================================
 
