@@ -126,3 +126,30 @@
 .container-center {
     qproperty-alignment: 'AlignCenter';
 }
+
+/* Custom buttons styles */
+.lock_button-widget .widget-container {
+    background-color: #ffd147;
+    color: #000000;
+    border: 1px solid #ffd147;
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 2px 4px;
+}
+.lock_button-widget .label {
+    color: #000000;
+    font-weight: bold;
+}
+
+.power_button-widget .widget-container {
+    background-color: #b87d7d;
+    color: #000000;
+    border: 1px solid #b87d7d;
+    border-radius: 8px;
+    padding: 2px 8px;
+    margin: 2px 4px;
+}
+.power_button-widget .label {
+    color: #000000;
+    font-weight: bold;
+}
