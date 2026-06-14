@@ -40,12 +40,6 @@ in
     recursive = true;
   };
 
-  # ライブラリファイルを配置
-  xdg.configFile."zebar/custom/status-bar/lib/preact.js".source = libs.preact;
-  xdg.configFile."zebar/custom/status-bar/lib/hooks.js".source = libs.hooks;
-  xdg.configFile."zebar/custom/status-bar/lib/htm.js".source = libs.htm;
-  xdg.configFile."zebar/custom/status-bar/lib/zebar.js".source = libs.zebar;
-
   # AutoHotkey 設定ディレクトリの宣言的配置
   xdg.configFile."ahk".source = ./ahk;
 }

@@ -7,7 +7,25 @@
     <link rel="icon" href="data:;" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <div style="color: rgba(255,255,255,0.5); font-family: monospace; padding: 5px;">
+        Initializing status bar...
+      </div>
+    </div>
+
+    <script>
+      // Runtime error reporting
+      window.onerror = function(msg, url, line, col, error) {
+        var el = document.getElementById('root');
+        if (el) {
+          el.innerHTML = '<div style="color:#ff8888; background:rgba(0,0,0,0.7); padding:10px; font-size:10px; border:1px solid #ff8888;">' +
+            '<strong>Render Error:</strong> ' + msg + '<br>' +
+            '<small>' + url + ':' + line + '</small>' +
+            '</div>';
+        }
+        return false;
+      };
+    </script>
 
     <script type="module">
       import React, { useState, useEffect } from "https://esm.sh/react@18?bundle";
@@ -34,7 +52,9 @@
           providers.onOutput(() => setOutput(providers.outputMap));
         }, []);
 
+        // Icons
         const getNetworkIcon = (networkOutput) => {
+          if (!networkOutput) return '';
           switch (networkOutput.defaultInterface?.type) {
             case "ethernet": return html`<i className="nf nf-md-ethernet_cable"></i>`;
             case "wifi":
@@ -49,6 +69,7 @@
         };
 
         const getBatteryIcon = (batteryOutput) => {
+          if (!batteryOutput) return '';
           const percent = batteryOutput.chargePercent;
           if (percent > 90) return html`<i className="nf nf-fa-battery_4"></i>`;
           if (percent > 70) return html`<i className="nf nf-fa-battery_3"></i>`;
@@ -57,6 +78,7 @@
           return html`<i className="nf nf-fa-battery_0"></i>`;
         };
 
+        // Window logic
         const getWindows = (container) => {
           if (!container) return [];
           if (container.type === 'window') return [container];
@@ -77,8 +99,14 @@
           }
           const cliMatch = t.match(/^(Yazi|nvim|zsh|bash|fish|tmux|btop|htop|vim|lazygit):/i);
           if (cliMatch) return cliMatch[1].charAt(0).toUpperCase() + cliMatch[1].slice(1);
-          return t.replace(/:\s*nalt\b.*/i, '');
+          t = t.replace(/:\s*nalt\b.*/i, '');
+          return t;
         };
+
+        // Class logic
+        const getMemoryClass = (m) => m && m.usage >= 80 ? 'text-red' : m && m.usage >= 50 ? 'text-yellow' : 'text-green';
+        const getCpuClass = (c) => c && c.usage >= 80 ? 'text-red' : c && c.usage >= 50 ? 'text-yellow' : 'text-green';
+        const getBatteryClass = (b) => b && b.chargePercent < 20 && !b.isCharging ? 'text-red' : b && b.chargePercent < 50 && !b.isCharging ? 'text-yellow' : 'text-green';
 
         return html`
           <div className="app">
@@ -116,20 +144,11 @@
               </div>
 
               ${output.glazewm?.displayedWorkspace && getWindows(output.glazewm.displayedWorkspace).map((win, i) => html`
-                <div 
-                  key=${i} 
-                  className="island"
-                  style=${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}
-                >
+                <div key=${i} className="island" style=${win.hasFocus ? { background: '#ffd147', color: '#000000' } : {}}>
                   <span
                     className="window-tab"
                     title=${win.title || win.processName}
-                    style=${{ 
-                      padding: 0, 
-                      margin: 0, 
-                      color: win.hasFocus ? '#000000' : undefined,
-                      fontWeight: win.hasFocus ? 600 : 'normal'
-                    }}
+                    style=${{ color: win.hasFocus ? '#000000' : undefined, fontWeight: win.hasFocus ? 600 : 'normal' }}
                   >
                     ${(() => {
                       const displayTitle = formatWindowTitle(win);
@@ -149,21 +168,21 @@
             <div className="right-group">
               <div className="island">
                 ${output.network && html`
-                  <div className=${`network ${output.network.defaultInterface?.type === 'wifi' && output.network.defaultGateway?.signalStrength < 40 ? 'text-red' : ''}`}>
+                  <div className="network">
                     ${getNetworkIcon(output.network)}
                     <span className="resource-text">${output.network.defaultGateway?.ssid}</span>
                   </div>
                 `}
-                ${output.network && (output.memory || output.cpu) && html`<span className="sep">|</span>`}
+                ${(output.memory || output.cpu) && html`<span className="sep">|</span>`}
                 ${output.memory && html`
-                  <div className=${`memory ${output.memory.usage >= 80 ? 'text-red' : output.memory.usage >= 50 ? 'text-yellow' : 'text-green'}`}>
+                  <div className=${`memory ${getMemoryClass(output.memory)}`}>
                     <i className="nf nf-fae-chip"></i>
                     <span className="resource-text">${Math.round(output.memory.usage)}%</span>
                   </div>
                 `}
-                ${output.memory && output.cpu && html`<span className="sep">|</span>`}
+                ${output.cpu && html`<span className="sep">|</span>`}
                 ${output.cpu && html`
-                  <div className=${`cpu ${output.cpu.usage >= 80 ? 'text-red' : output.cpu.usage >= 50 ? 'text-yellow' : 'text-green'}`}>
+                  <div className=${`cpu ${getCpuClass(output.cpu)}`}>
                     <i className="nf nf-oct-cpu"></i>
                     <span className="resource-text">${Math.round(output.cpu.usage)}%</span>
                   </div>
@@ -171,7 +190,7 @@
               </div>
               
               ${output.battery && html`
-                <div className=${`island battery ${output.battery.chargePercent < 20 ? 'text-red' : ''}`}>
+                <div className=${`island battery ${getBatteryClass(output.battery)}`}>
                   ${output.battery.isCharging && html`<i className="nf nf-md-power_plug charging-icon"></i>`}
                   ${getBatteryIcon(output.battery)}
                   <span className="resource-text">${Math.round(output.battery.chargePercent)}%</span>
@@ -201,7 +220,8 @@
         `;
       }
 
-      createRoot(document.getElementById("root")).render(html`<${App} />`);
+      const root = createRoot(document.getElementById("root"));
+      root.render(html`<${App} />`);
     </script>
   </body>
 </html>
