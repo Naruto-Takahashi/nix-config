@@ -98,17 +98,17 @@ i {
   font-size: 10px;
   padding: 0;
   transition: background 0.15s;
+}
 
-  &.displayed {
-    background: rgb(255 255 255 / 14%);
-    color: rgb(255 255 255 / 90%);
-  }
+.workspace.displayed {
+  background: rgb(255 255 255 / 14%);
+  color: rgb(255 255 255 / 90%);
+}
 
-  &.focused,
-  &:hover {
-    background: #a86c6c;
-    color: white;
-  }
+.workspace.focused,
+.workspace:hover {
+  background: #a86c6c;
+  color: white;
 }
 
 .binding-mode,
