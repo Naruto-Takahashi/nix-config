@@ -10,13 +10,9 @@
     <div id="root"></div>
 
     <script type="module">
-      // Use Preact instead of React for better stability in ESM/CDN environments
-      import { h, render } from "https://esm.sh/preact@10?bundle";
-      import { useState, useEffect } from "https://esm.sh/preact@10/hooks?bundle";
-      import htm from "https://esm.sh/htm?bundle";
+      // Use the pre-bundled HTM+Preact for maximum stability and no dependency conflicts
+      import { html, render, useState, useEffect } from "https://esm.sh/htm/preact?bundle";
       import * as zebar from "https://esm.sh/zebar@2?bundle";
-
-      const html = htm.bind(h);
 
       const providers = zebar.createProviderGroup({
         glazewm: { type: 'glazewm' },
