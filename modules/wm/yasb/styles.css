@@ -2,15 +2,38 @@
 .yasb-bar {
     background-color: rgba(0, 0, 0, 0.65);
     color: #ffffff;
-    font-family: "HackGen NF";
-    font-size: 12px;
+    font-family: "HackGen NF", "Segoe UI", sans-serif;
+    font-size: 11px;
 }
 
 .widget {
     padding: 0 10px;
 }
 
-.komorebi-workspaces .active {
+/* Workspaces Widget */
+.komorebi-workspaces .ws-btn {
+    background-color: rgba(255, 255, 255, 0.06);
+    color: rgba(255, 255, 255, 0.65);
+    border: none;
+    border-radius: 4px;
+    padding: 3px 8px;
+    margin: 2px;
+    font-size: 10px;
+}
+
+.komorebi-workspaces .ws-btn.active {
     background-color: #ffc20d;
     color: #000000;
+    font-weight: bold;
+}
+
+.komorebi-workspaces .ws-btn.populated {
+    background-color: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 0.95);
+}
+
+/* Active Window Widget */
+.active-window-widget {
+    color: #ffffff;
+    font-weight: normal;
 }

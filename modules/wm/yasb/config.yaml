@@ -12,8 +12,8 @@ bars:
       height: 30
     widgets:
       left: ["komorebi_workspaces"]
-      center: ["clock"]
-      right: ["cpu", "memory", "battery"]
+      center: ["active_window"]
+      right: ["cpu", "memory", "battery", "clock"]
 
 widgets:
   komorebi_workspaces:
@@ -28,7 +28,18 @@ widgets:
       label: "{%a %d %b | %H:%M:%S}"
   cpu:
     type: "yasb.cpu.CpuWidget"
+    options:
+      label: "CPU: {info[histograms][cpu_percent]}%"
   memory:
     type: "yasb.memory.MemoryWidget"
+    options:
+      label: "RAM: {virtual_mem_percent}%"
   battery:
     type: "yasb.battery.BatteryWidget"
+    options:
+      label: "BAT: {percent}%"
+  active_window:
+    type: "yasb.active_window.ActiveWindowWidget"
+    options:
+      label: "{win[title]}"
+      max_length: 50
