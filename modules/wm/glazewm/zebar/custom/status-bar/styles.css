@@ -88,7 +88,7 @@ i {
   justify-content: center;
   color: rgb(255 255 255 / 65%);
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   font-family: ui-monospace, monospace;
   font-size: 10px;
@@ -117,7 +117,7 @@ i {
   justify-content: center;
   color: rgb(255 255 255 / 85%);
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -135,7 +135,7 @@ i {
   font-size: 10px;
   white-space: nowrap;
   padding: 1px 5px;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: default;
   max-width: 18ch;
   overflow: hidden;
