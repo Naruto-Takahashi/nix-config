@@ -21,12 +21,7 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     terminal = { enabled = true },
-    gitbrowse = {
-      enabled = true,
-      open = function(url)
-        vim.fn.jobstart({ "powershell.exe", "-NoProfile", "-c", "start", url })
-      end,
-    },
+    gitbrowse = { enabled = true },
     lazygit = {
       enabled = true,
       theme = {
