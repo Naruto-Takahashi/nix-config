@@ -18,7 +18,7 @@ return {
           { action = ":ene | startinsert",                            key = "n", text = { { " ", hl = "SnacksDashboardIconOrange" }, { "New File", hl = "SnacksDashboardWhite" } } },
           { action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})", key = "c", text = { { " ", hl = "SnacksDashboardIconPurple" }, { "Config", hl = "SnacksDashboardWhite" } } },
           { action = ":Lazy",                                         key = "l", text = { { "󰒲 ", hl = "SnacksDashboardIconBlue" }, { "Lazy", hl = "SnacksDashboardWhite" } } },
-          { action = "session",                                       key = "s", text = { { " ", hl = "SnacksDashboardIconPink" }, { "Restore Session", hl = "SnacksDashboardWhite" } } },
+          { action = ":lua require('persistence').load()",            key = "s", text = { { " ", hl = "SnacksDashboardIconPink" }, { "Restore Session", hl = "SnacksDashboardWhite" } } },
           { action = ":qa",                                           key = "q", text = { { " ", hl = "SnacksDashboardIconRed" }, { "Quit", hl = "SnacksDashboardIconRed" } } },
         },
       },
