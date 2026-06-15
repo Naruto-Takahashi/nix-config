@@ -236,7 +236,7 @@
               <div className="island" style=${{ background: '#ffd147' }}>
                 <button
                   className="tiling-direction"
-                  onClick=${() => output.glazewm.runCommand('shell-exec rundll32.exe user32.dll,LockWorkStation')}
+                  onClick=${() => output.glazewm.runCommand('shell-exec wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\lock_workstation.vbs')}
                   title="Lock System"
                 >
                   <i className="nf nf-fa-lock" style=${{ color: '#000000' }}></i>
@@ -250,7 +250,7 @@
                       setRestartClicks(1);
                       setTimeout(() => setRestartClicks(0), 3000);
                     } else {
-                      output.glazewm.runCommand('shell-exec shutdown /r /t 0');
+                      output.glazewm.runCommand('shell-exec wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\restart_system.vbs');
                     }
                   }}
                   title=${restartClicks === 0 ? "Restart System" : "Click again to confirm"}
