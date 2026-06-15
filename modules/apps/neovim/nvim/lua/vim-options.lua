@@ -88,7 +88,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "SnacksDashboardIconPurple", { fg = "#a16ce9" })
         hl(0, "SnacksDashboardIconBlue", { fg = "#6273e9" })
         hl(0, "SnacksDashboardIconRed", { fg = "#ff8c82" })
-        hl(0, "SnacksDashboardWhite", { fg = "#ffffff" })
+        hl(0, "SnacksDashboardWhite", { fg = "#dcd7ba" })
     end,
 })
 
