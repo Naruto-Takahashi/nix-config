@@ -22,6 +22,7 @@
         glazewm: { type: 'glazewm' },
         network: { type: "network" },
         cpu: { type: "cpu" },
+        audio: { type: "audio" },
         date: { type: "date", formatting: "EEE d MMM ' | ' t" },
         battery: { type: "battery" },
         memory: { type: "memory" },
@@ -61,6 +62,15 @@
           return html`<i className="nf nf-fa-battery_0"></i>`;
         };
 
+        const getAudioIcon = (audioOutput) => {
+          if (!audioOutput || !audioOutput.defaultPlaybackDevice) return html`<i className="nf nf-fa-volume_off"></i>`;
+          if (audioOutput.defaultPlaybackDevice.isMuted) return html`<i className="nf nf-fa-volume_off"></i>`;
+          const volume = audioOutput.defaultPlaybackDevice.volume;
+          if (volume >= 60) return html`<i className="nf nf-fa-volume_up"></i>`;
+          if (volume >= 20) return html`<i className="nf nf-fa-volume_down"></i>`;
+          return html`<i className="nf nf-fa-volume_off"></i>`;
+        };
+
         const getWindows = (container) => {
           if (!container) return [];
           if (container.type === 'window') return [container];
@@ -98,6 +108,7 @@
         const getMemoryClass = (m) => m && m.usage >= 80 ? 'text-red' : m && m.usage >= 50 ? 'text-yellow' : 'text-green';
         const getCpuClass = (c) => c && c.usage >= 80 ? 'text-red' : c && c.usage >= 50 ? 'text-yellow' : 'text-green';
         const getBatteryClass = (b) => b && b.chargePercent < 20 && !b.isCharging ? 'text-red' : b && b.chargePercent < 50 && !b.isCharging ? 'text-yellow' : 'text-green';
+        const getAudioClass = (a) => !a || !a.defaultPlaybackDevice || a.defaultPlaybackDevice.isMuted ? 'text-red' : 'text-green';
 
         return html`
           <div className="app">
@@ -198,6 +209,13 @@
                 `}
               </div>
               
+              ${output.audio && html`
+                <div className=${`island audio ${getAudioClass(output.audio)}`}>
+                  ${getAudioIcon(output.audio)}
+                  <span className="resource-text">${output.audio.defaultPlaybackDevice ? Math.round(output.audio.defaultPlaybackDevice.volume) : 0}%</span>
+                </div>
+              `}
+
               ${output.battery && html`
                 <div className=${`island battery ${getBatteryClass(output.battery)}`}>
                   ${output.battery.isCharging && html`<i className="nf nf-md-power_plug charging-icon"></i>`}

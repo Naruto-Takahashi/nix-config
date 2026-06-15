@@ -172,13 +172,14 @@ i {
 .network,
 .memory,
 .cpu,
+.audio,
 .battery {
   display: flex;
   align-items: center;
   gap: 3px;
 }
 
-.network i, .memory i, .cpu i, .battery i:not(.charging-icon) {
+.network i, .memory i, .cpu i, .audio i, .battery i:not(.charging-icon) {
   display: flex;
   align-items: center;
   justify-content: center;
