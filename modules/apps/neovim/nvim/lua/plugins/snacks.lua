@@ -21,6 +21,7 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     terminal = { enabled = true },
+    gitbrowse = { enabled = true },
     lazygit = {
       enabled = true,
       theme = {
@@ -29,6 +30,7 @@ return {
     },
   },
   keys = {
+    { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "x" } },
     { "<leader>lg", function() Snacks.lazygit() end, desc = "Lazygit" },
     { "<leader>lf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
     { "<leader>ll", function() Snacks.lazygit.log() end, desc = "Lazygit Log (CWD)" },
