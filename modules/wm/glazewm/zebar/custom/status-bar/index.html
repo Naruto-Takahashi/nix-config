@@ -80,40 +80,51 @@
         const formatWindowTitle = (win) => {
           if (!win.title) {
             if (!win.processName) return "Window";
-            if (win.processName.toLowerCase() === "wezterm-gui") return "WezTerm";
-            if (win.processName.toLowerCase() === "code") return "VS Code";
+            const p = win.processName.toLowerCase();
+            if (p === "wezterm-gui") return "WezTerm";
+            if (p === "code") return "VS Code";
             return win.processName.charAt(0).toUpperCase() + win.processName.slice(1);
           }
+
           let t = win.title;
-          
-          // 1. 未読バッジの除去 (例: "(1) Slack", "[99+] Discord")
+
+          // 1. 未読バッジの除去 (例: "(1) ", "[99+] ")
           t = t.replace(/^[\(\[]\d+[\+\*\!]?[\)\]]\s*/, '');
 
-          // 2. 特定アプリのプレフィックス・サフィックス完全置換（アプリ名のみにする）
+          // 2. 特殊なPWAやウェブアプリの「決め打ち」判定（これだけは残す）
           if (t.match(/gemini/i)) return "Google Gemini";
-          if (t.startsWith("Notion - ")) return "Notion";
-          if (t.startsWith("Slack | ")) return "Slack";
-          if (t.startsWith("Discord | ")) return "Discord";
-          if (t.startsWith("Figma ")) return "Figma";
-          if (t.match(/\s+-\s+Obsidian(\s+v[\d\.]+)?$/i)) return "Obsidian";
+
+          // 3. 【汎用処理】セパレーターによる分割と抽出
+          // 一般的な区切り文字（- , |, —, :）で分割する
+          const parts = t.split(/\s+[-|—:]\s+/);
           
-          // 3. ブラウザやエディタの冗長なサフィックス除去（ページ名やファイル名を残す）
-          const suffixes = [
-            ' - Vivaldi', ' - Google Chrome', ' - Microsoft\u200b Edge', 
-            ' - Mozilla Firefox', ' - Brave', ' - Arc',
-            ' - Visual Studio Code', ' - WezTerm'
-          ];
-          for (const suffix of suffixes) {
-            if (t.endsWith(suffix)) { t = t.slice(0, -suffix.length); break; }
+          if (parts.length > 1) {
+            // パターンA: 最初の要素がアプリ名の場合（例: "Notion - ページ名", "Slack | チャンネル"）
+            if (parts[0].length <= 20 && parts[0].match(/^[A-Za-z0-9\s]+$/)) {
+              return parts[0];
+            }
+            
+            // パターンB: 最後の要素がアプリ名・ブラウザ名の場合（例: "記事 - Wikipedia - Google Chrome"）
+            // ユーザーが見たいのは「最初のコンテンツ名」なので、最後の要素（ブラウザ名等）を切り捨てる
+            // 3つ以上区切られている場合でも、一番左の要素を優先する
+            t = parts[0];
           }
 
-          // 4. CLIツール名のクリーン抽出
-          const cliMatch = t.match(/^(Yazi|nvim|zsh|bash|fish|tmux|btop|htop|vim|lazygit):/i);
-          if (cliMatch) return cliMatch[1].charAt(0).toUpperCase() + cliMatch[1].slice(1);
+          // 4. CLIツール等のプロセス名に基づくクリーンアップ
+          const proc = win.processName ? win.processName.toLowerCase() : "";
+          const cliTools = ['yazi', 'nvim', 'zsh', 'bash', 'fish', 'tmux', 'btop', 'htop', 'vim', 'lazygit'];
           
-          // 5. 末尾の不要なユーザー・パス情報の除去
-          t = t.replace(/:\s*nalt\b.*/i, '');
-          
+          for (const tool of cliTools) {
+            if (proc.includes(tool) || t.toLowerCase().includes(tool)) {
+              return tool.charAt(0).toUpperCase() + tool.slice(1);
+            }
+          }
+
+          // 5. 最終的な文字数制限（長すぎる場合は末尾をカット）
+          if (t.length > 25) {
+            t = t.slice(0, 24) + '…';
+          }
+
           return t;
         };
 
@@ -188,10 +199,7 @@
                           title=${win.title || win.processName}
                           style=${{ color: win.hasFocus ? '#000000' : undefined, fontWeight: win.hasFocus ? 600 : 'normal' }}
                         >
-                          ${(() => {
-                            const displayTitle = formatWindowTitle(win);
-                            return displayTitle.length > 22 ? displayTitle.slice(0, 21) + '…' : displayTitle;
-                          })()}
+                          ${formatWindowTitle(win)}
                         </span>
                       </div>
                       ${i < wins.length - 1 ? html`<span className="sep">|</span>` : ''}
