@@ -214,7 +214,7 @@
                   <div 
                     className=${`audio ${getAudioClass(output.audio)}`}
                     style=${{ cursor: 'pointer' }}
-                    onClick=${() => output.glazewm.runCommand('shell-exec powershell -NoProfile -Command "(New-Object -ComObject WScript.Shell).SendKeys([char]173)"')}
+                    onClick=${() => output.glazewm.runCommand('shell-exec wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\toggle_mute.vbs')}
                     title="Toggle Mute"
                   >
                     ${getAudioIcon(output.audio)}
