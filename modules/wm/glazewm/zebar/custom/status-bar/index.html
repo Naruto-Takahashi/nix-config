@@ -85,6 +85,10 @@
             return win.processName.charAt(0).toUpperCase() + win.processName.slice(1);
           }
           let t = win.title;
+          
+          // Specific app overrides
+          if (t.startsWith("Notion - ")) return "Notion";
+          
           const suffixes = [' - Vivaldi', ' - Google Chrome', ' - Microsoft\u200b Edge', ' - Visual Studio Code', ' - Discord', ' - WezTerm'];
           for (const suffix of suffixes) {
             if (t.endsWith(suffix)) { t = t.slice(0, -suffix.length); break; }
