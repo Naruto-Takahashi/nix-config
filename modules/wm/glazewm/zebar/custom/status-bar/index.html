@@ -209,20 +209,29 @@
                 `}
               </div>
               
-              ${output.audio && html`
-                <div className=${`island audio ${getAudioClass(output.audio)}`}>
-                  ${getAudioIcon(output.audio)}
-                  <span className="resource-text">${output.audio.defaultPlaybackDevice ? Math.round(output.audio.defaultPlaybackDevice.volume) : 0}%</span>
-                </div>
-              `}
+              <div className="island">
+                ${output.audio && html`
+                  <div 
+                    className=${`audio ${getAudioClass(output.audio)}`}
+                    style=${{ cursor: 'pointer' }}
+                    onClick=${() => output.glazewm.runCommand('shell-exec powershell -NoProfile -Command "(New-Object -ComObject WScript.Shell).SendKeys([char]173)"')}
+                    title="Toggle Mute"
+                  >
+                    ${getAudioIcon(output.audio)}
+                    <span className="resource-text">${output.audio.defaultPlaybackDevice ? Math.round(output.audio.defaultPlaybackDevice.volume) : 0}%</span>
+                  </div>
+                `}
 
-              ${output.battery && html`
-                <div className=${`island battery ${getBatteryClass(output.battery)}`}>
-                  ${output.battery.isCharging && html`<i className="nf nf-md-power_plug charging-icon"></i>`}
-                  ${getBatteryIcon(output.battery)}
-                  <span className="resource-text">${Math.round(output.battery.chargePercent)}%</span>
-                </div>
-              `}
+                ${output.audio && output.battery && html`<span className="sep">|</span>`}
+
+                ${output.battery && html`
+                  <div className=${`battery ${getBatteryClass(output.battery)}`}>
+                    ${output.battery.isCharging && html`<i className="nf nf-md-power_plug charging-icon"></i>`}
+                    ${getBatteryIcon(output.battery)}
+                    <span className="resource-text">${Math.round(output.battery.chargePercent)}%</span>
+                  </div>
+                `}
+              </div>
               
               <div className="island" style=${{ background: '#ffd147' }}>
                 <button
