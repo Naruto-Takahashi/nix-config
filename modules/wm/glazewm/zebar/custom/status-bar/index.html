@@ -90,6 +90,7 @@
           t = t.replace(/^[\(\[]\d+[\+\*\!]?[\)\]]\s*/, '');
 
           // 2. 特定アプリのプレフィックス・サフィックス完全置換（アプリ名のみにする）
+          if (t.match(/gemini/i)) return "Google Gemini";
           if (t.startsWith("Notion - ")) return "Notion";
           if (t.startsWith("Slack | ")) return "Slack";
           if (t.startsWith("Discord | ")) return "Discord";
