@@ -195,7 +195,7 @@
                     <i className="nf nf-oct-cpu"></i>
                     <span className="resource-text">
                       ${Math.round(output.cpu.usage)}%
-                      ${output.cpu.temperature ? html` <span style=${{fontSize: '9px', opacity: 0.8}}>(${Math.round(output.cpu.temperature)}°C)</span>` : ''}
+                      ${(output.cpu.temperature || output.cpu.packageTemperature) ? html` <span style=${{fontSize: '9px', opacity: 0.8}}>(${Math.round(output.cpu.temperature || output.cpu.packageTemperature)}°C)</span>` : ''}
                     </span>
                   </div>
                 `}
