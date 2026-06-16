@@ -3,7 +3,7 @@
 
   "mouse_follows_focus": true,
   "window_hiding_behaviour": "Cloak",
-  "app_specific_configuration_path": "C:\\Users\\tnaru\\applications.json",
+  "app_specific_configuration_path": "C:\\Users\\tnaru\\.config\\komorebi\\applications.json",
   "cross_monitor_move_behaviour": "Swap",
 
   "default_workspace_padding": 4,
