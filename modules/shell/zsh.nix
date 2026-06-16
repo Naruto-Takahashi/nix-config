@@ -263,12 +263,14 @@
           if [ -f ~/.config/whkdrc ]; then
               echo "Syncing whkd keybindings..."
               mkdir -p /mnt/c/Users/tnaru/.config
+              chmod -f u+w /mnt/c/Users/tnaru/.config/whkdrc 2>/dev/null || true
               cp -L ~/.config/whkdrc /mnt/c/Users/tnaru/.config/whkdrc
           fi
 
           echo "Syncing Zebar config..."
-          echo "  NOTE: Zebar を事前に終了してください (Permission denied が出る場合)"
           mkdir -p /mnt/c/Users/tnaru/.glzr/zebar
+          # Windows側ファイルの読み取り専用属性を解除してからコピー
+          chmod -Rf u+w /mnt/c/Users/tnaru/.glzr/zebar/ 2>/dev/null || true
           cp -rL ~/.config/zebar/* /mnt/c/Users/tnaru/.glzr/zebar/
 
           echo "Syncing Vivaldi CSS..."
