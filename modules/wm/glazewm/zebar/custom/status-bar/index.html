@@ -20,7 +20,7 @@
       const html = htm.bind(h);
 
       const providers = zebar.createProviderGroup({
-        glazewm: { type: 'glazewm' },
+        komorebi: { type: 'komorebi' },
         network: { type: "network" },
         cpu: { type: "cpu" },
         audio: { type: "audio" },
@@ -37,6 +37,13 @@
         useEffect(() => {
           providers.onOutput(() => setOutput(providers.outputMap));
         }, []);
+
+        // komorebi のシェルコマンド実行ヘルパー
+        const runShell = (cmd) => {
+          if (output.komorebi) {
+            output.komorebi.runCommand(`shell-exec ${cmd}`);
+          }
+        };
 
         const getNetworkIcon = (networkOutput) => {
           if (!networkOutput) return '';
@@ -93,17 +100,26 @@
         const getBatteryClass = (b) => b && b.chargePercent < 20 && !b.isCharging ? 'text-red' : b && b.chargePercent < 50 && !b.isCharging ? 'text-yellow' : 'text-green';
         const getAudioClass = (a) => !a || !a.defaultPlaybackDevice || a.defaultPlaybackDevice.isMuted ? 'text-red' : 'text-green';
 
+        // komorebi: 現在のモニターのワークスペース一覧を取得
+        const currentMonitor = output.komorebi?.currentMonitor;
+        const currentWorkspaces = currentMonitor?.workspaces ?? [];
+        // タイリング方向: komorebi の focusedContainer から取得
+        const tilingDir = output.komorebi?.focusedContainer?.tilingDirection ?? 'horizontal';
+        // フォーカス中のワークスペース（ウィンドウタブ表示用）
+        const focusedWorkspace = currentMonitor?.workspaces?.find(ws => ws.hasFocus);
+        const focusedWindows = getWindows(focusedWorkspace);
+
         return html`
           <div className="app">
             <div className="left-group">
-              ${output.glazewm && html`
+              ${output.komorebi && html`
                 <div className="island" style=${{ background: '#66a366' }}>
                   <button
                     className="tiling-direction"
-                    onClick=${() => output.glazewm.runCommand('toggle-tiling-direction')}
+                    onClick=${() => output.komorebi.runCommand('toggle-tiling-direction')}
                     style=${{ background: 'transparent', color: '#000000', padding: 0 }}
                   >
-                    ${output.glazewm.tilingDirection === 'horizontal' 
+                    ${tilingDir === 'horizontal'
                       ? html`<i className="nf nf-md-swap_horizontal" style=${{ color: '#000000' }}></i>`
                       : html`<i className="nf nf-md-swap_vertical" style=${{ color: '#000000' }}></i>`
                     }
@@ -112,51 +128,47 @@
               `}
 
               <div className="island">
-                ${output.glazewm && html`
+                ${output.komorebi && html`
                   <div className="workspaces">
-                    ${output.glazewm.currentWorkspaces.map(workspace => html`
+                    ${currentWorkspaces.map(workspace => html`
                       <button
                         key=${workspace.name}
                         className=${`workspace ${workspace.hasFocus ? 'focused' : ''} ${workspace.isVisible ? 'displayed' : ''}`}
-                        onClick=${() => output.glazewm.runCommand(`focus --workspace ${workspace.name}`)}
+                        onClick=${() => output.komorebi.runCommand(`focus-named-workspace ${workspace.name}`)}
                       >
-                        ${workspace.displayName ?? workspace.name}
+                        ${workspace.name}
                       </button>
                     `)}
                   </div>
                 `}
               </div>
 
-              ${output.glazewm?.displayedWorkspace && (() => {
-                const wins = getWindows(output.glazewm.displayedWorkspace);
-                if (wins.length === 0) return null;
-                return html`
-                  <div className="island window-tabs-container" style=${{ padding: '0 4px' }}>
-                    ${wins.map((win, i) => html`
-                      <div 
-                        key=${i} 
-                        style=${{ 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          background: win.hasFocus ? '#ffd147' : 'transparent', 
-                          borderRadius: '4px', 
-                          padding: '1px 6px',
-                          margin: '0 1px'
-                        }}
+              ${focusedWindows.length > 0 && html`
+                <div className="island window-tabs-container" style=${{ padding: '0 4px' }}>
+                  ${focusedWindows.map((win, i) => html`
+                    <div
+                      key=${i}
+                      style=${{
+                        display: 'flex',
+                        alignItems: 'center',
+                        background: win.hasFocus ? '#ffd147' : 'transparent',
+                        borderRadius: '4px',
+                        padding: '1px 6px',
+                        margin: '0 1px'
+                      }}
+                    >
+                      <span
+                        className="window-tab"
+                        title=${win.title || win.processName}
+                        style=${{ color: win.hasFocus ? '#000000' : undefined, fontWeight: win.hasFocus ? 600 : 'normal' }}
                       >
-                        <span
-                          className="window-tab"
-                          title=${win.title || win.processName}
-                          style=${{ color: win.hasFocus ? '#000000' : undefined, fontWeight: win.hasFocus ? 600 : 'normal' }}
-                        >
-                          ${formatWindowTitle(win)}
-                        </span>
-                      </div>
-                      ${i < wins.length - 1 ? html`<span className="sep">|</span>` : ''}
-                    `)}
-                  </div>
-                `;
-              })()}
+                        ${formatWindowTitle(win)}
+                      </span>
+                    </div>
+                    ${i < focusedWindows.length - 1 ? html`<span className="sep">|</span>` : ''}
+                  `)}
+                </div>
+              `}
             </div>
 
             <div className="center-group">
@@ -188,13 +200,13 @@
                   </div>
                 `}
               </div>
-              
+
               <div className="island">
                 ${output.audio && html`
-                  <div 
+                  <div
                     className=${`audio ${getAudioClass(output.audio)}`}
                     style=${{ cursor: 'pointer' }}
-                    onClick=${() => output.glazewm.runCommand('shell-exec wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\toggle_mute.vbs')}
+                    onClick=${() => runShell('wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\toggle_mute.vbs')}
                     title="Toggle Mute"
                   >
                     ${getAudioIcon(output.audio)}
@@ -212,11 +224,11 @@
                   </div>
                 `}
               </div>
-              
+
               <div className="island" style=${{ background: '#ffd147' }}>
                 <button
                   className="tiling-direction"
-                  onClick=${() => output.glazewm.runCommand('shell-exec wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\lock_workstation.vbs')}
+                  onClick=${() => runShell('wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\lock_workstation.vbs')}
                   title="Lock System"
                 >
                   <i className="nf nf-fa-lock" style=${{ color: '#000000' }}></i>
@@ -230,7 +242,7 @@
                       setRestartClicks(1);
                       setTimeout(() => setRestartClicks(0), 3000);
                     } else {
-                      output.glazewm.runCommand('shell-exec wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\restart_system.vbs');
+                      runShell('wscript.exe C:\\Users\\tnaru\\.glzr\\zebar\\custom\\status-bar\\restart_system.vbs');
                     }
                   }}
                   title=${restartClicks === 0 ? "Restart System" : "Click again to confirm"}

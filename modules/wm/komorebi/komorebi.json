@@ -1,0 +1,52 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/main/schema.json",
+
+  "focus_follows_mouse": "Komorebi",
+  "window_hiding_behaviour": "Cloak",
+  "app_specific_configuration_path": "C:\\Users\\tnaru\\applications.json",
+  "cross_monitor_move_behaviour": "Swap",
+
+  "default_workspace_padding": 4,
+  "default_container_padding": 4,
+
+  "border": true,
+  "border_width": 4,
+  "border_offset": -1,
+  "border_implementation": "Komorebi",
+  "border_colours": {
+    "single":    "#ffc20d",
+    "stack":     "#ffc20d",
+    "monocle":   "#ffc20d",
+    "unfocused": "#333333",
+    "floating":  "#ffd147"
+  },
+
+  "monitors": [
+    {
+      "workspaces": [
+        { "name": "1", "layout": "BSP" },
+        { "name": "2", "layout": "BSP" },
+        { "name": "3", "layout": "BSP" },
+        { "name": "4", "layout": "BSP" },
+        { "name": "5", "layout": "BSP" },
+        { "name": "6", "layout": "BSP" },
+        { "name": "7", "layout": "BSP" },
+        { "name": "8", "layout": "BSP" },
+        { "name": "9", "layout": "BSP" }
+      ]
+    },
+    {
+      "workspaces": [
+        { "name": "1", "layout": "BSP" },
+        { "name": "2", "layout": "BSP" },
+        { "name": "3", "layout": "BSP" },
+        { "name": "4", "layout": "BSP" },
+        { "name": "5", "layout": "BSP" },
+        { "name": "6", "layout": "BSP" },
+        { "name": "7", "layout": "BSP" },
+        { "name": "8", "layout": "BSP" },
+        { "name": "9", "layout": "BSP" }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/main/schema.json",
+  "rules": [
+    {
+      "kind": { "exe": "zebar.exe" },
+      "rule": "ignore"
+    },
+    {
+      "kind": { "exe": "PowerToys.PowerAccent.exe" },
+      "rule": "ignore"
+    },
+    {
+      "kind": { "exe": "PowerToys.Run.exe" },
+      "rule": "ignore"
+    },
+    {
+      "kind": { "title": "[Pp]icture.in.[Pp]icture" },
+      "rule": "ignore"
+    }
+  ]
+}

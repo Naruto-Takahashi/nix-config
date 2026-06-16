@@ -1,0 +1,77 @@
+# =============================================================================
+# whkd キーバインド設定（Komorebi 用）
+# GlazeWM の keybindings セクションを再現した設定
+# =============================================================================
+
+.shell pwsh
+
+# --- フォーカス移動 (Alt + H/J/K/L) ---
+alt + h : komorebic focus left
+alt + l : komorebic focus right
+alt + k : komorebic focus up
+alt + j : komorebic focus down
+
+# --- ウィンドウ移動 (Alt + Shift + H/J/K/L) ---
+alt + shift + h : komorebic move left
+alt + shift + l : komorebic move right
+alt + shift + k : komorebic move up
+alt + shift + j : komorebic move down
+
+# --- リサイズ (Alt + U/P/O/I) ---
+alt + u : komorebic resize-axis horizontal decrease
+alt + p : komorebic resize-axis horizontal increase
+alt + o : komorebic resize-axis vertical increase
+alt + i : komorebic resize-axis vertical decrease
+
+# --- タイリング方向の切り替え (Alt + V) ---
+alt + v : komorebic toggle-tiling-direction
+
+# --- フローティング切り替え (Alt + Shift + Space / Alt + T) ---
+alt + shift + oem_space : komorebic toggle-float
+alt + t                 : komorebic toggle-float
+
+# --- フルスクリーン (Alt + F) ---
+alt + f : komorebic toggle-monocle
+
+# --- 最小化 (Alt + M) ---
+alt + m : komorebic minimize
+
+# --- ウィンドウを閉じる (Alt + Shift + Q) ---
+alt + shift + q : komorebic close
+
+# --- Komorebi 操作 (Alt + Shift + R/E) ---
+alt + shift + r : komorebic reload-configuration
+alt + shift + e : komorebic stop
+
+# --- ワークスペース切り替え (Alt + 1〜9) ---
+# GlazeWM の `focus --workspace N` に対応
+# komorebi では名前でワークスペースを指定（"focus-named-workspace" は存在しないため
+# focus-workspace コマンドはインデックスで指定する必要があるが，
+# ここでは send-message 経由で名前ベースのフォーカスを実行する）
+alt + 1 : komorebic focus-named-workspace 1
+alt + 2 : komorebic focus-named-workspace 2
+alt + 3 : komorebic focus-named-workspace 3
+alt + 4 : komorebic focus-named-workspace 4
+alt + 5 : komorebic focus-named-workspace 5
+alt + 6 : komorebic focus-named-workspace 6
+alt + 7 : komorebic focus-named-workspace 7
+alt + 8 : komorebic focus-named-workspace 8
+alt + 9 : komorebic focus-named-workspace 9
+
+# --- ウィンドウをワークスペースへ移動 + フォーカス追従 (Alt + Shift + 1〜9) ---
+# GlazeWM の `move --workspace N` + `focus --workspace N` に対応
+alt + shift + 1 : komorebic move-to-named-workspace 1 ; komorebic focus-named-workspace 1
+alt + shift + 2 : komorebic move-to-named-workspace 2 ; komorebic focus-named-workspace 2
+alt + shift + 3 : komorebic move-to-named-workspace 3 ; komorebic focus-named-workspace 3
+alt + shift + 4 : komorebic move-to-named-workspace 4 ; komorebic focus-named-workspace 4
+alt + shift + 5 : komorebic move-to-named-workspace 5 ; komorebic focus-named-workspace 5
+alt + shift + 6 : komorebic move-to-named-workspace 6 ; komorebic focus-named-workspace 6
+alt + shift + 7 : komorebic move-to-named-workspace 7 ; komorebic focus-named-workspace 7
+alt + shift + 8 : komorebic move-to-named-workspace 8 ; komorebic focus-named-workspace 8
+alt + shift + 9 : komorebic move-to-named-workspace 9 ; komorebic focus-named-workspace 9
+
+# --- ワークスペース巡回 (Alt + S / Alt + A / Alt + D) ---
+# GlazeWM の focus --next/prev/recent-workspace に対応
+alt + s : komorebic cycle-workspace next
+alt + a : komorebic cycle-workspace previous
+# alt + d: recent-workspace は komorebi に相当コマンドがないためスキップ

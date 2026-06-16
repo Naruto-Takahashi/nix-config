@@ -13,7 +13,7 @@
     ../../modules/shell/starship.nix
     ../../modules/apps/wezterm.nix
     ../../modules/apps/neovim
-    ../../modules/wm/glazewm
+    ../../modules/wm/komorebi
     ../../modules/shell/direnv.nix
     ../../modules/apps/yazi.nix
     ../../modules/services/obsidian-mcp.nix
