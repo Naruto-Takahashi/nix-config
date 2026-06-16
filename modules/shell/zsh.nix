@@ -237,18 +237,45 @@
       function sync-win() {
           echo "Syncing WezTerm config..."
           cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
+
           echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
           cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
-          echo "Syncing GlazeWM config..."
-          mkdir -p /mnt/c/Users/tnaru/.glzr/glazewm
-          cp -rL ~/.config/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
+
+          # GlazeWM (アクティブな場合のみ同期)
+          if [ -f ~/.config/glazewm/config.yaml ]; then
+              echo "Syncing GlazeWM config..."
+              mkdir -p /mnt/c/Users/tnaru/.glzr/glazewm
+              cp -rL ~/.config/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
+          else
+              echo "Skipping GlazeWM config (not active)"
+          fi
+
+          # Komorebi (アクティブな場合のみ同期)
+          if [ -f ~/.config/komorebi/komorebi.json ]; then
+              echo "Syncing Komorebi config..."
+              mkdir -p /mnt/c/Users/tnaru/.config/komorebi
+              cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
+              cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
+          fi
+
+          # whkd (アクティブな場合のみ同期)
+          if [ -f ~/.config/whkdrc ]; then
+              echo "Syncing whkd keybindings..."
+              mkdir -p /mnt/c/Users/tnaru/.config
+              cp -L ~/.config/whkdrc /mnt/c/Users/tnaru/.config/whkdrc
+          fi
+
           echo "Syncing Zebar config..."
+          echo "  NOTE: Zebar を事前に終了してください (Permission denied が出る場合)"
           mkdir -p /mnt/c/Users/tnaru/.glzr/zebar
           cp -rL ~/.config/zebar/* /mnt/c/Users/tnaru/.glzr/zebar/
+
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
+
+          echo "All Windows configs synced."
       }
 
       # 8. 最新のスクリーンショットを Antigravity チャットへ連携する関数
