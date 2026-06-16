@@ -1,7 +1,7 @@
 {
   "$schema": "https://raw.githubusercontent.com/LGUG2Z/komorebi/main/schema.json",
 
-  "focus_follows_mouse": "Komorebi",
+  "mouse_follows_focus": true,
   "window_hiding_behaviour": "Cloak",
   "app_specific_configuration_path": "C:\\Users\\tnaru\\applications.json",
   "cross_monitor_move_behaviour": "Swap",
