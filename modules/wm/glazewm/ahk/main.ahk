@@ -167,36 +167,3 @@ GetExplorerPath() {
         }
     }
 }
-
-; =============================================================================
-; GlazeWM Auto-Tiling (Aspect Ratio Based)
-; =============================================================================
-#Persistent
-SetTimer, AutoTileTimer, 200
-
-LastActiveHwnd := 0
-
-AutoTileTimer:
-    ActiveHwnd := WinActive("A")
-    if (ActiveHwnd = 0 || ActiveHwnd = LastActiveHwnd)
-        return
-
-    LastActiveHwnd := ActiveHwnd
-
-    WinGetClass, activeClass, ahk_id %ActiveHwnd%
-    if (activeClass = "Shell_TrayWnd" || activeClass = "Button" || activeClass = "Zebar")
-        return
-
-    ; WezTermなどのボーダーレスウィンドウに対応するため、WS_CAPTION(0x00C00000)フィルターを削除しました。
-
-    glazePath1 := A_UserProfile "\.glzr\glazewm\glazewm.exe"
-    glazePath2 := A_LocalAppData "\Programs\glazewm\glazewm.exe"
-
-    if FileExist(glazePath1) {
-        Run, "%glazePath1%" command "toggle-tiling-direction",, Hide
-    } else if FileExist(glazePath2) {
-        Run, "%glazePath2%" command "toggle-tiling-direction",, Hide
-    } else {
-        Run, glazewm.exe command "toggle-tiling-direction",, Hide
-    }
-return
