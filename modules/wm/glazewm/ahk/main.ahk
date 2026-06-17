@@ -1,27 +1,26 @@
 /*
     =============================================================================
-    Main AutoHotkey Script
-    Description: Key remappings, Vim-like navigation, and IME integration.
+    メイン AutoHotkey スクリプト (Main AutoHotkey Script)
+    説明: キーのリマッピング，Vimライクなカーソル移動，およびIME制御の統合
     =============================================================================
 */
 
 ; =============================================================================
-; Global Settings
+# 1. グローバル設定 (Global Settings)
 ; =============================================================================
 #NoEnv
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
-; Load external libraries
+; 外部ライブラリの読み込み (IME制御関数群)
 #Include %A_ScriptDir%\lib\ime_functions.ahk
 
 ; =============================================================================
-; Key Remapping
+# 2. キー・リマッピング設定 (Key Remappings)
 ; =============================================================================
 
-; --- CapsLock -> Left Control (Hold) / Escape (Tap) ---
-; Remaps F13 (mapped from CapsLock in Registry/Software) to Left Control.
-; If F13 is released without pressing any other keys, it sends Escape and turns IME OFF (English).
+; --- CapsLock単押しでEscape（かつIME OFF），長押しでCtrl化 ---
+; ※レジストリや他ソフト等で CapsLock が F13 にマップされていることを前提とします．
 *F13::
     Send, {LCtrl down}
     KeyWait, F13
@@ -29,104 +28,100 @@ SetWorkingDir %A_ScriptDir%
     if (A_PriorKey == "F13") {
         SendInput, {Esc}
         Sleep 10
-        IME_SET(0)
+        IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
     }
 Return
 
-; --- Physical Left Control -> Escape on Tap ---
-; If the physical Left Control key is pressed and released without any other key, it sends Escape and turns IME OFF (English).
+; --- 物理左Controlキー単押しでEscape（かつIME OFF）にする設定 ---
 ~LCtrl Up::
     if (A_PriorKey == "LControl") {
         SendInput, {Esc}
         Sleep 10
-        IME_SET(0)
+        IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
     }
 Return
 
 ; =============================================================================
-; Space Key Enhancements (SandS & Vim Mode)
+# 3. スペースキー拡張設定 (SandS & Vim Mode)
 ; =============================================================================
 
-; --- SandS (Space and Shift) Behavior ---
-; Tap Space: Output Space
+; --- SandS (Space and Shift) 挙動の定義 ---
+; 単押し時：スペース文字を出力
 Space Up::Send, {Space}
-; Shift + Space: Output Space (allows repeat)
+; Shift + Space時：スペース文字を出力（連続入力可能）
 +Space::Send, {Space}
 
-
-; --- Vim Navigation (Space + HJKL) ---
+; --- Vim風カーソル移動 (Space + HJKL) ---
 Space & h::Send {Blind}{Left}
+; NOTE: 下方向への移動
 Space & j::Send {Blind}{Down}
+; NOTE: 上方向への移動
 Space & k::Send {Blind}{Up}
 Space & l::Send {Blind}{Right}
 
-; --- Navigation Extras ---
-Space & a::Send {Blind}{Home}
-Space & e::Send {Blind}{End}
+; --- ナビゲーションの拡張定義 ---
+Space & a::Send {Blind}{Home} ; 行頭移動
+Space & e::Send {Blind}{End}  ; 行末移動
 
-; --- Editing Shortcuts ---
-Space & u:: Send, ^z          ; Undo
-Space & b:: Send, {Backspace} ; Backspace
-Space & x:: Send, {Delete}    ; Delete
-^Space::    Send, ^{Space}    ; Ctrl + Space (Pass-through)
-!Space::    Send, !{Space}    ; Alt + Space (Pass-through)
-
+; --- テキスト編集用ショートカット ---
+Space & u:: Send, ^z          ; 元に戻す (Undo)
+Space & b:: Send, {Backspace} ; バックスペース (Backspace)
+Space & x:: Send, {Delete}    ; デリート (Delete)
+^Space::    Send, ^{Space}    ; Ctrl + Space のパススルー（衝突回避）
+!Space::    Send, !{Space}    ; Alt + Space のパススルー（衝突回避）
 
 ; =============================================================================
-; Virtual Desktop Operations
+# 4. 仮想デスクトップ操作 (Virtual Desktop Operations)
 ; =============================================================================
 
-; --- Switch Desktop (Right) ---
-; RWin or RCtrl -> Switch to next desktop
+; --- 仮想デスクトップの切り替え (次へ) ---
+; 右Winキーまたは右Ctrlキー単押しで動作
 RWin:: Send, {LWin down}{LCtrl down}{Right}{LCtrl up}{LWin up}
 RCtrl::Send, {LWin down}{LCtrl down}{Right}{LCtrl up}{LWin up}
 
-; --- Move Window to Next Desktop ---
-; Alt + RWin/RCtrl -> Move active window to next desktop
+; --- アクティブウィンドウを次のデスクトップへ移動 ---
+; Alt + 右Winキーまたは右Ctrlキーで動作
 !RWin:: SendInput, {LWin down}{LCtrl down}{LAlt down}{Right}{LAlt up}{LCtrl up}{LWin up}
 !RCtrl::SendInput, {LWin down}{LCtrl down}{LAlt down}{Right}{LAlt up}{LCtrl up}{LWin up}
 
-
 ; =============================================================================
-; IME & Vim Integration
+# 5. IME制御 & Vim連携 (IME & Vim Integration)
 ; =============================================================================
 
-; --- Alt Key IME Switching (Mac-style) ---
-; Left Alt: IME OFF (English)
+; --- Mac風のAltキー単押しによるIME切り替え ---
+; 左Alt単押し：英語入力（IME OFF）
 ~LAlt Up::
     if (A_PriorHotkey == "~LAlt")
         IME_SET(0)
     Return
-~LAlt::SendInput, {vkE8} ; Void
+~LAlt::SendInput, {vkE8} ; キーの衝突防止ダミー出力を送信
 
-; Right Alt: IME ON (Japanese)
+; 右Alt単押し：日本語入力（IME ON）
 ~RAlt Up::
     if (A_PriorHotkey == "~RAlt")
         IME_SET(1)
     Return
-~RAlt::SendInput, {vkE8} ; Void
+~RAlt::SendInput, {vkE8} ; キーの衝突防止ダミー出力を送信
 
-; --- Vim Escape & IME OFF ---
-; Pressing Escape sends Esc and forces IME OFF
+; --- Escapeキー押下時に強制的にIMEをOFFにする設定 ---
 $Esc::
     SendInput, {LCtrl up}{RCtrl up}{Esc}
-    Sleep 10 ; Slight delay to ensure Esc processes before IME switch
+    Sleep 10 ; Escapeキーの入力を確実に処理させるための微小ディレイ
     IME_SET(0)
 Return
 
-; --- Ctrl + [ -> Escape & IME OFF ---
+; --- Ctrl + [ 押下時にEscapeかつIMEをOFFにする設定 (Vim/Neovim互換) ---
 ^[::
     SendInput, {LCtrl up}{RCtrl up}{Esc}
     Sleep 10
     IME_SET(0)
 Return
 
-
 ; =============================================================================
-; Application Shortcuts
+# 6. アプリケーション個別ショートカット (Application Shortcuts)
 ; =============================================================================
 
-; --- Alt+Enter to open WezTerm (Exclude Excel to preserve in-cell newline) ---
+; --- Alt + Enter で WezTerm を起動する設定（Excelでのセル内改行を邪魔しないよう除外） ---
 #IfWinNotActive ahk_exe EXCEL.EXE
 !Enter::
     Run, wezterm-gui
@@ -134,20 +129,21 @@ Return
 #IfWinNotActive
 
 ; =============================================================================
-; Explorer Integration (Everything Search)
+# 7. エクスプローラー統合 (Everything検索連携)
 ; =============================================================================
 
 #IfWinActive ahk_class CabinetWClass
+; エクスプローラー上で Ctrl + F を押した際，開いているフォルダパスを対象に Everything で検索する
 ^f::
     path := GetExplorerPath()
     if (path) {
-        ; Confirmed path for Everything 1.5a
+        ; TODO: Everything 1.5a のパスが異なる場合は適宜書き換える
         everythingPath := "C:\Program Files\Everything 1.5a\Everything.exe"
         
         if FileExist(everythingPath) {
             Run, "%everythingPath%" -path "%path%"
         } else {
-            MsgBox, 16, Error, Everything 1.5a not found at:`n%everythingPath%`n`nPlease check the installation path.
+            MsgBox, 16, エラー, Everything 1.5a が以下のパスに見つかりませんでした．:`n%everythingPath%`n`nインストールパスをご確認ください．
         }
     } else {
         Send, ^f
@@ -155,6 +151,7 @@ Return
 Return
 #IfWinActive
 
+; アクティブなエクスプローラーから現在のカレントディレクトリパスを取得する関数
 GetExplorerPath() {
     WinGetClass, winClass, A
     if (winClass ~= "Progman|WorkerW")
