@@ -1,5 +1,5 @@
 return {
-  "rebelot/kanagawa.nvim",
+  "Naruto-Takahashi/kanagawa.nvim",
   lazy = false,
   priority = 1000,
   opts = {

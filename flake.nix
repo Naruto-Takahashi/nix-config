@@ -20,7 +20,7 @@
 
     # Yazi Kanagawa Dragon フレーバーの入力ソース定義
     kanagawa-dragon-yazi = {
-      url   = "github:marcosvnmelo/kanagawa-dragon.yazi";
+      url   = "github:Naruto-Takahashi/kanagawa-dragon.yazi";
       flake = false;
     };
   };
