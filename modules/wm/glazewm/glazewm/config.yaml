@@ -73,6 +73,9 @@ workspaces:
   - name: "8"
   - name: "9"
 window_rules:
+  - commands: ["toggle-tiling-direction"]
+    match:
+      - window_process: {regex: ".*"}
   - commands: ["ignore"]
     match:
       # Ignores any Zebar windows.
