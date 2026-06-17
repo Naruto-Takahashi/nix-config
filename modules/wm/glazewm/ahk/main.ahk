@@ -192,16 +192,6 @@ AutoTileTimer:
     if (activeClass = "Shell_TrayWnd" || activeClass = "Button" || activeClass = "Zebar")
         return
 
-    ; Get active window dimensions
-    WinGetPos,,, W, H, ahk_id %ActiveHwnd%
-    if (W = "" || H = "" || W = 0 || H = 0)
-        return
-
-    ; Change split direction based on aspect ratio
-    ; Horizontal split (side-by-side) if wide, vertical (top-bottom) if tall
-    if (W > H * 1.4) {
-        Run, glazewm.exe command "layout horizontal",, Hide
-    } else {
-        Run, glazewm.exe command "layout vertical",, Hide
-    }
+    ; ウィンドウが開く（アクティブになる）たびに，タイリング方向をトグルする
+    Run, glazewm.exe command "toggle-tiling-direction",, Hide
 return
