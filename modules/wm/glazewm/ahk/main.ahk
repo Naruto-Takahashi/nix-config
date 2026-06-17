@@ -6,7 +6,7 @@
 */
 
 ; =============================================================================
-; 1. グローバル設定 (Global Settings)
+; グローバル設定 (Global Settings)
 ; =============================================================================
 #NoEnv
 SendMode Input
@@ -16,7 +16,7 @@ SetWorkingDir %A_ScriptDir%
 #Include %A_ScriptDir%\lib\ime_functions.ahk
 
 ; =============================================================================
-; 2. キー・リマッピング設定 (Key Remappings)
+; キー・リマッピング設定 (Key Remappings)
 ; =============================================================================
 
 ; --- CapsLock単押しでEscape（かつIME OFF），長押しでCtrl化 ---
@@ -42,10 +42,10 @@ Return
 Return
 
 ; =============================================================================
-; 3. スペースキー拡張設定 (SandS & Vim Mode)
+; スペースキー拡張設定 (SandS & Vim Mode)
 ; =============================================================================
 
-; --- SandS (Space and Shift) 挙動の定義 ---
+; --- SandS (Space and Shift) 挙動 of 定義 ---
 ; 単押し時：スペース文字を出力
 Space Up::Send, {Space}
 ; Shift + Space時：スペース文字を出力（連続入力可能）
@@ -71,21 +71,7 @@ Space & x:: Send, {Delete}    ; デリート (Delete)
 !Space::    Send, !{Space}    ; Alt + Space のパススルー（衝突回避）
 
 ; =============================================================================
-; 4. 仮想デスクトップ操作 (Virtual Desktop Operations)
-; =============================================================================
-
-; --- 仮想デスクトップの切り替え (次へ) ---
-; 右Winキーまたは右Ctrlキー単押しで動作
-RWin:: Send, {LWin down}{LCtrl down}{Right}{LCtrl up}{LWin up}
-RCtrl::Send, {LWin down}{LCtrl down}{Right}{LCtrl up}{LWin up}
-
-; --- アクティブウィンドウを次のデスクトップへ移動 ---
-; Alt + 右Winキーまたは右Ctrlキーで動作
-!RWin:: SendInput, {LWin down}{LCtrl down}{LAlt down}{Right}{LAlt up}{LCtrl up}{LWin up}
-!RCtrl::SendInput, {LWin down}{LCtrl down}{LAlt down}{Right}{LAlt up}{LCtrl up}{LWin up}
-
-; =============================================================================
-; 5. IME制御 & Vim連携 (IME & Vim Integration)
+; IME制御 & Vim連携 (IME & Vim Integration)
 ; =============================================================================
 
 ; --- Mac風のAltキー単押しによるIME切り替え ---
@@ -118,7 +104,7 @@ Return
 Return
 
 ; =============================================================================
-; 6. アプリケーション個別ショートカット (Application Shortcuts)
+; アプリケーション個別ショートカット (Application Shortcuts)
 ; =============================================================================
 
 ; --- Alt + Enter で WezTerm を起動する設定（Excelでのセル内改行を邪魔しないよう除外） ---
@@ -129,7 +115,7 @@ Return
 #IfWinNotActive
 
 ; =============================================================================
-; 7. エクスプローラー統合 (Everything検索連携)
+; エクスプローラー統合 (Everything検索連携)
 ; =============================================================================
 
 #IfWinActive ahk_class CabinetWClass
