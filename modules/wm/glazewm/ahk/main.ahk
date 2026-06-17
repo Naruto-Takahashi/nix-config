@@ -167,3 +167,41 @@ GetExplorerPath() {
         }
     }
 }
+
+; =============================================================================
+; GlazeWM Auto-Tiling (Aspect Ratio Based)
+; =============================================================================
+#Persistent
+SetTimer, AutoTileTimer, 200
+
+LastActiveHwnd := 0
+
+AutoTileTimer:
+    ActiveHwnd := WinActive("A")
+    if (ActiveHwnd = 0 || ActiveHwnd = LastActiveHwnd)
+        return
+
+    LastActiveHwnd := ActiveHwnd
+
+    ; Exclude background/tool windows (0x00C00000 is WS_CAPTION)
+    WinGet, style, Style, ahk_id %ActiveHwnd%
+    if !(style & 0x00C00000)
+        return
+
+    WinGetClass, activeClass, ahk_id %ActiveHwnd%
+    if (activeClass = "Shell_TrayWnd" || activeClass = "Button" || activeClass = "Zebar")
+        return
+
+    ; Get active window dimensions
+    WinGetPos,,, W, H, ahk_id %ActiveHwnd%
+    if (W = "" || H = "" || W = 0 || H = 0)
+        return
+
+    ; Change split direction based on aspect ratio
+    ; Horizontal split (side-by-side) if wide, vertical (top-bottom) if tall
+    if (W > H * 1.4) {
+        Run, glazewm.exe command "layout horizontal",, Hide
+    } else {
+        Run, glazewm.exe command "layout vertical",, Hide
+    }
+return
