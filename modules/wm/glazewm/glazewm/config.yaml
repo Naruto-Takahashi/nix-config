@@ -1,6 +1,5 @@
 general:
-  # Commands to run when the WM has started (e.g. to run a script or launch
-  # another application). Here we are running a batch script to start Zebar.
+  # NOTE: ZebarはWindowsのStartupフォルダから起動するため，ここでは起動コマンドを空にしている．
   startup_commands: []
   # Whether to automatically focus windows underneath the cursor.
   focus_follows_cursor: true
@@ -21,6 +20,7 @@ gaps:
   # Gap between adjacent windows.
   inner_gap: "6px"
   # Gap between windows and the screen edge.
+  # NOTE: Zebarの 'dockToEdge' 機能が自動でスペースを確保するため，top gapは2pxにリセットしている．
   outer_gap:
     top: "2px"
     right: "6px"
@@ -63,6 +63,7 @@ window_behavior:
 
       shown_on_top: false
 workspaces:
+  # TODO: ワークスペースごとの専用レイアウトや初期アプリ配置ルールの見直し（例: 開発，ブラウジング等の割り当て）
   - name: "1"
   - name: "2"
   - name: "3"
