@@ -183,15 +183,20 @@ AutoTileTimer:
 
     LastActiveHwnd := ActiveHwnd
 
-    ; Exclude background/tool windows (0x00C00000 is WS_CAPTION)
-    WinGet, style, Style, ahk_id %ActiveHwnd%
-    if !(style & 0x00C00000)
-        return
-
     WinGetClass, activeClass, ahk_id %ActiveHwnd%
     if (activeClass = "Shell_TrayWnd" || activeClass = "Button" || activeClass = "Zebar")
         return
 
-    ; ウィンドウが開く（アクティブになる）たびに，タイリング方向をトグルする
-    Run, glazewm.exe command "toggle-tiling-direction",, Hide
+    ; WezTermなどのボーダーレスウィンドウに対応するため、WS_CAPTION(0x00C00000)フィルターを削除しました。
+
+    glazePath1 := A_UserProfile "\.glzr\glazewm\glazewm.exe"
+    glazePath2 := A_LocalAppData "\Programs\glazewm\glazewm.exe"
+
+    if FileExist(glazePath1) {
+        Run, "%glazePath1%" command "toggle-tiling-direction",, Hide
+    } else if FileExist(glazePath2) {
+        Run, "%glazePath2%" command "toggle-tiling-direction",, Hide
+    } else {
+        Run, glazewm.exe command "toggle-tiling-direction",, Hide
+    }
 return
