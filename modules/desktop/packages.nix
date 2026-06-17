@@ -24,7 +24,6 @@
     pkgs.ripgrep
     pkgs.xclip
     pkgs.wl-clipboard
-    pkgs.lazygit
     pkgs.kanata
     pkgs.gemini-cli
     pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）
