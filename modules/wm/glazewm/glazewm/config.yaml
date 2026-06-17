@@ -73,7 +73,7 @@ workspaces:
   - name: "8"
   - name: "9"
 window_rules:
-  - commands: ["toggle-tiling-direction"]
+  - commands: ["toggle-tiling-direction", "set tiling"]
     match:
       - window_process: {regex: ".*"}
   - commands: ["ignore"]
