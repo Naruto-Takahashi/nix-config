@@ -176,7 +176,7 @@ keybindings:
     bindings: ["alt+v"]
 
   # ウィンドウ表示状態のトグル
-  # Note: alt+space はランチャー（Everything等）用に予約．ここでは alt+shift+space のみ割り当て．
+  # NOTE: alt+space はランチャー（Everything等）用に予約．ここでは alt+shift+space のみ割り当て．
   - commands: ["toggle-floating --centered"]
     bindings: ["alt+shift+space"]
 
