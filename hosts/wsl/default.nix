@@ -43,6 +43,7 @@
     cowsay
     fortune
     lolcat
+    nodejs_22
     wsl-open # Windowsの規定のアプリでファイルを開くためのコマンド
     gh
   ];

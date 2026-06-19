@@ -3,9 +3,10 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = "InsertEnter",
+    event = { "BufReadPre", "BufNewFile" },
     config = function()
       require("copilot").setup({
+        copilot_node_command = vim.fn.expand("~/.nix-profile/bin/node"),
         suggestion = {
           enabled = true,
           auto_trigger = true,
