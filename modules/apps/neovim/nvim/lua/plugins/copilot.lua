@@ -3,18 +3,22 @@ return {
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "VeryLazy", -- LSP を nvim 起動直後に初期化し，InsertEnter 前に接続完了させる
     config = function()
       require("copilot").setup({
         copilot_node_command = vim.fn.expand("~/.nix-profile/bin/node"),
         suggestion = {
           enabled = true,
           auto_trigger = true,
+          hide_during_completion = false, -- nvim-cmp と共存させるため明示的に false に設定
           keymap = {
             accept = "<M-l>", -- Alt + l で補完確定
           },
         },
         panel = { enabled = false },
+        logger = {
+          file_log_level = vim.log.levels.TRACE, -- デバッグ用：動作確認後は OFF に戻す
+        },
       })
     end,
   },
