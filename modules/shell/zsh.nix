@@ -71,6 +71,12 @@
       vim     = "nvim";
       lg      = "lazygit";
 
+      # GitHub Copilot (Manual Install - v1.0.63+)
+      chat    = "copilot";
+      ask     = "copilot -i";
+      exp     = "copilot -i 'explain '";
+      copilot = "copilot";
+
       # モダンCLIユーティリティへの置き換え
       ls      = "eza --icons";
       ll      = "eza -alF --icons";
@@ -272,9 +278,6 @@
           fi
       }
 
-      # 各自のローカル固有の環境変数を自動ソース化
-      [ -f ~/.env ] && source ~/.env
-
       # zoxide の初期化（nvmロード後に実行することで、nvm内部のcd処理との衝突を防ぐ）
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
 
@@ -285,4 +288,3 @@
     '';
   };
 }
-

@@ -20,7 +20,7 @@
     pkgs.gcc
     pkgs.gnumake
     pkgs.python3
-    pkgs.nodejs
+    pkgs.nodejs_22
     pkgs.ripgrep
     pkgs.xclip
     pkgs.wl-clipboard

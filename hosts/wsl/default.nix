@@ -44,5 +44,6 @@
     fortune
     lolcat
     wsl-open # Windowsの規定のアプリでファイルを開くためのコマンド
+    gh
   ];
 }

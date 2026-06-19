@@ -10,6 +10,8 @@
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
+    # Copilot.lua は Neovim 内で Node.js を使うため、Neovim 自体にも同梱する
+    withNodeJs = true;
   };
 
   # -----------------------------------------------------------------------

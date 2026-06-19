@@ -330,11 +330,3 @@ in
     };
   };
 }
-tion = 4;
-        settings = {
-          format = "%Y-%m-%d %H:%M:%S";
-        };
-      };
-    };
-  };
-}
