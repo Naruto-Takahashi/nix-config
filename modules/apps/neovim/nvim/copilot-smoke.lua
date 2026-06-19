@@ -1,29 +1,32 @@
 -- Copilot smoke test
--- Open this file in Neovim and press <M-l> while editing a TODO block.
+-- Open this file, move to one of the TODO blocks, enter Insert mode, then run:
+--   :Copilot suggestion next
+-- If a suggestion appears, accept it with <M-l>.
 
 local M = {}
 
---- Normalize a label into a slug.
---- TODO: lowercase the string, replace non-alphanumeric runs with "-", and trim leading/trailing "-"
----@param text string
----@return string
+local function normalize(text)
+  -- TODO: lowercase, replace non-alphanumeric runs with "-", trim edge "-"
+  return text
+end
+
 function M.slugify(text)
+  return normalize(text)
 end
 
---- Retry a callback until it returns a non-nil value.
---- TODO: stop after `attempts` tries and return the last error if all attempts fail
----@param fn fun(): any
----@param attempts integer
----@return any
 function M.retry(fn, attempts)
+  -- TODO: call fn up to attempts times and return the first non-nil result
+  return fn(), attempts
 end
 
---- Render a one-line status message.
---- TODO: return "ready" when ok is true, otherwise return "failed: <message>"
----@param ok boolean
----@param message string
----@return string
 function M.status_message(ok, message)
+  if ok then
+    -- TODO: return "ready"
+    return message
+  end
+
+  -- TODO: return "failed: <message>"
+  return message
 end
 
 return M

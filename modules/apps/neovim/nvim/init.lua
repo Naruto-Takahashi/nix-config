@@ -5,6 +5,17 @@
 -- 1. 基本設定を読み込む
 require("vim-options")
 
+-- CopilotChat で保存済みのトークンがあれば、copilot.lua でも再利用する
+do
+  local token_path = vim.fn.stdpath("data") .. "/copilot_chat/tokens.json"
+  if vim.env.GITHUB_COPILOT_TOKEN == nil and vim.env.GH_COPILOT_TOKEN == nil and vim.fn.filereadable(token_path) == 1 then
+    local ok, decoded = pcall(vim.json.decode, table.concat(vim.fn.readfile(token_path), "\n"))
+    if ok and decoded and decoded.github_copilot then
+      vim.env.GITHUB_COPILOT_TOKEN = decoded.github_copilot
+    end
+  end
+end
+
 -- 2. Lazy.nvim の準備 (ブートストラップ)
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
