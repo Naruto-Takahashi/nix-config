@@ -96,6 +96,11 @@
       bgemini   = "cp ~/.gemini/GEMINI.md ~/dotfiles/gemini/GEMINI.md && (cd ~/dotfiles && git add gemini/GEMINI.md && git commit -m \"chore: update GEMINI.md backup\" && git push) && echo \"GEMINI.md backed up.\"";
       gchat     = "agy -i";
       achat     = "agy -i";
+
+      # Raspberry Pi 3B SSHFS マウント操作
+      raspi-mount  = "mkdir -p ~/mnt/raspi && sshfs nalt@192.168.151.253:/home/nalt ~/mnt/raspi && echo 'raspi mounted at ~/mnt/raspi'";
+      raspi-umount = "fusermount -u ~/mnt/raspi && echo 'raspi unmounted'";
+      raspi        = "cd ~/mnt/raspi";
     };
 
     # ---------------------------------------------------------------------
