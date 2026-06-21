@@ -12,7 +12,7 @@ return {
           auto_trigger = true,
           hide_during_completion = false, -- nvim-cmp と共存させるため明示的に false に設定
           keymap = {
-            accept = "<M-l>", -- Alt + l で補完確定
+            accept = false, -- completions.luaでTabキーハンドラをマージして対応するため無効化
           },
         },
         panel = { enabled = false },
@@ -20,50 +20,17 @@ return {
           file_log_level = vim.log.levels.TRACE, -- デバッグ用：動作確認後は OFF に戻す
         },
       })
-    end,
-  },
 
-  -- Chat UI (Sidebar)
-  {
-    "CopilotC-Nvim/CopilotChat.nvim",
-    dependencies = {
-      { "zbirenbaum/copilot.lua" },
-      { "nvim-lua/plenary.nvim" },
-    },
-    opts = {
-      window = {
-        layout = "vertical", -- 縦分割
-        side = "right",      -- 右側に表示
-        width = 0.4,         -- 画面の30%を占有
-        relative = "editor",
-      },
-      show_help = true,
-      mappings = {
-        -- チャットウィンドウ内での移動設定
-        reset = {
-          normal = "<C-l>", -- デフォルトの reset と衝突を避けるため変更（任意）
-          insert = "<C-l>",
-        },
-      },
-    },
-    config = function(_, opts)
-      require("CopilotChat").setup(opts)
+      -- 提案テキストの色を黄色 (#ffc20d) に設定
+      vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = "#ffc20d" })
 
-      -- チャットウィンドウが開いたときに Ctrl-h/j/k/l を有効化する
-      vim.api.nvim_create_autocmd("FileType", {
-        pattern = "copilot-chat",
+      -- カラースキーマの再読み込み時にも色を維持
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
         callback = function()
-          vim.keymap.set("n", "<C-h>", "<C-w>h", { remap = true, buffer = true })
-          vim.keymap.set("n", "<C-j>", "<C-w>j", { remap = true, buffer = true })
-          vim.keymap.set("n", "<C-k>", "<C-w>k", { remap = true, buffer = true })
-          vim.keymap.set("n", "<C-l>", "<C-w>l", { remap = true, buffer = true })
+          vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = "#ffc20d" })
         end,
       })
     end,
-    keys = {
-      { "<leader>cc", "<cmd>CopilotChatToggle<cr>", desc = "Copilot Chat Toggle" },
-      { "<leader>ce", "<cmd>CopilotChatExplain<cr>", desc = "Explain Code" },
-      { "<leader>cf", "<cmd>CopilotChatFix<cr>", desc = "Fix Code" },
-    },
   },
 }

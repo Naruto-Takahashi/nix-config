@@ -161,7 +161,7 @@ in
     mcpServers = {
       obsidian = {
         command = "npx";
-        args = [ "-y" "mcpvault" ];
+        args = [ "-y" "@bitbonsai/mcpvault" ];
         env = {
           OBSIDIAN_VAULT = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/obsidian-vault";
         };
