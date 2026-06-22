@@ -31,7 +31,13 @@
     
     # ディスプレイマネージャー & デスクトップ環境設定
     displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
+    desktopManager.gnome = {
+      enable = true;
+      extraGSettingsOverrides = ''
+        [org.gnome.desktop.input-sources]
+        sources=[('xkb', 'us')]
+      '';
+    };
   };
 
   # ユーザー `nalt` の定義
