@@ -53,5 +53,22 @@
           extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
         };
       };
+
+      # NixOS環境用プロファイル
+      nixosConfigurations = {
+        "nixos" = nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/nixos
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.nalt = import ./hosts/nixos/home.nix;
+              home-manager.extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
+            }
+          ];
+        };
+      };
     };
 }
