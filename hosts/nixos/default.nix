@@ -19,13 +19,13 @@
   # タイムゾーンと地域言語設定
   time.timeZone = "Asia/Tokyo";
   i18n.defaultLocale = "ja_JP.UTF-8";
-  console.keyMap = "jp106";
+  console.keyMap = "us";
 
   # X11 / デスクトップ環境 (GNOME を使用するための基本設定)
   services.xserver = {
     enable = true;
     xkb = {
-      layout = "jp";
+      layout = "us";
       options = "ctrl:nocaps"; # CapsLockをCtrlに変更 (お好みで)
     };
     
