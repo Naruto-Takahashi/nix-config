@@ -38,4 +38,16 @@
   programs.bash = {
     enable = true;
   };
+
+  # Fcitx5 の入力メソッド設定 (US配列キーボード + Mozc) をコードで管理
+  xdg.configFile."fcitx5/profile".text = ''
+    [Groups/0]
+    Name=Default
+    Default Layout=us
+    IMList/0/Name=keyboard-us
+    IMList/1/Name=mozc
+
+    [Groups]
+    NumberOfGroups=1
+  '';
 }
