@@ -129,7 +129,7 @@
     enable = true;
     keyboards = {
       default = {
-        configFile = "/home/nalt/.config/kanata/config.kbd";
+        configFile = ../../modules/desktop/config.kbd;
       };
     };
   };

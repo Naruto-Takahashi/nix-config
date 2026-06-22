@@ -38,7 +38,7 @@
     -- Tab
     ----------------------------------------------------
     -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
-    config.window_decorations = "RESIZE"
+    config.window_decorations = "NONE"
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか
@@ -53,9 +53,9 @@
     }
 
     -- タブバーを背景色に合わせる
-    config.window_background_gradient = {
-      colors = { "#000000" },
-    }
+    -- config.window_background_gradient = {
+    --   colors = { "#000000" },
+    -- }
 
     -- タブの追加ボタンを非表示
     config.show_new_tab_button_in_tab_bar = true
