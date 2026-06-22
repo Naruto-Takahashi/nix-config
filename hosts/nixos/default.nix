@@ -60,6 +60,14 @@
   # Zsh をシステム全体で有効化 (ユーザーのログインシェル設定に必要)
   programs.zsh.enable = true;
 
+  # nix-ld を有効にして，一般的なLinux向けバイナリをそのまま実行可能にする
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    stdenv.cc.cc
+    zlib
+    glib
+  ];
+
   # Nix コマンドと Flakes の有効化
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
