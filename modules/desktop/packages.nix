@@ -5,7 +5,6 @@
 
 {
   home.packages = [
-    nixgl.packages.${pkgs.system}.nixGLDefault
     pkgs.hackgen-nf-font # WezTermで指定されているフォント
 
     pkgs.eza

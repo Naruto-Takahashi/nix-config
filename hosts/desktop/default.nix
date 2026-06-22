@@ -51,4 +51,9 @@
       fi
     '';
   };
+
+  # Ubuntu環境専用：WezTerm等でGPUを使用するためのOpenGLラッパー
+  home.packages = [
+    nixgl.packages.${pkgs.system}.nixGLDefault
+  ];
 }
