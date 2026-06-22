@@ -9,14 +9,12 @@
 
 デスクトップの操作方法やキーマップの詳細は，以下の各個別ドキュメントから詳細にご確認いただけます．
 
-* 🗔 **[i3wm キーバインド・設定詳細](docs/i3wm.md)** (Desktop/NixOSのみ): 画面のレイアウト，ワークスペース切り替え，スクリーンショット，最小化・オートタイル復元の詳細．
 * 🗔 **[Hyprland キーバインド・設定詳細](docs/hyprland.md)** (NixOSのみ): 物理Altキーから変換されたSuperキーを使ったGlazeWM互換操作，自動テーマ配色連携（Matugen）の詳細．
 * 🗔 **[GlazeWM キーバインド・設定詳細](docs/glazewm.md)** (WSLのみ/Windows側): Windows環境におけるタイル型ウィンドウ操作，Zebar連携，一時停止モードの詳細．
 * ⌨️ **[Kanata キーマップ詳細](docs/kanata.md)** (NixOS/Desktopのみ): スペースキー長押しによるVimライク移動，Altキーによるウィンドウ操作・Mac風IME切り替えの詳細．
 * 💻 **[WezTerm 設定・キーバインド詳細](docs/wezterm.md)**: フォント，背景の75%半透明適用，動的タブタイトル，Leaderキー（`Ctrl+Space`）によるタブ・ペイン管理．
 * 📝 **[Neovim 設定・キーマップ詳細](docs/neovim.md)**: 相対行表示や透過背景設定，`jk` によるインサート抜け，Zenn用画像貼り付けなどの高度なLuaカスタムマクロ．
 * 📁 **[Yazi 設定・使い方詳細](docs/yazi.md)**: Cyberdreamテーマカスタマイズ・透過設定，Vim風キーバインド全一覧，シェル統合によるディレクトリ移動連携．
-* 🌐 **[Chrome Remote Desktop 設定詳細](docs/chrome-remote-desktop.md)**: 自宅から研究室PCへセキュアにアクセスするための，Google経由のリモートデスクトップ設定手順．
 
 ---
 
@@ -24,7 +22,7 @@
 
 * **NixOS 統合管理**: OSのブートローダー，ネットワーク，日本語入力（Fcitx5-Mozc）から，ユーザー個人の Neovim や WezTerm 設定まで，完全に単一の Flake で再現可能にしました．
 * **キーボードリマッパー (`Kanata`)**: US配列キーボードを前提とし，左右Alt単押しでのIME（日本語/英語）の切り替えや，**SandS（Space and Shift）**思想を継承した「スペース長押しナビゲーションレイヤー」を搭載．
-* **ウィンドウマネージャー (`i3wm` / `GlazeWM`)**: Linux環境での `i3wm` と，WSL使用時のWindows側での `GlazeWM` の両環境で，ゴールドとダークな色調で美しく統一されたタイル型ウィンドウ環境を構築．
+* **ウィンドウマネージャー (`GlazeWM`)**: WSL使用時のWindows側での `GlazeWM` で，ゴールドとダークな色調で美しく統一されたタイル型ウィンドウ環境を構築．
 * **ターミナル (`WezTerm`)**: 不透明度75%の美しい半透明背景．フォントには「HackGen NF」を適用し，上部タブバーも本体と同じ透過率に完璧に調和．
 * **互換性機能 (`nix-ld`)**: NixOS にありがちな「外部でビルドされた動的リンクバイナリ（`agy` コマンドなど）が動作しない」問題を，`nix-ld` をシステムで有効化することで自動的に解決．
 
@@ -118,7 +116,6 @@ This repository manages Naruto's NixOS, Linux desktop (Ubuntu), and WSL2 environ
 
 ### 📖 Detailed Configurations & Keymaps Documentation
 
-* 🗔 **[i3wm Keybindings & Configurations](docs/i3wm.md)** (Desktop/NixOS only): Details on layout structure, workspace navigation, screenshots, scratchpad minimization, and auto-tiling restoration.
 * 🗔 **[Hyprland Keybindings & Configurations](docs/hyprland.md)** (NixOS only): Details on GlazeWM-compatible operations using Super key converted from physical Alt, and Matugen automatic theme color integration.
 * 🗔 **[GlazeWM Keybindings & Configurations](docs/glazewm.md)** (WSL only/Windows side): Details on Windows tiling window management, Zebar status bar integration, and configuration bypass via Pause mode.
 * ⌨️ **[Kanata Keyboard Remapping](docs/kanata.md)** (NixOS/Desktop only): Details on SandS Vim-like spacebar navigation, Alt-key window commands, and Mac-style IME switching.

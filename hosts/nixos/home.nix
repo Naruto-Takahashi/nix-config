@@ -19,7 +19,6 @@
     ../../modules/wm/hyprland
     ../../modules/shell/direnv.nix
     ../../modules/apps/yazi.nix
-    ../../modules/services/chrome-remote-desktop.nix
     ../../modules/apps/lazygit.nix
   ];
 

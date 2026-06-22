@@ -263,7 +263,7 @@
       }
 
       # 8. 最新のスクリーンショットを Antigravity チャットへ連携する関数
-      # (i3wmで撮影した ~/Pictures/Screenshots/ 下の最新画像を sync)
+      # (撮影した ~/Pictures/Screenshots/ 下の最新画像を sync)
       function agy-ss() {
           local ss_dir="$HOME/Pictures/Screenshots"
           local latest_file=$(ls -t "$ss_dir"/Screenshot*.png 2>/dev/null | head -n 1)
