@@ -20,7 +20,6 @@
     config.automatically_reload_config = true
     config.scrollback_lines = 3000
     config.font = wezterm.font 'HackGen Console NF'
-    config.front_end = "Software"
 
     -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
     local display = os.getenv("DISPLAY") or ""
