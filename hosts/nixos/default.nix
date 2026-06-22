@@ -19,12 +19,15 @@
   # タイムゾーンと地域言語設定
   time.timeZone = "Asia/Tokyo";
   i18n.defaultLocale = "ja_JP.UTF-8";
+  console.keyMap = "jp106";
 
   # X11 / デスクトップ環境 (GNOME を使用するための基本設定)
   services.xserver = {
     enable = true;
-    layout = "jp";
-    xkbOptions = "ctrl:nocaps"; # CapsLockをCtrlに変更 (お好みで)
+    xkb = {
+      layout = "jp";
+      options = "ctrl:nocaps"; # CapsLockをCtrlに変更 (お好みで)
+    };
     
     # ディスプレイマネージャー & デスクトップ環境設定
     displayManager.gdm.enable = true;
@@ -54,6 +57,7 @@
     vim
     wget
     curl
+    vivaldi # Vivaldiブラウザの追加
   ];
 
   # システムバージョン
