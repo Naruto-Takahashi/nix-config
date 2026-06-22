@@ -71,6 +71,12 @@
   # Nix コマンドと Flakes の有効化
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
+  # Hyprland システムモジュールの有効化
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
+
   # パッケージインストール許可
   nixpkgs.config.allowUnfree = true;
 
@@ -81,6 +87,26 @@
     wget
     curl
     vivaldi # Vivaldiブラウザの追加
+
+    # Hyprland 関連ツール
+    kitty
+    swww
+    matugen
+    pamixer
+    libnotify
+    playerctl
+    hyprpicker
+    rofi
+    swaynotificationcenter
+    waybar
+    wlogout
+    cava
+    hypridle
+    hyprlock
+    networkmanagerapplet
+    blueman
+    grim
+    slurp
   ];
 
   # Kanata キーボードリマッパーのシステムサービス有効化

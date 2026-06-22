@@ -10,6 +10,7 @@
 デスクトップの操作方法やキーマップの詳細は、以下の各個別ドキュメントから詳細にご確認いただけます。
 
 * 🗔 **[i3wm キーバインド・設定詳細](docs/i3wm.md)** (Desktopのみ): 画面のレイアウト、ワークスペース切り替え、スクリーンショット、最小化・オートタイル復元の詳細。
+* 🗔 **[Hyprland キーバインド・設定詳細](docs/hyprland.md)** (NixOSのみ): 物理Altキーから変換されたSuperキーを使ったGlazeWM互換操作、自動テーマ配色連携（Matugen）の詳細。
 * 🗔 **[GlazeWM キーバインド・設定詳細](docs/glazewm.md)** (WSLのみ/Windows側): Windows環境におけるタイル型ウィンドウ操作、Zebar連携、一時停止モードの詳細。
 * ⌨️ **[Kanata キーマップ詳細](docs/kanata.md)** (Desktopのみ): スペースキー長押しによるVimライク移動、Altキーによるウィンドウ操作・Mac風IME切り替えの詳細。
 * 💻 **[WezTerm 設定・キーバインド詳細](docs/wezterm.md)**: フォント、背景の75%半透明適用、動的タブタイトル、Leaderキー（`Ctrl+Space`）によるタブ・ペイン管理。
