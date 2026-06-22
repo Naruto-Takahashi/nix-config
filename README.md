@@ -1,45 +1,49 @@
-# 🌌 Naruto's Declarative Configuration (NixOS + Home Manager)
+# 🌌 nix-config
 
-このリポジトリは，**Nix Flakes** と **Home Manager** を使用して，NixOS，Linuxデスクトップ（Ubuntu），および WSL2 環境を宣言的に一元管理するための設定ファイル群（レシピ）です．
-ゴールド（`#ffc20d`）とダークテーマを基調とした，美しく，キーボード駆動で圧倒的な生産性を誇る「極上のハッカー向け開発環境」を構築します．
+Declarative configurations for NixOS, Ubuntu (Desktop), and WSL2 managed via **Nix Flakes** and **Home Manager**.
 
----
-
-## 📖 設定・キーマップの詳細解説 (Detailed Documentation)
-
-デスクトップの操作方法やキーマップの詳細は，以下の各個別ドキュメントから詳細にご確認いただけます．
-
-* 🗔 **[Hyprland キーバインド・設定詳細](docs/hyprland.md)** (NixOSのみ): 物理Altキーから変換されたSuperキーを使ったGlazeWM互換操作，自動テーマ配色連携（Matugen）の詳細．
-* 🗔 **[GlazeWM キーバインド・設定詳細](docs/glazewm.md)** (WSLのみ/Windows側): Windows環境におけるタイル型ウィンドウ操作，Zebar連携，一時停止モードの詳細．
-* ⌨️ **[Kanata キーマップ詳細](docs/kanata.md)** (NixOS/Desktopのみ): スペースキー長押しによるVimライク移動，Altキーによるウィンドウ操作・Mac風IME切り替えの詳細．
-* 💻 **[WezTerm 設定・キーバインド詳細](docs/wezterm.md)**: フォント，背景の75%半透明適用，動的タブタイトル，Leaderキー（`Ctrl+Space`）によるタブ・ペイン管理．
-* 📝 **[Neovim 設定・キーマップ詳細](docs/neovim.md)**: 相対行表示や透過背景設定，`jk` によるインサート抜け，Zenn用画像貼り付けなどの高度なLuaカスタムマクロ．
-* 📁 **[Yazi 設定・使い方詳細](docs/yazi.md)**: Cyberdreamテーマカスタマイズ・透過設定，Vim風キーバインド全一覧，シェル統合によるディレクトリ移動連携．
+This repository centralizes OS-level declarations, shell utilities, window managers, and developmental tools to achieve a consistent, keyboard-driven environment.
 
 ---
 
-## 🎨 環境・機能のこだわり紹介 (Showcase)
+## 🗺️ Documentation & Navigation
 
-* **NixOS 統合管理**: OSのブートローダー，ネットワーク，日本語入力（Fcitx5-Mozc）から，ユーザー個人の Neovim や WezTerm 設定まで，完全に単一の Flake で再現可能にしました．
-* **キーボードリマッパー (`Kanata`)**: US配列キーボードを前提とし，左右Alt単押しでのIME（日本語/英語）の切り替えや，**SandS（Space and Shift）**思想を継承した「スペース長押しナビゲーションレイヤー」を搭載．
-* **ウィンドウマネージャー (`GlazeWM`)**: WSL使用時のWindows側での `GlazeWM` で，ゴールドとダークな色調で美しく統一されたタイル型ウィンドウ環境を構築．
-* **ターミナル (`WezTerm`)**: 不透明度75%の美しい半透明背景．フォントには「HackGen NF」を適用し，上部タブバーも本体と同じ透過率に完璧に調和．
-* **互換性機能 (`nix-ld`)**: NixOS にありがちな「外部でビルドされた動的リンクバイナリ（`agy` コマンドなど）が動作しない」問題を，`nix-ld` をシステムで有効化することで自動的に解決．
+Comprehensive documentation for specific modules, keymaps, and design systems can be accessed below:
+
+| Target Environment | Component / Module | Guide & Details | Key Functionality |
+| :--- | :--- | :--- | :--- |
+| **NixOS** | 🗔 Hyprland | [hyprland.md](docs/hyprland.md) | Wayland tile management, Matugen dynamic colors, Waybar. |
+| **Windows / WSL2** | 🗔 GlazeWM | [glazewm.md](docs/glazewm.md) | Windows-side tiling WM, Zebar status bar integration. |
+| **NixOS / Desktop** | ⌨️ Kanata | [kanata.md](docs/kanata.md) | System-level remap (SandS vim-like navigation, macOS-like IME toggle). |
+| **Cross-Platform** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 75% transparent blur window, dynamic tab title parser, custom Leader binds. |
+| **Cross-Platform** | 📝 Neovim | [neovim.md](docs/neovim.md) | Customized Neovim built with Lazy.nvim, optimized Vim macros. |
+| **Cross-Platform** | 📁 Yazi | [yazi.md](docs/yazi.md) | Cyberdream matching transparent file manager with custom shell hook. |
 
 ---
 
-## 🚀 新しいPCで環境を完全再現する手順（PC移行ガイド）
+## 📂 Repository Structure
 
-### A. NixOS 環境へ導入する場合
-
-NixOSの公式インストーラで最小インストール（ユーザー名は **`nalt`** で作成）を完了した後の手順です．
-
-#### Step 1: `git` の一時的起動とリポジトリのクローン
-NixOS に `git` が入っていない場合は，一時的に `nix-shell` で `git` を起動してクローンします．
-```bash
-nix-shell -p git
 ```
-起動したシェルの中で，リポジトリを `ghq` 管理下の所定のディレクトリへクローンします．
+.
+├── flake.nix                  # Flake entry point (defines system configurations)
+├── hosts/                     # Host-specific settings (entry points)
+│   ├── nixos/                 # NixOS configuration (system + home manager)
+│   ├── desktop/               # Linux Desktop (Ubuntu) standalone home-manager config
+│   └── wsl/                   # WSL2 standalone home-manager config
+├── modules/                   # Shared declarative configuration modules
+│   ├── wm/                    # Window Managers (hyprland, glazewm, zebar)
+│   ├── apps/                  # CLI and GUI Applications (wezterm, neovim, yazi, lazygit)
+│   ├── shell/                 # Shell integrations (zsh, starship, fastfetch, direnv)
+│   └── desktop/               # System keyboard / utility layers (kanata, packages)
+└── docs/                      # Technical manuals and keymap tables
+```
+
+---
+
+## 🚀 Setup & Installation (Migration Guide)
+
+Before continuing, verify that you areクローンing the repository into the standard `ghq` directory structure to maintain consistency with `zsh` settings.
+
 ```bash
 mkdir -p ~/ghq/github.com/Naruto-Takahashi
 cd ~/ghq/github.com/Naruto-Takahashi
@@ -47,129 +51,70 @@ git clone https://github.com/Naruto-Takahashi/nix-config.git
 cd nix-config
 ```
 
-#### Step 2: ハードウェア構成ファイルのコピー
-その PC 用に自動生成されたハードウェア構成ファイルをリポジトリ内に上書きコピーし，Git の追跡対象に追加します．
-```bash
-cp /etc/nixos/hardware-configuration.nix hosts/nixos/hardware-configuration.nix
-git add hosts/nixos/hardware-configuration.nix
-```
+### A. Deploying on NixOS
 
-#### Step 3: 設定の構築と適用
-Flakes を利用してシステム構成と Home Manager の設定を一括適用します．
-```bash
-sudo nixos-rebuild switch --flake .#nixos --impure
-```
-適用後，`exit` で一時シェルを抜けて PC を再起動してください．
+For a fresh NixOS installation (ensure your system user is created as `nalt`):
 
----
-
-### B. 一般の Linux (Ubuntu) または WSL2 環境へ導入する場合
-
-#### Step 1: Nix パッケージマネージャーのインストール
-```bash
-curl -L https://nixos.org/nix/install | sh
-. ~/.nix-profile/etc/profile.d/nix.sh
-```
-
-#### Step 2: Nix Flakes 機能の有効化
-```bash
-mkdir -p ~/.config/nix
-echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-```
-
-#### Step 3: 設定リポジトリのクローンと適用
-```bash
-mkdir -p ~/ghq/github.com/Naruto-Takahashi
-cd ~/ghq/github.com/Naruto-Takahashi
-git clone https://github.com/Naruto-Takahashi/nix-config.git
-cd nix-config
-```
-
-**Ubuntu デスクトップ環境の場合 (`nalt-desktop`)**:
-```bash
-nix run github:nix-community/home-manager -- switch --flake .#nalt-desktop --impure
-```
-
-**WSL 環境の場合 (`nalt-wsl`)**:
-```bash
-nix run github:nix-community/home-manager -- switch --flake .#nalt-wsl --impure
-```
-
-#### Step 4: 各種サービスとシェルの起動
-```bash
-# Kanata のユーザーサービス自動起動登録 (Desktopのみ)
-systemctl --user daemon-reload
-systemctl --user enable --now kanata
-
-# 新しい Zsh シェルの起動
-exec zsh
-```
-
----
-
-<details>
-<summary>📖 <b>English Translation (Click to expand)</b></summary>
-
-## 🌌 Overview
-
-This repository manages Naruto's NixOS, Linux desktop (Ubuntu), and WSL2 environments declaratively using **Nix Flakes** and **Home Manager**. It provides a fully unified, modern, keyboard-driven development environment with premium gold (`#ffc20d`) / dark hacker-mode aesthetics.
-
-### 📖 Detailed Configurations & Keymaps Documentation
-
-* 🗔 **[Hyprland Keybindings & Configurations](docs/hyprland.md)** (NixOS only): Details on GlazeWM-compatible operations using Super key converted from physical Alt, and Matugen automatic theme color integration.
-* 🗔 **[GlazeWM Keybindings & Configurations](docs/glazewm.md)** (WSL only/Windows side): Details on Windows tiling window management, Zebar status bar integration, and configuration bypass via Pause mode.
-* ⌨️ **[Kanata Keyboard Remapping](docs/kanata.md)** (NixOS/Desktop only): Details on SandS Vim-like spacebar navigation, Alt-key window commands, and Mac-style IME switching.
-* 💻 **[WezTerm Configurations & Keybindings](docs/wezterm.md)**: Font setups, 75% uniform background transparency, dynamic tab titles, and custom Leader key (`Ctrl+Space`) bindings.
-* 📝 **[Neovim Configurations & Keybindings](docs/neovim.md)**: Relative numbers, transparent editor background, `jk` escape shortcut, Zenn custom screenshot pasting macro, and robust Lazy.nvim plugin list.
-* 📁 **[Yazi File Manager — Configuration & Usage](docs/yazi.md)**: Cyberdream theme customization, transparency settings, full Vim-style keybinding reference, and shell integration for seamless directory navigation.
-
----
-
-## 🚀 Environment Setup & Replication Guide (PC Migration)
-
-### A. Installing on NixOS
-
-1. Clone this repository under `ghq` directory (using `nix-shell -p git` if `git` is not installed yet):
-   ```bash
-   mkdir -p ~/ghq/github.com/Naruto-Takahashi
-   cd ~/ghq/github.com/Naruto-Takahashi
-   git clone https://github.com/Naruto-Takahashi/nix-config.git
-   cd nix-config
-   ```
-2. Copy your auto-generated hardware configuration file:
+1. **Copy Hardware Configuration**  
+   Copy the host's automatically generated configurations into the flake directory and track it in git:
    ```bash
    cp /etc/nixos/hardware-configuration.nix hosts/nixos/hardware-configuration.nix
    git add hosts/nixos/hardware-configuration.nix
    ```
-3. Apply the system and Home Manager configuration:
+
+2. **Build and Apply System State**  
+   Apply the system flake configuration:
    ```bash
    sudo nixos-rebuild switch --flake .#nixos --impure
    ```
 
-### B. Installing on Generic Linux (Ubuntu) or WSL2
+3. **Post-install reboot**  
+   Reboot to let system-wide modules (like Kanata systemd service) initialize.
 
-1. Install Nix:
+---
+
+### B. Deploying on Standalone Ubuntu Desktop (`nalt-desktop`)
+
+For a standard Ubuntu Linux environment (requires Nix package manager):
+
+1. **Install Nix Package Manager** (Single-user installation)
    ```bash
    curl -L https://nixos.org/nix/install | sh
    . ~/.nix-profile/etc/profile.d/nix.sh
    ```
-2. Enable Flakes:
+
+2. **Enable Flakes support**
    ```bash
    mkdir -p ~/.config/nix
    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
    ```
-3. Clone and apply:
+
+3. **Deploy Home Manager Profile**
    ```bash
-   mkdir -p ~/ghq/github.com/Naruto-Takahashi
-   cd ~/ghq/github.com/Naruto-Takahashi
-   git clone https://github.com/Naruto-Takahashi/nix-config.git
-   cd nix-config
-   
-   # For Ubuntu Desktop:
    nix run github:nix-community/home-manager -- switch --flake .#nalt-desktop --impure
-   
-   # For WSL:
-   nix run github:nix-community/home-manager -- switch --flake .#nalt-wsl --impure
    ```
 
-</details>
+4. **Initialize User Services**
+   ```bash
+   systemctl --user daemon-reload
+   systemctl --user enable --now kanata
+   exec zsh
+   ```
+
+---
+
+### C. Deploying on WSL2 (`nalt-wsl`)
+
+For WSL2 (Ubuntu) environments:
+
+1. **Install Nix and Enable Flakes** (same as Ubuntu Desktop step 1 & 2).
+2. **Deploy Home Manager Profile**
+   ```bash
+   nix run github:nix-community/home-manager -- switch --flake .#nalt-wsl --impure
+   ```
+3. **Sync Settings to Windows Side**  
+   WSL profiles manage WezTerm and GlazeWM configurations. To copy these configurations to the Windows host directory, run the sync helper:
+   ```bash
+   sync-win
+   exec zsh
+   ```
