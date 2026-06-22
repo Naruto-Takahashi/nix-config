@@ -53,7 +53,7 @@
   users.users.nalt = {
     isNormalUser = true;
     description = "nalt";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" "input" "uinput" ];
     shell = pkgs.zsh;
   };
 
@@ -74,6 +74,16 @@
     curl
     vivaldi # Vivaldiブラウザの追加
   ];
+
+  # Kanata キーボードリマッパーのシステムサービス有効化
+  services.kanata = {
+    enable = true;
+    keyboards = {
+      default = {
+        configFile = "/home/nalt/.config/kanata/config.kbd";
+      };
+    };
+  };
 
   # システムバージョン
   system.stateVersion = "25.11";
