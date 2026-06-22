@@ -8,6 +8,22 @@
     ./hardware-configuration.nix
   ];
 
+  # GPU / Graphics hardware settings
+  hardware.graphics = {
+    enable = true;
+  };
+
+  # Load NVIDIA proprietary drivers
+  services.xserver.videoDrivers = [ "nvidia" ];
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false; # Proprietary Nvidia driver
+    nvidiaSettings = true;
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
   # ブートローダー設定 (EFIシステム用)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
