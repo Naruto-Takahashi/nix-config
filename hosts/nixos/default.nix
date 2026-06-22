@@ -21,6 +21,15 @@
   i18n.defaultLocale = "ja_JP.UTF-8";
   console.keyMap = "us";
 
+  # 日本語入力 (Fcitx5 + Mozc) の設定
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+    ];
+  };
+
   # X11 / デスクトップ環境 (GNOME を使用するための基本設定)
   services.xserver = {
     enable = true;
