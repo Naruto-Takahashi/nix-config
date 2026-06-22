@@ -13,10 +13,10 @@
     ../../modules/shell/zsh.nix
     ../../modules/shell/starship.nix
     ../../modules/desktop/kanata.nix
-    ../../modules/desktop
+    # ../../modules/desktop
     ../../modules/apps/wezterm.nix
     ../../modules/apps/neovim
-    ../../modules/wm/i3
+    # ../../modules/wm/i3
     ../../modules/shell/direnv.nix
     ../../modules/apps/yazi.nix
     ../../modules/services/chrome-remote-desktop.nix

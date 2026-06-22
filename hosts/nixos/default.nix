@@ -20,24 +20,15 @@
   time.timeZone = "Asia/Tokyo";
   i18n.defaultLocale = "ja_JP.UTF-8";
 
-  # X11 / デスクトップ環境 (i3 等を使用するための基本設定)
+  # X11 / デスクトップ環境 (GNOME を使用するための基本設定)
   services.xserver = {
     enable = true;
     layout = "jp";
     xkbOptions = "ctrl:nocaps"; # CapsLockをCtrlに変更 (お好みで)
     
-    # ディスプレイマネージャー & ウィンドウマネージャー設定
-    desktopManager.xterm.enable = false;
-    displayManager.lightdm.enable = true;
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs; [
-        dmenu
-        i3status
-        i3lock
-        i3blocks
-      ];
-    };
+    # ディスプレイマネージャー & デスクトップ環境設定
+    displayManager.gdm.enable = true;
+    desktopManager.gnome.enable = true;
   };
 
   # ユーザー `nalt` の定義
