@@ -34,6 +34,11 @@
   # Nixでインストールしたフォントを認識させる
   fonts.fontconfig.enable = true;
 
+  # デフォルトターミナル環境変数の設定
+  home.sessionVariables = {
+    TERMINAL = "wezterm";
+  };
+
   # Bash の基本設定
   programs.bash = {
     enable = true;
