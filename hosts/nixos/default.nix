@@ -21,7 +21,6 @@
     powerManagement.finegrained = false;
     open = false; # Proprietary Nvidia driver
     nvidiaSettings = true;
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # ブートローダー設定 (EFIシステム用)
