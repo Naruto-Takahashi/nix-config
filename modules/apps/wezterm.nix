@@ -50,7 +50,51 @@
     config.window_frame = {
       inactive_titlebar_bg = "none",
       active_titlebar_bg = "none",
+      -- フォーカス時の先頭マージンをゴールドに（初期値）
+      border_left_color   = "#ffc20d",
+      border_right_color  = "#ffc20d",
+      border_top_color    = "#ffc20d",
+      border_bottom_color = "#ffc20d",
+      border_left_width   = "2px",
+      border_right_width  = "2px",
+      border_top_height   = "2px",
+      border_bottom_height = "2px",
     }
+
+    -- フォーカス変化時に枚線色を動的に切り替える
+    wezterm.on("focus-changed", function(window, pane)
+      local overrides = window:get_config_overrides() or {}
+      if window:is_focused() then
+        -- フォーカス時: ゴールドの攪線
+        overrides.window_frame = {
+          inactive_titlebar_bg = "none",
+          active_titlebar_bg   = "none",
+          border_left_color    = "#ffc20d",
+          border_right_color   = "#ffc20d",
+          border_top_color     = "#ffc20d",
+          border_bottom_color  = "#ffc20d",
+          border_left_width    = "2px",
+          border_right_width   = "2px",
+          border_top_height    = "2px",
+          border_bottom_height = "2px",
+        }
+      else
+        -- 非フォーカス時: 暗いグレーの攪線
+        overrides.window_frame = {
+          inactive_titlebar_bg = "none",
+          active_titlebar_bg   = "none",
+          border_left_color    = "#3a3a3a",
+          border_right_color   = "#3a3a3a",
+          border_top_color     = "#3a3a3a",
+          border_bottom_color  = "#3a3a3a",
+          border_left_width    = "1px",
+          border_right_width   = "1px",
+          border_top_height    = "1px",
+          border_bottom_height = "1px",
+        }
+      end
+      window:set_config_overrides(overrides)
+    end)
 
     -- タブバーを背景色に合わせる
     -- config.window_background_gradient = {
