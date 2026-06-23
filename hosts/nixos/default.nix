@@ -105,7 +105,6 @@
     vivaldi # Vivaldiブラウザの追加
 
     # Hyprland 関連ツール
-    kitty
     awww
     matugen
     pamixer
@@ -116,7 +115,6 @@
     swaynotificationcenter
     waybar
     wlogout
-    cava
     hypridle
     hyprlock
     networkmanagerapplet

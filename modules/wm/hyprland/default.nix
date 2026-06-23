@@ -22,9 +22,5 @@
   xdg.configFile."swaync".source = ./config/swaync;
   xdg.configFile."wlogout".source = ./config/wlogout;
 
-  xdg.configFile."cava/shaders".source = ./config/cava/shaders;
-
-  xdg.configFile."kitty/kitty.conf".source = ./config/kitty/kitty.conf;
-
   xdg.configFile."matugen".source = ./config/matugen;
 }
