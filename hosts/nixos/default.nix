@@ -106,7 +106,7 @@
 
     # Hyprland 関連ツール
     kitty
-    swww
+    awww
     matugen
     pamixer
     libnotify
