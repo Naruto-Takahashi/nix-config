@@ -26,6 +26,7 @@
   # ブートローダー設定 (EFIシステム用)
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.kernelParams = [ "pcie_aspm=off" ];
 
   # ネットワーク設定
   networking.hostName = "nixos";
