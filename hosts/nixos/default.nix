@@ -135,6 +135,12 @@
     };
   };
 
+  # システム全体で利用可能なフォントの追加
+  fonts.packages = with pkgs; [
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.hack
+  ];
+
   # システムバージョン
   system.stateVersion = "25.11";
 }

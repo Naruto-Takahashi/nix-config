@@ -38,6 +38,15 @@
     TERMINAL = "wezterm";
   };
 
+  # カーソルテーマの設定 (Bibata Modern Ice)
+  home.pointerCursor = {
+    gtk.enable = true;
+    x11.enable = true;
+    package = pkgs.bibata-cursors;
+    name = "Bibata-Modern-Ice";
+    size = 24;
+  };
+
   # Bash の基本設定
   programs.bash = {
     enable = true;
