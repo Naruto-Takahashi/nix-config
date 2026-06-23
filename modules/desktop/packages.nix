@@ -42,6 +42,8 @@
 display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1)
 if [ -f /run/current-system/sw/bin/vivaldi ]; then
   REAL_VIVALDI="/run/current-system/sw/bin/vivaldi"
+elif [ -f /etc/profiles/per-user/nalt/bin/vivaldi ]; then
+  REAL_VIVALDI="/etc/profiles/per-user/nalt/bin/vivaldi"
 elif [ -f /usr/bin/vivaldi-stable ]; then
   REAL_VIVALDI="/usr/bin/vivaldi-stable"
 else

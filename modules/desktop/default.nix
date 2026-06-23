@@ -27,20 +27,6 @@
     fcitx5.addons = [ pkgs.fcitx5-mozc ];
   };
 
-  # -----------------------------------------------------------------------
-  # デスクトップエントリの登録（WezTerm）
-  # -----------------------------------------------------------------------
-  xdg.desktopEntries = {
-    wezterm = {
-      name        = "WezTerm";
-      genericName = "Terminal Emulator";
-      exec        = "${nixgl.packages.${pkgs.system}.nixGLDefault}/bin/nixGL ${pkgs.wezterm}/bin/wezterm";
-      icon        = "org.wezfurlong.wezterm";
-      categories  = [ "System" "TerminalEmulator" "Utility" ];
-      terminal    = false;
-    };
-  };
-
   # Rofi 等で確実に優先されるよう ~/.local/share/applications/ に直接配置してシステム側をオーバーライドする
   home.file.".local/share/applications/vivaldi-stable.desktop".text = ''
     [Desktop Entry]
