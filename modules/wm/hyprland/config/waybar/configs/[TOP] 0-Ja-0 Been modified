@@ -9,7 +9,7 @@
   "$HOME/.config/waybar/ModulesGroups",
   "$HOME/.config/waybar/UserModules",
   ],
-"layer": "bottom",
+"layer": "top",
 //"mode": "dock",
 "exclusive": true,
 "passthrough": false,
