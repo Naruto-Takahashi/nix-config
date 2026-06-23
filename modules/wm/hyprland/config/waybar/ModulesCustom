@@ -19,7 +19,7 @@
 
 "custom/file_manager": {
 	"format": " ",
-	"on-click": "nautilus &",
+	"on-click": "wezterm start yazi &",
 	"tooltip": true,
 	"tooltip-format": "File Manager",
 },
