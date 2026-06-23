@@ -21,13 +21,16 @@
     config.scrollback_lines = 3000
     config.font = wezterm.font 'HackGen Console NF'
 
+    -- OS判定（macOSかどうか）
+    local is_darwin = wezterm.target_triple:find("darwin") ~= nil
+
     -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
     local display = os.getenv("DISPLAY") or ""
     local is_remote = display:match(":[1-9]%d") ~= nil
-    config.font_size = is_remote and 10.0 or 12.0
+    config.font_size = is_remote and 10.0 or (is_darwin and 14.0 or 12.0)
 
-    config.initial_cols = 120
-    config.initial_rows = 35
+    config.initial_cols = is_darwin and 140 or 120
+    config.initial_rows = is_darwin and 40 or 35
     config.use_ime = true
     config.ime_preedit_rendering = "Builtin"
     config.warn_about_missing_glyphs = false

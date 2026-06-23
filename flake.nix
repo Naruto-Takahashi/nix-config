@@ -23,9 +23,15 @@
       url   = "github:Naruto-Takahashi/kanagawa-dragon.yazi";
       flake = false;
     };
+
+    # nix-darwin の入力ソース定義
+    darwin = {
+      url   = "github:LnL7/nix-darwin";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, kanagawa-dragon-yazi, ... }:
+  outputs = { nixpkgs, home-manager, nixgl, kanagawa-dragon-yazi, darwin, ... }:
     let
       system = "x86_64-linux";
       pkgs   = nixpkgs.legacyPackages.${system};
@@ -73,6 +79,24 @@
               home-manager.useUserPackages = true;
               home-manager.users.nalt = import ./hosts/nixos/home.nix;
               home-manager.extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
+            }
+          ];
+        };
+      };
+
+      # Mac (nix-darwin) 環境用プロファイル
+      darwinConfigurations = {
+        "nalt-mac" = darwin.lib.darwinSystem {
+          system = "aarch64-darwin";
+          modules = [
+            ./hosts/mac/darwin.nix
+            home-manager.darwinModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.nalt = import ./hosts/mac;
+              home-manager.extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
+              home-manager.backupFileExtension = "backup";
             }
           ];
         };

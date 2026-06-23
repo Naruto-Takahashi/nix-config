@@ -29,7 +29,8 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 ├── hosts/                     # ホスト別の設定エントリーポイント
 │   ├── nixos/                 # NixOS 設定（システム設定 ＋ Home Manager 設定）
 │   ├── desktop/               # 一般Linux（Ubuntu）用 Home Manager スタンドアロン設定
-│   └── wsl/                   # WSL2用 Home Manager スタンドアロン設定
+│   ├── wsl/                   # WSL2用 Home Manager スタンドアロン設定
+│   └── mac/                   # macOS用 nix-darwin + Home Manager 統合設定
 ├── modules/                   # 再利用可能な共通設定モジュール群
 │   ├── wm/                    # ウィンドウマネージャー設定 (hyprland, glazewm, zebar)
 │   ├── apps/                  # アプリケーション個別設定 (wezterm, neovim, yazi, lazygit)
@@ -121,12 +122,49 @@ WSL2環境で動作させる手順です．
 
 ---
 
+### D. macOS (darwin) 環境の場合 (`nalt-mac`)
+
+M1 Mac などの macOS 環境でシステム設定およびアプリケーション群を統合管理する手順です．
+
+1. **Xcode Command Line Tools のインストール**  
+   インストールされていない場合は，以下を実行して導入します．
+   ```bash
+   xcode-select --install
+   ```
+
+2. **Nix のインストール**  
+   Determinate Nix インストーラを使用してインストールを行います．
+   ```bash
+   curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+   ```
+
+3. **Homebrew のインストール**  
+   Nix-darwin による Cask アプリ（Karabiner-Elements など）の管理に必要となるため，事前にインストールしておきます．
+   ```bash
+   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+   ```
+
+4. **設定の構築とシステムへの適用**  
+   リポジトリを `ghq` 規定位置に配置後，シンボリックリンクを作成してシステム構成を適用します．
+   ```bash
+   # シンボリックリンクの作成 (初回のみ)
+   mv ~/.config/home-manager ~/.config/home-manager.bak
+   ln -s ~/ghq/Naruto-Takahashi/nix-config ~/.config/home-manager
+
+   # システムの適用と有効化 (初回は sudo が必要)
+   cd ~/ghq/Naruto-Takahashi/nix-config
+   git add .
+   sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure
+   ```
+
+---
+
 <details>
 <summary>📖 <b>English Translation (Click to expand)</b></summary>
 
 # 🌌 nix-config
 
-Declarative configurations for NixOS, Ubuntu (Desktop), and WSL2 managed via **Nix Flakes** and **Home Manager**.
+Declarative configurations for NixOS, Ubuntu (Desktop), WSL2, and macOS managed via **Nix Flakes**, **Home Manager**, and **nix-darwin**.
 
 ## 🗺️ Documentation & Navigation
 
@@ -141,7 +179,7 @@ Declarative configurations for NixOS, Ubuntu (Desktop), and WSL2 managed via **N
 
 ## 📂 Repository Structure
 
-* `hosts/`: Host-specific entry points (NixOS, Linux Desktop, WSL2).
+* `hosts/`: Host-specific entry points (NixOS, Linux Desktop, WSL2, macOS).
 * `modules/`: Shared reusable configurations (Window managers, CLI apps, Zsh configs).
 * `docs/`: In-depth manuals and keyboard shortcuts mapping lists.
 
@@ -168,5 +206,15 @@ cd nix-config
 1. Install Nix and enable Flakes.
 2. Build home profile: `nix run github:nix-community/home-manager -- switch --flake .#nalt-wsl --impure`
 3. Synchronize configurations into Windows side directories: `sync-win && exec zsh`
+
+### macOS Setup (`nalt-mac`)
+1. Install Xcode Command Line Tools: `xcode-select --install`
+2. Install Nix and enable Flakes.
+3. Install Homebrew (required for nix-darwin cask management):
+   `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
+4. Setup configuration symlink:
+   `mv ~/.config/home-manager ~/.config/home-manager.bak`
+   `ln -s ~/ghq/Naruto-Takahashi/nix-config ~/.config/home-manager`
+5. Apply and activate: `sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure`
 
 </details>
