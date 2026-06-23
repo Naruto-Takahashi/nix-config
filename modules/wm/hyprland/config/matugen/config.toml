@@ -1,7 +1,7 @@
 [config.wallpaper]
-command = "awww"
-arguments = ["img", "--transition-type", "any", "--transition-fps", "60"]
+command = "awww img --transition-type any --transition-fps 60 {{image}}"
 set = true
+
 
 [templates.waybar]
 input_path = '~/.config/matugen/templates/colors.css'

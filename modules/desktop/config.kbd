@@ -1,3 +1,4 @@
+;; Force Kanata reload
 (defcfg
   process-unmapped-keys yes
 )

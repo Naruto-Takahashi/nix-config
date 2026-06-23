@@ -38,12 +38,20 @@
       installPhase = ''
         mkdir -p $out/bin
         cat <<EOF > $out/bin/vivaldi
-#!/bin/bash
+#!/usr/bin/env bash
 display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1)
-if [ -n "\$display_num" ] && [ "\$display_num" -ge 10 ]; then
-  exec /usr/bin/vivaldi-stable --user-data-dir="\$HOME/.config/vivaldi-remote" "\$@"
+if [ -f /run/current-system/sw/bin/vivaldi ]; then
+  REAL_VIVALDI="/run/current-system/sw/bin/vivaldi"
+elif [ -f /usr/bin/vivaldi-stable ]; then
+  REAL_VIVALDI="/usr/bin/vivaldi-stable"
 else
-  exec /usr/bin/vivaldi-stable "\$@"
+  REAL_VIVALDI=\$(which -a vivaldi vivaldi-stable | grep -v "/.nix-profile/bin" | grep -v "/etc/profiles" | head -n 1)
+fi
+
+if [ -n "\$display_num" ] && [ "\$display_num" -ge 10 ]; then
+  exec "\$REAL_VIVALDI" --user-data-dir="\$HOME/.config/vivaldi-remote" "\$@"
+else
+  exec "\$REAL_VIVALDI" "\$@"
 fi
 EOF
         chmod +x $out/bin/vivaldi
