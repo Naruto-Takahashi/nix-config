@@ -1,5 +1,5 @@
 @theme "/dev/null"
-@import "colors.rasi"
+@import "~/.cache/matugen/colors.rasi"
 
 configuration {
 	modi: "window,run,drun";
