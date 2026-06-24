@@ -22,5 +22,7 @@
   xdg.configFile."swaync".source = ./config/swaync;
   xdg.configFile."wlogout".source = ./config/wlogout;
 
+  xdg.configFile."waybar/colors.css".source = ./config/waybar/colors.css;
+
   xdg.configFile."matugen".source = ./config/matugen;
 }
