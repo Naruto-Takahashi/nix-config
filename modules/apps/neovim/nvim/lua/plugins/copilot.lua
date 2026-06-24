@@ -6,7 +6,7 @@ return {
     event = "VeryLazy", -- LSP を nvim 起動直後に初期化し，InsertEnter 前に接続完了させる
     config = function()
       require("copilot").setup({
-        copilot_node_command = vim.fn.expand("~/.nix-profile/bin/node"),
+        copilot_node_command = vim.fn.exepath("node"),
         suggestion = {
           enabled = true,
           auto_trigger = true,
