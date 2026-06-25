@@ -83,6 +83,12 @@ workspaces:
 # ウィンドウ・ルール設定 (Window Rules)
 # ==============================================================================
 window_rules:
+  # GTKWave（WSLgのX11/Waylandウィンドウ）をタイリングから除外する
+  - commands: ["set-floating", "wm-redraw"]
+    match:
+      - window_process: {equals: "msrdc"} # WSLgの描画プロセスの基本名
+      - window_title: {regex: ".*[Gg][Tt][Kk][Ww][Aa][Vv][Ee].*"}
+
   # 全てのウィンドウに対してデフォルトでタイリングと再描画を設定
   - commands: ["toggle-tiling-direction", "set-tiling", "wm-redraw"]
     match:
