@@ -83,6 +83,11 @@ workspaces:
 # ウィンドウ・ルール設定 (Window Rules)
 # ==============================================================================
 window_rules:
+  # 起動時だけタイリングから除外（フローティング）して崩れを防ぐ
+  - commands: ["set-floating", "wm-redraw"]
+    match:
+      - window_title: {regex: ".*[Gg][Tt][Kk][Ww][Aa][Vv][Ee].*"}
+
   # タイル配置から除外（フローティング化または無視）するアプリの設定
   - commands: ["ignore"]
     match:
@@ -100,9 +105,6 @@ window_rules:
       # Lively Wallpaper等
       - window_process: {equals: "Lively"}
         window_class: {regex: "HwndWrapper*"}
-
-      # GTKWave
-      - window_title: {regex: ".*[Gg][Tt][Kk][Ww][Aa][Vv][Ee].*"}
 
   # 全てのウィンドウに対してデフォルトでタイリングと再描画を設定
   - commands: ["toggle-tiling-direction", "set-tiling", "wm-redraw"]
