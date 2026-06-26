@@ -103,7 +103,6 @@
     wget
     curl
     vivaldi # Vivaldiブラウザの追加
-    wayvnc
 
     # Hyprland 関連ツール
     awww
