@@ -103,6 +103,7 @@
     wget
     curl
     vivaldi # Vivaldiブラウザの追加
+    rustdesk-flutter
 
     # Hyprland 関連ツール
     awww
