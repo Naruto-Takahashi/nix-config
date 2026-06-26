@@ -103,7 +103,7 @@
     wget
     curl
     vivaldi # Vivaldiブラウザの追加
-    rustdesk-flutter
+    wayvnc
 
     # Hyprland 関連ツール
     awww
@@ -123,13 +123,6 @@
     grim
     slurp
   ];
-
-  # RustDeskのシステムサービスを有効化
-  services.rustdesk-server = {
-    enable = true;
-    signal.enable = true; # シグナルサーバーの起動
-    relay.enable = true;  # リレーサーバーの起動
-  };
 
   # Kanata キーボードリマッパーのシステムサービス有効化
   services.kanata = {
