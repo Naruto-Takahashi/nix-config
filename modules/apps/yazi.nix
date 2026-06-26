@@ -13,7 +13,7 @@
         ratio = [
           1
           2
-          8
+          4
         ];
         show_symlink = false;
         linemode = "size";
