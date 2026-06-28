@@ -27,7 +27,7 @@
     -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
     local display = os.getenv("DISPLAY") or ""
     local is_remote = display:match(":[1-9]%d") ~= nil
-    config.font_size = is_remote and 10.0 or (is_darwin and 30.0 or 12.0)
+    config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 12.0)
 
     config.initial_cols = is_darwin and 140 or 120
     config.initial_rows = is_darwin and 40 or 35
