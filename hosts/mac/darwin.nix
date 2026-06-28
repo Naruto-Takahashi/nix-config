@@ -47,4 +47,6 @@
 
   # シェルの設定 (Zshを有効化)
   programs.zsh.enable = true;
+
+  nixpkgs.config.allowUnfree = true;
 }
