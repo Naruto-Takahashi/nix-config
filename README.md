@@ -152,10 +152,13 @@ M1 Mac などの macOS 環境でシステム設定およびアプリケーショ
    mv ~/.config/home-manager ~/.config/home-manager.bak
    ln -s ~/ghq/Naruto-Takahashi/nix-config ~/.config/home-manager
 
-   # システムの適用と有効化 (初回は sudo が必要)
+   # システムの適用と有効化 (初回起動時は nix run でブートストラップ)
    cd ~/ghq/Naruto-Takahashi/nix-config
    git add .
    sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure
+
+   # 2回目以降の更新適用 (こちらが推奨・高速)
+   darwin-rebuild switch --flake .#nalt-mac
    ```
 
 ---
@@ -217,6 +220,10 @@ cd nix-config
 4. Setup configuration symlink:
    `mv ~/.config/home-manager ~/.config/home-manager.bak`
    `ln -s ~/ghq/Naruto-Takahashi/nix-config ~/.config/home-manager`
-5. Apply and activate: `sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure`
+5. Apply and activate (First-time bootstrap):
+   `sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure`
+6. Apply subsequent updates (Recommended/Fast):
+   `darwin-rebuild switch --flake .#nalt-mac`
+
 
 </details>
