@@ -8,7 +8,7 @@
 ;; 実際のキーボードの物理配列に沿って視覚的に整列しています。
 ;; -------------------------------------------------------------------
 (defsrc
-  caps  lalt  spc   ralt
+  caps  lalt  spc   ralt  lctl  esc
   grv   1     2     3     4     5     6     7     8     9
   tab   q     w     e     r     t     y     u     i     o     p     ret
   a     s     d     f     h     j     k     l
@@ -20,70 +20,70 @@
 ;; -------------------------------------------------------------------
 (defalias
   ;; 左右Alt単押しでのIME切り替え (Tap: 英数/かな / Hold: 隠しレイヤー)
-  alt-eng  (tap-hold 200 200 muhenkan (layer-toggle alt-layer))
-  alt-jp   (tap-hold 200 200 henkan (layer-toggle alt-layer))
+  alt-eng  (tap-hold-press 200 200 eisu (layer-toggle alt-layer))
+  alt-jp   (tap-hold-press 200 200 kana (layer-toggle alt-layer))
 
   ;; CapsLock長押しでのCtrl化 (Tap: Esc -> 英数 / Hold: Left Ctrl)
-  esc-eng  (macro esc muhenkan)
-  cap-ctrl (tap-hold 200 200 @esc-eng lctl)
+  esc-eng  (macro esc eisu)
+  cap-ctrl (tap-hold-press 200 200 @esc-eng cap-ctrl-action)
 
   ;; スペースキー長押しでのナビゲーションレイヤー移行 (Tap: Space / Hold: Nav-Layer)
-  spc-nav  (tap-hold 200 200 spc (layer-toggle nav))
+  spc-nav  (tap-hold-press 200 200 spc (layer-toggle nav))
 
   ;; =================================================================
-  ;; Alt長押し (Alt-Layer) 時の Super (lmet) ショートカットの定義
+  ;; Alt長押し (Alt-Layer) 時の Super (lmet) ショートカット of 定義
   ;; =================================================================
-  hyp-q       M-S-q   ;; Alt + q   -> Super + Shift + q (閉じる)
-  hyp-d       M-d        ;; Alt + Spc -> Super + d (Rofi起動)
-  hyp-ret     M-ret      ;; Alt + Ent -> Super + Enter (端末起動)
-  hyp-tab     M-tab      ;; Alt + Tab -> Super + Tab (窓一覧切り替え)
-  hyp-f       M-f        ;; Alt + f   -> Super + f (フルスクリーン)
-  hyp-t       M-t        ;; Alt + d   -> Super + t (タイリング復元)
-  hyp-sft-spc M-S-spc ;; Alt + t   -> Super + Shift + Space (浮動切替)
+  hyp-q       wmmodifier-S-w   ;; Alt + q   -> Super + Shift + w (閉じる - macOSログアウト衝突回避)
+  hyp-d       wmmodifier-d        ;; Alt + Spc -> Super + d (Rofi/Spotlight起動等)
+  hyp-ret     wmmodifier-ret      ;; Alt + Ent -> Super + Enter (端末起動)
+  hyp-tab     wmmodifier-tab      ;; Alt + Tab -> Super + Tab (窓一覧切り替え)
+  hyp-f       wmmodifier-f        ;; Alt + f   -> Super + f (フルスクリーン)
+  hyp-t       wmmodifier-t        ;; Alt + d   -> Super + t (タイリング復元)
+  hyp-sft-spc wmmodifier-S-spc ;; Alt + t   -> Super + Shift + Space (浮動切替)
 
   ;; 窓の直接リサイズ
-  hyp-u       M-u        ;; Alt + u   -> Super + u (幅を縮小)
-  hyp-i       M-i        ;; Alt + i   -> Super + i (高さを縮小)
-  hyp-o       M-o        ;; Alt + o   -> Super + o (高さを拡大)
-  hyp-p       M-p        ;; Alt + p   -> Super + p (幅を拡大)
+  hyp-u       wmmodifier-u        ;; Alt + u   -> Super + u (幅を縮小)
+  hyp-i       wmmodifier-i        ;; Alt + i   -> Super + i (高さを縮小)
+  hyp-o       wmmodifier-o        ;; Alt + o   -> Super + o (高さを拡大)
+  hyp-p       wmmodifier-p        ;; Alt + p   -> Super + p (幅を拡大)
 
   ;; ワークスペース移動
-  hyp-s       M-s        ;; Alt + s   -> Super + s (次のWSへ)
-  hyp-a       M-a        ;; Alt + a   -> Super + a (前のWSへ)
-  hyp-grv     M-grv      ;; Alt + `   -> Super + ` (直前のWSへ戻る)
+  hyp-s       wmmodifier-s        ;; Alt + s   -> Super + s (次のWSへ)
+  hyp-a       wmmodifier-a        ;; Alt + a   -> Super + a (前のWSへ)
+  hyp-grv     wmmodifier-grv      ;; Alt + `   -> Super + ` (直前のWSへ戻る)
 
   ;; ワークスペース 1-9 へ切り替え
-  hyp-1       M-1
-  hyp-2       M-2
-  hyp-3       M-3
-  hyp-4       M-4
-  hyp-5       M-5
-  hyp-6       M-6
-  hyp-7       M-7
-  hyp-8       M-8
-  hyp-9       M-9
+  hyp-1       wmmodifier-1
+  hyp-2       wmmodifier-2
+  hyp-3       wmmodifier-3
+  hyp-4       wmmodifier-4
+  hyp-5       wmmodifier-5
+  hyp-6       wmmodifier-6
+  hyp-7       wmmodifier-7
+  hyp-8       wmmodifier-8
+  hyp-9       wmmodifier-9
 
   ;; ウィンドウの移動・最小化・分割方向
-  hyp-h       M-h        ;; Alt + h   -> Super + h (左へフォーカス)
-  hyp-j       M-j        ;; Alt + j   -> Super + j (下へフォーカス)
-  hyp-k       M-k        ;; Alt + k   -> Super + k (上へフォーカス)
-  hyp-l       M-l        ;; Alt + l   -> Super + l (右へフォーカス)
-  hyp-m       M-m        ;; Alt + m   -> Super + m (最小化)
-  hyp-v       M-v        ;; Alt + v   -> Super + v (分割トグル)
+  hyp-h       wmmodifier-h        ;; Alt + h   -> Super + h (左へフォーカス)
+  hyp-j       wmmodifier-j        ;; Alt + j   -> Super + j (下へフォーカス)
+  hyp-k       wmmodifier-k        ;; Alt + k   -> Super + k (上へフォーカス)
+  hyp-l       wmmodifier-l        ;; Alt + l   -> Super + l (右へフォーカス)
+  hyp-m       wmmodifier-m        ;; Alt + m   -> Super + m (最小化)
+  hyp-v       wmmodifier-v        ;; Alt + v   -> Super + v (分割トグル)
 
   ;; その他のアプリケーション・ツール用 Super ショートカット
-  hyp-w       M-w        ;; Alt + w   -> Super + w (壁紙ピッカー)
-  hyp-b       M-b        ;; Alt + b   -> Super + b (ブラウザ)
-  hyp-c       M-c        ;; Alt + c   -> Super + c (カラーピッカー)
-  hyp-r       M-r        ;; Alt + r   -> Super + r (Waybarリスタート)
-  hyp-e       M-e        ;; Alt + e   -> Super + e (ファイルマネージャ)
+  hyp-w       wmmodifier-w        ;; Alt + w   -> Super + w (壁紙ピッカー)
+  hyp-b       wmmodifier-b        ;; Alt + b   -> Super + b (ブラウザ)
+  hyp-c       wmmodifier-c        ;; Alt + c   -> Super + c (カラーピッカー)
+  hyp-r       wmmodifier-r        ;; Alt + r   -> Super + r (Waybarリスタート)
+  hyp-e       wmmodifier-e        ;; Alt + e   -> Super + e (ファイルマネージャ)
 )
 
 ;; -------------------------------------------------------------------
 ;; デフォルトのベースレイヤー (通常時)
 ;; -------------------------------------------------------------------
 (deflayer base
-  @cap-ctrl @alt-eng @spc-nav @alt-jp
+  @cap-ctrl @alt-eng @spc-nav @alt-jp @cap-ctrl @esc-eng
   grv   1     2     3     4     5     6     7     8     9
   tab   q     w     e     r     t     y     u     i     o     p     ret
   a     s     d     f     h     j     k     l
@@ -95,7 +95,7 @@
 ;; すべてのウィンドウマネージャー操作が Alt キーの組み合わせだけで発動します。
 ;; -------------------------------------------------------------------
 (deflayer alt-layer
-  _     _     @hyp-d       _
+  _     _     @hyp-d       _     _     _
   @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
   @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc _     @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
   @hyp-a @hyp-s @hyp-t @hyp-f @hyp-h @hyp-j @hyp-k @hyp-l
@@ -106,9 +106,23 @@
 ;; スペース長押し時の高速ナビゲーションレイヤー (Nav-Layer)
 ;; -------------------------------------------------------------------
 (deflayer nav
-  _     _     _     _
+  _     _     _     _     _     _
   _     _     _     _     _     _     _     _     _     _
   _     _     _     end   _     _     _     C-z   _     _     _     _
   home  _     _     _     left  down  up    right
   _     del   _     _     bspc  _     _
 )
+
+;; -------------------------------------------------------------------
+;; CapsLock(Ctrl)長押し時のWindows風キー変換レイヤー (Ctrl-Layer)
+;; 主要なコピペ・選択等のショートカットを Cmd に透過変換し、
+;; それ以外のターミナル制御キー等は Ctrl のまま送信します。
+;; -------------------------------------------------------------------
+(deflayer ctrl-layer
+  _     _     _            _     _     _
+  _     _     _     _     _     _     _     _     _     _
+  C-tab C-q   M-w   C-e   C-r   M-t   M-y   C-u   C-i   C-o   C-p   _
+  M-a   M-s   C-d   M-f   C-h   C-j   C-k   C-l
+  M-z   M-x   M-c   M-v   C-b   C-n   C-m
+)
+

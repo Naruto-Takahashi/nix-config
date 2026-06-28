@@ -20,6 +20,7 @@
     config.automatically_reload_config = true
     config.scrollback_lines = 3000
     config.font = wezterm.font 'HackGen Console NF'
+    config.adjust_window_size_when_changing_font_size = false
 
     -- OS判定（macOSかどうか）
     local is_darwin = wezterm.target_triple:find("darwin") ~= nil
@@ -41,7 +42,7 @@
     -- Tab
     ----------------------------------------------------
     -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
-    config.window_decorations = "NONE"
+    config.window_decorations = is_darwin and "RESIZE" or "NONE"
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか
@@ -299,9 +300,22 @@
         -- コマンドパレット (Ctrl + Shift + P)
         { key = "p", mods = "CTRL|SHIFT", action = act.ActivateCommandPalette },
 
-        -- コピー & 貼り付け (Ctrl + Shift + C/V)
+        -- コピー & 貼り付け (Ctrl + Shift + C/V 及び CMD + C/V)
         { key = "c", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
         { key = "v", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
+        {
+          key = "c",
+          mods = "CMD",
+          action = wezterm.action_callback(function(window, pane)
+            local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+            if has_selection then
+              window:perform_action(act.CopyTo("Clipboard"), pane)
+            else
+              window:perform_action(act.SendKey({ key = "c", mods = "CTRL" }), pane)
+            end
+          end),
+        },
+        { key = "v", mods = "CMD", action = act.PasteFrom("Clipboard") },
 
         -- フォントサイズ
         { key = "+", mods = "CTRL", action = act.IncreaseFontSize },

@@ -196,7 +196,7 @@ keybindings:
 
   # ウィンドウを閉じる
   - commands: ["close"]
-    bindings: ["alt+shift+q"]
+    bindings: ["alt+shift+q", "alt+shift+w"]
 
   # GlazeWMの安全な終了
   - commands: ["wm-exit"]

@@ -22,8 +22,16 @@
       upgrade = true;
       cleanup = "none"; # 既存の手動インストールアプリを誤って削除しないよう保護
     };
+    taps = [
+      "nikitabobko/tap"
+      "FelixKratz/formulae"
+    ];
     casks = [
       "karabiner-elements" # キーマップリマッパー
+      "aerospace"          # タイリングウィンドウマネージャ
+    ];
+    brews = [
+      "borders"            # アクティブウィンドウの枠線ハイライト用ツール
     ];
   };
 
@@ -49,4 +57,19 @@
   programs.zsh.enable = true;
 
   nixpkgs.config.allowUnfree = true;
+
+  # macOS向け Kanata バックグラウンド起動サービスの設定 (System Daemon として実行し、root権限を付与)
+  launchd.daemons.kanata = {
+    serviceConfig = {
+      ProgramArguments = [
+        "${pkgs.kanata}/bin/kanata"
+        "--cfg"
+        "/Users/nalt/.config/kanata/config.kbd"
+      ];
+      KeepAlive = true;
+      RunAtLoad = true;
+      StandardOutPath = "/Library/Logs/kanata.out.log";
+      StandardErrorPath = "/Library/Logs/kanata.err.log";
+    };
+  };
 }
