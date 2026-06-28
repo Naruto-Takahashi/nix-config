@@ -42,6 +42,7 @@
     lolcat
     nodejs_22
     gh
+    ghq
     hackgen-nf-font
     kanata
   ];
