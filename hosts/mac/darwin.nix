@@ -29,6 +29,7 @@
     casks = [
       "karabiner-elements" # キーマップリマッパー
       "aerospace"          # タイリングウィンドウマネージャ
+      "vivaldi"            # Vivaldiブラウザ
     ];
     brews = [
       "borders"            # アクティブウィンドウの枠線ハイライト用ツール
@@ -62,9 +63,9 @@
   launchd.daemons.kanata = {
     serviceConfig = {
       ProgramArguments = [
-        "${pkgs.kanata}/bin/kanata"
-        "--cfg"
-        "/Users/nalt/.config/kanata/config.kbd"
+        "/bin/sh"
+        "-c"
+        "sleep 5 && exec ${pkgs.kanata}/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
       ];
       KeepAlive = true;
       RunAtLoad = true;

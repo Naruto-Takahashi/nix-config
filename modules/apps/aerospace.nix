@@ -17,7 +17,7 @@
 
     # AeroSpace起動完了時にJankyBorders（アクティブウィンドウ枠線表示ツール）をバックグラウンド実行
     after-startup-command = [
-      'exec-and-forget borders active_color=0xffffc20d inactive_color=0x00000000 width=6.0'
+      'exec-and-forget /opt/homebrew/bin/borders active_color=0xffffc20d inactive_color=0x00000000 width=6.0'
     ]
 
     # ギャップ設定 (Gaps)
