@@ -43,6 +43,7 @@
     nodejs_22
     gh
     ghq
+    antigravity-cli
     hackgen-nf-font
     kanata
   ];
