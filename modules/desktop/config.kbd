@@ -77,6 +77,8 @@
   hyp-c       wmmodifier-c        ;; Alt + c   -> Super + c (カラーピッカー)
   hyp-r       wmmodifier-r        ;; Alt + r   -> Super + r (Waybarリスタート)
   hyp-e       wmmodifier-e        ;; Alt + e   -> Super + e (ファイルマネージャ)
+  hyp-y       wmmodifier-y        ;; Alt + y   -> Super + y (Yazi起動)
+  hyp-n       wmmodifier-n        ;; Alt + n   -> Super + n (Neovim起動)
 )
 
 ;; -------------------------------------------------------------------
@@ -97,9 +99,9 @@
 (deflayer alt-layer
   _     _     @hyp-d       _     _     _
   @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
-  @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc _     @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
+  @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc @hyp-y @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
   @hyp-a @hyp-s @hyp-t @hyp-f _     @hyp-h @hyp-j @hyp-k @hyp-l
-  _     _     @hyp-c @hyp-v @hyp-b _     @hyp-m
+  _     _     @hyp-c @hyp-v @hyp-b @hyp-n @hyp-m
 )
 
 ;; -------------------------------------------------------------------

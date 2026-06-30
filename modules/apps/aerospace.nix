@@ -102,7 +102,8 @@
 
     # アプリケーションのクイック起動
     ctrl-cmd-enter = 'exec-and-forget open -n -a WezTerm'
-    ctrl-cmd-e = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/yazi'
+    ctrl-cmd-y = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/yazi'
+    ctrl-cmd-n = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/nvim'
     ctrl-cmd-b = 'exec-and-forget open -n -a Vivaldi'
 
     # リサイズモードの設定 (escapeのかわりにescキーを使用)
