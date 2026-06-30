@@ -106,11 +106,15 @@
     ctrl-cmd-n = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/nvim'
     ctrl-cmd-b = 'exec-and-forget open -n -a Vivaldi'
 
-    # ウィンドウの結合 (Alt + Shift + 矢印キー)
+    # ウィンドウの結合 (Alt + Shift + 矢印キー または Alt + Shift + UIOP)
     ctrl-cmd-shift-left = 'join-with left'
     ctrl-cmd-shift-down = 'join-with down'
     ctrl-cmd-shift-up = 'join-with up'
     ctrl-cmd-shift-right = 'join-with right'
+    ctrl-cmd-shift-u = 'join-with left'
+    ctrl-cmd-shift-i = 'join-with up'
+    ctrl-cmd-shift-o = 'join-with down'
+    ctrl-cmd-shift-p = 'join-with right'
 
     # リサイズモードの設定 (escapeのかわりにescキーを使用)
     [mode.resize.binding]
