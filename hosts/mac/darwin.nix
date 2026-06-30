@@ -32,6 +32,7 @@
       "aerospace"          # タイリングウィンドウマネージャ
       "vivaldi"            # Vivaldiブラウザ
       "raycast"            # クイックランチャー / Spotlight代替
+      "alt-tab"            # WindowsスタイルのAlt+Tabスイッチャー
     ];
     brews = [
       "borders"            # アクティブウィンドウの枠線ハイライト用ツール
