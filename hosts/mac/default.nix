@@ -130,8 +130,6 @@
       replaced1 = builtins.replaceStrings [ "cap-ctrl-action" ] [ "(layer-toggle ctrl-layer)" ] original;
       # 2. ウィンドウマネージャーのモディファイアは Ctrl + Cmd (C-M-) にする (wmmodifier- -> C-M-)
       replaced2 = builtins.replaceStrings [ "wmmodifier-" ] [ "C-M-" ] replaced1;
-      # 3. macOSでは Alt + Space (alt-layer + spc) を A-spc (Alt + Space) に直接マッピングする
-      replaced3 = builtins.replaceStrings [ "@hyp-d" ] [ "A-spc" ] replaced2;
     in
-      replaced3;
+      replaced2;
 }

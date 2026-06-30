@@ -10,6 +10,7 @@
   environment.systemPackages = with pkgs; [
     git
     vim
+    kanata
   ];
 
   # -----------------------------------------------------------------------
@@ -60,13 +61,15 @@
 
   nixpkgs.config.allowUnfree = true;
 
+
+
   # macOS向け Kanata バックグラウンド起動サービスの設定 (System Daemon として実行し、root権限を付与)
   launchd.daemons.kanata = {
     serviceConfig = {
       ProgramArguments = [
         "/bin/sh"
         "-c"
-        "until [ -f ${pkgs.kanata}/bin/kanata ]; do sleep 1; done && sleep 5 && exec ${pkgs.kanata}/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
+        "until [ -f /run/current-system/sw/bin/kanata ]; do sleep 1; done && sleep 5 && exec /run/current-system/sw/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
       ];
       KeepAlive = true;
       RunAtLoad = true;
