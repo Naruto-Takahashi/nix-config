@@ -131,7 +131,7 @@
       # 2. ウィンドウマネージャーのモディファイアは Ctrl + Cmd (C-M-) にする (wmmodifier- -> C-M-)
       replaced2 = builtins.replaceStrings [ "wmmodifier-" ] [ "C-M-" ] replaced1;
       # 3. macOSでは Alt + Space (alt-layer + spc) を A-spc (Alt + Space) に直接マッピングする
-      replaced3 = builtins.replaceStrings [ "@hyp-d" ] [ "A-spc" ] replaced2;
+      replaced3 = builtins.replaceStrings [ "@hyp-d " ] [ "A-spc " ] replaced2;
       # 4. macOSでは Alt + Tab (alt-layer + tab) を A-tab (Alt + Tab) に直接マッピングする (AltTabアプリとの連携用)
       replaced4 = builtins.replaceStrings [ "@hyp-tab" ] [ "A-tab" ] replaced3;
     in
