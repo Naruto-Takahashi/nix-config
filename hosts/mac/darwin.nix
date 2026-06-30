@@ -78,4 +78,30 @@
       StandardErrorPath = "/Library/Logs/kanata.err.log";
     };
   };
+
+  # Karabiner-Elementsのデーモン/エージェントが自動起動してKanataの仮想キーボード書込を妨げるのを防ぐための無効化スクリプト
+  system.activationScripts.postActivation.text = ''
+    echo "Disabling Karabiner-Elements background services to prevent virtual keyboard locking..."
+    
+    # 1. Karabiner システムデーモンの停止と無効化
+    launchctl bootout system/org.pqrs.service.daemon.Karabiner-Core-Service 2>/dev/null || true
+    launchctl disable system/org.pqrs.service.daemon.Karabiner-Core-Service 2>/dev/null || true
+
+    # 2. ユーザーエージェント (nalt) の停止と無効化
+    UID_NALT=$(id -u nalt 2>/dev/null || echo "501")
+    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_console_user_server 2>/dev/null || true
+    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_console_user_server 2>/dev/null || true
+
+    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_session_monitor 2>/dev/null || true
+    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_session_monitor 2>/dev/null || true
+
+    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Core-Service-rev2 2>/dev/null || true
+    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Core-Service-rev2 2>/dev/null || true
+
+    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Menu 2>/dev/null || true
+    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Menu 2>/dev/null || true
+
+    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-NotificationWindow 2>/dev/null || true
+    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-NotificationWindow 2>/dev/null || true
+  '';
 }
