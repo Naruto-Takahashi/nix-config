@@ -35,6 +35,7 @@
     config.use_ime = true
     config.ime_preedit_rendering = "Builtin"
     config.warn_about_missing_glyphs = false
+    config.window_close_confirmation = 'NeverPrompt'
     config.window_background_opacity = 0.75
     config.macos_window_background_blur = 20
 
