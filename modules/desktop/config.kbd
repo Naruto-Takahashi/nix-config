@@ -84,6 +84,11 @@
   hyp-down    wmmodifier-down     ;; Alt + Down -> Super + Down
   hyp-up      wmmodifier-up       ;; Alt + Up -> Super + Up
   hyp-rght    wmmodifier-rght     ;; Alt + Right -> Super + Right
+  hyp-ctrl-h  wmmodifier-A-h      ;; Alt + Ctrl + h -> Super + Alt + h
+  hyp-ctrl-j  wmmodifier-A-j      ;; Alt + Ctrl + j -> Super + Alt + j
+  hyp-ctrl-k  wmmodifier-A-k      ;; Alt + Ctrl + k -> Super + Alt + k
+  hyp-ctrl-l  wmmodifier-A-l      ;; Alt + Ctrl + l -> Super + Alt + l
+  alt-ctrl-toggle (layer-toggle alt-ctrl-layer)
 )
 
 ;; -------------------------------------------------------------------
@@ -103,7 +108,7 @@
 ;; すべてのウィンドウマネージャー操作が Alt キーの組み合わせだけで発動します。
 ;; -------------------------------------------------------------------
 (deflayer alt-layer
-  _     _     @hyp-d       _     _     _
+  @alt-ctrl-toggle _ @hyp-d _ @alt-ctrl-toggle _
   @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
   @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc @hyp-y @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
   @hyp-a @hyp-s @hyp-t @hyp-f _     @hyp-h @hyp-j @hyp-k @hyp-l
@@ -129,11 +134,25 @@
 ;; それ以外のターミナル制御キー等は Ctrl のまま送信します。
 ;; -------------------------------------------------------------------
 (deflayer ctrl-layer
-  _     _     _            _     _     _
+  _     @alt-ctrl-toggle _ @alt-ctrl-toggle _ _
   _     _     _     _     _     _     _     _     _     _
   C-tab C-q   M-w   C-e   C-r   M-t   M-y   C-u   C-i   C-o   C-p   _
   M-a   M-s   C-d   M-f   C-g   C-h   C-j   C-k   C-l
   M-z   M-x   M-c   M-v   C-b   C-n   C-m
   _     _     _     _
 )
+
+;; -------------------------------------------------------------------
+;; Alt + Ctrl が同時に押された際のエミュレーションレイヤー (Alt-Ctrl-Layer)
+;; ウィンドウ結合 (join-with) などの高度なWMレイアウト操作を行います。
+;; -------------------------------------------------------------------
+(deflayer alt-ctrl-layer
+  _     _     _            _     _     _
+  _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     @hyp-ctrl-h @hyp-ctrl-j @hyp-ctrl-k @hyp-ctrl-l
+  _     _     _     _     _     _     _
+  _     _     _     _
+)
+
 
