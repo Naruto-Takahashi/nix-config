@@ -65,7 +65,7 @@
       ProgramArguments = [
         "/bin/sh"
         "-c"
-        "sleep 5 && exec ${pkgs.kanata}/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
+        "until [ -f ${pkgs.kanata}/bin/kanata ]; do sleep 1; done && sleep 5 && exec ${pkgs.kanata}/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
       ];
       KeepAlive = true;
       RunAtLoad = true;

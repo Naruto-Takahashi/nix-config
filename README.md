@@ -148,14 +148,14 @@ M1 Mac などの macOS 環境でシステム設定およびアプリケーショ
 4. **設定の構築とシステムへの適用**  
    リポジトリを `ghq` 規定位置に配置後，シンボリックリンクを作成してシステム構成を適用します．
    ```bash
-   # シンボリックリンクの作成 (初回のみ)
-   mv ~/.config/home-manager ~/.config/home-manager.bak
-   ln -s ~/ghq/Naruto-Takahashi/nix-config ~/.config/home-manager
-
-   # システムの適用と有効化 (初回起動時は nix run でブートストラップ)
-   cd ~/ghq/Naruto-Takahashi/nix-config
-   git add .
-   sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure
+    # シンボリックリンクの作成 (初回のみ)
+    mv ~/.config/home-manager ~/.config/home-manager.bak
+    ln -s ~/ghq/github.com/Naruto-Takahashi/nix-config ~/.config/home-manager
+ 
+    # システムの適用と有効化 (初回起動時は nix run でブートストラップ)
+    cd ~/ghq/github.com/Naruto-Takahashi/nix-config
+    git add .
+    sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure
 
    # 2回目以降の更新適用 (こちらが推奨・高速)
    darwin-rebuild switch --flake .#nalt-mac
@@ -219,7 +219,7 @@ cd nix-config
    `/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"`
 4. Setup configuration symlink:
    `mv ~/.config/home-manager ~/.config/home-manager.bak`
-   `ln -s ~/ghq/Naruto-Takahashi/nix-config ~/.config/home-manager`
+   `ln -s ~/ghq/github.com/Naruto-Takahashi/nix-config ~/.config/home-manager`
 5. Apply and activate (First-time bootstrap):
    `sudo nix run github:LnL7/nix-darwin -- switch --flake .#nalt-mac --impure`
 6. Apply subsequent updates (Recommended/Fast):
