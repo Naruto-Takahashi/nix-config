@@ -100,6 +100,11 @@
     ctrl-cmd-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
     ctrl-cmd-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 
+    # アプリケーションのクイック起動
+    ctrl-cmd-enter = 'exec-and-forget open -n -a WezTerm'
+    ctrl-cmd-e = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start yazi'
+    ctrl-cmd-b = 'exec-and-forget open -n -a Vivaldi'
+
     # リサイズモードの設定 (escapeのかわりにescキーを使用)
     [mode.resize.binding]
     h = 'resize width -50'
