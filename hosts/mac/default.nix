@@ -115,7 +115,23 @@
                   ]
                 }
               ]
-            }
+            },
+            "devices": [
+              {
+                "identifiers": {
+                  "vendor_id": 1149,
+                  "product_id": 32982
+                },
+                "ignore": true
+              },
+              {
+                "identifiers": {
+                  "vendor_id": 1278,
+                  "product_id": 33
+                },
+                "ignore": true
+              }
+            ]
           }
         ]
       }

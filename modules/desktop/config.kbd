@@ -1,6 +1,9 @@
 ;; Force Kanata reload
 (defcfg
   process-unmapped-keys yes
+  macos-dev-names-include (
+    "HHKB-Hybrid_2"
+  )
 )
 
 ;; -------------------------------------------------------------------
