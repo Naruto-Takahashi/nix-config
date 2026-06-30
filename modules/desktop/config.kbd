@@ -13,6 +13,7 @@
   tab   q     w     e     r     t     y     u     i     o     p     ret
   a     s     d     f     g     h     j     k     l
   z     x     c     v     b     n     m
+  left  down  up    rght
 )
 
 ;; -------------------------------------------------------------------
@@ -79,6 +80,10 @@
   hyp-e       wmmodifier-e        ;; Alt + e   -> Super + e (ファイルマネージャ)
   hyp-y       wmmodifier-y        ;; Alt + y   -> Super + y (Yazi起動)
   hyp-n       wmmodifier-n        ;; Alt + n   -> Super + n (Neovim起動)
+  hyp-left    wmmodifier-left     ;; Alt + Left -> Super + Left
+  hyp-down    wmmodifier-down     ;; Alt + Down -> Super + Down
+  hyp-up      wmmodifier-up       ;; Alt + Up -> Super + Up
+  hyp-rght    wmmodifier-rght     ;; Alt + Right -> Super + Right
 )
 
 ;; -------------------------------------------------------------------
@@ -90,6 +95,7 @@
   tab   q     w     e     r     t     y     u     i     o     p     ret
   a     s     d     f     g     h     j     k     l
   _     _     _     _     _     _     _
+  left  down  up    rght
 )
 
 ;; -------------------------------------------------------------------
@@ -102,6 +108,7 @@
   @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc @hyp-y @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
   @hyp-a @hyp-s @hyp-t @hyp-f _     @hyp-h @hyp-j @hyp-k @hyp-l
   _     _     @hyp-c @hyp-v @hyp-b @hyp-n @hyp-m
+  @hyp-left @hyp-down @hyp-up @hyp-rght
 )
 
 ;; -------------------------------------------------------------------
