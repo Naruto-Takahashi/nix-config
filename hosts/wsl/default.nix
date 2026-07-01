@@ -39,6 +39,7 @@
   home.packages = with pkgs; [
     gemini-cli-bin
     codex
+    claude-code
     fastfetch
     cowsay
     fortune

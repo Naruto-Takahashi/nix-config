@@ -44,6 +44,7 @@
     gh
     ghq
     antigravity-cli
+    claude-code
     hackgen-nf-font
     kanata
   ];

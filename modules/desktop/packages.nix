@@ -25,6 +25,7 @@
     pkgs.wl-clipboard
     pkgs.kanata
     pkgs.gemini-cli
+    pkgs.claude-code
     pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）
     pkgs.slop # maim用の美しいドラッグ範囲選択ツール
     pkgs.cowsay
