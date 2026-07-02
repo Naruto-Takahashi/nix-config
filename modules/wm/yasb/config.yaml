@@ -207,7 +207,7 @@ widgets:
     type: "yasb.wallpapers.WallpapersWidget"
     options:
       label: "<span>\udb83\ude09</span>"
-      image_path: "C:\\Users\\MrDLi\\OneDrive\\Pictures\\Wallpapers\\Other"
+      image_path: "C:\\Users\\tnaru\\OneDrive\\画像\\wallpapers"
       change_automatically: false
       update_interval: 60
       gallery:
