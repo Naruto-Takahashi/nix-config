@@ -17,4 +17,16 @@
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/applications.json";
     force = true;
   };
+
+  # ログオン時にタスクスケーラで呼び出されるスタートアップスクリプト
+  xdg.configFile."komorebi/startup.ps1" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/startup.ps1";
+    force = true;
+  };
+
+  # Windows環境構築・自動化スクリプト
+  xdg.configFile."komorebi/setup-windows.ps1" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/setup-windows.ps1";
+    force = true;
+  };
 }

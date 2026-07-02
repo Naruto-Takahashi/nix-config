@@ -260,6 +260,9 @@
           cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
           cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
           rm -f "/mnt/c/Users/tnaru/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/komorebi.ahk"
+          # スタートアップ・環境構築スクリプトの同期
+          cp -L ~/.config/komorebi/startup.ps1 /mnt/c/Users/tnaru/Tools/Customization/
+          cp -L ~/.config/komorebi/setup-windows.ps1 /mnt/c/Users/tnaru/Tools/Customization/
           echo "Syncing YASB config..."
           mkdir -p /mnt/c/Users/tnaru/.config/yasb
           cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
