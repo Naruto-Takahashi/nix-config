@@ -131,26 +131,39 @@
 }
 /*TASKBAR WIDGET*/
 .taskbar-widget {
-    margin-left: 10px;
+    margin-left: 4px;
 }
-.taskbar-widget .taskbar-btn {
+/* 非フォーカスウィンドウ: 黒い島・白文字 */
+.taskbar-widget .app-container {
     background-color: #000000;
-    color: #ffffff;
-    border-radius: 6px;
-    padding: 4px 10px;
-    margin-right: 6px;
     border: none;
+    border-radius: 6px;
+    margin: 3px 3px;
+    padding: 0 6px;
 }
-.taskbar-widget .taskbar-btn.active {
+/* フォーカス中ウィンドウ: ffc20dの島・黒文字 */
+.taskbar-widget .app-container.foreground {
     background-color: #ffc20d;
+    border: none;
+    border-radius: 6px;
+}
+.taskbar-widget .app-container:hover {
+    background-color: #333333;
+}
+.taskbar-widget .app-container.foreground:hover {
+    background-color: #e0ab00;
+}
+.taskbar-widget .app-container .app-title {
+    color: #ffffff;
+    font-size: 13px;
+    font-family: Bahnschrift;
+    padding-left: 4px;
+}
+.taskbar-widget .app-container.foreground .app-title {
     color: #000000;
 }
-.taskbar-widget .label {
-    font-size: 14px;
-    font-family: Bahnschrift;
-}
 .taskbar-widget .icon {
-    padding-right: 6px;
+    padding-right: 4px;
     border: none;
 }
 /*CLOCK - CALENDAR WIDGET*/
