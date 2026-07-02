@@ -1,6 +1,8 @@
 @import "https://www.nerdfonts.com/assets/css/webfont.css";
 
-/* ── Reset ──────────────────────────────────────────── */
+/* ==============================================================================
+   スタイル初期化 (Reset)
+   ============================================================================== */
 * {
   box-sizing: border-box;
   margin: 0;
@@ -21,7 +23,9 @@ body {
   font-size: 11px;
 }
 
-/* ── App container (transparent, with full-width backdrop bar) */
+/* ==============================================================================
+   アプリコンテナ設定 (App Container)
+   ============================================================================== */
 .app {
   position: relative;
   display: grid;
@@ -32,16 +36,21 @@ body {
   background: transparent;
 }
 
-.left-group, .right-group {
+.left-group,
+.center-group,
+.right-group {
   display: flex;
   align-items: center;
+  height: 100%;
   gap: 5px;
 }
 .left-group { justify-self: start; }
 .center-group { justify-self: center; }
 .right-group { justify-self: end; }
 
-/* ── Island base style ──────────────────────────────── */
+/* ==============================================================================
+   アイランド基本スタイル (Island Base Style)
+   ============================================================================== */
 .island {
   position: relative;
   z-index: 1;
@@ -57,14 +66,18 @@ body {
   white-space: nowrap;
 }
 
-/* ── Icon base ──────────────────────────────────────── */
+/* ==============================================================================
+   アイコン基本スタイル (Icon Base)
+   ============================================================================== */
 i {
   color: rgb(255 255 255 / 85%);
   font-size: 11px;
   line-height: 1;
 }
 
-/* ── Left island ────────────────────────────────────── */
+/* ==============================================================================
+   左側アイランド要素 (Left Island Components)
+   ============================================================================== */
 .logo {
   opacity: 0.5;
   font-size: 12px;
@@ -85,23 +98,23 @@ i {
   justify-content: center;
   color: rgb(255 255 255 / 65%);
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   font-family: ui-monospace, monospace;
   font-size: 10px;
   padding: 0;
   transition: background 0.15s;
+}
 
-  &.displayed {
-    background: rgb(255 255 255 / 14%);
-    color: rgb(255 255 255 / 90%);
-  }
+.workspace.displayed {
+  background: rgb(255 255 255 / 14%);
+  color: rgb(255 255 255 / 65%);
+}
 
-  &.focused,
-  &:hover {
-    background: #a86c6c;
-    color: white;
-  }
+.workspace.focused,
+.workspace:hover {
+  background: #a86c6c;
+  color: white;
 }
 
 .binding-mode,
@@ -114,7 +127,7 @@ i {
   justify-content: center;
   color: rgb(255 255 255 / 85%);
   border: none;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: pointer;
   padding: 0;
   line-height: 1;
@@ -126,22 +139,13 @@ i {
   background: rgb(255 255 255 / 35%);
 }
 
-/* ── Window tabs (all windows in focused workspace) ─── */
-.window-tabs {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  border-left: 1px solid rgba(255, 255, 255, 0.13);
-  padding-left: 6px;
-  margin-left: 1px;
-}
-
+/* ウィンドウタブ表示用スタイル */
 .window-tab {
   color: rgb(255 255 255 / 50%);
   font-size: 10px;
   white-space: nowrap;
   padding: 1px 5px;
-  border-radius: 3px;
+  border-radius: 4px;
   cursor: default;
   max-width: 18ch;
   overflow: hidden;
@@ -154,7 +158,9 @@ i {
   font-weight: 600;
 }
 
-/* ── Center island ──────────────────────────────────── */
+/* ==============================================================================
+   中央アイランド要素 (Center Island Components)
+   ============================================================================= */
 .center {
   font-weight: 600;
   letter-spacing: 0.02em;
@@ -162,16 +168,14 @@ i {
   color: rgb(255 255 255 / 50%);
 }
 
-.center i {
-  color: #ffc20d;
-}
-
-/* ── Right island ───────────────────────────────────── */
+/* ==============================================================================
+   右側アイランド要素 (Right Island Components)
+   ============================================================================== */
 .right {
   gap: 6px;
 }
 
-/* Vertical separator between groups */
+/* グループ間の垂直セパレータ */
 .sep {
   color: rgba(255, 255, 255, 0.18);
   font-size: 9px;
@@ -182,18 +186,30 @@ i {
 .network,
 .memory,
 .cpu,
+.audio,
 .battery {
   display: flex;
   align-items: center;
   gap: 3px;
 }
 
-.text-green i  { color: #66a366; }
-.text-yellow i { color: #ffd147; }
-.text-red i    { color: #b87d7d; }
+.network i, .memory i, .cpu i, .audio i, .battery i:not(.charging-icon) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 16px;
+  border-radius: 4px;
+  color: #000;
+  margin-right: 2px;
+}
+
+.text-green i:not(.charging-icon)  { background: #66a366; }
+.text-yellow i:not(.charging-icon) { background: #ffd147; }
+.text-red i:not(.charging-icon)    { background: #b87d7d; }
 
 .resource-text {
-  color: rgb(255 255 255 / 50%);
+  color: rgb(255 255 255 / 65%);
 }
 
 .battery {
@@ -207,8 +223,8 @@ i {
   top: 2px;
 }
 
-/* restart button inside right island */
-.right > button.tiling-direction {
+/* 右側アイランド内のリスタートボタン */
+.tiling-direction {
   background: transparent;
   border: none;
   width: auto;
@@ -216,6 +232,6 @@ i {
   padding: 0;
 }
 
-.right > button.tiling-direction:hover {
+.tiling-direction:hover {
   background: transparent;
 }

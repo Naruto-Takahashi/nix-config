@@ -5,7 +5,6 @@
 
 {
   home.packages = [
-    nixgl.packages.${pkgs.system}.nixGLDefault
     pkgs.hackgen-nf-font # WezTermで指定されているフォント
 
     pkgs.eza
@@ -20,11 +19,10 @@
     pkgs.gcc
     pkgs.gnumake
     pkgs.python3
-    pkgs.nodejs
+    pkgs.nodejs_22
     pkgs.ripgrep
     pkgs.xclip
     pkgs.wl-clipboard
-    pkgs.lazygit
     pkgs.kanata
     pkgs.gemini-cli
     pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）
@@ -40,12 +38,22 @@
       installPhase = ''
         mkdir -p $out/bin
         cat <<EOF > $out/bin/vivaldi
-#!/bin/bash
+#!/usr/bin/env bash
 display_num=\$(echo \$DISPLAY | cut -d: -f2 | cut -d. -f1)
-if [ -n "\$display_num" ] && [ "\$display_num" -ge 10 ]; then
-  exec /usr/bin/vivaldi-stable --user-data-dir="\$HOME/.config/vivaldi-remote" "\$@"
+if [ -f /run/current-system/sw/bin/vivaldi ]; then
+  REAL_VIVALDI="/run/current-system/sw/bin/vivaldi"
+elif [ -f /etc/profiles/per-user/nalt/bin/vivaldi ]; then
+  REAL_VIVALDI="/etc/profiles/per-user/nalt/bin/vivaldi"
+elif [ -f /usr/bin/vivaldi-stable ]; then
+  REAL_VIVALDI="/usr/bin/vivaldi-stable"
 else
-  exec /usr/bin/vivaldi-stable "\$@"
+  REAL_VIVALDI=\$(which -a vivaldi vivaldi-stable | grep -v "/.nix-profile/bin" | grep -v "/etc/profiles" | head -n 1)
+fi
+
+if [ -n "\$display_num" ] && [ "\$display_num" -ge 10 ]; then
+  exec "\$REAL_VIVALDI" --user-data-dir="\$HOME/.config/vivaldi-remote" "\$@"
+else
+  exec "\$REAL_VIVALDI" "\$@"
 fi
 EOF
         chmod +x $out/bin/vivaldi

@@ -19,6 +19,7 @@
     ../../modules/shell/direnv.nix
     ../../modules/apps/yazi.nix
     ../../modules/services/obsidian-mcp.nix
+    ../../modules/apps/lazygit.nix
   ];
 
   # -----------------------------------------------------------------------
@@ -51,6 +52,9 @@
     cowsay
     fortune
     lolcat
+    nodejs_22
     wsl-open # Windowsの規定のアプリでファイルを開くためのコマンド
+    gh
+    sshfs   # SSH経由でリモートホストのファイルシステムをマウントするためのツール
   ];
 }

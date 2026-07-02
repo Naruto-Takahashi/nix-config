@@ -18,6 +18,11 @@
         show_symlink = false;
         linemode = "size";
       };
+
+      preview = {
+        wrap = "yes";
+      };
+
       opener = {
         open = [
           {

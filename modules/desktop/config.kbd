@@ -1,0 +1,158 @@
+;; Force Kanata reload
+(defcfg
+  process-unmapped-keys yes
+)
+
+;; -------------------------------------------------------------------
+;; 物理キー監視対象の宣言 (defsrc)
+;; 実際のキーボードの物理配列に沿って視覚的に整列しています。
+;; -------------------------------------------------------------------
+(defsrc
+  caps  lalt  spc   ralt  lctl  esc
+  grv   1     2     3     4     5     6     7     8     9
+  tab   q     w     e     r     t     y     u     i     o     p     ret
+  a     s     d     f     g     h     j     k     l
+  z     x     c     v     b     n     m
+  left  down  up    rght
+)
+
+;; -------------------------------------------------------------------
+;; キーエイリアス（マッピング定義）
+;; -------------------------------------------------------------------
+(defalias
+  ;; 左右Alt単押しでのIME切り替え (Tap: 英数/かな / Hold: 隠しレイヤー)
+  alt-eng  (tap-hold-press 200 200 eisu (layer-toggle alt-layer))
+  alt-jp   (tap-hold-press 200 200 kana (layer-toggle alt-layer))
+
+  ;; CapsLock長押しでのCtrl化 (Tap: Esc -> 英数 / Hold: Left Ctrl)
+  esc-eng  (macro esc eisu)
+  cap-ctrl (tap-hold-press 200 200 @esc-eng cap-ctrl-action)
+
+  ;; スペースキー長押しでのナビゲーションレイヤー移行 (Tap: Space / Hold: Nav-Layer)
+  spc-nav  (tap-hold-press 200 200 spc (layer-toggle nav))
+
+  ;; =================================================================
+  ;; Alt長押し (Alt-Layer) 時の Super (lmet) ショートカット of 定義
+  ;; =================================================================
+  hyp-q       wmmodifier-S-w   ;; Alt + q   -> Super + Shift + w (閉じる - macOSログアウト衝突回避)
+  hyp-d       wmmodifier-d        ;; Alt + Spc -> Super + d (Rofi/Spotlight起動等)
+  hyp-ret     wmmodifier-ret      ;; Alt + Ent -> Super + Enter (端末起動)
+  hyp-tab     wmmodifier-tab      ;; Alt + Tab -> Super + Tab (窓一覧切り替え)
+  hyp-f       wmmodifier-f        ;; Alt + f   -> Super + f (フルスクリーン)
+  hyp-t       wmmodifier-t        ;; Alt + d   -> Super + t (タイリング復元)
+  hyp-sft-spc wmmodifier-S-spc ;; Alt + t   -> Super + Shift + Space (浮動切替)
+
+  ;; 窓の直接リサイズ
+  hyp-u       wmmodifier-u        ;; Alt + u   -> Super + u (幅を縮小)
+  hyp-i       wmmodifier-i        ;; Alt + i   -> Super + i (高さを縮小)
+  hyp-o       wmmodifier-o        ;; Alt + o   -> Super + o (高さを拡大)
+  hyp-p       wmmodifier-p        ;; Alt + p   -> Super + p (幅を拡大)
+
+  ;; ワークスペース移動
+  hyp-s       wmmodifier-s        ;; Alt + s   -> Super + s (次のWSへ)
+  hyp-a       wmmodifier-a        ;; Alt + a   -> Super + a (前のWSへ)
+  hyp-grv     wmmodifier-grv      ;; Alt + `   -> Super + ` (直前のWSへ戻る)
+
+  ;; ワークスペース 1-9 へ切り替え
+  hyp-1       wmmodifier-1
+  hyp-2       wmmodifier-2
+  hyp-3       wmmodifier-3
+  hyp-4       wmmodifier-4
+  hyp-5       wmmodifier-5
+  hyp-6       wmmodifier-6
+  hyp-7       wmmodifier-7
+  hyp-8       wmmodifier-8
+  hyp-9       wmmodifier-9
+
+  ;; ウィンドウの移動・最小化・分割方向
+  hyp-h       wmmodifier-h        ;; Alt + h   -> Super + h (左へフォーカス)
+  hyp-j       wmmodifier-j        ;; Alt + j   -> Super + j (下へフォーカス)
+  hyp-k       wmmodifier-k        ;; Alt + k   -> Super + k (上へフォーカス)
+  hyp-l       wmmodifier-l        ;; Alt + l   -> Super + l (右へフォーカス)
+  hyp-m       wmmodifier-m        ;; Alt + m   -> Super + m (最小化)
+  hyp-v       wmmodifier-v        ;; Alt + v   -> Super + v (分割トグル)
+
+  ;; その他のアプリケーション・ツール用 Super ショートカット
+  hyp-w       wmmodifier-w        ;; Alt + w   -> Super + w (壁紙ピッカー)
+  hyp-b       wmmodifier-b        ;; Alt + b   -> Super + b (ブラウザ)
+  hyp-c       wmmodifier-c        ;; Alt + c   -> Super + c (カラーピッカー)
+  hyp-r       wmmodifier-r        ;; Alt + r   -> Super + r (Waybarリスタート)
+  hyp-e       wmmodifier-e        ;; Alt + e   -> Super + e (ファイルマネージャ)
+  hyp-y       wmmodifier-y        ;; Alt + y   -> Super + y (Yazi起動)
+  hyp-n       wmmodifier-n        ;; Alt + n   -> Super + n (Neovim起動)
+  hyp-left    wmmodifier-left     ;; Alt + Left -> Super + Left
+  hyp-down    wmmodifier-down     ;; Alt + Down -> Super + Down
+  hyp-up      wmmodifier-up       ;; Alt + Up -> Super + Up
+  hyp-rght    wmmodifier-rght     ;; Alt + Right -> Super + Right
+  hyp-ctrl-h  wmmodifier-A-h      ;; Alt + Ctrl + h -> Super + Alt + h
+  hyp-ctrl-j  wmmodifier-A-j      ;; Alt + Ctrl + j -> Super + Alt + j
+  hyp-ctrl-k  wmmodifier-A-k      ;; Alt + Ctrl + k -> Super + Alt + k
+  hyp-ctrl-l  wmmodifier-A-l      ;; Alt + Ctrl + l -> Super + Alt + l
+  alt-ctrl-toggle (layer-toggle alt-ctrl-layer)
+)
+
+;; -------------------------------------------------------------------
+;; デフォルトのベースレイヤー (通常時)
+;; -------------------------------------------------------------------
+(deflayer base
+  @cap-ctrl @alt-eng @spc-nav @alt-jp @cap-ctrl @esc-eng
+  grv   1     2     3     4     5     6     7     8     9
+  tab   q     w     e     r     t     y     u     i     o     p     ret
+  a     s     d     f     g     h     j     k     l
+  _     _     _     _     _     _     _
+  left  down  up    rght
+)
+
+;; -------------------------------------------------------------------
+;; 左右Alt長押し時のエミュレーションレイヤー (Alt-Layer)
+;; すべてのウィンドウマネージャー操作が Alt キーの組み合わせだけで発動します。
+;; -------------------------------------------------------------------
+(deflayer alt-layer
+  @alt-ctrl-toggle _ @hyp-d _ @alt-ctrl-toggle _
+  @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
+  @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc @hyp-y @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
+  @hyp-a @hyp-s @hyp-t @hyp-f _     @hyp-h @hyp-j @hyp-k @hyp-l
+  _     _     @hyp-c @hyp-v @hyp-b @hyp-n @hyp-m
+  @hyp-left @hyp-down @hyp-up @hyp-rght
+)
+
+;; -------------------------------------------------------------------
+;; スペース長押し時の高速ナビゲーションレイヤー (Nav-Layer)
+;; -------------------------------------------------------------------
+(deflayer nav
+  _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _     _
+  _     _     _     end   _     _     _     C-z   _     _     _     _
+  home  _     _     _     _     left  down  up    right
+  _     del   _     _     bspc  _     _
+  _     _     _     _
+)
+
+;; -------------------------------------------------------------------
+;; CapsLock(Ctrl)長押し時のWindows風キー変換レイヤー (Ctrl-Layer)
+;; 主要なコピペ・選択等のショートカットを Cmd に透過変換し、
+;; それ以外のターミナル制御キー等は Ctrl のまま送信します。
+;; -------------------------------------------------------------------
+(deflayer ctrl-layer
+  _     @alt-ctrl-toggle _ @alt-ctrl-toggle _ _
+  _     _     _     _     _     _     _     _     _     _
+  C-tab C-q   M-w   C-e   C-r   M-t   M-y   C-u   C-i   C-o   C-p   _
+  M-a   M-s   C-d   M-f   C-g   C-h   C-j   C-k   C-l
+  M-z   M-x   M-c   M-v   C-b   C-n   C-m
+  _     _     _     _
+)
+
+;; -------------------------------------------------------------------
+;; Alt + Ctrl が同時に押された際のエミュレーションレイヤー (Alt-Ctrl-Layer)
+;; ウィンドウ結合 (join-with) などの高度なWMレイアウト操作を行います。
+;; -------------------------------------------------------------------
+(deflayer alt-ctrl-layer
+  _     _     _            _     _     _
+  _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     @hyp-ctrl-h @hyp-ctrl-j @hyp-ctrl-k @hyp-ctrl-l
+  _     _     _     _     _     _     _
+  _     _     _     _
+)
+
+

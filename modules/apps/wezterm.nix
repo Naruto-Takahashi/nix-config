@@ -20,17 +20,22 @@
     config.automatically_reload_config = true
     config.scrollback_lines = 3000
     config.font = wezterm.font 'HackGen Console NF'
+    config.adjust_window_size_when_changing_font_size = false
+
+    -- OS判定（macOSかどうか）
+    local is_darwin = wezterm.target_triple:find("darwin") ~= nil
 
     -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
     local display = os.getenv("DISPLAY") or ""
     local is_remote = display:match(":[1-9]%d") ~= nil
-    config.font_size = is_remote and 10.0 or 12.0
+    config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 12.0)
 
-    config.initial_cols = 120
-    config.initial_rows = 35
+    config.initial_cols = is_darwin and 140 or 120
+    config.initial_rows = is_darwin and 40 or 35
     config.use_ime = true
     config.ime_preedit_rendering = "Builtin"
     config.warn_about_missing_glyphs = false
+    config.window_close_confirmation = 'NeverPrompt'
     config.window_background_opacity = 0.75
     config.macos_window_background_blur = 20
 
@@ -38,7 +43,7 @@
     -- Tab
     ----------------------------------------------------
     -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
-    config.window_decorations = "RESIZE"
+    config.window_decorations = is_darwin and "RESIZE" or "NONE"
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか
@@ -53,9 +58,9 @@
     }
 
     -- タブバーを背景色に合わせる
-    config.window_background_gradient = {
-      colors = { "#000000" },
-    }
+    -- config.window_background_gradient = {
+    --   colors = { "#000000" },
+    -- }
 
     -- タブの追加ボタンを非表示
     config.show_new_tab_button_in_tab_bar = true
@@ -296,9 +301,22 @@
         -- コマンドパレット (Ctrl + Shift + P)
         { key = "p", mods = "CTRL|SHIFT", action = act.ActivateCommandPalette },
 
-        -- コピー & 貼り付け (Ctrl + Shift + C/V)
+        -- コピー & 貼り付け (Ctrl + Shift + C/V 及び CMD + C/V)
         { key = "c", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
         { key = "v", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
+        {
+          key = "c",
+          mods = "CMD",
+          action = wezterm.action_callback(function(window, pane)
+            local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+            if has_selection then
+              window:perform_action(act.CopyTo("Clipboard"), pane)
+            else
+              window:perform_action(act.SendKey({ key = "c", mods = "CTRL" }), pane)
+            end
+          end),
+        },
+        { key = "v", mods = "CMD", action = act.PasteFrom("Clipboard") },
 
         -- フォントサイズ
         { key = "+", mods = "CTRL", action = act.IncreaseFontSize },

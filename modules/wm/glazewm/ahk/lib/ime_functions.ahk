@@ -1,10 +1,10 @@
 ; =============================================================================
-; IME Control Functions
+; IME 制御関数ライブラリ (IME Control Functions)
 ; =============================================================================
 
 ; -----------------------------------------------------------------------------
-; Function: IME_GET
-; Description: Returns the current IME status (1: ON, 0: OFF).
+; 関数名: IME_GET
+; 説明: 現在のIME状態を取得します (1: ON / 0: OFF)．
 ; -----------------------------------------------------------------------------
 IME_GET(WinTitle="A") {
     ControlGet, hwnd, HWND,,, %WinTitle%
@@ -23,8 +23,8 @@ IME_GET(WinTitle="A") {
 }
 
 ; -----------------------------------------------------------------------------
-; Function: IME_SET
-; Description: Sets the IME status (1: ON, 0: OFF).
+; 関数名: IME_SET
+; 説明: IMEの状態を設定します (1: ON / 0: OFF)．
 ; -----------------------------------------------------------------------------
 IME_SET(setSts, WinTitle="A") {
     ControlGet, hwnd, HWND,,, %WinTitle%

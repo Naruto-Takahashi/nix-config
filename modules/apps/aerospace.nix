@@ -1,0 +1,124 @@
+# =========================================================================
+# AeroSpace タイリングウィンドウマネージャ宣言的設定モジュール
+# =========================================================================
+{ config, pkgs, ... }:
+
+{
+  # aerospace.toml 設定ファイルの宣言的自動生成
+  xdg.configFile."aerospace/aerospace.toml".text = ''
+    # AeroSpace Configuration
+
+    # ログイン時に起動
+    start-at-login = true
+
+    # デフォルトのレイアウトをアコーディオンではなく「タイル型 (tiles)」にする
+    default-root-container-layout = 'tiles'
+    default-root-container-orientation = 'auto'
+
+    # AeroSpace起動完了時にJankyBorders（アクティブウィンドウ枠線表示ツール）をバックグラウンド実行
+    after-startup-command = [
+      'exec-and-forget /opt/homebrew/bin/borders active_color=0xffffc20d inactive_color=0x00000000 width=6.0'
+    ]
+
+    # ギャップ設定 (Gaps)
+    [gaps]
+    inner.horizontal = 6
+    inner.vertical = 6
+    outer.left = 6
+    outer.bottom = 6
+    outer.top = 2
+    outer.right = 6
+
+    # キーバインド設定 (Main Mode)
+    # macOS標準および一般コピペ（Cmd）と衝突させないため、すべての操作プレフィックスに Ctrl+Cmd (ctrl-cmd) を使用
+    [mode.main.binding]
+    # ウィンドウ間のフォーカス移動 (Alt + HJKL)
+    ctrl-cmd-h = 'focus left'
+    ctrl-cmd-j = 'focus down'
+    ctrl-cmd-k = 'focus up'
+    ctrl-cmd-l = 'focus right'
+
+    # ウィンドウの移動 (Alt + Shift + HJKL)
+    ctrl-cmd-shift-h = 'move left'
+    ctrl-cmd-shift-j = 'move down'
+    ctrl-cmd-shift-k = 'move up'
+    ctrl-cmd-shift-l = 'move right'
+
+    # ウィンドウサイズの簡易調整 (Alt + UIPO)
+    ctrl-cmd-u = 'resize width -50'
+    ctrl-cmd-p = 'resize width +50'
+    ctrl-cmd-o = 'resize height +50'
+    ctrl-cmd-i = 'resize height -50'
+
+    # リサイズモードへの移行 (Alt + R)
+    ctrl-cmd-r = 'mode resize'
+
+    # ウィンドウ分割方向の切り替え (Alt + V)
+    ctrl-cmd-v = 'layout tiles horizontal vertical'
+
+    # フローティング/タイリングの切り替え (Alt + Shift + Space)
+    ctrl-cmd-shift-space = 'layout floating tiling'
+
+    # フルスクリーン表示の切り替え (Alt + F)
+    ctrl-cmd-f = 'fullscreen'
+
+    # ウィンドウの最小化 (Alt + M)
+    ctrl-cmd-m = 'macos-native-minimize'
+
+    # ウィンドウを閉じる (Alt + Q が Ctrl+Cmd+Shift+W を送信)
+    ctrl-cmd-shift-w = 'close'
+
+    # 設定ファイルの再読み込み
+    ctrl-cmd-shift-r = 'reload-config'
+
+    # ワークスペース間のフォーカス移動 (Alt + S / Alt + A が ctrl-cmd-s / ctrl-cmd-a を送信)
+    ctrl-cmd-s = 'workspace next'
+    ctrl-cmd-a = 'workspace prev'
+    
+    # 直近のワークスペースと切り替え (Alt + D が ctrl-cmd-t を送信)
+    ctrl-cmd-t = 'workspace-back-and-forth'
+
+    # 特定ワークスペースへのダイレクトジャンプ (Alt + 1-9)
+    ctrl-cmd-1 = 'workspace 1'
+    ctrl-cmd-2 = 'workspace 2'
+    ctrl-cmd-3 = 'workspace 3'
+    ctrl-cmd-4 = 'workspace 4'
+    ctrl-cmd-5 = 'workspace 5'
+    ctrl-cmd-6 = 'workspace 6'
+    ctrl-cmd-7 = 'workspace 7'
+    ctrl-cmd-8 = 'workspace 8'
+    ctrl-cmd-9 = 'workspace 9'
+
+    # フォーカスウィンドウを別ワークスペースへ移動し、フォーカスも追従させる (Alt + Shift + 1-9)
+    ctrl-cmd-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
+    ctrl-cmd-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
+    ctrl-cmd-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
+    ctrl-cmd-shift-4 = ['move-node-to-workspace 4', 'workspace 4']
+    ctrl-cmd-shift-5 = ['move-node-to-workspace 5', 'workspace 5']
+    ctrl-cmd-shift-6 = ['move-node-to-workspace 6', 'workspace 6']
+    ctrl-cmd-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
+    ctrl-cmd-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
+    ctrl-cmd-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
+
+    # アプリケーションのクイック起動
+    ctrl-cmd-enter = 'exec-and-forget open -n -a WezTerm'
+    ctrl-cmd-y = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/yazi'
+    ctrl-cmd-n = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/nvim'
+    ctrl-cmd-b = 'exec-and-forget open -n -a Vivaldi'
+
+    # ウィンドウの結合 (Alt + Ctrl + HJKL)
+    ctrl-cmd-alt-h = 'join-with left'
+    ctrl-cmd-alt-j = 'join-with down'
+    ctrl-cmd-alt-k = 'join-with up'
+    ctrl-cmd-alt-l = 'join-with right'
+
+    # リサイズモードの設定 (escapeのかわりにescキーを使用)
+    [mode.resize.binding]
+    h = 'resize width -50'
+    l = 'resize width +50'
+    k = 'resize height +50'
+    j = 'resize height -50'
+    esc = 'mode main'
+    enter = 'mode main'
+  '';
+}

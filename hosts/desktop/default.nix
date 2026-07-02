@@ -16,10 +16,9 @@
     ../../modules/desktop
     ../../modules/apps/wezterm.nix
     ../../modules/apps/neovim
-    ../../modules/wm/i3
     ../../modules/shell/direnv.nix
     ../../modules/apps/yazi.nix
-    ../../modules/services/chrome-remote-desktop.nix
+    ../../modules/apps/lazygit.nix
   ];
 
   # -----------------------------------------------------------------------
@@ -57,4 +56,9 @@
       fi
     '';
   };
+
+  # Ubuntu環境専用：WezTerm等でGPUを使用するためのOpenGLラッパー
+  home.packages = [
+    nixgl.packages.${pkgs.system}.nixGLDefault
+  ];
 }

@@ -1,68 +1,74 @@
+# ==============================================================================
+# 全般設定 (General Settings)
+# ==============================================================================
 general:
-  # Commands to run when the WM has started (e.g. to run a script or launch
-  # another application). Here we are running a batch script to start Zebar.
+  # NOTE: ZebarはWindowsのStartupフォルダから起動するため，ここでは起動コマンドを空にしている．
   startup_commands: []
-  # Whether to automatically focus windows underneath the cursor.
+
+  # カーソルの下にあるウィンドウに自動でフォーカスを合わせるか
   focus_follows_cursor: true
-  # Whether to switch back and forth between the previously focused
 
-  # workspace when focusing the current workspace.
+  # 現在フォーカスされているワークスペースを再選択した際，直前のワークスペースとトグルするか
   toggle_workspace_on_refocus: false
-  cursor_jump:
-    # Whether to automatically move the cursor on the specified trigger.
-    enabled: true
-    # Trigger for cursor jump:
 
-    # - 'monitor_focus': Jump when focus changes between monitors.
-    # - 'window_focus': Jump when focus changes between windows.
-    # trigger: "monitor_focus"
+  # 特定のアクション時にカーソルをウィンドウ中央へ自動移動させる設定
+  cursor_jump:
+    enabled: true
+    # window_focus: フォーカスが他ウィンドウに移った際にジャンプ
     trigger: "window_focus"
+
+# ==============================================================================
+# ギャップ設定 (Gaps)
+# ==============================================================================
 gaps:
-  # Gap between adjacent windows.
+  # 隣り合うウィンドウ間の隙間
   inner_gap: "6px"
-  # Gap between windows and the screen edge.
+
+  # ウィンドウと画面端の間の隙間
+  # NOTE: Zebarの 'dockToEdge' 機能が自動でスペースを確保するため，top gapは2pxにリセットしている．
   outer_gap:
     top: "2px"
     right: "6px"
     bottom: "6px"
     left: "6px"
+
+# ==============================================================================
+# ウィンドウ・エフェクト設定 (Window Effects)
+# ==============================================================================
 window_effects:
-  # Visual effects to apply to the focused window.
+  # フォーカスされているウィンドウの見た目（Windows 11専用）
   focused_window:
-    # Highlight the window with a colored border.
-    # ** Exclusive to Windows 11 due to API limitations.
     border:
       enabled: true
-      color: "#ffc20d"
-  # Visual effects to apply to non-focused windows.
+      color: "#ffc20d" # ゴールド（テーマカラー）
 
+  # フォーカスされていないウィンドウの見た目
   other_windows:
     border:
       enabled: true
       color: "#a1a1a1"
-window_behavior:
-  # New windows are created in this state whenever possible.
-  # Allowed values: 'tiling', 'floating'.
-  initial_state: "tiling"
-  # Sets the default options for when a new window is created. This also
 
-  # changes the defaults for when the state change commands, like
-  # `set-floating`, are used without any flags.
+# ==============================================================================
+# ウィンドウの初期動作設定 (Window Behavior)
+# ==============================================================================
+window_behavior:
+  # 新規ウィンドウ起動時の初期状態（'tiling' または 'floating'）
+  initial_state: "tiling"
+
+  # 各ウィンドウ状態のデフォルトオプション
   state_defaults:
     floating:
-      # Whether to center floating windows by default.
-      centered: true
-      # Whether to show floating windows as always on top.
-
-      shown_on_top: false
+      centered: true        # 初期配置で中央寄せにするか
+      shown_on_top: false   # 常に最前面に表示するか
     fullscreen:
-      # Maximize the window if possible. If the window doesn't have a
-      # maximize button, then it'll be fullscreen'ed normally instead.
-      maximized: false
-      # Whether to show fullscreen windows as always on top.
+      maximized: false      # 最大化を優先するか（最大化非対応時はフルスクリーン化）
+      shown_on_top: false   # 常に最前面に表示するか
 
-      shown_on_top: false
+# ==============================================================================
+# ワークスペース設定 (Workspaces)
+# ==============================================================================
 workspaces:
+  # TODO: ワークスペースごとの専用レイアウトや初期アプリ配置ルールの見直し（例: 開発，ブラウジング等の割り当て）
   - name: "1"
   - name: "2"
   - name: "3"
@@ -72,22 +78,41 @@ workspaces:
   - name: "7"
   - name: "8"
   - name: "9"
+
+# ==============================================================================
+# ウィンドウ・ルール設定 (Window Rules)
+# ==============================================================================
 window_rules:
+  # タイル配置から除外（フローティング化または無視）するアプリの設定
   - commands: ["ignore"]
     match:
-      # Ignores any Zebar windows.
+      # Zebarのバー本体をタイル対象外にする
       - window_process: {equals: "zebar"}
-      - window_title: {regex: "[Pp]icture.in.[Pp]icture"}
-        # Ignores picture-in-picture windows for browsers.
 
+      # ブラウザのピクチャー・イン・ピクチャー
+      - window_title: {regex: "[Pp]icture.in.[Pp]icture"}
         window_class: {regex: "Chrome_WidgetWin_1|MozillaDialogClass"}
+
+      # PowerToys等のWindowsユーティリティ
       - window_process: {equals: "PowerToys.PowerAccent"}
       - window_process: {equals: "PowerToys.Run"}
-        # Ignore rules for various 3rd-party apps.
+
+      # Lively Wallpaper等
       - window_process: {equals: "Lively"}
         window_class: {regex: "HwndWrapper*"}
+
+      # GTKWave
+      - window_title: {regex: ".*[Gg][Tt][Kk][Ww][Aa][Vv][Ee].*"}
+
+  # 全てのウィンドウに対してデフォルトでタイリングと再描画を設定
+  - commands: ["toggle-tiling-direction", "set-tiling", "wm-redraw"]
+    match:
+      - window_process: {regex: ".*"}
+# ==============================================================================
+# 特殊バインディングモード設定 (Binding Modes)
+# ==============================================================================
 binding_modes:
-  # When enabled, the focused window can be resized via arrow keys or HJKL.
+  # リサイズモード：矢印キーまたはHJKLでサイズ調整可能にする
   - name: "resize"
     keybindings:
       - commands: ["resize --width -2%"]
@@ -98,19 +123,21 @@ binding_modes:
         bindings: ["k", "up"]
       - commands: ["resize --height -2%"]
         bindings: ["j", "down"]
+      # EscapeまたはEnterでリサイズモードを終了
       - commands: ["wm-disable-binding-mode --name resize"]
-        # Press enter/escape to return to default keybindings.
-
         bindings: ["escape", "enter"]
-  - name: "pause"
-    # When enabled, all keybindings are disabled except for alt+shift+p which
 
-    # returns to default keybindings.
+  # 一時停止モード：alt+shift+p を除くすべてのショートカットを無効化する
+  - name: "pause"
     keybindings:
       - commands: ["wm-disable-binding-mode --name pause"]
         bindings: ["alt+shift+p"]
+
+# ==============================================================================
+# キーバインド設定 (Keybindings)
+# ==============================================================================
 keybindings:
-  # Shift focus in a given direction.
+  # ウィンドウ間のフォーカス移動（Vimキーバインド）
   - commands: ["focus --direction left"]
     bindings: ["alt+h"]
   - commands: ["focus --direction right"]
@@ -119,9 +146,9 @@ keybindings:
     bindings: ["alt+k"]
   - commands: ["focus --direction down"]
     bindings: ["alt+j"]
-  - commands: ["move --direction left"]
-    # Move focused window in a given direction.
 
+  # フォーカスされているウィンドウの配置移動
+  - commands: ["move --direction left"]
     bindings: ["alt+shift+h", "alt+shift+left"]
   - commands: ["move --direction right"]
     bindings: ["alt+shift+l", "alt+shift+right"]
@@ -129,9 +156,9 @@ keybindings:
     bindings: ["alt+shift+k", "alt+shift+up"]
   - commands: ["move --direction down"]
     bindings: ["alt+shift+j", "alt+shift+down"]
-  - commands: ["resize --width -2%"]
-    # Resize focused window by a percentage or pixel amount.
 
+  # ウィンドウサイズの簡易微調整
+  - commands: ["resize --width -2%"]
     bindings: ["alt+u"]
   - commands: ["resize --width +2%"]
     bindings: ["alt+p"]
@@ -139,70 +166,60 @@ keybindings:
     bindings: ["alt+o"]
   - commands: ["resize --height -2%"]
     bindings: ["alt+i"]
-  - commands: ["wm-enable-binding-mode --name resize"]
-    # As an alternative to the resize keybindings above, resize mode enables
 
-    # the name 'resize'.
-    # resizing via arrow keys or HJKL. The binding mode is defined above with
+  # バインディングモードの切り替え
+  - commands: ["wm-enable-binding-mode --name resize"]
     bindings: ["alt+r"]
   - commands: ["wm-enable-binding-mode --name pause"]
-    # Disables all keybindings until alt+shift+p is pressed again.
-
     bindings: ["alt+shift+p"]
+
+  # ウィンドウ分割方向のトグル
   - commands: ["toggle-tiling-direction"]
-    # Change tiling direction. This determines where new tiling windows will
-
-    # be inserted.
     bindings: ["alt+v"]
-    # bindings: ["alt+c"]
-  - commands: ["toggle-floating --centered"]
-    # Change focus from tiling windows -> floating -> fullscreen.
 
-    # Change the focused window to be floating.
-    # - commands: ["wm-cycle-focus"]
-    # Note: alt+space はランチャー用に予約．ここでは alt+shift+space のみ割り当て．
+  # ウィンドウ表示状態のトグル
+  # NOTE: alt+space はランチャー（Everything等）用に予約．ここでは alt+shift+space のみ割り当て．
+  - commands: ["toggle-floating --centered"]
     bindings: ["alt+shift+space"]
-  - commands: ["toggle-floating --centered"]
-    # フローティング↔タイリングをトグルする．
 
+  # フローティング↔タイリングをトグルする．
+  - commands: ["toggle-tiling"]
     bindings: ["alt+t"]
+
+  # フルスクリーン表示の切り替え
   - commands: ["toggle-fullscreen"]
-    # Change the focused window to be fullscreen.
-
     bindings: ["alt+f"]
+
+  # ウィンドウの最小化
   - commands: ["toggle-minimized"]
-    # Minimize focused window.
-
     bindings: ["alt+m"]
+
+  # ウィンドウを閉じる
   - commands: ["close"]
-    # Close focused window.
+    bindings: ["alt+shift+q", "alt+shift+w"]
 
-    bindings: ["alt+shift+q"]
+  # GlazeWMの安全な終了
   - commands: ["wm-exit"]
-    # Kill GlazeWM process safely.
-
     bindings: ["alt+shift+e"]
+
+  # 設定ファイルの再読み込み
   - commands: ["wm-reload-config"]
-    # Re-evaluate configuration file.
-
     bindings: ["alt+shift+r"]
+
+  # 画面の再描画
   - commands: ["wm-redraw"]
-    # Redraw all windows.
-
     bindings: ["alt+shift+w"]
-  - commands: ["focus --next-workspace"]
-    # Focus the next/previous workspace defined in `workspaces` config.
 
+  # ワークスペース間のフォーカス移動
+  - commands: ["focus --next-workspace"]
     bindings: ["alt+s"]
   - commands: ["focus --prev-workspace"]
     bindings: ["alt+a"]
   - commands: ["focus --recent-workspace"]
-    # Focus the workspace that last had focus.
-
     bindings: ["alt+d"]
-  - commands: ["focus --workspace 1"]
-    # Change focus to a workspace defined in `workspaces` config.
 
+  # 特定ワークスペースへのダイレクトジャンプ
+  - commands: ["focus --workspace 1"]
     bindings: ["alt+1"]
   - commands: ["focus --workspace 2"]
     bindings: ["alt+2"]
@@ -220,9 +237,9 @@ keybindings:
     bindings: ["alt+8"]
   - commands: ["focus --workspace 9"]
     bindings: ["alt+9"]
+
+  # ワークスペース全体のモニター間移動（マルチモニター環境用）
   - commands: ["move-workspace --direction left"]
-    # Move the focused window's parent workspace to a monitor in a given
-    # direction.
     bindings: ["alt+shift+a"]
   - commands: ["move-workspace --direction right"]
     bindings: ["alt+shift+f"]
@@ -230,9 +247,9 @@ keybindings:
     bindings: ["alt+shift+d"]
   - commands: ["move-workspace --direction down"]
     bindings: ["alt+shift+s"]
-  - commands: ["move --workspace 1", "focus --workspace 1"]
-    # Move focused window to a workspace defined in `workspaces` config.
 
+  # フォーカスウィンドウを別ワークスペースへ移動し，フォーカスも追従させる
+  - commands: ["move --workspace 1", "focus --workspace 1"]
     bindings: ["alt+shift+1"]
   - commands: ["move --workspace 2", "focus --workspace 2"]
     bindings: ["alt+shift+2"]

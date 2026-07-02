@@ -10,33 +10,8 @@ return {
     bigfile = { enabled = true },
     dashboard = {
       enabled = true,
-      preset = {
-        keys = {
-          { action = ":lua Snacks.dashboard.pick('files')",           key = "f", text = { { " ", hl = "SnacksDashboardIconCyan" }, { "Find File", hl = "SnacksDashboardWhite" } } },
-          { action = ":lua Snacks.dashboard.pick('oldfiles')",        key = "r", text = { { " ", hl = "SnacksDashboardIconGreen" }, { "Recent Files", hl = "SnacksDashboardWhite" } } },
-          { action = ":lua Snacks.dashboard.pick('live_grep')",       key = "g", text = { { " ", hl = "SnacksDashboardIconYellow" }, { "Find Text", hl = "SnacksDashboardWhite" } } },
-          { action = ":ene | startinsert",                            key = "n", text = { { " ", hl = "SnacksDashboardIconOrange" }, { "New File", hl = "SnacksDashboardWhite" } } },
-          { action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})", key = "c", text = { { " ", hl = "SnacksDashboardIconPurple" }, { "Config", hl = "SnacksDashboardWhite" } } },
-          { action = ":Lazy",                                         key = "l", text = { { "󰒲 ", hl = "SnacksDashboardIconBlue" }, { "Lazy", hl = "SnacksDashboardWhite" } } },
-          { action = "session",                                       key = "s", text = { { " ", hl = "SnacksDashboardIconPink" }, { "Restore Session", hl = "SnacksDashboardWhite" } } },
-          { action = ":qa",                                           key = "q", text = { { " ", hl = "SnacksDashboardIconRed" }, { "Quit", hl = "SnacksDashboardIconRed" } } },
-        },
-      },
-      sections = {
-        {
-          section = "header",
-          val = {
-            { type = "text", val = [[███╗   ██╗███████╗██╗██╗   ██╗██╗███╗   ███╗]], opts = { hl = "SnacksDashboardHeader1", position = "center" } },
-            { type = "text", val = [[████╗  ██║██╔════╝██║██║   ██║██║████╗ ████║]], opts = { hl = "SnacksDashboardHeader2", position = "center" } },
-            { type = "text", val = [[██╔██╗ ██║█████╗  ██║██║   ██║██║██╔████╔██║]], opts = { hl = "SnacksDashboardHeader3", position = "center" } },
-            { type = "text", val = [[██║╚██╗██║██╔══╝  ██║╚██╗ ██╔╝██║██║╚██╔╝██║]], opts = { hl = "SnacksDashboardHeader4", position = "center" } },
-            { type = "text", val = [[██║ ╚████║███████╗██║ ╚████╔╝ ██║██║ ╚═╝ ██║]], opts = { hl = "SnacksDashboardHeader5", position = "center" } },
-            { type = "text", val = [[╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝]], opts = { hl = "SnacksDashboardHeader6", position = "center" } },
-          },
-        },
-        { section = "keys", gap = 1, padding = 1 },
-        { section = "startup" },
-      },
+      preset = {},
+      -- sections は config 関数内で強制上書きします
     },
     indent = { enabled = true },
     input = { enabled = true },
@@ -46,6 +21,7 @@ return {
     statuscolumn = { enabled = true },
     words = { enabled = true },
     terminal = { enabled = true },
+    gitbrowse = { enabled = true },
     lazygit = {
       enabled = true,
       theme = {
@@ -54,6 +30,7 @@ return {
     },
   },
   keys = {
+    { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "x" } },
     { "<leader>lg", function() Snacks.lazygit() end, desc = "Lazygit" },
     { "<leader>lf", function() Snacks.lazygit.log_file() end, desc = "Lazygit Current File History" },
     { "<leader>ll", function() Snacks.lazygit.log() end, desc = "Lazygit Log (CWD)" },
@@ -63,6 +40,35 @@ return {
     { "<c-_>",      function() Snacks.terminal() end, desc = "which_key_ignore", mode = { "n", "t" } },
   },
   config = function(_, opts)
+    -- メニュー構成を上書き定義 (全体が中央に揃うように align = "center" を使用)
+    opts.dashboard.sections = {
+      {
+        section = "header",
+        val = {
+          { type = "text", val = [[███╗   ██╗███████╗██╗██╗   ██╗██╗███╗   ███╗]], opts = { hl = "SnacksDashboardHeader1", position = "center" } },
+          { type = "text", val = [[████╗  ██║██╔════╝██║██║   ██║██║████╗ ████║]], opts = { hl = "SnacksDashboardHeader2", position = "center" } },
+          { type = "text", val = [[██╔██╗ ██║█████╗  ██║██║   ██║██║██╔████╔██║]], opts = { hl = "SnacksDashboardHeader3", position = "center" } },
+          { type = "text", val = [[██║╚██╗██║██╔══╝  ██║╚██╗ ██╔╝██║██║╚██╔╝██║]], opts = { hl = "SnacksDashboardHeader4", position = "center" } },
+          { type = "text", val = [[██║ ╚████║███████╗██║ ╚████╔╝ ██║██║ ╚═╝ ██║]], opts = { hl = "SnacksDashboardHeader5", position = "center" } },
+          { type = "text", val = [[╚═╝  ╚═══╝╚══════╝╚═╝  ╚═══╝  ╚═╝╚═╝     ╚═╝]], opts = { hl = "SnacksDashboardHeader6", position = "center" } },
+        },
+      },
+      { section = "keys", gap = 1, padding = 1, align = "center" }, -- 両端揃えしたメニューを全体として中央寄せに
+      { section = "startup", icon = "" }, -- 起動メッセージから稲妻（⚡）絵文字を削除
+    }
+
+    -- 各メニュー項目の表示幅を「44」に統一し，アイコン色を戻しつつキーバインドを右端に配置
+    opts.dashboard.preset.keys = {
+      { action = ":lua Snacks.dashboard.pick('files')",           key = "f", text = { { " ", hl = "SnacksDashboardIconCyan" }, { "Find File", hl = "SnacksDashboardWhite" }, { string.rep(" ", 31) }, { "f", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":lua Snacks.dashboard.pick('oldfiles')",        key = "r", text = { { " ", hl = "SnacksDashboardIconGreen" }, { "Recent Files", hl = "SnacksDashboardWhite" }, { string.rep(" ", 28) }, { "r", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":lua Snacks.dashboard.pick('live_grep')",       key = "g", text = { { " ", hl = "SnacksDashboardIconYellow" }, { "Find Text", hl = "SnacksDashboardWhite" }, { string.rep(" ", 31) }, { "g", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":ene | startinsert",                            key = "n", text = { { " ", hl = "SnacksDashboardIconOrange" }, { "New File", hl = "SnacksDashboardWhite" }, { string.rep(" ", 32) }, { "n", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})", key = "c", text = { { " ", hl = "SnacksDashboardIconPurple" }, { "Config", hl = "SnacksDashboardWhite" }, { string.rep(" ", 34) }, { "c", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":Lazy",                                         key = "l", text = { { "󰒲 ", hl = "SnacksDashboardIconBlue" }, { "Lazy", hl = "SnacksDashboardWhite" }, { string.rep(" ", 36) }, { "l", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":lua require('persistence').load()",            key = "s", text = { { " ", hl = "SnacksDashboardIconPink" }, { "Restore Session", hl = "SnacksDashboardWhite" }, { string.rep(" ", 25) }, { "s", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":qa",                                           key = "q", text = { { " ", hl = "SnacksDashboardIconRed" }, { "Quit", hl = "SnacksDashboardIconRed" }, { string.rep(" ", 36) }, { "q", hl = "SnacksDashboardIconRed" } } },
+    }
+
     require("snacks").setup(opts)
   end,
 }

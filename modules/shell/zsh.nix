@@ -71,6 +71,12 @@
       vim     = "nvim";
       lg      = "lazygit";
 
+      # GitHub Copilot (Manual Install - v1.0.63+)
+      chat    = "copilot";
+      ask     = "copilot -i";
+      exp     = "copilot -i 'explain '";
+      copilot = "copilot";
+
       # モダンCLIユーティリティへの置き換え
       ls      = "eza --icons";
       ll      = "eza -alF --icons";
@@ -90,6 +96,11 @@
       bgemini   = "cp ~/.gemini/GEMINI.md ~/dotfiles/gemini/GEMINI.md && (cd ~/dotfiles && git add gemini/GEMINI.md && git commit -m \"chore: update GEMINI.md backup\" && git push) && echo \"GEMINI.md backed up.\"";
       gchat     = "agy -i";
       achat     = "agy -i";
+
+      # Raspberry Pi 3B SSHFS マウント操作
+      raspi-mount  = "mkdir -p ~/mnt/raspi && sshfs nalt@192.168.151.253:/home/nalt ~/mnt/raspi && echo 'raspi mounted at ~/mnt/raspi'";
+      raspi-umount = "fusermount -u ~/mnt/raspi && echo 'raspi unmounted'";
+      raspi        = "cd ~/mnt/raspi";
     };
 
     # ---------------------------------------------------------------------
@@ -239,25 +250,25 @@
           cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
           echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-          cp -r ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
+          cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
           echo "Syncing Komorebi config..."
           mkdir -p /mnt/c/Users/tnaru/.config/komorebi
-          cp ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
-          cp ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
-          cp ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
+          cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
+          cp -L ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
+          cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
           # 読み込みの確実性を高めるため、ホーム直下にも配置
-          cp ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
-          cp ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
+          cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
+          cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
           echo "Syncing YASB config..."
           mkdir -p /mnt/c/Users/tnaru/.config/yasb
-          cp -r ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
+          cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
       }
 
       # 8. 最新のスクリーンショットを Antigravity チャットへ連携する関数
-      # (i3wmで撮影した ~/Pictures/Screenshots/ 下の最新画像を sync)
+      # (撮影した ~/Pictures/Screenshots/ 下の最新画像を sync)
       function agy-ss() {
           local ss_dir="$HOME/Pictures/Screenshots"
           local latest_file=$(ls -t "$ss_dir"/Screenshot*.png 2>/dev/null | head -n 1)
@@ -277,9 +288,6 @@
           fi
       }
 
-      # 各自のローカル固有の環境変数を自動ソース化
-      [ -f ~/.env ] && source ~/.env
-
       # zoxide の初期化（nvmロード後に実行することで、nvm内部のcd処理との衝突を防ぐ）
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
 
@@ -290,4 +298,3 @@
     '';
   };
 }
-

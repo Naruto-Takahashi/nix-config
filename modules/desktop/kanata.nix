@@ -7,130 +7,14 @@
   # -----------------------------------------------------------------------
   # Kanata: キーボードリマッパー（宣言的キーマップ管理）
   # -----------------------------------------------------------------------
-  xdg.configFile."kanata/config.kbd".text = ''
-    (defcfg
-      process-unmapped-keys yes
-    )
-
-    ;; -------------------------------------------------------------------
-    ;; 物理キー監視対象の宣言 (defsrc)
-    ;; 実際のキーボードの物理配列に沿って視覚的に整列しています。
-    ;; -------------------------------------------------------------------
-    (defsrc
-      caps  lalt  spc   ralt
-      grv   1     2     3     4     5     6     7     8     9
-      tab   q     w     e     r     t     y     u     i     o     p     ret
-      a     s     d     f     h     j     k     l
-      z     x     c     v     b     n     m
-    )
-
-    ;; -------------------------------------------------------------------
-    ;; キーエイリアス（マッピング定義）
-    ;; -------------------------------------------------------------------
-    (defalias
-      ;; 左右Alt単押しでのIME切り替え (Tap: 英数/かな / Hold: 隠しレイヤー)
-      alt-eng  (tap-hold 200 200 muhenkan (layer-toggle alt-layer))
-      alt-jp   (tap-hold 200 200 henkan (layer-toggle alt-layer))
-
-      ;; CapsLock長押しでのCtrl化 (Tap: Esc -> 英数 / Hold: Left Ctrl)
-      esc-eng  (macro esc muhenkan)
-      cap-ctrl (tap-hold 200 200 @esc-eng lctl)
-
-      ;; スペースキー長押しでのナビゲーションレイヤー移行 (Tap: Space / Hold: Nav-Layer)
-      spc-nav  (tap-hold 200 200 spc (layer-toggle nav))
-
-      ;; =================================================================
-      ;; Alt長押し (Alt-Layer) 時の Super (lmet) ショートカットの定義
-      ;; =================================================================
-      hyp-q       (multi lmet lsft q)   ;; Alt + q   -> Super + Shift + q (閉じる)
-      hyp-d       (multi lmet d)        ;; Alt + Spc -> Super + d (Rofi起動)
-      hyp-ret     (multi lmet ret)      ;; Alt + Ent -> Super + Enter (端末起動)
-      hyp-tab     (multi lmet tab)      ;; Alt + Tab -> Super + Tab (窓一覧切り替え)
-      hyp-f       (multi lmet f)        ;; Alt + f   -> Super + f (フルスクリーン)
-      hyp-t       (multi lmet t)        ;; Alt + d   -> Super + t (タイリング復元)
-      hyp-sft-spc (multi lmet lsft spc) ;; Alt + t   -> Super + Shift + Space (浮動切替)
-
-      ;; 窓の直接リサイズ
-      hyp-u       (multi lmet u)        ;; Alt + u   -> Super + u (幅を縮小)
-      hyp-i       (multi lmet i)        ;; Alt + i   -> Super + i (高さを縮小)
-      hyp-o       (multi lmet o)        ;; Alt + o   -> Super + o (高さを拡大)
-      hyp-p       (multi lmet p)        ;; Alt + p   -> Super + p (幅を拡大)
-
-      ;; ワークスペース移動
-      hyp-s       (multi lmet s)        ;; Alt + s   -> Super + s (次のWSへ)
-      hyp-a       (multi lmet a)        ;; Alt + a   -> Super + a (前のWSへ)
-      hyp-grv     (multi lmet grv)      ;; Alt + `   -> Super + ` (直前のWSへ戻る)
-
-      ;; ワークスペース 1-9 へ切り替え
-      hyp-1       (multi lmet 1)
-      hyp-2       (multi lmet 2)
-      hyp-3       (multi lmet 3)
-      hyp-4       (multi lmet 4)
-      hyp-5       (multi lmet 5)
-      hyp-6       (multi lmet 6)
-      hyp-7       (multi lmet 7)
-      hyp-8       (multi lmet 8)
-      hyp-9       (multi lmet 9)
-
-      ;; ウィンドウの移動・最小化・分割方向
-      hyp-h       (multi lmet h)        ;; Alt + h   -> Super + h (左へフォーカス)
-      hyp-j       (multi lmet j)        ;; Alt + j   -> Super + j (下へフォーカス)
-      hyp-k       (multi lmet k)        ;; Alt + k   -> Super + k (上へフォーカス)
-      hyp-l       (multi lmet l)        ;; Alt + l   -> Super + l (右へフォーカス)
-      hyp-m       (multi lmet m)        ;; Alt + m   -> Super + m (最小化)
-      hyp-v       (multi lmet v)        ;; Alt + v   -> Super + v (分割トグル)
-    )
-
-    ;; -------------------------------------------------------------------
-    ;; デフォルトのベースレイヤー (通常時)
-    ;; -------------------------------------------------------------------
-    (deflayer base
-      @cap-ctrl @alt-eng @spc-nav @alt-jp
-      grv   1     2     3     4     5     6     7     8     9
-      tab   q     w     e     r     t     y     u     i     o     p     ret
-      a     s     d     f     h     j     k     l
-      _     _     _     _     _     _     _
-    )
-
-    ;; -------------------------------------------------------------------
-    ;; 左右Alt長押し時のエミュレーションレイヤー (Alt-Layer)
-    ;; すべての i3wm アクションが Alt キーの組み合わせだけで発動します。
-    ;; -------------------------------------------------------------------
-    (deflayer alt-layer
-      _     _     @hyp-d       _
-      @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
-      @hyp-tab @hyp-q _     _     _     @hyp-sft-spc _     @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
-      @hyp-a @hyp-s @hyp-t @hyp-f @hyp-h @hyp-j @hyp-k @hyp-l
-      _     _     _     @hyp-v _     _     @hyp-m
-    )
-
-    ;; -------------------------------------------------------------------
-    ;; スペース長押し時の高速ナビゲーションレイヤー (Nav-Layer)
-    ;; -------------------------------------------------------------------
-    (deflayer nav
-      _     _     _     _
-      _     _     _     _     _     _     _     _     _     _
-      _     _     _     end   _     _     _     C-z   _     _     _     _
-      home  _     _     _     left  down  up    right
-      _     del   _     _     bspc  _     _
-    )
-  '';
-
-  # -----------------------------------------------------------------------
-  # Kanata ユーザーサービスの宣言的管理
-  # -----------------------------------------------------------------------
-  systemd.user.services.kanata = {
-    Unit = {
-      Description   = "Kanata keyboard remapper";
-      Documentation = "https://github.com/jtroo/kanata";
-    };
-    Service = {
-      Environment = "PATH=${pkgs.kanata}/bin";
-      ExecStart   = "${pkgs.kanata}/bin/kanata --cfg /home/nalt/.config/kanata/config.kbd";
-      Restart     = "always";
-    };
-    Install = {
-      WantedBy = [ "default.target" ];
-    };
-  };
+  # Linux (NixOS) 向けの設定生成: 
+  # 1. Ctrl長押し時はそのまま通常の lctl 修飾キーにする (cap-ctrl-action -> lctl)
+  # 2. ウィンドウマネージャーのモディファイアは単一の Super (M-) にする (wmmodifier- -> M-)
+  xdg.configFile."kanata/config.kbd".text =
+    let
+      original = builtins.readFile ./config.kbd;
+      replaced1 = builtins.replaceStrings [ "cap-ctrl-action" ] [ "lctl" ] original;
+      replaced2 = builtins.replaceStrings [ "wmmodifier-" ] [ "M-" ] replaced1;
+    in
+      replaced2;
 }
