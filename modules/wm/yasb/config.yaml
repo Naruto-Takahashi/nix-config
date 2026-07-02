@@ -144,7 +144,7 @@ widgets:
       tooltip: true
       show_only_visible: true
       strict_filtering: true
-      monitor_exclusive: false
+      monitor_exclusive: true
       animation:
         enabled: true
       preview:
