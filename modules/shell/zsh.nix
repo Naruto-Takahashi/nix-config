@@ -259,6 +259,7 @@
           # 読み込みの確実性を高めるため、ホーム直下にも配置
           cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
           cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
+          rm -f "/mnt/c/Users/tnaru/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/komorebi.ahk"
           echo "Syncing YASB config..."
           mkdir -p /mnt/c/Users/tnaru/.config/yasb
           cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
