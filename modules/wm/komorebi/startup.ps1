@@ -4,7 +4,8 @@
 Start-Process "C:\Users\tnaru\.config\komorebi\komorebi.ahk"
 
 # 2. Komorebi
-Start-Process "komorebi.exe" -ArgumentList "start --masir" -WindowStyle Hidden
+$env:PATH += ";C:\Program Files\masir\bin"
+Start-Process "C:\Program Files\komorebi\bin\komorebic.exe" -ArgumentList "start --masir" -WindowStyle Hidden
 
 # 3. YASB
 Start-Process "C:\Program Files\YASB\yasb.exe"
