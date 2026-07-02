@@ -142,7 +142,7 @@ widgets:
     options:
       icon_size: 16
       tooltip: true
-      show_only_visible: false
+      show_only_visible: true
       strict_filtering: true
       monitor_exclusive: false
       animation:
