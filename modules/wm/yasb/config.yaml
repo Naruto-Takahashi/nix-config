@@ -36,7 +36,7 @@ bars:
         [
           "home",
           "komorebi_workspaces",
-          "active_window",
+          "taskbar",
         ]
       center:
         ["clock"]
@@ -137,17 +137,20 @@ widgets:
           next_track: ""
           play: "<span>\uf001</span>"
           pause: "<span>\uf001</span>"
-  active_window:
-    type: "yasb.active_window.ActiveWindowWidget"
+  taskbar:
+    type: "yasb.taskbar.TaskbarWidget"
     options:
-      label: "{win[title]}"
-      label_alt: "[class_name='{win[class_name]}' exe='{win[process][name]}' hwnd={win[hwnd]}]"
-      label_no_window: ""
-      label_icon: true
-      label_icon_size: 14
-      max_length: 36
-      max_length_ellipsis: "..."
+      icon_size: 14
+      tooltip: true
+      show_only_visible: false
       monitor_exclusive: true
+      title_label:
+        enabled: true
+        show: "always"
+        max_length: 20
+      callbacks:
+        on_left: "toggle_window"
+        on_right: "context_menu"
   volume:
     type: "yasb.volume.VolumeWidget"
     options:

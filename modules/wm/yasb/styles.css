@@ -129,12 +129,26 @@
     font-size: 14px;
     font-family: Bahnschrift;
 }
-/*ACTIVE WINDOW WIDGET*/
-.active-window-widget .label {
+/*TASKBAR WIDGET*/
+.taskbar-widget {
+    margin-left: 10px;
+}
+.taskbar-widget .taskbar-btn {
+    background-color: var(--bg);
+    color: var(--fg);
+    border-radius: 4px;
+    padding: 2px 8px;
+    margin-right: 6px;
+}
+.taskbar-widget .taskbar-btn.active {
+    background-color: #ffc20d;
+    color: #000;
+}
+.taskbar-widget .label {
     font-size: 14px;
     font-family: Bahnschrift;
 }
-.active-window-widget .icon {
+.taskbar-widget .icon {
     padding-right: 6px;
     border: none;
 }
