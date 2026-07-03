@@ -111,7 +111,28 @@
    Hide Title Bar & Window Controls
    ========================================================================== */
 #titlebar {
-    display: none !important;
+    display: flex !important;
+    background-color: transparent !important;
+    height: 24px !important; /* 高さを少し狭める */
+    align-items: center !important; /* 垂直中央揃え */
+    padding: 0 !important;
+    -webkit-app-region: drag !important; /* ウィンドウドラッグ有効化 */
+    
+    /* タイトルバーを画面最上部に強制固定 */
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    z-index: 9999 !important;
+
+    /* 自動非表示（通常時は透明，ホバー時に表示） */
+    opacity: 0 !important;
+    transition: opacity 0.2s ease-in-out !important;
+}
+
+/* タイトルバーにホバーしたときに表示 */
+#titlebar:hover {
+    opacity: 1 !important;
 }
 
 /* macOS風ウィンドウコントロール（最小化・最大化・閉じるボタン） */
@@ -235,7 +256,7 @@
     right: 0 !important; /* 右端に配置 */
     left: auto !important; /* 左側設定を解除 */
     z-index: 999 !important;
-    transform: translateX(calc(100% - 10px)) !important; /* 右端に10px残して判定エリアを縮小 */
+    transform: translateX(calc(100% - 4px)) !important; /* 右端に4px残して判定エリアをシビアに */
     opacity: 0 !important; /* 通常時は完全に透明にし，ノイズを排除 */
     transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
 }
@@ -253,27 +274,24 @@
     box-shadow: none !important;
 }
 
-/* 展開されたパネル部分 (タブバーと同じブラー背景) */
+/* 展開されたパネル部分の背景透明化・境界線削除 */
 .panel-group {
-    background-color: rgba(30, 30, 30, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* 各パネルコンテンツ (ブックマーク等の内部領域) */
+/* 各パネルコンテンツ自体の背景透明化・境界線削除 */
 .panel {
-    background-color: rgba(30, 30, 30, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* パネルヘッダーも同系統のブラー背景 */
+/* パネルヘッダーも透明化・境界線削除 */
 header.panel-header,
 .webpanel-header {
-    background-color: rgba(30, 30, 30, 0.2) !important;
-    backdrop-filter: blur(10px) !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
