@@ -1,1 +1,16 @@
-{}
+[
+  {
+    "name": "WezTerm",
+    "identifier": {
+      "kind": "Exe",
+      "id": "wezterm-gui.exe",
+      "matching_strategy": "Equals"
+    },
+    "invisible_borders": {
+      "top": 0,
+      "bottom": 8,
+      "left": 8,
+      "right": 8
+    }
+  }
+]

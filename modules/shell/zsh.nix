@@ -269,6 +269,10 @@
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
+          echo "Reloading Komorebi..."
+          /mnt/c/Program\ Files/komorebi/bin/komorebic.exe reload-configuration 2>/dev/null \
+              || echo "  (komorebi reload skipped — not running)"
+          echo "Done."
       }
 
       # 8. 最新のスクリーンショットを Antigravity チャットへ連携する関数
