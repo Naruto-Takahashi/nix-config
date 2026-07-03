@@ -11,4 +11,5 @@ result
 # Agent metadata
 .gemini/
 .antigravitycli/
+.claude/
 

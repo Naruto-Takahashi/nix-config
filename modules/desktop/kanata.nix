@@ -15,6 +15,9 @@
       original = builtins.readFile ./config.kbd;
       replaced1 = builtins.replaceStrings [ "cap-ctrl-action" ] [ "lctl" ] original;
       replaced2 = builtins.replaceStrings [ "wmmodifier-" ] [ "M-" ] replaced1;
+      # eisu/kana は macOS 専用の仮想キーで Linux 版 kanata には存在しないため、
+      # Linux で有効な IME 切り替えキー (JIS 無変換/変換) に置き換える
+      replaced3 = builtins.replaceStrings [ "eisu" "kana" ] [ "muhenkan" "henkan" ] replaced2;
     in
-      replaced2;
+      replaced3;
 }
