@@ -32,6 +32,21 @@ else
     cp -L "$SRC" "$DEST"
 fi
 
+# cava の波形色 (config.yaml 側) も抽出色に追従させる
+if [[ -f "$CACHE" ]]; then
+    pri="$(grep -m1 -- '--yellow:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    sec="$(grep -m1 -- '--green:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    ter="$(grep -m1 -- '--teal:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    cfg="/mnt/c/Users/tnaru/.config/yasb/config.yaml"
+    if [[ -n "$pri" && -n "$sec" && -n "$ter" && -f "$cfg" ]]; then
+        sed -i -E \
+            -e "s/(foreground: \")#[0-9a-fA-F]{6}/\1${ter}/" \
+            -e "s/(gradient_color_1: ')#[0-9a-fA-F]{6}/\1${pri}/" \
+            -e "s/(gradient_color_2: ')#[0-9a-fA-F]{6}/\1${sec}/" \
+            -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${ter}/" "$cfg"
+    fi
+fi
+
 # komorebi のフォーカス枠 (single/floating) もハイライト色に追従させる
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"

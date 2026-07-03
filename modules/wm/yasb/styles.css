@@ -53,14 +53,28 @@
 }
 /* 各ウィジェットを半透明のアイランドとして表示 */
 .widget {
-    padding: 0 8px;
-    margin: 2px 4px;
+    padding: 0 12px;
+    margin: 3px 4px;
     background-color: var(--island);
-    border-radius: 12px;
+    border-radius: 13px;
     border: 1px solid rgba(128, 128, 128, 0);
 }
 .widget .icon {
-    font-size: 18px;
+    font-size: 16px;
+    color: var(--icon);
+}
+/* cava と音量を1つの島に結合 (隣接辺のマージンと角丸を消す) */
+.cava-widget {
+    margin-right: 0;
+    padding-right: 8px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.volume-widget {
+    margin-left: 0;
+    padding-left: 8px;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
 }
 .widget .label {
     color: var(--text);
@@ -91,14 +105,11 @@
 }
 /*KOMOREBI WORKSPACES WIDGET*/
 .komorebi-workspaces {
-    margin-left: -6px;
-    margin-right: -6px;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    border-radius: 10px;
+    margin: 3px 4px;
+    border-radius: 13px;
 }
 .komorebi-workspaces .offline-status {
-    color: #282727;
+    color: var(--subtext0);
     font-size: 12px;
     padding: 0 4px;
     font-weight: 600;
@@ -124,10 +135,6 @@
     border-radius: 4px;
 }
 /*WEATHER WIDGET*/
-.weather-widget {
-    padding: 0;
-    padding-left: -5
-}
 .weather-widget .icon {
     color: var(--yellow);
     padding: 6px;
@@ -140,9 +147,9 @@
 .taskbar-widget {
     margin-left: 4px;
 }
-/* 非フォーカスウィンドウ: 黒い島・白文字 */
+/* 非フォーカスウィンドウ: 暗い島・通常文字色 */
 .taskbar-widget .app-container {
-    background-color: #000000;
+    background-color: var(--crust);
     border: none;
     border-radius: 6px;
     margin: 3px 3px;
@@ -155,13 +162,13 @@
     border-radius: 6px;
 }
 .taskbar-widget .app-container:hover {
-    background-color: #333333;
+    background-color: var(--surface2);
 }
 .taskbar-widget .app-container.foreground:hover {
     background-color: var(--highlight-hover);
 }
 .taskbar-widget .app-container .app-title {
-    color: #ffffff;
+    color: var(--text);
     font-size: 13px;
     font-family: Bahnschrift;
     padding-left: 4px;
@@ -217,10 +224,6 @@
     color: #c5c9c5;
     margin-top: -20px;
 }
-/*DISK WIDGET*/
-.disk-widget {
-    padding: 0;
-}
 /*DISK DROPDOWN*/
 .disk-group {
     background-color: var(--mantle);    
@@ -256,13 +259,9 @@
     color: rgba(197, 201, 197, 0.5);
 }
 /*AUDIO WIDGET*/
-.volume-widget {
-    margin-left: 0;
-    padding: 0;
-}
 .volume-widget .icon {
     padding: 0 6px;
-    color: #c5c9c5;
+    color: var(--icon);
 }
 .volume-widget .label {
     font-size: 14px;
@@ -289,23 +288,16 @@
 }
 
 /*MEDIA WIDGET*/
-.media-widget {
-	padding: 0;
-}
 .media-widget .label {
     font-family: Bahnschrift;
     font-size: 14px;
     padding: 0 0px;
 }
 .media-widget .btn {
-    color: #c5c9c5;
+    color: var(--text);
 }
 .media-widget .icon{
     padding: 0 6px;
-}
-/*WALLPAPERS WIDGET*/
-.wallpapers-widget {
-    padding: 0;
 }
 /*WALLPAPERS GALLERY*/
 .wallpapers-gallery-window {
@@ -339,9 +331,6 @@
     border: 4px solid var(--highlight);
 }
 /*POWER WIDGET*/
-.power-menu-widget {
-    padding-left: 0;
-}
 .power-menu-widget .label {
 	color: var(--red);
     font-size: 16px;
@@ -386,10 +375,6 @@
 }
 .power-menu-popup .button.cancel .label {
 	color: rgba(196, 116, 110, 0.95);
-}
-.cava-widget {
-    padding: 0;
-    margin-right: 0;
 }
 /*GITHUB WIDGET*/
 .github-widget {
