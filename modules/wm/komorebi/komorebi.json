@@ -93,21 +93,6 @@
 "id": "Files.exe",
 "matching_strategy": "Equals",
 }
-],
-
-"manage_with_delay": [
-    {
-    "kind": "Exe",
-    "id": "wezterm-gui.exe",
-    "matching_strategy": "Equals"
-    }
-],
-"has_border_overflow": [
-    {
-    "kind": "Exe",
-    "id": "wezterm-gui.exe",
-    "matching_strategy": "Equals"
-    }
 ]
 }
 
