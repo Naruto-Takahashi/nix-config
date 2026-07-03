@@ -217,13 +217,8 @@ widgets:
       label: "<span>{icon}</span> {percent}%"
       label_alt: "<span>{icon}</span> {percent}% {time_remaining}"
       update_interval: 30000
-      battery_icons:
-        - ""  # 0-20%
-        - ""  # 20-40%
-        - ""  # 40-60%
-        - ""  # 60-80%
-        - ""  # 80-100%
-      charging_icon: ""
+      charging_options:
+        icon_format: "{charging_icon}"
       callbacks:
         on_left: "toggle_label"
   disk:
