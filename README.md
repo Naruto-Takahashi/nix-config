@@ -19,6 +19,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | **共通 (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 75%半透明適用，動的タブタイトル，Leaderキー（`Ctrl+Space`）管理． |
 | **共通 (App)** | 📝 Neovim | [neovim.md](docs/neovim.md) | Lazy.nvimによる構成，高度なカスタムマクロとプラグイン群． |
 | **共通 (App)** | 📁 Yazi | [yazi.md](docs/yazi.md) | Cyberdreamテーマ透過ファイラー，シェル連携による移動同期． |
+| **NixOS ⇄ Windows** | 🖥️ Remote Desktop | [remote-desktop.md](docs/remote-desktop.md) | Tailscale + Sunshine/Moonlight による大学VPN不要の無人リモート接続． |
 
 ---
 
@@ -72,6 +73,9 @@ NixOSの公式インストーラで最小インストール（ユーザー名は
 
 3. **システムの再起動**  
    Kanata などのシステムサービスを完全に認識させるため，適用後は一度PCを再起動してください．
+
+4. **リモートデスクトップの初回認証（必要な場合）**  
+   Tailscaleのログインや Sunshine のペアリングなど，Nixで再現されない認証ステートの初期化手順は [remote-desktop.md](docs/remote-desktop.md) を参照してください．
 
 ---
 
