@@ -22,7 +22,7 @@
 },
   "border_colours": {
     "single": "#ffc20d",
-    "unfocused": "#9aa5ce",
+    "unfocused": "#c0c0c0",
     "floating": "#ffc20d"
   },
   "monitors": [
