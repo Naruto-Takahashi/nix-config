@@ -8,11 +8,12 @@
   "default_workspace_padding": 6,
   "default_container_padding": 6,
   "border": true,
+  "border_implementation": "Windows",
   "border_width": 4,
   "border_offset": 0,
   "mouse_follows_focus": true,
   "animation": {
-    "enabled": false,
+    "enabled": true,
     "duration": 200,
     "fps": 60,
     "style": {
