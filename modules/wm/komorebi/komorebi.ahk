@@ -17,32 +17,10 @@ SetWorkingDir %A_ScriptDir%
 !j::Run, komorebic focus down, , Hide
 
 ; --- Move (Swap in Komorebi) ---
-; After swap, re-activate the focused window to fire EVENT_SYSTEM_FOREGROUND
-; so komorebi redraws the border at the new position.
-!+h::
-    Run, komorebic move left, , Hide
-    Sleep, 80
-    hwnd := WinExist("A")
-    WinActivate, ahk_id %hwnd%
-Return
-!+l::
-    Run, komorebic move right, , Hide
-    Sleep, 80
-    hwnd := WinExist("A")
-    WinActivate, ahk_id %hwnd%
-Return
-!+k::
-    Run, komorebic move up, , Hide
-    Sleep, 80
-    hwnd := WinExist("A")
-    WinActivate, ahk_id %hwnd%
-Return
-!+j::
-    Run, komorebic move down, , Hide
-    Sleep, 80
-    hwnd := WinExist("A")
-    WinActivate, ahk_id %hwnd%
-Return
+!+h::Run, komorebic move left, , Hide
+!+l::Run, komorebic move right, , Hide
+!+k::Run, komorebic move up, , Hide
+!+j::Run, komorebic move down, , Hide
 
 ; --- Resize (Reproducing GlazeWM alt+u/p/o/i) ---
 !u::Run, komorebic resize-edge right -50, , Hide
