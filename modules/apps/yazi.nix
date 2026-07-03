@@ -77,14 +77,20 @@
     ---@diagnostic disable: undefined-global
 
     -- matugen 配色 (フォールバック #e46876)。無い環境ではフォールバックを使用
+    -- yazi の Lua ランタイムでは dofile が使えないため io.open + パターンマッチで読む
     local path_color = "#e46876"
     do
-      local home = os.getenv("HOME")
-      if home then
-        local ok, t = pcall(dofile, home .. "/.cache/matugen/colors.lua")
-        if ok and type(t) == "table" and t.accent then
-          path_color = t.accent
-        end
+      local ok, res = pcall(function()
+        local home = os.getenv("HOME")
+        if not home then return nil end
+        local fh = io.open(home .. "/.cache/matugen/colors.lua", "r")
+        if not fh then return nil end
+        local s = fh:read("*a")
+        fh:close()
+        return s:match('accent%s*=%s*"(#%x+)"')
+      end)
+      if ok and res then
+        path_color = res
       end
     end
 
