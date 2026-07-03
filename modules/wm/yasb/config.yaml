@@ -34,7 +34,6 @@ bars:
     widgets:
       left:
         [
-          "home",
           "komorebi_workspaces",
           "taskbar",
         ]

@@ -34,7 +34,8 @@
     --crust: rgba(13, 12, 12, 1);
     --highlight: #ffc20d;
     --highlight-hover: #e0ab00;
-    --island: rgba(24, 22, 22, 0.65);
+    --island: rgba(24, 22, 22, 0.4);
+    --island-inner: rgba(13, 12, 12, 0.55);
     --accent-sub: #8ea4a2;
 }
 /* MATUGEN:END */
@@ -160,7 +161,7 @@
 }
 /* 非フォーカスウィンドウ: 暗い島・通常文字色 */
 .taskbar-widget .app-container {
-    background-color: var(--crust);
+    background-color: var(--island-inner);
     border: none;
     border-radius: 8px;
     margin: 4px 4px;

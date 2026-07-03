@@ -141,16 +141,6 @@
         old_build(self, ...)
       end
     end)
-
-    -- user@host ヘッダー (デフォルトの cwd 表示の左に追加)
-    pcall(function()
-      Header:children_add(function()
-        return ui.Line {
-          ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(),
-          ui.Span(":"):fg("#ebdbb2"),
-        }
-      end, 500, Header.LEFT)
-    end)
   '';
 
   # フレーバーリポジトリの配置

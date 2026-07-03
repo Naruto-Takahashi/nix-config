@@ -32,6 +32,7 @@
     --crust: {{colors.surface_container_lowest.default.hex}};
     --highlight: {{colors.primary.default.hex}};
     --highlight-hover: {{colors.primary_container.default.hex}};
-    --island: {{colors.surface.default.rgba | set_alpha: 0.65}};
+    --island: {{colors.surface.default.rgba | set_alpha: 0.4}};
+    --island-inner: {{colors.surface_container_lowest.default.rgba | set_alpha: 0.55}};
     --accent-sub: {{colors.tertiary.default.hex}};
 }

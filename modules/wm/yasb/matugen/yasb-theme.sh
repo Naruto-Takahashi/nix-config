@@ -16,9 +16,18 @@ if [[ "${1:-}" != "--reapply" ]]; then
     if [[ "$img" == *\\* || "$img" == [A-Za-z]:* ]]; then
         img="$(wslpath "$img")"
     fi
+else
+    # --reapply: 記録済みの壁紙があればそこから完全再生成 (テンプレート更新を反映するため)
+    img=""
+    [[ -f "$HOME/.cache/matugen/last-wallpaper" ]] && img="$(cat "$HOME/.cache/matugen/last-wallpaper")"
+    [[ -f "$img" ]] || img=""
+fi
+
+if [[ -n "${img:-}" ]]; then
     # --source-color-index 0: 候補色の対話選択を回避し最有力色を自動採用 (非TTYで必須)
     matugen image "$img" -m dark --source-color-index 0 \
         -c "$HOME/.config/yasb/matugen/config.toml"
+    printf '%s\n' "$img" > "$HOME/.cache/matugen/last-wallpaper"
 fi
 
 if [[ -f "$CACHE" ]]; then
