@@ -13,8 +13,8 @@
   "mouse_follows_focus": true,
   "animation": {
     "enabled": true,
-    "duration": 150,
-    "fps": 300,
+    "duration": 200,
+    "fps": 60,
     "style": {
         "movement":"EaseInOutQuad",
         "transparency": "Linear"

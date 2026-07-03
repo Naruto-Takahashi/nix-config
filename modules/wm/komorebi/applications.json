@@ -6,6 +6,7 @@
       "id": "wezterm-gui.exe",
       "matching_strategy": "Equals"
     },
+    "slow_application_compensation": true,
     "invisible_borders": {
       "top": 0,
       "bottom": 8,
