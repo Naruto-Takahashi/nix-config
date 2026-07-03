@@ -95,7 +95,7 @@
 },
 {
 "kind": "Exe",
-"id": "PowerToys.CommandPalette.exe",
+"id": "Microsoft.CmdPal.UI.exe",
 "matching_strategy": "Equals",
 }
 ]
