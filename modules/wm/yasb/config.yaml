@@ -8,7 +8,7 @@ komorebi:
 bars:
   primary-bar:
     enabled: true
-    screens: ['*'] 
+    screens: ['*']
     class_name: "yasb-bar"
     alignment:
       position: "top"
@@ -57,7 +57,7 @@ widgets:
   home:
     type: "yasb.home.HomeWidget"
     options:
-      label: "<span>\udb80\udf5c</span>"
+      label: "<span>󰍜</span>"
       menu_list:
       - { title: "Home", path: "~" }
       - { title: "Downloads", path: "C:\\Users\\tnaru\\Downloads"}
@@ -71,7 +71,7 @@ widgets:
       round_corners_type: "normal"
       border_color: ""
       distance: 5
-      container_padding: 
+      container_padding:
         top: 0
         left: 0
         bottom: 0
@@ -90,7 +90,7 @@ widgets:
   komorebi_workspaces:
     type: "komorebi.workspaces.WorkspaceWidget"
     options:
-        label_offline: "\u26a1 Offline"
+        label_offline: "⚡ Offline"
         label_workspace_btn: ""
         label_workspace_active_btn: ""
         label_workspace_populated_btn: ""
@@ -111,16 +111,16 @@ widgets:
       callbacks:
         on_left: "toggle_label"
       icons:
-        sunnyDay: "\udb81\udd99"
-        clearNight: "\udb81\udd99"
-        cloudyDay: "\udb81\udd99"
-        cloudyNight: "\udb81\udd99"
-        rainyDay: "\udb81\udd99"
-        rainyNight: "\udb81\udd99"
-        snowyIcyDay: "\udb81\udd99"
-        snowyIcyNight: "\udb81\udd99"
-        blizzardDay: "\udb81\udd99"
-        default: "\udb81\udd99" 
+        sunnyDay: "󰖙"
+        clearNight: "󰖙"
+        cloudyDay: "󰖙"
+        cloudyNight: "󰖙"
+        rainyDay: "󰖙"
+        rainyNight: "󰖙"
+        snowyIcyDay: "󰖙"
+        snowyIcyNight: "󰖙"
+        blizzardDay: "󰖙"
+        default: "󰖙"
   media:
       type: "yasb.media.MediaWidget"
       options:
@@ -144,8 +144,8 @@ widgets:
         icons:
           prev_track: ""
           next_track: ""
-          play: "<span>\uf001</span>"
-          pause: "<span>\uf001</span>"
+          play: "<span></span>"
+          pause: "<span></span>"
   taskbar:
     type: "yasb.taskbar.TaskbarWidget"
     options:
@@ -177,11 +177,11 @@ widgets:
       label: "<span>{icon}</span> {level}"
       label_alt: "{volume}"
       volume_icons:
-        - "\ueee8"  # Icon for muted
-        - "\uf026"  # Icon for 0-10% volume
-        - "\uf027"  # Icon for 11-30% volume
-        - "\uf027"  # Icon for 31-60% volume
-        - "\uf028"  # Icon for 61-100% volume
+        - ""  # Icon for muted
+        - ""  # Icon for 0-10% volume
+        - ""  # Icon for 11-30% volume
+        - ""  # Icon for 31-60% volume
+        - ""  # Icon for 61-100% volume
       callbacks:
         on_right: "exec cmd.exe /c start ms-settings:sound"
   clock:
@@ -196,7 +196,7 @@ widgets:
     type: "yasb.cpu.CpuWidget"
     options:
       label: "<span></span> {info[percent][total]}%"
-      label_alt: "<span></span> {info[percent][total]}% | {info[freq][current]:.1f}GHz"
+      label_alt: "<span></span> {info[percent][total]}% {info[freq][current]:.1f}GHz"
       update_interval: 2000
       callbacks:
         on_left: "toggle_label"
@@ -204,7 +204,7 @@ widgets:
     type: "yasb.memory.MemoryWidget"
     options:
       label: "<span></span> {virtual_mem_percent}%"
-      label_alt: "<span></span> {virtual_mem_used:.1f}/{virtual_mem_total:.1f}GB"
+      label_alt: "<span></span> {virtual_mem_used:.1f}/{virtual_mem_total:.1f} GB"
       update_interval: 5000
       memory_thresholds:
         low: 25
@@ -215,26 +215,31 @@ widgets:
   battery:
     type: "yasb.battery.BatteryWidget"
     options:
-      label: "{icon}"
-      label_alt: "{icon} {percent}%"
+      label: "<span>{icon}</span> {percent}%"
+      label_alt: "<span>{icon}</span> {percent}% {time_remaining}"
       update_interval: 30000
-      charging_options:
-        icon_format: "{charging_icon}"
+      battery_icons:
+        - ""  # 0-20%
+        - ""  # 20-40%
+        - ""  # 40-60%
+        - ""  # 60-80%
+        - ""  # 80-100%
+      charging_icon: ""
       callbacks:
         on_left: "toggle_label"
   network:
-    type: "yasb.traffic.TrafficWidget"
+    type: "yasb.network.NetworkWidget"
     options:
-      label: "<span>󰃹</span> {download_speed} <span>󰃻</span> {upload_speed}"
-      label_alt: "<span>󰃹</span> {download_speed} <span>󰃻</span> {upload_speed}"
-      update_interval: 2000
+      label: "<span></span> {wifi_ssid}"
+      label_alt: "<span></span> {wifi_ssid} {wifi_strength}%"
+      update_interval: 5000
       callbacks:
         on_left: "toggle_label"
   disk:
     type: "yasb.disk.DiskWidget"
     options:
-        label: "<span>\uf473</span>"
-        label_alt: "<span>\uf473</span>"
+        label: "<span></span>"
+        label_alt: "<span></span>"
         update_interval: 60
         group_label:
           volume_labels: ["C", "D", "E", "F"]
@@ -253,7 +258,7 @@ widgets:
   wallpapers:
     type: "yasb.wallpapers.WallpapersWidget"
     options:
-      label: "<span>\udb83\ude09</span>"
+      label: "<span>󰸉</span>"
       image_path: "C:\\Users\\tnaru\\OneDrive\\画像\\wallpapers"
       change_automatically: false
       update_interval: 60
@@ -276,18 +281,18 @@ widgets:
   power_menu:
       type: "yasb.power_menu.PowerMenuWidget"
       options:
-        label: "\uf011"
+        label: ""
         uptime: True
         blur: False
         blur_background: True
-        animation_duration: 250 # Milisecond 
+        animation_duration: 250 # Milisecond
         button_row: 5 # Number of buttons in row, min 1 max 5
         buttons:
-          signout: ["\udb80\udf43","Sign out"]
-          shutdown: ["\uf011","Shut Down"]
-          restart: ["\uead2","Restart"]
-          hibernate: ["\uf28e","Hibernate"]
-          cancel: ["\udb81\udf3a","Cancel"]
+          signout: ["󰍃","Sign out"]
+          shutdown: ["","Shut Down"]
+          restart: ["","Restart"]
+          hibernate: ["","Hibernate"]
+          cancel: ["󰜺","Cancel"]
   cava:
     type: "yasb.cava.CavaWidget"
     options:
@@ -312,17 +317,17 @@ widgets:
   github:
     type: "yasb.github.GithubWidget"
     options:
-      label: "<span>\ueba1</span>"
+      label: "<span></span>"
       label_alt: "Notifications {data}" # {data} return number of unread notification
       token: env # GitHub Personal access tokens (classic) https://github.com/settings/tokens
       max_notification: 20 # Max number of notification displaying in menu max: 50
-      only_unread: false # Show only unread or all notifications; 
+      only_unread: false # Show only unread or all notifications;
       max_field_size: 54 # Max characters in title before truncation.
       update_interval: 300 # Check for new notification in seconds
       menu:
         blur: True # Enable blur effect for the menu
         round_corners: True # Enable round corners for the menu (this option is not supported on Windows 10)
-        round_corners_type: "normal" # Set the type of round corners for the menu (normal, small) (this option is not supported on Windows 10)
+        round_corners_type: "normal" # Set the type of round corners for the menu (this option is not supported on Windows 10)
         border_color: "System" # Set the border color for the menu (this option is not supported on Windows 10)
         alignment: "right"
         direction: "down"
