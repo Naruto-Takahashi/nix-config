@@ -273,6 +273,15 @@
     -webkit-backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
+    margin: 0 !important;
+}
+
+/* #switch と .panel-group の隙間を除去 */
+#panels-container {
+    gap: 0 !important;
+}
+.panel-group {
+    margin: 0 !important;
 }
 
 /* 展開されたパネル部分: タブバーと同じ値で直接 blur をかける */
