@@ -6,10 +6,10 @@ palette = "matugen"
 
 format = """
 $directory\
-[ ](fg:accent bg:dark)\
+[](fg:accent bg:dark)\
 $git_branch\
 $git_status\
-[ ](fg:dark)\
+[](fg:dark)\
 \n$character\
 """
 
@@ -37,9 +37,9 @@ format = '[ $path ]($style)[$read_only]($read_only_style)'
 
 [directory.substitutions]
 "Documents" = "󰈙 "
-"Downloads" = " "
-"Music" = " "
-"Pictures" = " "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
 
 [aws]
 disabled = true
@@ -47,7 +47,7 @@ disabled = true
 disabled = true
 
 [git_branch]
-symbol = ""
+symbol = ""
 style = "bg:dark"
 format = '[[ $symbol $branch ](fg:accent bg:dark)]($style)'
 
@@ -58,12 +58,12 @@ format = '[[($all_status$ahead_behind )](fg:accent bg:dark)]($style)'
 [cmd_duration]
 min_time = 1
 style = 'fg:accent_sub'
-format = "[[  ](fg:muted) $duration]($style)"
+format = "[[  ](fg:muted) $duration]($style)"
 
 [time]
 disabled = false
 time_format = "%R"
-format = '[[   $time ](fg:muted)]($style)'
+format = '[[   $time ](fg:muted)]($style)'
 
 [character]
 success_symbol = "[❯](bold accent)"
