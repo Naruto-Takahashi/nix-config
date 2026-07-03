@@ -140,6 +140,40 @@
     };
   };
 
+  # 再起動後の無人リモート復帰: 自動ログインでグラフィカルセッション (= Sunshine) を自動起動
+  services.displayManager.autoLogin = {
+    enable = true;
+    user = "nalt";
+  };
+  # GDM 自動ログインの既知バグ回避 (https://github.com/NixOS/nixpkgs/issues/103746)
+  systemd.services."getty@tty1".enable = false;
+  systemd.services."autovt@tty1".enable = false;
+
+  # 無人運用中にサスペンドしてリモート接続が切れないようにする
+  systemd.targets.sleep.enable = false;
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hibernate.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+
+  # リモートアクセス (Windowsノート → 研究室PC)
+  # Tailscale で大学NATを越え、Sunshine (KMSキャプチャ) で Wayland 無人接続、SSH は復旧用
+  services.tailscale.enable = true;
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
+  services.sunshine = {
+    enable = true;
+    package = pkgs.sunshine.override { cudaSupport = true; }; # NVENC ハードウェアエンコード有効化
+    autoStart = true;
+    capSysAdmin = true; # KMS キャプチャに必要 (ログイン画面も取得可能)
+    openFirewall = false; # 大学LANには公開せず Tailscale (trustedInterfaces) 経由のみ許可
+  };
+
+  services.openssh = {
+    enable = true;
+    openFirewall = false; # 大学LANには公開せず Tailscale (trustedInterfaces) 経由のみ許可
+    settings.PasswordAuthentication = true;
+  };
+
   # システム全体で利用可能なフォントの追加
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
