@@ -22,8 +22,9 @@
     config.font = wezterm.font 'HackGen Console NF'
     config.adjust_window_size_when_changing_font_size = false
 
-    -- OS判定（macOSかどうか）
+    -- OS判定（macOSおよびWindowsかどうか）
     local is_darwin = wezterm.target_triple:find("darwin") ~= nil
+    local is_windows = wezterm.target_triple:find("windows") ~= nil
 
     -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
     local display = os.getenv("DISPLAY") or ""
@@ -39,11 +40,15 @@
     config.window_background_opacity = 0.75
     config.macos_window_background_blur = 20
 
+    if is_windows then
+      config.tiling_desktop_environments = { "komorebi" }
+    end
+
     ----------------------------------------------------
     -- Tab
     ----------------------------------------------------
     -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
-    config.window_decorations = is_darwin and "RESIZE" or "NONE"
+    config.window_decorations = (is_darwin or is_windows) and "RESIZE" or "NONE"
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか

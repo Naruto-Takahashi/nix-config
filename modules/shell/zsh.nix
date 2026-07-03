@@ -251,12 +251,21 @@
           echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
           cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
-          echo "Syncing GlazeWM config..."
-          mkdir -p /mnt/c/Users/tnaru/.glzr/glazewm
-          cp -rL ~/.config/glazewm/config.yaml /mnt/c/Users/tnaru/.glzr/glazewm/
-          echo "Syncing Zebar config..."
-          mkdir -p /mnt/c/Users/tnaru/.glzr/zebar
-          cp -rL ~/.config/zebar/* /mnt/c/Users/tnaru/.glzr/zebar/
+          echo "Syncing Komorebi config..."
+          mkdir -p /mnt/c/Users/tnaru/.config/komorebi
+          cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
+          cp -L ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
+          cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
+          # 読み込みの確実性を高めるため、ホーム直下にも配置
+          cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
+          cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
+          rm -f "/mnt/c/Users/tnaru/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/komorebi.ahk"
+          # スタートアップ・環境構築スクリプトの同期
+          cp -L ~/.config/komorebi/startup.ps1 /mnt/c/Users/tnaru/Tools/Customization/
+          cp -L ~/.config/komorebi/setup-windows.ps1 /mnt/c/Users/tnaru/Tools/Customization/
+          echo "Syncing YASB config..."
+          mkdir -p /mnt/c/Users/tnaru/.config/yasb
+          cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
