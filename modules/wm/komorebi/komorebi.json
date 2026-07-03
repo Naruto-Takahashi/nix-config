@@ -97,6 +97,26 @@
 "kind": "Exe",
 "id": "Microsoft.CmdPal.UI.exe",
 "matching_strategy": "Equals",
+},
+{
+"kind": "Exe",
+"id": "SnippingTool.exe",
+"matching_strategy": "Equals",
+},
+{
+"kind": "Exe",
+"id": "ScreenClippingHost.exe",
+"matching_strategy": "Equals",
+},
+{
+"kind": "Title",
+"id": "切り取り領域とスケッチ",
+"matching_strategy": "Contains",
+},
+{
+"kind": "Title",
+"id": "Snipping Tool",
+"matching_strategy": "Contains",
 }
 ]
 }
