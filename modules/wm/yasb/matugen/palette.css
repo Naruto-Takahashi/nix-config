@@ -30,4 +30,6 @@
     --basetransparent: {{colors.surface.default.hex}};
     --mantle: {{colors.surface_container_low.default.hex}};
     --crust: {{colors.surface_container_lowest.default.hex}};
+    --highlight: {{colors.primary.default.hex}};
+    --highlight-hover: {{colors.primary_container.default.hex}};
 }
