@@ -266,9 +266,11 @@
     opacity: 1 !important;
 }
 
-/* パネルスイッチ（アイコン列）の背景透明化・境界線削除 */
+/* パネルスイッチ（アイコン列）: タブバーと同じ blur+bg */
 #switch {
-    background-color: transparent !important;
+    background-color: rgba(30, 30, 30, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
