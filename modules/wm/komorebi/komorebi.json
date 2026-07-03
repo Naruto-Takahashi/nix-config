@@ -92,6 +92,11 @@
 "kind": "Exe",
 "id": "Files.exe",
 "matching_strategy": "Equals",
+},
+{
+"kind": "Exe",
+"id": "PowerToys.CommandPalette.exe",
+"matching_strategy": "Equals",
 }
 ]
 }
