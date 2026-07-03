@@ -241,9 +241,8 @@
    Panel Transparency & No Borders
    ========================================================================== */
 #panels-container {
-    /* ダークグレーのすりガラス効果 */
-    background-color: rgba(30, 30, 30, 0.3) !important; /* 30%の究極の透明感へ復帰 */
-    backdrop-filter: blur(10px) !important;
+    /* コンテナ自体は透明: 子の .panel-group が blur+bg を担う */
+    background-color: transparent !important;
     border: none !important;
     border-left: none !important; /* 実線を廃止 */
     border-radius: 8px 0 0 8px !important; /* 左側の角を丸めてフローティング化 */
@@ -274,14 +273,16 @@
     box-shadow: none !important;
 }
 
-/* 展開されたパネル部分: 親の blur+bg に任せて子は完全透明 */
+/* 展開されたパネル部分: タブバーと同じ値で直接 blur をかける */
 .panel-group {
-    background-color: transparent !important;
+    background-color: rgba(30, 30, 30, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* 各パネルコンテンツ (ブックマーク等の内部領域) */
+/* 各パネルコンテンツ: panel-group に重ならないよう透明 */
 .panel {
     background-color: transparent !important;
     border: none !important;
