@@ -274,16 +274,16 @@
     box-shadow: none !important;
 }
 
-/* 展開されたパネル部分: 親の blur を活かすため backdrop-filter は持たない */
+/* 展開されたパネル部分: 親の blur+bg に任せて子は完全透明 */
 .panel-group {
-    background-color: rgba(30, 30, 30, 0.3) !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
 
 /* 各パネルコンテンツ (ブックマーク等の内部領域) */
 .panel {
-    background-color: rgba(30, 30, 30, 0.3) !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
@@ -291,7 +291,7 @@
 /* パネルヘッダー */
 header.panel-header,
 .webpanel-header {
-    background-color: rgba(30, 30, 30, 0.2) !important;
+    background-color: transparent !important;
     border: none !important;
     box-shadow: none !important;
 }
