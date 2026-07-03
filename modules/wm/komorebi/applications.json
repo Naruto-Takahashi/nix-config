@@ -1,11 +1,11 @@
-[
-  {
-    "name": "WezTerm",
-    "identifier": {
-      "kind": "Exe",
-      "id": "wezterm-gui.exe",
-      "matching_strategy": "Equals"
-    },
-    "slow_application_compensation": true
+{
+  "WezTerm": {
+    "slow_application": [
+      {
+        "kind": "Exe",
+        "id": "wezterm-gui.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
   }
-]
+}
