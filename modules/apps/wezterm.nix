@@ -17,6 +17,21 @@
     local wezterm = require("wezterm")
     local config = wezterm.config_builder()
 
+    -- 配色: フォールバック値。matugen-colors.lua があれば上書き (yasb-theme が生成)
+    -- 他環境 (Linuxデスクトップ/mac) ではファイルが無くフォールバックがそのまま使われる
+    local colors = {
+      accent = "#ffc20d",
+      accent_sub = "#8ea4a2",
+      text = "#c5c9c5",
+      muted = "#a0a9cb",
+      surface = "#333333",
+      on_accent = "#ffffff",
+    }
+    local ok, m = pcall(require, "matugen-colors")
+    if ok and type(m) == "table" then
+      for k, v in pairs(m) do colors[k] = v end
+    end
+
     config.automatically_reload_config = true
     config.scrollback_lines = 3000
     config.font = wezterm.font 'HackGen Console NF'
@@ -78,30 +93,30 @@
       tab_bar = {
         background = "none",
         active_tab = {
-          bg_color = "#ffc20d",
-          fg_color = "#ffffff",
+          bg_color = colors.accent,
+          fg_color = colors.on_accent,
         },
         inactive_tab = {
-          bg_color = "#333333",
-          fg_color = "#a0a9cb",
+          bg_color = colors.surface,
+          fg_color = colors.muted,
         },
         inactive_tab_hover = {
           bg_color = "#444444",
-          fg_color = "#ffffff",
+          fg_color = colors.text,
         },
         new_tab = {
-          bg_color = "#333333",
-          fg_color = "#ffffff",
+          bg_color = colors.surface,
+          fg_color = colors.text,
         },
         new_tab_hover = {
-          bg_color = "#ffc20d",
-          fg_color = "#ffffff",
+          bg_color = colors.accent,
+          fg_color = colors.on_accent,
         },
         inactive_tab_edge = "none",
       },
-      cursor_bg = '#ffc20d',
+      cursor_bg = colors.accent,
       cursor_fg = 'white',
-      cursor_border = '#ffc20d',
+      cursor_border = colors.accent,
     }
 
     -- タブの形をカスタマイズ
@@ -111,14 +126,14 @@
     local SOLID_RIGHT_ARROW = wezterm.nerdfonts.ple_upper_left_triangle
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      local background = "#333333"
-      local foreground = "#f0f0f0"
+      local background = colors.surface
+      local foreground = colors.text
       local edge_background = "none"
       local edge_foreground = background
 
       if tab.is_active then
-        background = "#ffc20d"
-        foreground = "#FFFFFF"
+        background = colors.accent
+        foreground = colors.on_accent
         edge_foreground = background
       end
 
