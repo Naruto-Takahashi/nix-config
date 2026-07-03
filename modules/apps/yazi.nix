@@ -76,6 +76,18 @@
   xdg.configFile."yazi/init.lua".text = ''
     ---@diagnostic disable: undefined-global
 
+    -- matugen 配色 (フォールバック #e46876)。無い環境ではフォールバックを使用
+    local path_color = "#e46876"
+    do
+      local home = os.getenv("HOME")
+      if home then
+        local ok, t = pcall(dofile, home .. "/.cache/matugen/colors.lua")
+        if ok and type(t) == "table" and t.accent then
+          path_color = t.accent
+        end
+      end
+    end
+
     -- Full borders and vertical separators logic
     -- Yaziのバージョンによってグローバル変数が異なるため、安全にチェック
     local m = Manager or mgr
@@ -98,7 +110,7 @@
         end
     end
 
-    -- ヘッダーのカスタマイズ (パスを赤色に)
+    -- ヘッダーのカスタマイズ (パスを matugen アクセント色に)
     local h = Header or header
     if h then
         function h:render(area)
@@ -107,7 +119,7 @@
             local left = ui.Line {
                 ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(true),
                 ui.Span(":"):fg("#ebdbb2"),
-                ui.Span(ya.readable_path(tostring(self._current.cwd))):fg("#e46876"),
+                ui.Span(ya.readable_path(tostring(self._current.cwd))):fg(path_color),
             }
             return ui.Canvas(area, function(c)
                 c:draw_str(left, chunks[1].x, chunks[1].y)

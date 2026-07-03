@@ -14,6 +14,9 @@ vim.cmd("set cursorline")   -- カーソル行をハイライト
 vim.cmd("set cursorcolumn") -- カーソル列をハイライト
 vim.g.mapleader = " "       -- スペースキーをリーダーキーにする（Typecraft推奨）
 
+-- matugen 配色 (フォールバック付き)
+local mc = require("matugen")
+
 -- Transparency settings (背景透過設定)
 vim.api.nvim_create_autocmd("ColorScheme", {
     pattern = "*",
@@ -50,27 +53,27 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 
         -- Diagnostic Colors (エラーを赤，警告・情報・ヒントをゴールド化)
         hl(0, "DiagnosticError", { fg = "#fb4934" })
-        hl(0, "DiagnosticWarn", { fg = "#ffc20d" })
-        hl(0, "DiagnosticInfo", { fg = "#ffc20d" })
-        hl(0, "DiagnosticHint", { fg = "#ffc20d" })
+        hl(0, "DiagnosticWarn", { fg = mc.accent })
+        hl(0, "DiagnosticInfo", { fg = mc.accent })
+        hl(0, "DiagnosticHint", { fg = mc.accent })
         hl(0, "DiagnosticFloatingError", { fg = "#fb4934" })
-        hl(0, "DiagnosticFloatingWarn", { fg = "#ffc20d" })
-        hl(0, "DiagnosticFloatingInfo", { fg = "#ffc20d" })
-        hl(0, "DiagnosticFloatingHint", { fg = "#ffc20d" })
+        hl(0, "DiagnosticFloatingWarn", { fg = mc.accent })
+        hl(0, "DiagnosticFloatingInfo", { fg = mc.accent })
+        hl(0, "DiagnosticFloatingHint", { fg = mc.accent })
         hl(0, "DiagnosticSignError", { fg = "#fb4934" })
-        hl(0, "DiagnosticSignWarn", { fg = "#ffc20d" })
-        hl(0, "DiagnosticSignInfo", { fg = "#ffc20d" })
-        hl(0, "DiagnosticSignHint", { fg = "#ffc20d" })
+        hl(0, "DiagnosticSignWarn", { fg = mc.accent })
+        hl(0, "DiagnosticSignInfo", { fg = mc.accent })
+        hl(0, "DiagnosticSignHint", { fg = mc.accent })
         hl(0, "DiagnosticUnderlineError", { sp = "#fb4934", undercurl = true })
-        hl(0, "DiagnosticUnderlineWarn", { sp = "#ffc20d", undercurl = true })
-        hl(0, "DiagnosticUnderlineInfo", { sp = "#ffc20d", undercurl = true })
-        hl(0, "DiagnosticUnderlineHint", { sp = "#ffc20d", undercurl = true })
+        hl(0, "DiagnosticUnderlineWarn", { sp = mc.accent, undercurl = true })
+        hl(0, "DiagnosticUnderlineInfo", { sp = mc.accent, undercurl = true })
+        hl(0, "DiagnosticUnderlineHint", { sp = mc.accent, undercurl = true })
 
         -- Mode Message (-- INSERT -- などのモード表示をゴールド化)
-        hl(0, "ModeMsg", { fg = "#ffc20d", bold = true })
+        hl(0, "ModeMsg", { fg = mc.accent, bold = true })
 
         -- Lazygit Active Border Color
-        hl(0, "LazygitActiveBorder", { fg = "#ffc20d", bold = true })
+        hl(0, "LazygitActiveBorder", { fg = mc.accent, bold = true })
 
         -- Dashboard Calm Gradient Colors (matching fastfetch)
         hl(0, "SnacksDashboardHeader1", { fg = "#a5d0f5", bold = true })

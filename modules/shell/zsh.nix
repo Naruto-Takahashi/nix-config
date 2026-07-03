@@ -249,6 +249,10 @@
       # matugen 生成の starship 配色があればそちらを優先
       [[ -f ~/.cache/matugen/starship.toml ]] && export STARSHIP_CONFIG=~/.cache/matugen/starship.toml
 
+      # matugen 生成の lazygit 配色があれば本体設定にマージ (CLI/Neovim内どちらも有効)
+      [[ -f ~/.cache/matugen/lazygit-theme.yml ]] && \
+        export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml,$HOME/.cache/matugen/lazygit-theme.yml"
+
       # 7. Windowsとの設定同期用関数 (WSL環境用)
       function sync-win() {
           echo "Syncing WezTerm config..."

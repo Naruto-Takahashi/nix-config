@@ -5,6 +5,7 @@ return {
     cmd = "Copilot",
     event = "VeryLazy", -- LSP を nvim 起動直後に初期化し，InsertEnter 前に接続完了させる
     config = function()
+      local mc = require("matugen")
       require("copilot").setup({
         copilot_node_command = vim.fn.exepath("node"),
         suggestion = {
@@ -21,14 +22,14 @@ return {
         },
       })
 
-      -- 提案テキストの色を黄色 (#ffc20d) に設定
-      vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = "#ffc20d" })
+      -- 提案テキストの色をアクセント色 (matugen由来, fallback #ffc20d) に設定
+      vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = mc.accent })
 
       -- カラースキーマの再読み込み時にも色を維持
       vim.api.nvim_create_autocmd("ColorScheme", {
         pattern = "*",
         callback = function()
-          vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = "#ffc20d" })
+          vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = mc.accent })
         end,
       })
     end,
