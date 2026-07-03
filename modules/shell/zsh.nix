@@ -244,6 +244,9 @@
       ZSH_HIGHLIGHT_STYLES[function]='fg=green,bold'
       ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
 
+      # matugen 生成の starship 配色があればそちらを優先
+      [[ -f ~/.cache/matugen/starship.toml ]] && export STARSHIP_CONFIG=~/.cache/matugen/starship.toml
+
       # 7. Windowsとの設定同期用関数 (WSL環境用)
       function sync-win() {
           echo "Syncing WezTerm config..."

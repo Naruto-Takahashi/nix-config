@@ -46,6 +46,33 @@ if [[ -f "$CACHE" ]]; then
     fi
 fi
 
+# starship プロンプトの配色 (palettes.matugen ブロック) を差し替えて生成
+STARSHIP_SRC="$HOME/.config/starship.toml"
+STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
+if [[ -f "$CACHE" && -f "$STARSHIP_SRC" ]]; then
+    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    sub="$(grep -m1 -- '--accent-sub:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    mut="$(grep -m1 -- '--subtext1:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    drk="$(grep -m1 -- '--surface2:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    bas="$(grep -m1 -- '--base:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    if [[ -n "$hl" && -n "$sub" && -n "$mut" && -n "$drk" && -n "$bas" ]]; then
+        awk -v hl="$hl" -v sub="$sub" -v mut="$mut" -v drk="$drk" -v bas="$bas" '
+            /# MATUGEN:START/ {
+                print
+                print "[palettes.matugen]"
+                print "accent = \"" hl "\""
+                print "accent_sub = \"" sub "\""
+                print "muted = \"" mut "\""
+                print "dark = \"" drk "\""
+                print "on_accent = \"" bas "\""
+                skip=1; next
+            }
+            /# MATUGEN:END/ { skip=0 }
+            !skip
+        ' "$STARSHIP_SRC" > "$STARSHIP_OUT"
+    fi
+fi
+
 # komorebi のフォーカス枠 (single/floating) もハイライト色に追従させる
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"

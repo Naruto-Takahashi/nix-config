@@ -1,0 +1,81 @@
+# Starship performance optimizations for WSL
+scan_timeout = 20
+command_timeout = 500
+
+palette = "matugen"
+
+# フォールバック配色 (yasb-theme が壁紙から生成した色で差し替える)
+# MATUGEN:START
+[palettes.matugen]
+accent = "#ffc20d"
+accent_sub = "#b48ead"
+muted = "#a0a9cb"
+dark = "#333333"
+on_accent = "#000000"
+# MATUGEN:END
+
+format = """
+$directory\
+[ ](fg:accent bg:dark)\
+$git_branch\
+$git_status\
+[ ](fg:dark)\
+\n$character\
+"""
+
+right_format = """$cmd_duration$username $time"""
+
+add_newline = true
+
+[username]
+style_user = "white bold"
+style_root = "black bold"
+format = "user: [$user]($style) "
+disabled = false
+
+[fill]
+symbol = ' '
+
+[directory]
+style = "fg:on_accent bg:accent bold"
+truncation_length = 10
+truncate_to_repo = false
+truncation_symbol = "…/"
+read_only = ' 󰌾 '
+read_only_style = 'fg:on_accent bg:accent'
+format = '[ $path ]($style)[$read_only]($read_only_style)'
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[aws]
+disabled = true
+[gcloud]
+disabled = true
+
+[git_branch]
+symbol = ""
+style = "bg:dark"
+format = '[[ $symbol $branch ](fg:accent bg:dark)]($style)'
+
+[git_status]
+style = "bg:dark"
+format = '[[($all_status$ahead_behind )](fg:accent bg:dark)]($style)'
+
+[cmd_duration]
+min_time = 1
+style = 'fg:accent_sub'
+format = "[[  ](fg:muted) $duration]($style)"
+
+[time]
+disabled = false
+time_format = "%R"
+format = '[[   $time ](fg:muted)]($style)'
+
+[character]
+success_symbol = "[❯](bold accent)"
+error_symbol = "[❯](bold accent)"
+vicmd_symbol = "[❯](bold #8e8e8e)"
