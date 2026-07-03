@@ -127,7 +127,7 @@
 }
 .komorebi-workspaces .ws-btn {
     border: none;
-    background-color: var(--overlay2);
+    background-color: rgba(192, 192, 192, 0.35);
     margin: 0px 4px;
     padding: 0;
     color: rgba(0, 0, 0, 0);

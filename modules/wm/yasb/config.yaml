@@ -56,10 +56,10 @@ widgets:
       label: "<span>\udb80\udf5c</span>"
       menu_list:
       - { title: "Home", path: "~" }
-      - { title: "Downloads", path: "C:\\Users\\elrond\\Downloads"}
-      - { title: "Documents", path: "C:\\Users\\elrond\\Documents"}
-      - { title: "Pictures", path: "C:\\Users\\elrond\\Pictures"}
-      - { title: "Videos", path: "C:\\Users\\elrond\\Videos"}
+      - { title: "Downloads", path: "C:\\Users\\tnaru\\Downloads"}
+      - { title: "Documents", path: "C:\\Users\\tnaru\\Documents"}
+      - { title: "Pictures", path: "C:\\Users\\tnaru\\Pictures"}
+      - { title: "Videos", path: "C:\\Users\\tnaru\\Videos"}
       system_menu: true
       power_menu: false
       blur: true
@@ -123,8 +123,13 @@ widgets:
         label: "{title}"
         label_alt: "{artist}"
         max_field_size:
-          label: 25
-          label_alt: 25
+          label: 15
+          label_alt: 15
+        scrolling_label:
+          enabled: true
+          style: "left"  # 電光掲示板風に左へ流す
+          update_interval_ms: 33
+          separator: "  |  "
         show_thumbnail: false
         controls_only: false
         controls_left: true
@@ -156,8 +161,8 @@ widgets:
       title_label:
         enabled: true
         show: "always"
-        min_length: 10
-        max_length: 25
+        min_length: 8
+        max_length: 16
       ignore_apps:
         processes: []
         titles: []
