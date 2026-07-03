@@ -188,6 +188,7 @@ if [[ -f "$CACHE" ]]; then
                 -e "s/(\"single\": *\")#[0-9a-fA-F]{6}/\1${hl}/" \
                 -e "s/(\"floating\": *\")#[0-9a-fA-F]{6}/\1${hl}/" "$f"
         done
-        "/mnt/c/Program Files/komorebi/bin/komorebic.exe" reload-configuration 2>/dev/null || true
+        # 設定リロードはバックグラウンドで (ラグ軽減)
+        "/mnt/c/Program Files/komorebi/bin/komorebic.exe" reload-configuration 2>/dev/null &
     fi
 fi
