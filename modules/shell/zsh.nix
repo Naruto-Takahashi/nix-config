@@ -266,6 +266,8 @@
           echo "Syncing YASB config..."
           mkdir -p /mnt/c/Users/tnaru/.config/yasb
           cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
+          # matugen 生成済みパレットがあれば styles.css に再適用
+          [ -x ~/.local/bin/yasb-theme ] && ~/.local/bin/yasb-theme --reapply
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp ~/dotfiles/vivaldi/css/vivaldi_minimal_transparent.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
