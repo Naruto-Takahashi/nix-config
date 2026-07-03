@@ -202,7 +202,7 @@ widgets:
     type: "yasb.memory.MemoryWidget"
     options:
       label: "<span></span> {virtual_mem_percent}%"
-      label_alt: "<span></span> {virtual_mem_used:.1f}/{virtual_mem_total:.1f} GB"
+      label_alt: "<span></span> {virtual_mem_used}/{virtual_mem_total}"
       update_interval: 5000
       memory_thresholds:
         low: 25
