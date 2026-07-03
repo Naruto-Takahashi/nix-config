@@ -56,12 +56,12 @@ if [[ -f "$CACHE" && -f "$STARSHIP_SRC" ]]; then
     drk="$(grep -m1 -- '--surface2:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     bas="$(grep -m1 -- '--base:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     if [[ -n "$hl" && -n "$sub" && -n "$mut" && -n "$drk" && -n "$bas" ]]; then
-        awk -v hl="$hl" -v sub="$sub" -v mut="$mut" -v drk="$drk" -v bas="$bas" '
+        awk -v hl="$hl" -v sb="$sub" -v mut="$mut" -v drk="$drk" -v bas="$bas" '
             /# MATUGEN:START/ {
                 print
                 print "[palettes.matugen]"
                 print "accent = \"" hl "\""
-                print "accent_sub = \"" sub "\""
+                print "accent_sub = \"" sb "\""
                 print "muted = \"" mut "\""
                 print "dark = \"" drk "\""
                 print "on_accent = \"" bas "\""
