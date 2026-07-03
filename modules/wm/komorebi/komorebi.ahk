@@ -17,10 +17,26 @@ SetWorkingDir %A_ScriptDir%
 !j::Run, komorebic focus down, , Hide
 
 ; --- Move (Swap in Komorebi) ---
-!+h::Run, komorebic move left, , Hide
-!+l::Run, komorebic move right, , Hide
-!+k::Run, komorebic move up, , Hide
-!+j::Run, komorebic move down, , Hide
+!+h::
+    Run, komorebic move left, , Hide
+    Sleep, 50
+    Run, komorebic retile, , Hide
+Return
+!+l::
+    Run, komorebic move right, , Hide
+    Sleep, 50
+    Run, komorebic retile, , Hide
+Return
+!+k::
+    Run, komorebic move up, , Hide
+    Sleep, 50
+    Run, komorebic retile, , Hide
+Return
+!+j::
+    Run, komorebic move down, , Hide
+    Sleep, 50
+    Run, komorebic retile, , Hide
+Return
 
 ; --- Resize (Reproducing GlazeWM alt+u/p/o/i) ---
 !u::Run, komorebic resize-edge right -50, , Hide
