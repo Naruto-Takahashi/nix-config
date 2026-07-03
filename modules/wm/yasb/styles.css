@@ -64,12 +64,20 @@
     font-size: 16px;
     color: var(--icon);
 }
-/* cava と音量を1つの島に結合 (隣接辺のマージン・角丸・境界ボーダーを消す) */
+/* cava・曲名(media)・音量を1つの島に結合 (隣接辺のマージン・角丸・境界ボーダーを消す) */
 .cava-widget {
     margin-right: 0;
     padding-right: 8px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: 0px solid rgba(0, 0, 0, 0);
+}
+.media-widget {
+    margin-left: 0;
+    margin-right: 0;
+    padding: 0 8px;
+    border-radius: 0;
+    border-left: 0px solid rgba(0, 0, 0, 0);
     border-right: 0px solid rgba(0, 0, 0, 0);
 }
 .volume-widget {
@@ -335,7 +343,7 @@
 }
 /*POWER WIDGET*/
 .power-menu-widget .label {
-	color: var(--red);
+	color: var(--accent-sub);
     font-size: 16px;
 }
 /*POWER MENU POPUP*/
@@ -346,38 +354,38 @@
 	font-weight: 600;
 	font-family: "Bahnschrift";
 }
+/* ステータスバーと同系の半透明アイランド調ボタン */
 .power-menu-popup .button {
 	padding: 0;
-	width: 160px;
-	height: 240px;
-	border-radius: 4px;
-	background-color: rgba(40, 39, 39, 0.75);
-	font-family: "Bahnscrift";
-	color: white;
-	border: 4px solid rgba(255, 255, 255, 0);
- 
+	width: 150px;
+	height: 150px;
+	border-radius: 16px;
+	background-color: var(--island);
+	font-family: "Bahnschrift";
+	color: var(--text);
+	border: 2px solid rgba(255, 255, 255, 0.06);
 }
 .power-menu-popup .button.hover {
-	background-color: rgb(57, 56, 54);
-	border: 4px solid rgb(57, 56, 54);
+	background-color: var(--surface2);
+	border: 2px solid var(--accent-sub);
 }
 .power-menu-popup .button .label {
-	margin-bottom: 8px;
-	font-size: 16px;
+	margin-bottom: 12px;
+	font-size: 15px;
 	font-weight: 600;
-	color: rgba(255, 255, 255, 0.6);
+	color: var(--text);
 	font-family: "Bahnschrift";
 }
 .power-menu-popup .button .icon {
-	font-size: 64px;
-	padding-top: 54px;
-	color: rgba(255, 255, 255, 0.25);
+	font-size: 44px;
+	padding-top: 32px;
+	color: var(--accent-sub);
 }
 .power-menu-popup .button.cancel .icon {
-	color: rgba(196, 116, 110, 0.55);
+	color: var(--red);
 }
 .power-menu-popup .button.cancel .label {
-	color: rgba(196, 116, 110, 0.95);
+	color: var(--red);
 }
 /*GITHUB WIDGET*/
 .github-widget {
