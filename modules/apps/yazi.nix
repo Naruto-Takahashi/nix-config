@@ -100,44 +100,57 @@
       th.mgr.cwd = ui.Style():fg(path_color)
     end)
 
-    -- Full borders and vertical separators logic
-    -- Yaziのバージョンによってグローバル変数が異なるため、安全にチェック
-    local m = Manager or mgr
-    if m then
-        m.render = function(self, area)
-            local chunks = self:layout(area)
-            return ya.flat {
-                -- 全体の枠線
-                ui.Border(area, ui.Border.ALL):fg("#665c54"),
-                -- 垂直セパレータ (ParentとCurrentの間)
-                ui.Bar(chunks[1]:right() - 1, chunks[1].y, 1, chunks[1].h, ui.Bar.VERTICAL):symbol("│"):fg("#665c54"),
-                -- 垂直セパレータ (CurrentとPreviewの間)
-                ui.Bar(chunks[2]:right() - 1, chunks[2].y, 1, chunks[2].h, ui.Bar.VERTICAL):symbol("│"):fg("#665c54"),
+    -- フルボーダー (yazi 26 API / 公式 full-border プラグイン相当)
+    pcall(function()
+      th.mgr.border_style = ui.Style():fg("#665c54")
+      local old_build = Tab.build
 
-                -- 各ペインのレンダリング
-                Parent:render(chunks[1]:padding(ui.Padding.y(1))),
-                Current:render(chunks[2]:padding(ui.Padding.y(1))),
-                Preview:render(chunks[3]:padding(ui.Padding.y(1))),
-            }
-        end
-    end
+      Tab.build = function(self, ...)
+        local bar = function(c, x, y)
+          if x <= 0 or x == self._area.w - 1 or th.mgr.border_symbol ~= "│" then
+            return ui.Bar(ui.Edge.TOP)
+          end
 
-    -- ヘッダーのカスタマイズ (パスを matugen アクセント色に)
-    local h = Header or header
-    if h then
-        function h:render(area)
-            local chunks = self:layout(area)
-            if not chunks or not chunks[1] then return {} end
-            local left = ui.Line {
-                ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(true),
-                ui.Span(":"):fg("#ebdbb2"),
-                ui.Span(ya.readable_path(tostring(self._current.cwd))):fg(path_color),
-            }
-            return ui.Canvas(area, function(c)
-                c:draw_str(left, chunks[1].x, chunks[1].y)
-            end)
+          return ui.Bar(ui.Edge.TOP)
+            :area(ui.Rect {
+              x = x,
+              y = math.max(0, y),
+              w = ya.clamp(0, self._area.w - x, 1),
+              h = math.min(1, self._area.h),
+            })
+            :symbol(c)
         end
-    end
+
+        local c = self._chunks
+        self._chunks = {
+          c[1]:pad(ui.Pad.y(1)),
+          c[2]:pad(ui.Pad.y(1)),
+          c[3]:pad(ui.Pad.y(1)),
+        }
+
+        local style = th.mgr.border_style
+        self._base = ya.list_merge(self._base or {}, {
+          ui.Border(ui.Edge.ALL):area(self._area):type(ui.Border.ROUNDED):style(style),
+
+          bar("┬", c[2].x, c[1].y),
+          bar("┴", c[2].x, c[1].bottom - 1),
+          bar("┬", c[2].right - 1, c[2].y),
+          bar("┴", c[2].right - 1, c[2].bottom - 1),
+        })
+
+        old_build(self, ...)
+      end
+    end)
+
+    -- user@host ヘッダー (デフォルトの cwd 表示の左に追加)
+    pcall(function()
+      Header:children_add(function()
+        return ui.Line {
+          ui.Span(ya.user_name() .. "@" .. ya.host_name()):fg("#b8bb26"):bold(),
+          ui.Span(":"):fg("#ebdbb2"),
+        }
+      end, 500, Header.LEFT)
+    end)
   '';
 
   # フレーバーリポジトリの配置
