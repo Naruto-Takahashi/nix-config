@@ -31,3 +31,16 @@ if [[ -f "$CACHE" ]]; then
 else
     cp -L "$SRC" "$DEST"
 fi
+
+# komorebi のフォーカス枠 (single/floating) もハイライト色に追従させる
+if [[ -f "$CACHE" ]]; then
+    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    if [[ -n "$hl" ]]; then
+        for f in "/mnt/c/Users/tnaru/.config/komorebi/komorebi.json" "/mnt/c/Users/tnaru/komorebi.json"; do
+            [[ -f "$f" ]] && sed -i -E \
+                -e "s/(\"single\": *\")#[0-9a-fA-F]{6}/\1${hl}/" \
+                -e "s/(\"floating\": *\")#[0-9a-fA-F]{6}/\1${hl}/" "$f"
+        done
+        "/mnt/c/Program Files/komorebi/bin/komorebic.exe" reload-configuration 2>/dev/null || true
+    fi
+fi

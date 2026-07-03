@@ -34,6 +34,7 @@
     --crust: rgba(13, 12, 12, 1);
     --highlight: #ffc20d;
     --highlight-hover: #e0ab00;
+    --island: rgba(24, 22, 22, 0.65);
 }
 /* MATUGEN:END */
 *{
@@ -48,11 +49,13 @@
 .yasb-bar {
 	padding: 0;
 	margin: 0;
-    background-color: var(--base);
+    background-color: transparent;
 }
+/* 各ウィジェットを半透明のアイランドとして表示 */
 .widget {
-    padding: 0 4px;
-    margin: 0 4px;
+    padding: 0 8px;
+    margin: 2px 4px;
+    background-color: var(--island);
     border-radius: 12px;
     border: 1px solid rgba(128, 128, 128, 0);
 }
