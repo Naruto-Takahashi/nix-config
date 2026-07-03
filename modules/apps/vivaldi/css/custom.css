@@ -28,8 +28,7 @@
     z-index: 999 !important;
     transform: translateX(calc(-100% + 10px)) !important; /* 左端に10px残して判定エリアを縮小 */
     opacity: 0 !important; /* 通常時は完全に透明にし，ノイズを排除 */
-    /* 閉じるとき: 即座に */
-    transition: transform 0.2s ease-in-out 0s, opacity 0.15s ease-in-out 0s !important;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
 
     /* ダークグレーのすりガラス効果 */
     background-color: rgba(30, 30, 30, 0.3) !important; /* 30%の究極の透明感へ復帰 */
@@ -43,8 +42,6 @@
 #tabs-tabbar-container:hover {
     transform: translateX(0) !important;
     opacity: 1 !important;
-    /* 開くとき: 少し遅延 */
-    transition: transform 0.2s ease-in-out 0.15s, opacity 0.2s ease-in-out 0.15s !important;
 }
 
 /* ==========================================================================
@@ -259,18 +256,15 @@
     right: 0 !important; /* 右端に配置 */
     left: auto !important; /* 左側設定を解除 */
     z-index: 999 !important;
-    transform: translateX(calc(100% - 4px)) !important; /* 右端に4px残して判定エリアをシビアに */
+    transform: translateX(calc(100% - 10px)) !important; /* 右端に10px残して判定エリアを縮小 */
     opacity: 0 !important; /* 通常時は完全に透明にし，ノイズを排除 */
-    /* 閉じるとき: 即座に (delay 0s) */
-    transition: transform 0.2s ease-in-out 0s, opacity 0.15s ease-in-out 0s !important;
+    transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out !important;
 }
 
 /* パネルコンテナにホバーしたときに右からスライドイン表示 */
 #panels-container:hover {
     transform: translateX(0) !important; /* 本来の位置へ */
     opacity: 1 !important;
-    /* 開くとき: 意図的なホバーか判断するため少し遅延 */
-    transition: transform 0.2s ease-in-out 0.15s, opacity 0.2s ease-in-out 0.15s !important;
 }
 
 /* パネルスイッチ（アイコン列）の背景透明化・境界線削除 */
@@ -280,24 +274,27 @@
     box-shadow: none !important;
 }
 
-/* 展開されたパネル部分の背景透明化・境界線削除 */
+/* 展開されたパネル部分 (タブバーと同じブラー背景) */
 .panel-group {
-    background-color: transparent !important;
+    background-color: rgba(30, 30, 30, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* 各パネルコンテンツ自体の背景透明化・境界線削除 */
+/* 各パネルコンテンツ (ブックマーク等の内部領域) */
 .panel {
-    background-color: transparent !important;
+    background-color: rgba(30, 30, 30, 0.3) !important;
+    backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* パネルヘッダーも透明化・境界線削除 */
+/* パネルヘッダーも同系統のブラー背景 */
 header.panel-header,
 .webpanel-header {
-    background-color: transparent !important;
+    background-color: rgba(30, 30, 30, 0.2) !important;
+    backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
