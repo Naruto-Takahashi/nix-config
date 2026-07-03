@@ -54,7 +54,7 @@
 /* 各ウィジェットを半透明のアイランドとして表示 */
 .widget {
     padding: 0 12px;
-    margin: 3px 4px;
+    margin: 2px 4px;
     background-color: var(--island);
     border-radius: 13px;
     border: 1px solid rgba(128, 128, 128, 0);
@@ -63,18 +63,20 @@
     font-size: 16px;
     color: var(--icon);
 }
-/* cava と音量を1つの島に結合 (隣接辺のマージンと角丸を消す) */
+/* cava と音量を1つの島に結合 (隣接辺のマージン・角丸・境界ボーダーを消す) */
 .cava-widget {
     margin-right: 0;
     padding-right: 8px;
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
+    border-right: 0px solid rgba(0, 0, 0, 0);
 }
 .volume-widget {
     margin-left: 0;
     padding-left: 8px;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+    border-left: 0px solid rgba(0, 0, 0, 0);
 }
 .widget .label {
     color: var(--text);
@@ -105,7 +107,7 @@
 }
 /*KOMOREBI WORKSPACES WIDGET*/
 .komorebi-workspaces {
-    margin: 3px 4px;
+    margin: 2px 4px;
     border-radius: 13px;
 }
 .komorebi-workspaces .offline-status {
