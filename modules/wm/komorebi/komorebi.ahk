@@ -32,7 +32,7 @@ SetWorkingDir %A_ScriptDir%
 !f::Run, komorebic toggle-monocle, , Hide
 !m::Run, komorebic minimize, , Hide
 !t::Run, komorebic toggle-tiling, , Hide
-!v::Run, komorebic flip-layout bsp, , Hide
+!b::Run, komorebic flip-layout bsp, , Hide
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
@@ -96,6 +96,14 @@ Return
 ; --- Move Workspace to Monitor ---
 !+a::Run, komorebic move-workspace-to-monitor 0, , Hide
 !+f::Run, komorebic move-workspace-to-monitor 1, , Hide
+
+; --- App Launchers ---
+; ALT+W: 壁紙ピッカー (fzf, 選択で matugen 配色も追従)
+!w::Run, wezterm-gui start -- wsl.exe -e /home/nalt/.local/bin/wallpaper-pick
+; ALT+Y: WezTerm で yazi
+!y::Run, wezterm-gui start -- wsl.exe --cd ~ -e zsh -ic yazi
+; ALT+V: Vivaldi
+!v::Run, C:\Users\tnaru\AppData\Local\Vivaldi\Application\vivaldi.exe
 
 ; --- Alt+Enter for WezTerm (Exclude Excel) ---
 #IfWinNotActive ahk_exe EXCEL.EXE
