@@ -94,6 +94,12 @@
       end
     end
 
+    -- yazi 26+ ではコンポーネントの render 差し替えが効かないため、
+    -- テーマ (th.mgr.cwd) を直接上書きしてヘッダーのパス色を変える
+    pcall(function()
+      th.mgr.cwd = ui.Style():fg(path_color)
+    end)
+
     -- Full borders and vertical separators logic
     -- Yaziのバージョンによってグローバル変数が異なるため、安全にチェック
     local m = Manager or mgr
