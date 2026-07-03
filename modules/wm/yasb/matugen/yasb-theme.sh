@@ -32,18 +32,17 @@ else
     cp -L "$SRC" "$DEST"
 fi
 
-# cava の波形色 (config.yaml 側) も抽出色に追従させる
+# cava の波形色 (config.yaml 側): サブアクセント基調 + ハイライトへのグラデーション
 if [[ -f "$CACHE" ]]; then
-    pri="$(grep -m1 -- '--yellow:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    sec="$(grep -m1 -- '--green:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    ter="$(grep -m1 -- '--teal:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    sub="$(grep -m1 -- '--accent-sub:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     cfg="/mnt/c/Users/tnaru/.config/yasb/config.yaml"
-    if [[ -n "$pri" && -n "$sec" && -n "$ter" && -f "$cfg" ]]; then
+    if [[ -n "$sub" && -n "$hl" && -f "$cfg" ]]; then
         sed -i -E \
-            -e "s/(foreground: \")#[0-9a-fA-F]{6}/\1${ter}/" \
-            -e "s/(gradient_color_1: ')#[0-9a-fA-F]{6}/\1${pri}/" \
-            -e "s/(gradient_color_2: ')#[0-9a-fA-F]{6}/\1${sec}/" \
-            -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${ter}/" "$cfg"
+            -e "s/(foreground: \")#[0-9a-fA-F]{6}/\1${sub}/" \
+            -e "s/(gradient_color_1: ')#[0-9a-fA-F]{6}/\1${sub}/" \
+            -e "s/(gradient_color_2: ')#[0-9a-fA-F]{6}/\1${sub}/" \
+            -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${hl}/" "$cfg"
     fi
 fi
 

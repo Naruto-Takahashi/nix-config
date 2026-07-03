@@ -35,6 +35,7 @@
     --highlight: #ffc20d;
     --highlight-hover: #e0ab00;
     --island: rgba(24, 22, 22, 0.65);
+    --accent-sub: #8ea4a2;
 }
 /* MATUGEN:END */
 *{
@@ -127,7 +128,7 @@
     width: 10px;
 }
 .komorebi-workspaces .ws-btn.populated {
-    background-color: var(--sky);
+    background-color: var(--accent-sub);
 }
 .komorebi-workspaces .ws-btn.active {
     color: rgba(149, 177, 255, 0);
@@ -153,9 +154,9 @@
 .taskbar-widget .app-container {
     background-color: var(--crust);
     border: none;
-    border-radius: 6px;
-    margin: 3px 3px;
-    padding: 0 6px;
+    border-radius: 8px;
+    margin: 4px 4px;
+    padding: 0 10px;
 }
 /* フォーカス中ウィンドウ: ffc20dの島・黒文字 */
 .taskbar-widget .app-container.foreground {
