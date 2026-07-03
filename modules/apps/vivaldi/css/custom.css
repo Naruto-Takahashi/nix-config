@@ -274,10 +274,9 @@
     box-shadow: none !important;
 }
 
-/* 展開されたパネル部分 (タブバーと同じブラー背景) */
+/* 展開されたパネル部分: 親の blur を活かすため backdrop-filter は持たない */
 .panel-group {
     background-color: rgba(30, 30, 30, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
@@ -285,16 +284,14 @@
 /* 各パネルコンテンツ (ブックマーク等の内部領域) */
 .panel {
     background-color: rgba(30, 30, 30, 0.3) !important;
-    backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
 
-/* パネルヘッダーも同系統のブラー背景 */
+/* パネルヘッダー */
 header.panel-header,
 .webpanel-header {
     background-color: rgba(30, 30, 30, 0.2) !important;
-    backdrop-filter: blur(10px) !important;
     border: none !important;
     box-shadow: none !important;
 }
