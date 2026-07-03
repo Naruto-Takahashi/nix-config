@@ -12,9 +12,4 @@
     force = true;
   };
 
-  # fzf による壁紙ピッカー (ALT+W)
-  home.file.".local/bin/wallpaper-pick" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/yasb/matugen/wallpaper-pick.sh";
-    force = true;
-  };
 }

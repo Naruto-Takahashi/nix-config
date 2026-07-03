@@ -156,12 +156,12 @@ fi
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     if [[ -n "$hl" ]]; then
-        r="0x${hl:1:2}"; g="0x${hl:3:2}"; b="0x${hl:5:2}"
-        # DWM/Explorer は ABGR (0xAABBGGRR) の DWORD
-        abgr=$(( (0xFF << 24) | (b << 16) | (g << 8) | r ))
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\DWM' /v AccentColor /t REG_DWORD /d "$abgr" /f >/dev/null 2>&1 || true
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v AccentColorMenu /t REG_DWORD /d "$abgr" /f >/dev/null 2>&1 || true
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v StartColorMenu /t REG_DWORD /d "$abgr" /f >/dev/null 2>&1 || true
+        r=$(( 16#${hl:1:2} )); g=$(( 16#${hl:3:2} )); b=$(( 16#${hl:5:2} ))
+        # DWM/Explorer は ABGR (0xAABBGGRR) の DWORD — 0xFF alpha で常にソリッド
+        abgr_hex=$(printf '%08X' $(( (0xFF << 24) | (b << 16) | (g << 8) | r )) )
+        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\DWM' /v AccentColor /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
+        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v AccentColorMenu /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
+        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v StartColorMenu /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
         # テーマ変更のブロードキャストで即時反映
         /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -Command '
           Add-Type -TypeDefinition "using System; using System.Runtime.InteropServices; public class NB { [DllImport(\"user32.dll\", CharSet=CharSet.Unicode)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, out IntPtr lpdwResult); }";

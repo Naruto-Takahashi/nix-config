@@ -98,8 +98,6 @@ Return
 !+f::Run, komorebic move-workspace-to-monitor 1, , Hide
 
 ; --- App Launchers ---
-; ALT+W: 壁紙ピッカー (fzf, 選択で matugen 配色も追従)
-!w::Run, wezterm-gui start -- wsl.exe -e /home/nalt/.local/bin/wallpaper-pick
 ; ALT+Y: WezTerm で yazi
 !y::Run, wezterm-gui start -- wsl.exe --cd ~ -e zsh -ic yazi
 ; ALT+V: Vivaldi

@@ -57,6 +57,8 @@
 
     if is_windows then
       config.tiling_desktop_environments = { "komorebi" }
+      -- Windows 11 Acrylic すりガラス効果 (window_background_opacity < 1.0 が前提)
+      config.win32_system_backdrop = "Acrylic"
     end
 
     ----------------------------------------------------
