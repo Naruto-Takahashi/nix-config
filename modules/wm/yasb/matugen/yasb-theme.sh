@@ -152,33 +152,6 @@ SH
     fi
 fi
 
-# Windows のアクセントカラー (個人用設定 > 色) もハイライト色に追従させる
-if [[ -f "$CACHE" ]]; then
-    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    if [[ -n "$hl" ]]; then
-        r=$(( 16#${hl:1:2} )); g=$(( 16#${hl:3:2} )); b=$(( 16#${hl:5:2} ))
-        # DWM/Explorer は ABGR (0xAABBGGRR) の DWORD — 0xFF alpha で常にソリッド
-        abgr_hex=$(printf '%08X' $(( (0xFF << 24) | (b << 16) | (g << 8) | r )) )
-        # AccentPalette: 8色 × 4バイト (BGRA) の 32バイト REG_BINARY。簡易版として同色を濃淡で並べる
-        ap_hex="${hl:5:2}${hl:3:2}${hl:1:2}ff"  # BGRA (1色分)
-        accent_palette="${ap_hex}${ap_hex}${ap_hex}${ap_hex}${ap_hex}${ap_hex}${ap_hex}${ap_hex}"
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\DWM' /v AccentColor /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\DWM' /v AccentColorInactive /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v AccentColorMenu /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v StartColorMenu /t REG_DWORD /d "0x${abgr_hex}" /f >/dev/null 2>&1 || true
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v AccentPalette /t REG_BINARY /d "$accent_palette" /f >/dev/null 2>&1 || true
-        # ColorPrevalence=1: Windows に「カスタムアクセントカラーを使用」を強制
-        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Themes\Personalize' /v ColorPrevalence /t REG_DWORD /d 1 /f >/dev/null 2>&1 || true
-        # テーマ変更のブロードキャストで即時反映
-        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -Command '
-          Add-Type -TypeDefinition "using System; using System.Runtime.InteropServices; public class NB { [DllImport(\"user32.dll\", CharSet=CharSet.Unicode)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, out IntPtr lpdwResult); }";
-          [IntPtr]$out = [IntPtr]::Zero;
-          [NB]::SendMessageTimeout([IntPtr]0xffff, 0x001A, [IntPtr]::Zero, "ImmersiveColorSet", 2, 1000, [ref]$out) | Out-Null;
-          [NB]::SendMessageTimeout([IntPtr]0xffff, 0x001A, [IntPtr]::Zero, "WindowMetrics", 2, 1000, [ref]$out) | Out-Null
-        ' >/dev/null 2>&1 || true
-    fi
-fi
-
 # komorebi のフォーカス枠 (single/floating) もハイライト色に追従させる
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"

@@ -57,10 +57,6 @@
 
     if is_windows then
       config.tiling_desktop_environments = { "komorebi" }
-      -- Acrylic: フォーカス時に端末背景 (暗色) + 15% 透過でブラー = 黒いすりガラス
-      -- 非フォーカス時は Windows DWM の仕様で灰色になる (回避不可)
-      config.win32_system_backdrop = "Acrylic"
-      config.window_background_opacity = 0.85
     end
 
     ----------------------------------------------------
