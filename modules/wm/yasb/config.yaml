@@ -48,7 +48,6 @@ bars:
           "cpu",
           "memory",
           "battery",
-          "network",
           "disk",
           "wallpapers",
           "power_menu"
@@ -225,14 +224,6 @@ widgets:
         - ""  # 60-80%
         - ""  # 80-100%
       charging_icon: ""
-      callbacks:
-        on_left: "toggle_label"
-  network:
-    type: "yasb.network.NetworkWidget"
-    options:
-      label: "<span></span> {wifi_ssid}"
-      label_alt: "<span></span> {wifi_ssid} {wifi_strength}%"
-      update_interval: 5000
       callbacks:
         on_left: "toggle_label"
   disk:
