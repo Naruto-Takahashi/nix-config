@@ -16,7 +16,9 @@ if [[ "${1:-}" != "--reapply" ]]; then
     if [[ "$img" == *\\* || "$img" == [A-Za-z]:* ]]; then
         img="$(wslpath "$img")"
     fi
-    matugen image "$img" -m dark -c "$HOME/.config/yasb/matugen/config.toml"
+    # --source-color-index 0: 候補色の対話選択を回避し最有力色を自動採用 (非TTYで必須)
+    matugen image "$img" -m dark --source-color-index 0 \
+        -c "$HOME/.config/yasb/matugen/config.toml"
 fi
 
 if [[ -f "$CACHE" ]]; then

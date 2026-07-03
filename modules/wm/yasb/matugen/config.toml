@@ -1,4 +1,6 @@
 # matugen 設定 (YASB用): 壁紙から抽出した色で :root パレットブロックを生成する
+[config]
+
 [templates.yasb]
 input_path = '~/.config/yasb/matugen/palette.css'
 output_path = '~/.cache/matugen/yasb-palette.css'
