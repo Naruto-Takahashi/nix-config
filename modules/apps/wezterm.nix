@@ -47,8 +47,8 @@
     ----------------------------------------------------
     -- Tab
     ----------------------------------------------------
-    -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
-    config.window_decorations = (is_darwin or is_windows) and "RESIZE" or "NONE"
+    -- macOSはRESIZE（ネイティブボーダー），Windows/Linuxはタイリング向けにNONE
+    config.window_decorations = is_darwin and "RESIZE" or "NONE"
     -- タブバーの表示
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけの時はタブバーを非表示にするか
