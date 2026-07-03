@@ -152,6 +152,25 @@ SH
     fi
 fi
 
+# Windows のアクセントカラー (個人用設定 > 色) もハイライト色に追従させる
+if [[ -f "$CACHE" ]]; then
+    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    if [[ -n "$hl" ]]; then
+        r="0x${hl:1:2}"; g="0x${hl:3:2}"; b="0x${hl:5:2}"
+        # DWM/Explorer は ABGR (0xAABBGGRR) の DWORD
+        abgr=$(( (0xFF << 24) | (b << 16) | (g << 8) | r ))
+        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\DWM' /v AccentColor /t REG_DWORD /d "$abgr" /f >/dev/null 2>&1 || true
+        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v AccentColorMenu /t REG_DWORD /d "$abgr" /f >/dev/null 2>&1 || true
+        /mnt/c/Windows/System32/reg.exe add 'HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\Accent' /v StartColorMenu /t REG_DWORD /d "$abgr" /f >/dev/null 2>&1 || true
+        # テーマ変更のブロードキャストで即時反映
+        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -Command '
+          Add-Type -TypeDefinition "using System; using System.Runtime.InteropServices; public class NB { [DllImport(\"user32.dll\", CharSet=CharSet.Unicode)] public static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, out IntPtr lpdwResult); }";
+          [IntPtr]$out = [IntPtr]::Zero;
+          [NB]::SendMessageTimeout([IntPtr]0xffff, 0x001A, [IntPtr]::Zero, "ImmersiveColorSet", 2, 1000, [ref]$out) | Out-Null
+        ' >/dev/null 2>&1 || true
+    fi
+fi
+
 # komorebi のフォーカス枠 (single/floating) もハイライト色に追従させる
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"

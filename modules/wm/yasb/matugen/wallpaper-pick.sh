@@ -18,7 +18,7 @@ sel="$(find "$WSL_DIR" -maxdepth 1 -type f \
 win_path="${WIN_DIR}\\${sel}"
 
 # Windows の壁紙を変更 (SystemParametersInfo: SPI_SETDESKWALLPAPER)
-powershell.exe -NoProfile -Command "
+/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -Command "
   Add-Type -TypeDefinition 'using System.Runtime.InteropServices; public class WP { [DllImport(\"user32.dll\", CharSet=CharSet.Unicode)] public static extern bool SystemParametersInfo(int uAction, int uParam, string lpvParam, int fuWinIni); }';
   [WP]::SystemParametersInfo(20, 0, '${win_path}', 3) | Out-Null
 "

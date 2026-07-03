@@ -218,11 +218,11 @@ widgets:
       gallery:
         enabled: true
         blur: true
-        image_width: 296
-        image_per_page: 6
+        image_width: 220
+        image_per_page: 5
         show_buttons: true
-        orientation: "portrait"
-        image_spacing: 10
+        orientation: "landscape"
+        image_spacing: 8
         lazy_load: true
         lazy_load_delay: 10
         lazy_load_fadein: 200
