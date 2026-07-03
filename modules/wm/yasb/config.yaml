@@ -48,7 +48,6 @@ bars:
           "cpu",
           "memory",
           "battery",
-          "disk",
           "wallpapers",
           "power_menu"
         ]
@@ -202,8 +201,8 @@ widgets:
   memory:
     type: "yasb.memory.MemoryWidget"
     options:
-      label: "<span></span> {virtual_mem_percent}%"
-      label_alt: "<span></span> {virtual_mem_used:.1f}/{virtual_mem_total:.1f} GB"
+      label: "<span></span> {virtual_mem_percent}%"
+      label_alt: "<span></span> {virtual_mem_used:.1f}/{virtual_mem_total:.1f} GB"
       update_interval: 5000
       memory_thresholds:
         low: 25
