@@ -20,6 +20,7 @@
     ../../modules/apps/yazi.nix
     ../../modules/services/obsidian-mcp.nix
     ../../modules/apps/lazygit.nix
+    ../../modules/apps/vivaldi.nix
   ];
 
   # -----------------------------------------------------------------------
