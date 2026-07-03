@@ -4,16 +4,6 @@ command_timeout = 500
 
 palette = "matugen"
 
-# フォールバック配色 (yasb-theme が壁紙から生成した色で差し替える)
-# MATUGEN:START
-[palettes.matugen]
-accent = "#ffc20d"
-accent_sub = "#b48ead"
-muted = "#a0a9cb"
-dark = "#333333"
-on_accent = "#000000"
-# MATUGEN:END
-
 format = """
 $directory\
 [ ](fg:accent bg:dark)\
@@ -79,3 +69,14 @@ format = '[[   $time ](fg:muted)]($style)'
 success_symbol = "[❯](bold accent)"
 error_symbol = "[❯](bold accent)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
+
+# フォールバック配色 (yasb-theme が壁紙から生成した色で差し替える)
+# TOML の制約上、テーブル定義はトップレベルキーより後 (ファイル末尾) に置くこと
+# MATUGEN:START
+[palettes.matugen]
+accent = "#ffc20d"
+accent_sub = "#b48ead"
+muted = "#a0a9cb"
+dark = "#333333"
+on_accent = "#000000"
+# MATUGEN:END
