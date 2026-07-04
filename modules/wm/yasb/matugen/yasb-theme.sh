@@ -55,6 +55,9 @@ if [[ -f "$CACHE" ]]; then
             -e "s/(gradient_color_1: ')#[0-9a-fA-F]{6}/\1${sub}/" \
             -e "s/(gradient_color_2: ')#[0-9a-fA-F]{6}/\1${sub}/" \
             -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${hl}/" "$cfg"
+        # WSL 側からの sed (rename 置換) では YASB の watch_config が発火しない
+        # ことがあるため、明示的にリロードして cava を新色で再起動させる
+        ("/mnt/c/Program Files/YASB/yasbc.exe" reload >/dev/null 2>&1 &)
     fi
 fi
 
