@@ -280,9 +280,9 @@
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp -L ~/.config/vivaldi/custom.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
-          echo "Reloading Komorebi..."
-          /mnt/c/Program\ Files/komorebi/bin/komorebic.exe reload-configuration 2>/dev/null \
-              || echo "  (komorebi reload skipped — not running)"
+          # komorebi のリロードは yasb-theme --reapply 内で実行済み。
+          # ここで重ねて reload-configuration すると同時実行でパイプが
+          # デッドロックし komorebi がハングすることがあるため呼ばない。
           echo "Done."
       }
 
