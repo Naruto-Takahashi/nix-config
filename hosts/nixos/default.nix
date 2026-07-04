@@ -171,7 +171,8 @@
   services.openssh = {
     enable = true;
     openFirewall = false; # 大学LANには公開せず Tailscale (trustedInterfaces) 経由のみ許可
-    settings.PasswordAuthentication = true;
+    settings.PasswordAuthentication = false; # 鍵認証のみ (authorized_keys 登録済み)
+    settings.KbdInteractiveAuthentication = false;
   };
 
   # システム全体で利用可能なフォントの追加
