@@ -214,7 +214,7 @@ widgets:
   wifi:
     type: "yasb.wifi.WifiWidget"
     options:
-      label: "<span>{wifi_icon}</span>"
+      label: "<span>{wifi_icon}</span> {wifi_name}"
       label_alt: "<span>{wifi_icon}</span> {wifi_name} {wifi_strength}%"
       update_interval: 5000
       wifi_icons:
