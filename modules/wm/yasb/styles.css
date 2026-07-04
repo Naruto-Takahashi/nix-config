@@ -228,21 +228,22 @@
     font-family: Bahnschrift;
 }
 /*CLOCK - CALENDAR WIDGET DROPDOWN*/
+/* バーのアイランドと同じ半透明背景にして DWM ブラーを透過させる */
 .calendar {
-    background-color: #181616;
+    background-color: var(--island);
 }
 .calendar .calendar-table,
 .calendar .calendar-table::item {
-    background-color: #181616;
-    color: #c5c9c5;
+    background-color: transparent;
+    color: var(--text);
     font-family: 'Segoe UI';
     margin: 0;
     padding: 0;
     border: none;
-    outline: none;  
+    outline: none;
 }
 .calendar .calendar-table::item:selected {
-    color: #c5c9c5;
+    color: var(--highlight);
 }
 .calendar .day-label {
     margin-top: 20px;
@@ -252,18 +253,19 @@
 .calendar .date-label {
     font-family: 'Segoe UI';
     font-size: 16px;
-    color: #c5c9c5;
+    color: var(--text);
     font-weight: 700;
     min-width: 180px;
     max-width: 180px;
 }
 .calendar .month-label {
     font-weight: normal;
+    color: var(--subtext1);
 }
 .calendar .date-label {
     font-size: 88px;
     font-weight: 900;
-    color: #c5c9c5;
+    color: var(--highlight);
     margin-top: -20px;
 }
 /*DISK DROPDOWN*/
