@@ -50,14 +50,16 @@ if [[ -f "$CACHE" ]]; then
         # 先に旧 cava を殺しておく (sed 後の自動リロードが新色で再起動する。
         # sed 後に kill すると再起動済みの新 cava を殺してしまう)
         "/mnt/c/Windows/System32/taskkill.exe" /IM cava.exe /F >/dev/null 2>&1 || true
-        sed -i -E \
+        # sed -i は rename 置換で inode が変わり YASB の watch_config が
+        # 外れるため、tmp に生成して同一 inode へ上書きする (truncate+write)
+        cfg_tmp="$(mktemp)"
+        sed -E \
             -e "s/(foreground: \")#[0-9a-fA-F]{6}/\1${sub}/" \
             -e "s/(gradient_color_1: ')#[0-9a-fA-F]{6}/\1${sub}/" \
             -e "s/(gradient_color_2: ')#[0-9a-fA-F]{6}/\1${sub}/" \
-            -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${hl}/" "$cfg"
-        # WSL 側からの sed (rename 置換) では YASB の watch_config が発火しない
-        # ことがあるため、明示的にリロードして cava を新色で再起動させる
-        ("/mnt/c/Program Files/YASB/yasbc.exe" reload >/dev/null 2>&1 &)
+            -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${hl}/" "$cfg" > "$cfg_tmp"
+        cat "$cfg_tmp" > "$cfg"
+        rm -f "$cfg_tmp"
     fi
 fi
 
