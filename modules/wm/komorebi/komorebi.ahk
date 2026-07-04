@@ -32,7 +32,8 @@ SetWorkingDir %A_ScriptDir%
 !f::Run, komorebic toggle-monocle, , Hide
 !m::Run, komorebic minimize, , Hide
 !t::Run, komorebic toggle-tiling, , Hide
-!b::Run, komorebic flip-layout horizontal-and-vertical, , Hide!+q::Run, komorebic close, , Hide
+!b::Run, komorebic flip-layout horizontal-and-vertical, , Hide
+!+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
 ; --- Workspaces (Cycle) ---

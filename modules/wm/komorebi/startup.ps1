@@ -14,9 +14,6 @@ Start-Process "C:\Program Files\YASB\yasb.exe"
 # 4. PowerToys
 Start-Process -FilePath "C:\Users\tnaru\AppData\Local\PowerToys\PowerToys.exe"
 
-# 5. Command Palette (PowerToys の初期化を待ってから起動)
+# 5. Command Palette (ストアアプリなので AUMID 経由で起動; exe 直叩きは不可)
 Start-Sleep -Seconds 5
-$cmdpal = "C:\Users\tnaru\AppData\Local\PowerToys\WinUI3Apps\Microsoft.CmdPal.UI.exe"
-if (Test-Path $cmdpal) {
-    Start-Process -FilePath $cmdpal
-}
+Start-Process "shell:AppsFolder\Microsoft.CommandPalette_8wekyb3d8bbwe!App"
