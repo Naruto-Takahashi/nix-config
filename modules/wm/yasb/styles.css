@@ -88,7 +88,7 @@
     border-bottom-left-radius: 0;
     border-left: 0px solid rgba(0, 0, 0, 0);
 }
-/* CPU・RAM・バッテリーを1つの島に結合 */
+/* CPU・RAM・WiFi・バッテリーを1つの島に結合 */
 .cpu-widget {
     margin-right: 0;
     padding-right: 8px;
@@ -96,7 +96,8 @@
     border-bottom-right-radius: 0;
     border-right: 0px solid rgba(0, 0, 0, 0);
 }
-.memory-widget {
+.memory-widget,
+.wifi-widget {
     margin-left: 0;
     margin-right: 0;
     padding: 0 8px;
@@ -114,6 +115,7 @@
 /* アイコンと数値の間隔 (音量ウィジェットに倣う) */
 .cpu-widget .icon,
 .memory-widget .icon,
+.wifi-widget .icon,
 .battery-widget .icon {
     padding: 0 6px;
     color: var(--icon);

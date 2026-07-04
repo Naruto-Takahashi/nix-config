@@ -47,6 +47,7 @@ bars:
           "volume",
           "cpu",
           "memory",
+          "wifi",
           "battery",
           "wallpapers",
           "power_menu"
@@ -210,6 +211,21 @@ widgets:
         high: 90
       callbacks:
         on_left: "toggle_label"
+  wifi:
+    type: "yasb.wifi.WifiWidget"
+    options:
+      label: "<span>{wifi_icon}</span>"
+      label_alt: "<span>{wifi_icon}</span> {wifi_name} {wifi_strength}%"
+      update_interval: 5000
+      wifi_icons:
+        - "󰤮"  # disconnected
+        - "󰤟"  # weak
+        - "󰤢"  # medium
+        - "󰤥"  # strong
+        - "󰤨"  # very strong
+      callbacks:
+        on_left: "toggle_label"
+        on_right: "exec cmd.exe /c start ms-settings:network-wifi"
   battery:
     type: "yasb.battery.BatteryWidget"
     options:
