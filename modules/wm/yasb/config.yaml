@@ -15,7 +15,7 @@ bars:
       center: false
     blur_effect:
       enabled: true
-      acrylic: false
+      acrylic: true
       dark_mode: false
       round_corners: true
       round_corners_type: "normal"
