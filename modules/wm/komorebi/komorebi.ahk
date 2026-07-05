@@ -23,10 +23,11 @@ SetWorkingDir %A_ScriptDir%
 !+j::Run, komorebic move down, , Hide
 
 ; --- Resize (Reproducing GlazeWM alt+u/p/o/i) ---
-!u::Run, komorebic resize-edge right -50, , Hide
-!p::Run, komorebic resize-edge right 50, , Hide
-!o::Run, komorebic resize-edge bottom 50, , Hide
-!i::Run, komorebic resize-edge bottom -50, , Hide
+; komorebi 0.1.41 でピクセル指定が廃止され increase/decrease に変更
+!u::Run, komorebic resize-edge right decrease, , Hide
+!p::Run, komorebic resize-edge right increase, , Hide
+!o::Run, komorebic resize-edge down increase, , Hide
+!i::Run, komorebic resize-edge down decrease, , Hide
 
 ; --- Window Operations ---
 !f::Run, komorebic toggle-monocle, , Hide
