@@ -257,9 +257,12 @@
       function sync-win() {
           echo "Syncing WezTerm config..."
           cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
-          echo "Syncing AutoHotkey scripts..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-          cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
+          # ~/.config/ahk は現在未使用 (AHK は komorebi.ahk のみ)。存在する場合だけ同期
+          if [ -d ~/.config/ahk ]; then
+              echo "Syncing AutoHotkey scripts..."
+              cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
+          fi
           echo "Syncing Komorebi config..."
           mkdir -p /mnt/c/Users/tnaru/.config/komorebi
           cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
