@@ -1,4 +1,13 @@
 {
+  "Zen Browser": {
+    "object_name_change": [
+      {
+        "kind": "Exe",
+        "id": "zen.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
   "WezTerm": {
     "slow_application": [
       {
