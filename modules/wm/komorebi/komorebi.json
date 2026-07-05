@@ -6,6 +6,7 @@
   "transparency": true,
   "transparency_alpha": 252,
   "default_workspace_padding": 1,
+  "resize_delta": 100,
   "default_container_padding": 6,
   "border": true,
   "border_width": 4,

@@ -35,6 +35,7 @@ SetWorkingDir %A_ScriptDir%
 !m::Run, komorebic minimize, , Hide
 !t::Run, komorebic toggle-tiling, , Hide
 !b::Run, komorebic flip-layout horizontal-and-vertical, , Hide
+!r::Run, komorebic retile, , Hide
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
