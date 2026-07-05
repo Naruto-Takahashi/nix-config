@@ -103,8 +103,8 @@ Return
 ; --- App Launchers ---
 ; ALT+Y: WezTerm で yazi
 !y::Run, wezterm-gui start -- wsl.exe --cd ~ -e zsh -ic yazi
-; ALT+Z: Zen Browser
-!z::Run, C:\Program Files\Zen Browser\zen.exe
+; ALT+V: Vivaldi
+!v::Run, C:\Users\tnaru\AppData\Local\Vivaldi\Application\vivaldi.exe
 
 ; --- Alt+Enter for WezTerm (Exclude Excel) ---
 #IfWinNotActive ahk_exe EXCEL.EXE
