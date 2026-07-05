@@ -166,14 +166,17 @@ SH
     fi
 fi
 
-# komorebi のフォーカス枠 (single/floating) もハイライト色に追従させる
+# komorebi のフォーカス枠 (single/floating) はハイライト色、
+# monocle (ALT+F) はサブハイライト色に追従させる
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    if [[ -n "$hl" ]]; then
+    sub="$(grep -m1 -- '--accent-sub:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    if [[ -n "$hl" && -n "$sub" ]]; then
         for f in "/mnt/c/Users/tnaru/.config/komorebi/komorebi.json" "/mnt/c/Users/tnaru/komorebi.json"; do
             [[ -f "$f" ]] && sed -i -E \
                 -e "s/(\"single\": *\")#[0-9a-fA-F]{6}/\1${hl}/" \
-                -e "s/(\"floating\": *\")#[0-9a-fA-F]{6}/\1${hl}/" "$f"
+                -e "s/(\"floating\": *\")#[0-9a-fA-F]{6}/\1${hl}/" \
+                -e "s/(\"monocle\": *\")#[0-9a-fA-F]{6}/\1${sub}/" "$f"
         done
         # 設定リロードはバックグラウンドで (ラグ軽減)
         "/mnt/c/Program Files/komorebi/bin/komorebic.exe" reload-configuration 2>/dev/null &

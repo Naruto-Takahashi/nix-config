@@ -24,7 +24,8 @@
   "border_colours": {
     "single": "#ffc20d",
     "unfocused": "#4f4f4f",
-    "floating": "#ffc20d"
+    "floating": "#ffc20d",
+    "monocle": "#ffc20d"
   },
   "monitors": [
     // monitor 1, index 0
