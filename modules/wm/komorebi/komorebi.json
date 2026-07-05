@@ -9,7 +9,7 @@
   "resize_delta": 100,
   "default_container_padding": 6,
   "border": true,
-  "border_width": 4,
+  "border_width": 6,
   "border_offset": 0,
   "mouse_follows_focus": true,
   "animation": {
