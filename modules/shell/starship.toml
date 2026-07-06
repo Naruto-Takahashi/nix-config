@@ -74,8 +74,8 @@ time_format = "%R"
 format = '[[  $time ](fg:muted)]($style)'
 
 [character]
-success_symbol = "[❯](bold accent)"
-error_symbol = "[❯](bold accent)"
+success_symbol = "[❯](bold accent_sub)"
+error_symbol = "[❯](bold accent_sub)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
 # フォールバック配色 (yasb-theme が壁紙から生成した色で差し替える)

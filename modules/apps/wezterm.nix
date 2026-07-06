@@ -106,9 +106,9 @@
         },
         inactive_tab_edge = "none",
       },
-      cursor_bg = colors.accent,
+      cursor_bg = colors.accent_sub,
       cursor_fg = 'white',
-      cursor_border = colors.accent,
+      cursor_border = colors.accent_sub,
     }
 
     -- タブの形状をカスタマイズします．
