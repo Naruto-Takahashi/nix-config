@@ -74,8 +74,8 @@ time_format = "%R"
 format = '[[  $time ](fg:muted)]($style)'
 
 [character]
-success_symbol = "[❯](bold accent_sub)"
-error_symbol = "[❯](bold accent_sub)"
+success_symbol = "[❯](bold secondary)"
+error_symbol = "[❯](bold secondary)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
 # フォールバック配色 (yasb-theme が壁紙から生成した色で差し替える)
@@ -84,6 +84,7 @@ vicmd_symbol = "[❯](bold #8e8e8e)"
 [palettes.matugen]
 accent = "#ffc20d"
 accent_sub = "#b48ead"
+secondary = "#d08770"
 muted = "#a0a9cb"
 dark = "#333333"
 on_accent = "#000000"

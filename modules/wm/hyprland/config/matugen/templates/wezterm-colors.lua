@@ -2,6 +2,7 @@
 return {
   accent = "{{colors.primary.default.hex}}",
   accent_sub = "{{colors.tertiary.default.hex}}",
+  secondary = "{{colors.secondary.default.hex}}",
   text = "{{colors.on_surface.default.hex}}",
   muted = "{{colors.on_surface_variant.default.hex}}",
   surface = "{{colors.surface_container_high.default.hex}}",
