@@ -42,9 +42,9 @@ Redhat = " "
 RedHatedit = " "
 RockyLinux = " "
 SUSE = " "
-Ubuntu = " "
+Ubuntu = " "
 Windows = " "
-WSL = " "
+WSL = " "
 
 [username]
 disabled = true
