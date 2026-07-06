@@ -32,24 +32,7 @@
     {
       "workspaces": [
         {
-          "name": "I",
-          "layout": "BSP"
-        },
-        {
-          "name": "II",
-          "layout": "Grid"
-        },
-        {
-          "name": "III",
-          "layout": "HorizontalStack"
-        }
-      ]
-    },
-    // monitor 2, index 1
-    {
-      "workspaces": [
-        {
-          "name": "Home",
+          "name": "1",
           "layout": "BSP"
         },
         {
@@ -60,7 +43,35 @@
           "name": "3",
           "layout": "HorizontalStack"
         },
-	
+        {
+          "name": "4",
+          "layout": "BSP"
+        },
+        {
+          "name": "5",
+          "layout": "BSP"
+        }
+      ]
+    },
+    // monitor 2, index 1
+    {
+      "workspaces": [
+        {
+          "name": "6",
+          "layout": "BSP"
+        },
+        {
+          "name": "7",
+          "layout": "Grid"
+        },
+        {
+          "name": "8",
+          "layout": "HorizontalStack"
+        },
+        {
+          "name": "9",
+          "layout": "BSP"
+        }
       ]
     }
   ],

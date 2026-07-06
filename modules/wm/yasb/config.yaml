@@ -91,7 +91,8 @@ widgets:
     options:
         label_offline: "⚡ Offline"
         label_workspace_btn: ""
-        label_workspace_active_btn: ""
+        # アクティブなワークスペースだけ通し番号 (komorebi.json の name) を表示
+        label_workspace_active_btn: "{name}"
         label_workspace_populated_btn: ""
         label_default_name: "{index}"
         label_zero_index: false

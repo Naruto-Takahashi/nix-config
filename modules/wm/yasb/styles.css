@@ -172,11 +172,14 @@
     background-color: var(--accent-sub);
 }
 .komorebi-workspaces .ws-btn.active {
-    color: rgba(149, 177, 255, 0);
+    /* ピル内に通し番号を表示 (ハイライト上で読める暗色) */
+    color: var(--base);
+    font-size: 11px;
+    font-weight: 700;
     background-color: var(--highlight);
     width: 36px;
-    height: 10px;
-    border-radius: 4px;
+    height: 16px;
+    border-radius: 8px;
 }
 /*WEATHER WIDGET*/
 .weather-widget .icon {
