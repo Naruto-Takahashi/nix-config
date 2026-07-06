@@ -63,4 +63,11 @@
     [Groups]
     NumberOfGroups=1
   '';
+
+  # -----------------------------------------------------------------------
+  # 各モジュールで利用するグローバル引数
+  # -----------------------------------------------------------------------
+  _module.args = {
+    dotfilesPath = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/nix-config";
+  };
 }

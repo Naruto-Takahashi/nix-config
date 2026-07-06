@@ -34,7 +34,7 @@
   # 各モジュールで利用するグローバル引数
   # -----------------------------------------------------------------------
   _module.args = {
-    dotfilesPath = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/home-manager-config";
+    dotfilesPath = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/nix-config";
   };
 
   # Home Manager 自体の管理を有効化
