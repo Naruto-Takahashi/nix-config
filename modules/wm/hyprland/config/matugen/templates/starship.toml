@@ -74,8 +74,8 @@ time_format = "%R"
 format = '[[  $time ](fg:muted)]($style)'
 
 [character]
-success_symbol = "[❯](bold secondary)"
-error_symbol = "[❯](bold secondary)"
+success_symbol = "[❯](bold accent_sub)"
+error_symbol = "[❯](bold accent_sub)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
 # MATUGEN:START
