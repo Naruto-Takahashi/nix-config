@@ -27,6 +27,12 @@
     "floating": "#ffc20d",
     "monocle": "#ffc20d"
   },
+  // モニタ index を物理モニタに固定 (抜き差しで 0/1 が入れ替わるのを防ぐ)
+  // 値は komorebic monitor-information の serial_number_id
+  "display_index_preferences": {
+    "0": "150995873",
+    "1": "6306110015143"
+  },
   "monitors": [
     // monitor 1, index 0
     {
