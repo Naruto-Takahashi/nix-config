@@ -21,13 +21,13 @@ add_newline = true
 show_always = false
 style_user = "fg:accent_sub bold"
 style_root = "fg:red bold"
-format = "[ $user]($style)"
+format = "[[  ](fg:muted)$user]($style)"
 disabled = false
 
 [hostname]
 ssh_only = true
 style = "fg:accent_sub bold"
-format = "[@󰒋 $hostname]($style) "
+format = "[@$hostname]($style)"
 disabled = false
 
 [fill]
@@ -70,7 +70,7 @@ format = "[[  ](fg:muted) $duration]($style)"
 [time]
 disabled = false
 time_format = "%R"
-format = '[[   $time ](fg:muted)]($style)'
+format = '[[  $time ](fg:muted)]($style)'
 
 [character]
 success_symbol = "[❯](bold accent)"
