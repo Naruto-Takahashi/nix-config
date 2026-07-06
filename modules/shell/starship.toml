@@ -24,8 +24,8 @@ style = "fg:on_accent bg:accent_sub bold"
 format = "[ $symbol]($style)[](fg:accent_sub bg:accent)"
 
 [os.symbols]
-Alpinelinux = " "
-Amzn = " "
+Alpine = " "
+Amazon = " "
 Android = " "
 Arch = " "
 CentOS = " "
@@ -36,15 +36,12 @@ Gentoo = " "
 Linux = " "
 Macos = " "
 NixOS = " "
-OpenSUSE = " "
+openSUSE = " "
 OracleLinux = "󰆚 "
 Redhat = " "
-RedHatedit = " "
 RockyLinux = " "
-SUSE = " "
 Ubuntu = " "
 Windows = " "
-WSL = " "
 
 [username]
 disabled = true
