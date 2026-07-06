@@ -1,12 +1,15 @@
 # =========================================================================
-# パッケージ・アプリケーション管理モジュール
+# パッケージ・アプリケーション管理宣言的モジュール
 # =========================================================================
 { config, pkgs, nixgl, ... }:
 
 {
+  # --- 導入パッケージ一覧 ---
   home.packages = [
-    pkgs.hackgen-nf-font # WezTermで指定されているフォント
+    # ターミナルで使用するフォント
+    pkgs.hackgen-nf-font # WezTermで指定されているフォントです．
 
+    # 基本CLIユーティリティ
     pkgs.eza
     pkgs.bat
     pkgs.fzf
@@ -16,23 +19,36 @@
     pkgs.ghq
     pkgs.git
     pkgs.gh
+
+    # 開発環境・コンパイラ
     pkgs.gcc
     pkgs.gnumake
     pkgs.python3
     pkgs.nodejs_22
     pkgs.ripgrep
+
+    # クリップボード・ユーティリティ
     pkgs.xclip
     pkgs.wl-clipboard
     pkgs.kanata
+
+    # AI連携ツール
     pkgs.gemini-cli
     pkgs.claude-code
-    pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）
-    pkgs.slop # maim用の美しいドラッグ範囲選択ツール
+
+    # スクリーンショットツール
+    pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）です．
+    pkgs.slop # maim用の美しいドラッグ範囲選択ツールです．
+
+    # ジョークツール・装飾
     pkgs.cowsay
     pkgs.fortune
     pkgs.lolcat
     pkgs.fastfetch
-    # vivaldi のラッパーパッケージ：XRDPセッション(DISPLAY>=10)時はプロファイルを分けて多重起動できるようにする
+
+    # --- カスタムパッケージ定義 ---
+    
+    # vivaldiのラッパーパッケージ：XRDPセッション（DISPLAY>=10）時はプロファイルを分けて多重起動できるようにします．
     (pkgs.stdenv.mkDerivation {
       name = "vivaldi-wrapped";
       phases = [ "installPhase" ];
@@ -62,7 +78,7 @@ EOF
       '';
     })
 
-    # Antigravity CLI (Gemini CLI の後継) を Nix で宣言的に管理
+    # Antigravity CLI（Gemini CLIの後継）をNixで宣言的に管理します．
     (pkgs.stdenv.mkDerivation {
       pname = "antigravity-cli";
       version = "1.0.2";
