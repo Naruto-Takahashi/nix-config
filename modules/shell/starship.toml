@@ -5,7 +5,7 @@ command_timeout = 500
 palette = "matugen"
 
 format = """
-$username$hostname\
+$os\
 $directory\
 [](fg:accent bg:dark)\
 $git_branch\
@@ -18,18 +18,39 @@ right_format = """$cmd_duration$time"""
 
 add_newline = true
 
-[username]
-show_always = true
-style_user = "fg:on_accent bg:accent_sub bold"
-style_root = "fg:red bg:accent_sub bold"
-format = "[ $user]($style)"
+[os]
 disabled = false
+style = "fg:on_accent bg:accent_sub bold"
+format = "[ $symbol]($style)[](fg:accent_sub bg:accent)"
+
+[os.symbols]
+Alpinelinux = " "
+Amzn = " "
+Android = " "
+Arch = " "
+CentOS = " "
+Debian = " "
+Fedora = " "
+FreeBSD = " "
+Gentoo = " "
+Linux = " "
+Macos = " "
+NixOS = " "
+OpenSUSE = " "
+OracleLinux = "󰆚 "
+Redhat = " "
+RedHatedit = " "
+RockyLinux = " "
+SUSE = " "
+Ubuntu = " "
+Windows = " "
+WSL = " "
+
+[username]
+disabled = true
 
 [hostname]
-ssh_only = false
-style = "fg:on_accent bg:accent_sub bold"
-format = "[@$hostname ]($style)[](fg:accent_sub bg:accent)"
-disabled = false
+disabled = true
 
 [fill]
 symbol = ' '
