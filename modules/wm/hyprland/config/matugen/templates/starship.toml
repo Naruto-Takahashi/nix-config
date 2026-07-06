@@ -52,8 +52,8 @@ else
 fi
 """
 when = "true"
-style = "fg:on_accent bg:accent_sub bold"
-format = "[ $output]($style)[](fg:accent_sub bg:accent)"
+style = "fg:on_accent bg:secondary bold"
+format = "[ $output]($style)[](fg:secondary bg:accent)"
 
 [username]
 disabled = true
@@ -104,8 +104,8 @@ time_format = "%R"
 format = '[[  $time ](fg:muted)]($style)'
 
 [character]
-success_symbol = "[❯](bold accent_sub)"
-error_symbol = "[❯](bold accent_sub)"
+success_symbol = "[❯](bold secondary)"
+error_symbol = "[❯](bold secondary)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
 # MATUGEN:START
