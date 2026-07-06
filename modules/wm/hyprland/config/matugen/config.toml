@@ -47,3 +47,19 @@ output_path = '~/.config/vesktop/themes/matugen.css'
 input_path = '~/.config/matugen/templates/starship.toml'
 output_path = '~/.cache/matugen/starship.toml'
 
+[templates.wezterm]
+input_path = '~/.config/matugen/templates/wezterm-colors.lua'
+output_path = '~/.config/wezterm/matugen-colors.lua'
+
+[templates.neovim_yazi]
+input_path = '~/.config/matugen/templates/colors.lua'
+output_path = '~/.cache/matugen/colors.lua'
+
+[templates.lazygit]
+input_path = '~/.config/matugen/templates/lazygit-config.yml'
+output_path = '~/.cache/matugen/lazygit-config.yml'
+
+[templates.fzf]
+input_path = '~/.config/matugen/templates/fzf-colors.sh'
+output_path = '~/.cache/matugen/fzf-colors.sh'
+
