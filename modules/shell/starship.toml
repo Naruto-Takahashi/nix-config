@@ -5,6 +5,7 @@ command_timeout = 500
 palette = "matugen"
 
 format = """
+$username$hostname\
 $directory\
 [](fg:accent bg:dark)\
 $git_branch\
@@ -13,21 +14,21 @@ $git_status\
 \n$character\
 """
 
-right_format = """$username$hostname$cmd_duration$time"""
+right_format = """$cmd_duration$time"""
 
 add_newline = true
 
 [username]
 show_always = false
-style_user = "fg:accent_sub bold"
-style_root = "fg:red bold"
-format = "[[  ](fg:muted)$user]($style)"
+style_user = "fg:accent_sub bg:dark bold"
+style_root = "fg:red bg:dark bold"
+format = "[ $user]($style)"
 disabled = false
 
 [hostname]
 ssh_only = true
-style = "fg:accent_sub bold"
-format = "[@$hostname]($style)"
+style = "fg:accent_sub bg:dark bold"
+format = "[@$hostname ]($style)[](fg:dark bg:accent)"
 disabled = false
 
 [fill]
