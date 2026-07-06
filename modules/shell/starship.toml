@@ -5,7 +5,7 @@ command_timeout = 500
 palette = "matugen"
 
 format = """
-$os\
+${custom.os_logo}\
 $directory\
 [](fg:accent bg:dark)\
 $git_branch\
@@ -19,29 +19,41 @@ right_format = """$cmd_duration$time"""
 add_newline = true
 
 [os]
-disabled = false
-style = "fg:on_accent bg:accent_sub bold"
-format = "[ $symbol]($style)[](fg:accent_sub bg:accent)"
+disabled = true
 
-[os.symbols]
-Alpine = " "
-Amazon = " "
-Android = " "
-Arch = " "
-CentOS = " "
-Debian = " "
-Fedora = " "
-FreeBSD = " "
-Gentoo = " "
-Linux = " "
-Macos = " "
-NixOS = " "
-openSUSE = " "
-OracleLinux = "󰆚 "
-Redhat = " "
-RockyLinux = " "
-Ubuntu = " "
-Windows = " "
+[custom.os_logo]
+command = """
+if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
+  if [ -f /etc/os-release ]; then
+    if grep -qi nixos /etc/os-release; then
+      echo " "
+    elif grep -qi ubuntu /etc/os-release; then
+      echo " "
+    elif grep -qi debian /etc/os-release; then
+      echo " "
+    elif grep -qi alpine /etc/os-release; then
+      echo " "
+    elif grep -qi arch /etc/os-release; then
+      echo " "
+    elif grep -qi fedora /etc/os-release; then
+      echo " "
+    elif grep -qi gentoo /etc/os-release; then
+      echo " "
+    else
+      echo " "
+    fi
+  elif [ "$(uname)" = "Darwin" ]; then
+    echo " "
+  else
+    echo " "
+  fi
+else
+  echo " "
+fi
+"""
+when = "true"
+style = "fg:on_accent bg:accent_sub bold"
+format = "[ $output]($style)[](fg:accent_sub bg:accent)"
 
 [username]
 disabled = true
