@@ -4,21 +4,21 @@
 { config, pkgs, ... }:
 
 {
-  # WezTerm パッケージの有効化
+  # --- WezTermパッケージの有効化 ---
+  # WezTermパッケージの有効化を行います．
   programs.wezterm = {
     enable = true;
     package = pkgs.wezterm;
   };
 
-  # -----------------------------------------------------------------------
-  # wezterm.lua 設定ファイルの宣言的自動生成
-  # -----------------------------------------------------------------------
+  # --- wezterm.lua 設定ファイルの生成 ---
+  # wezterm.lua設定ファイルを宣言的に自動生成します．
   xdg.configFile."wezterm/wezterm.lua".text = ''
     local wezterm = require("wezterm")
     local config = wezterm.config_builder()
 
-    -- 配色: フォールバック値。matugen-colors.lua があれば上書き (yasb-theme が生成)
-    -- 他環境 (Linuxデスクトップ/mac) ではファイルが無くフォールバックがそのまま使われる
+    -- 配色：フォールバック値．matugen-colors.luaがあれば上書きします（yasb-themeが生成します）．
+    -- 他環境（Linuxデスクトップ/mac）ではファイルがなく，フォールバックがそのまま使われます．
     local colors = {
       accent = "#ffc20d",
       accent_sub = "#8ea4a2",
@@ -37,11 +37,11 @@
     config.font = wezterm.font 'HackGen Console NF'
     config.adjust_window_size_when_changing_font_size = false
 
-    -- OS判定（macOSおよびWindowsかどうか）
+    -- OS判定（macOSおよびWindowsかどうか）．
     local is_darwin = wezterm.target_triple:find("darwin") ~= nil
     local is_windows = wezterm.target_triple:find("windows") ~= nil
 
-    -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくする
+    -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくします．
     local display = os.getenv("DISPLAY") or ""
     local is_remote = display:match(":[1-9]%d") ~= nil
     config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 12.0)
@@ -60,35 +60,27 @@
     end
 
     ----------------------------------------------------
-    -- Tab
+    -- Tab設定
     ----------------------------------------------------
-    -- タイトルバーを非表示にし、マウスでのドラッグリサイズを有効化
+    -- タイトルバーを非表示にし，マウスでのドラッグリサイズを有効化します．
     config.window_decorations = (is_darwin or is_windows) and "RESIZE" or "NONE"
-    -- タブバーの表示
+    -- タブバーを表示します．
     config.show_tabs_in_tab_bar = true
-    -- タブが一つだけの時はタブバーを非表示にするか
+    -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
-    -- falseにするとタブバーの透過が効かなくなる
-    -- config.use_fancy_tab_bar = false
 
-    -- タブバーの透過設定
+    -- タブバーの透過設定を行います．
     config.window_frame = {
       inactive_titlebar_bg = "none",
       active_titlebar_bg = "none",
     }
 
-    -- タブバーを背景色に合わせる
-    -- config.window_background_gradient = {
-    --   colors = { "#000000" },
-    -- }
-
-    -- タブの追加ボタンを非表示
+    -- タブの追加ボタンを表示します．
     config.show_new_tab_button_in_tab_bar = true
-    -- nightlyのみ使用可能
-    -- タブの閉じるボタンを非表示
+    -- タブの閉じるボタンを表示します．
     config.show_close_tab_button_in_tabs = true
 
-    -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）
+    -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
         background = "none",
@@ -119,10 +111,10 @@
       cursor_border = colors.accent,
     }
 
-    -- タブの形をカスタマイズ
-    -- タブの左側の装飾
+    -- タブの形状をカスタマイズします．
+    -- タブの左側の装飾を設定します．
     local SOLID_LEFT_ARROW = wezterm.nerdfonts.ple_lower_right_triangle
-    -- タブの右側の装飾
+    -- タブの右側の装飾を設定します．
     local SOLID_RIGHT_ARROW = wezterm.nerdfonts.ple_upper_left_triangle
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
@@ -137,21 +129,21 @@
         edge_foreground = background
       end
 
-      -- 1. まずデフォルトのタイトルを取得
+      -- 1. まずデフォルトのタイトルを取得します．
       local title_text = tab.active_pane.title
 
-      -- 2. 裏で動いているプログラムのファイル名を取得（例: "C:\Windows\System32\cmd.exe"）
+      -- 2. 裏で動いているプログラムのファイル名を取得します（例: "C:\Windows\System32\cmd.exe"）．
       local process = tab.active_pane.foreground_process_name or ""
 
-      -- 3. プロセス名に含まれる文字でタイトルを強制上書き
+      -- 3. プロセス名に含まれる文字でタイトルを強制上書きします．
       if process:find("cmd.exe") then
         title_text = "CMD"
       elseif process:find("powershell.exe") or process:find("pwsh.exe") then
         title_text = "PowerShell"
       elseif process:find("wsl.exe") or process:find("wslhost.exe") then
-        title_text = "Ubuntu"  -- WSLなら「Ubuntu」にする
+        title_text = "Ubuntu"  -- WSLなら「Ubuntu」にします
       elseif process:find("nvim") then
-        title_text = "Neovim"  -- ついでにNeovimを開いている時もわかりやすく
+        title_text = "Neovim"  -- ついでにNeovimを開いているときも分かりやすく表示します
       end
 
       local title = "   " .. wezterm.truncate_right(title_text, max_width - 1) .. "   "
@@ -175,31 +167,31 @@
     local is_windows = wezterm.target_triple:find("windows") ~= nil
 
     if is_windows then
-      -- 起動時に WSL (Ubuntu) を立ち上げる設定 (ホームディレクトリで開始)
+      -- 起動時にWSL (Ubuntu) を立ち上げる設定です（ホームディレクトリで開始します）．
       config.default_prog = { 'wsl.exe', '--cd', '~' }
 
-      -- 「＋」ボタンをクリックしたときのメニュー
+      -- 「＋」ボタンをクリックしたときのメニューです．
       config.launch_menu = {
         {
-          -- PowerShell Core (pwsh)
+          -- PowerShell Core (pwsh) の設定です．
           label = 'PowerShell',
           args = { 'pwsh.exe', '-NoLogo' },
         },
         {
-          -- WSL Ubuntu の起動
+          -- WSL Ubuntuの起動設定です．
           label = 'WSL (Ubuntu)',
           args = { 'wsl.exe', '--cd', '~' },
         },
       }
     else
-      -- Linuxネイティブ環境用のデフォルト設定 (標準ログインシェルを自動取得して立ち上げる)
-      -- デフォルトのZshがあればそれを利用し、無ければ規定の動作にします
+      -- Linuxネイティブ環境用のデフォルト設定です（標準ログインシェルを自動取得して立ち上げます）．
+      -- デフォルトのZshがあればそれを利用し，なければ規定の動作にします．
       config.default_prog = { 'zsh' }
       config.launch_menu = {}
     end
 
     ----------------------------------------------------
-    -- keybinds
+    -- キーバインド設定
     ----------------------------------------------------
     config.disable_default_key_bindings = true
     config.keys = require("keybinds").keys
@@ -209,24 +201,23 @@
     return config
   '';
 
-  # -----------------------------------------------------------------------
-  # keybinds.lua 設定ファイルの宣言的自動生成
-  # -----------------------------------------------------------------------
+  # --- keybinds.lua 設定ファイルの生成 ---
+  # keybinds.lua設定ファイルを宣言的に自動生成します．
   xdg.configFile."wezterm/keybinds.lua".text = ''
     local wezterm = require("wezterm")
     local act = wezterm.action
 
-    -- WSLを使用している場合はWSLで、そうでなければデフォルトで分割する関数
+    -- WSLを使用している場合はWSLで，そうでなければデフォルトで分割する関数です．
     local function split_pane(direction)
       return wezterm.action_callback(function(window, pane)
         local dim = { direction = direction }
         local proc = pane:get_foreground_process_name()
         local cwd_uri = pane:get_current_working_dir()
 
-        -- プロセス名に "wsl" が含まれていれば wsl.exe を起動
+        -- プロセス名に "wsl" が含まれていれば wsl.exe を起動します．
         if proc and (proc:find("wsl.exe") or proc:find("wslhost.exe")) then
           if cwd_uri then
-            -- WSLの場合は file_path をそのまま使う (/home/nalt/...)
+            -- WSLの場合は file_path をそのまま使います (/home/nalt/...)．
             dim.command = { args = { "wsl.exe", "--cd", cwd_uri.file_path } }
           else
             dim.command = { args = { "wsl.exe" } }
@@ -234,13 +225,13 @@
         elseif proc and (proc:find("powershell.exe") or proc:find("pwsh.exe")) then
           dim.command = { args = { "powershell.exe", "-NoLogo" } }
         end
-        -- PowerShellなどの場合は dim.cwd を指定せずデフォルトの挙動に任せる
+        -- PowerShellなどの場合は dim.cwd を指定せず，デフォルトの挙動に任せます．
 
         window:perform_action(act.SplitPane(dim), pane)
       end)
     end
 
-    -- Show which key table is active in the status area
+    -- ステータスバーへのアクティブなキーテーブル表示設定を行います．
     wezterm.on("update-right-status", function(window, pane)
       local name = window:active_key_table()
       if name then
@@ -255,23 +246,23 @@
         -- Leader Key (Ctrl+Space) -> Tab操作
         -- ============================================================
 
-        -- Leader + t で新しいタブを作成 (Tab)
+        -- Leader + t で新しいタブを作成（Tab）．
         { key = "t", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
 
-        -- Leader + T (Shift+t) で PowerShell を新しいタブで開く
+        -- Leader + T (Shift+t) でPowerShellを新しいタブで開きます．
         { key = "T", mods = "LEADER|SHIFT", action = act.SpawnCommandInNewTab { args = { "pwsh.exe", "-NoLogo" } } },
 
-        -- Leader + w でタブを閉じる (Close Window)
+        -- Leader + w でタブを閉じます（Close Window）．
         { key = "w", mods = "LEADER", action = act({ CloseCurrentTab = { confirm = true } }) },
 
         -- ============================================================
-        -- ワークスペース関連 (W に変更)
+        -- ワークスペース関連（W に変更）
         -- ============================================================
 
-        -- Leader + Shift + w (大文字W) でワークスペース選択
+        -- Leader + Shift + w（大文字W）でワークスペース選択を行います．
         { key = "W", mods = "LEADER|SHIFT", action = act.ShowLauncherArgs({ flags = "WORKSPACES", title = "Select workspace" }), },
 
-        -- ワークスペース名変更
+        -- ワークスペース名の変更を行います．
         {
           key = "$", mods = "LEADER",
           action = act.PromptInputLine({
@@ -286,15 +277,15 @@
         -- その他の便利なショートカット
         -- ============================================================
 
-        -- タブの移動 (Leader + n / p) next/previous
+        -- タブの移動（Leader + n / p）next/previous
         { key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
         { key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },
 
-        -- タブの入れ替え
+        -- タブの入れ替えを行います．
         { key = "{", mods = "LEADER|SHIFT", action = act({ MoveTabRelative = -1 }) },
         { key = "}", mods = "LEADER|SHIFT", action = act({ MoveTabRelative = 1 }) },
 
-        -- 数字キーでの移動 (Alt + 数字)
+        -- 数字キーでの移動（Alt + 数字）．
         { key = "1", mods = "ALT", action = act.ActivateTab(0) },
         { key = "2", mods = "ALT", action = act.ActivateTab(1) },
         { key = "3", mods = "ALT", action = act.ActivateTab(2) },
@@ -305,7 +296,7 @@
         { key = "8", mods = "ALT", action = act.ActivateTab(7) },
         { key = "9", mods = "ALT", action = act.ActivateTab(-1) },
 
-        -- ペイン操作 (分割・移動)
+        -- ペイン操作（分割・移動）．
         { key = "d", mods = "LEADER", action = split_pane("Down") },
         { key = "r", mods = "LEADER", action = split_pane("Right") },
         { key = "x", mods = "LEADER", action = act({ CloseCurrentPane = { confirm = true } }) },
@@ -315,13 +306,13 @@
         { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
         { key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
 
-        -- コピーモード (Leader + [ )
+        -- コピーモード（Leader + [）．
         { key = "[", mods = "LEADER", action = act.ActivateCopyMode },
 
-        -- コマンドパレット (Ctrl + Shift + P)
+        -- コマンドパレット（Ctrl + Shift + P）．
         { key = "p", mods = "CTRL|SHIFT", action = act.ActivateCommandPalette },
 
-        -- コピー & 貼り付け (Ctrl + Shift + C/V 及び CMD + C/V)
+        -- コピー & 貼り付け（Ctrl + Shift + C/V 及び CMD + C/V）．
         { key = "c", mods = "CTRL|SHIFT", action = act.CopyTo("Clipboard") },
         { key = "v", mods = "CTRL|SHIFT", action = act.PasteFrom("Clipboard") },
         {
@@ -338,19 +329,19 @@
         },
         { key = "v", mods = "CMD", action = act.PasteFrom("Clipboard") },
 
-        -- フォントサイズ
+        -- フォントサイズの調整を行います．
         { key = "+", mods = "CTRL", action = act.IncreaseFontSize },
         { key = "-", mods = "CTRL", action = act.DecreaseFontSize },
         { key = "0", mods = "CTRL", action = act.ResetFontSize },
 
-        -- 設定リロード
+        -- 設定のリロードを行います．
         { key = "r", mods = "CTRL|SHIFT", action = act.ReloadConfiguration },
 
-        -- キーテーブル
+        -- キーテーブルの設定を行います．
         { key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
         { key = "a", mods = "LEADER", action = act.ActivateKeyTable({ name = "activate_pane", timeout_milliseconds = 1000 }) },
 
-        -- キーバインド一覧
+        -- キーバインド一覧を表示します．
         {
           key = "m",
           mods = "LEADER",
@@ -358,7 +349,7 @@
         },
       },
 
-      -- キーテーブル設定
+      -- キーテーブルの詳細設定を行います．
       key_tables = {
         resize_pane = {
           { key = "h", action = act.AdjustPaneSize({ "Left", 1 }) },

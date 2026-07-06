@@ -1,8 +1,12 @@
+# =========================================================================
+# Neovim テキストエディタ宣言的設定モジュール
+# =========================================================================
 { config, pkgs, ... }:
 
 let
-  # NixOS上でC++等のコンパイルリンクエラーを防ぐため、
-  # Nixpkgsでビルド済みのパーサー群から .so ファイルを抽出し、フラットな1つのディレクトリにまとめてリンクします。
+  # --- Treesitterパーサーのビルド ---
+  # NixOS上でC++などのコンパイルリンクエラーを防ぐため，
+  # Nixpkgsでビルド済みのパーサー群から .so ファイルを抽出し，フラットな1つのディレクトリにまとめてリンクします．
   treesitter-parsers = pkgs.runCommand "nvim-treesitter-parsers" {} ''
     mkdir -p $out/parser
     ${pkgs.lib.concatMapStringsSep "\n" (lang:
@@ -29,21 +33,21 @@ let
   '';
 in
 {
-  # Neovim パッケージの有効化
+  # --- Neovimパッケージ設定 ---
+  # Neovimパッケージの有効化と基本オプションを設定します．
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     viAlias = true;
     vimAlias = true;
-    # Copilot.lua は Neovim 内で Node.js を使うため、Neovim 自体にも同梱する
+    # Copilot.luaはNeovim内でNode.jsを使うため，Neovim自体にも同梱します．
     withNodeJs = true;
   };
 
-  # -----------------------------------------------------------------------
-  # Neovim 設定ディレクトリの宣言的配置 (ディレクトリ・ソース方式)
-  # -----------------------------------------------------------------------
+  # --- 設定ファイルおよびパーサーの配置 ---
+  # Neovim設定ディレクトリの宣言的配置（ディレクトリ・ソース方式）を行います．
   xdg.configFile."nvim".source = ./nvim;
 
-  # ビルド済みの Treesitter パーサーを Neovim のランタイムパスにシンボリックリンク
+  # ビルド済みのTreesitterパーサーをNeovimのランタイムパスにシンボリックリンクします．
   xdg.dataFile."nvim/site/parser".source = "${treesitter-parsers}/parser";
 }

@@ -1,12 +1,16 @@
 # =========================================================================
-# LazyGit 設定モジュール
+# LazyGit 宣言的設定モジュール
 # =========================================================================
 { config, pkgs, ... }:
 
 {
+  # --- LazyGitの設定 ---
+  # LazyGitの有効化，およびカスタムコマンド・外観テーマを設定します．
   programs.lazygit = {
     enable = true;
+    
     settings = {
+      # Gemini APIを使用したコミットメッセージ自動生成コマンドの登録
       customCommands = [
         {
           key = "<c-g>";
@@ -16,6 +20,8 @@
           output = "terminal";
         }
       ];
+
+      # 外観テーマ設定（kanagawa-dragon配色）
       gui = {
         theme = {
           activeBorderColor = [ "#ffc20d" "bold" ];

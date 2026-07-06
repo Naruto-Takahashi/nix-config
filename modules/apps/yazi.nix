@@ -4,6 +4,8 @@
 { config, pkgs, kanagawa-dragon-yazi, ... }:
 
 {
+  # --- Yaziの基本設定 ---
+  # Yaziの有効化，およびZsh連携，表示設定を設定します．
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
@@ -46,6 +48,7 @@
       };
     };
 
+    # キーマップ設定
     keymap = {
       manager.prepend_keymap = [
         {
@@ -72,12 +75,13 @@
     };
   };
 
-  # スクリーンショットに基づいたUIロジックの刷新（フルボーダー、カスタムヘッダー等）
+  # --- UIロジック設定 (init.lua) ---
+  # スクリーンショットに基づいたUIロジックの刷新（フルボーダー，カスタムヘッダー等）を行います．
   xdg.configFile."yazi/init.lua".text = ''
     ---@diagnostic disable: undefined-global
 
-    -- matugen 配色 (フォールバック #e46876)。無い環境ではフォールバックを使用
-    -- yazi の Lua ランタイムでは dofile が使えないため io.open + パターンマッチで読む
+    -- matugen配色（フォールバック #e46876）．無い環境ではフォールバックを使用します．
+    -- yaziのLuaランタイムではdofileが使えないため，io.open + パターンマッチで読み込みます．
     local path_color = "#e46876"
     do
       local ok, res = pcall(function()
@@ -94,13 +98,13 @@
       end
     end
 
-    -- yazi 26+ ではコンポーネントの render 差し替えが効かないため、
-    -- テーマ (th.mgr.cwd) を直接上書きしてヘッダーのパス色を変える
+    -- yazi 26+ ではコンポーネントのrender差し替えが効かないため，
+    -- テーマ（th.mgr.cwd）を直接上書きしてヘッダーのパス色を変更します．
     pcall(function()
       th.mgr.cwd = ui.Style():fg(path_color)
     end)
 
-    -- フルボーダー (yazi 26 API / 公式 full-border プラグイン相当)
+    -- フルボーダー（yazi 26 API / 公式 full-borderプラグイン相当）．
     pcall(function()
       th.mgr.border_style = ui.Style():fg("#665c54")
       local old_build = Tab.build
@@ -143,10 +147,12 @@
     end)
   '';
 
-  # フレーバーリポジトリの配置
+  # --- フレーバー設定 ---
+  # フレーバーリポジトリの配置を行います．
   xdg.configFile."yazi/flavors/kanagawa-dragon.yazi".source = kanagawa-dragon-yazi;
 
-  # スクリーンショットの色使いを再現したテーマ設定
+  # --- テーマ設定 (theme.toml) ---
+  # スクリーンショットの色使いを再現したテーマ設定を行います．
   xdg.configFile."yazi/theme.toml".text = ''
     #:schema https://yazi-rs.github.io/schemas/theme.json
 

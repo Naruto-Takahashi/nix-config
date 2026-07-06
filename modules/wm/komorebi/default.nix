@@ -1,30 +1,36 @@
+# =========================================================================
+# Komorebi (Windows用タイル型WM) 宣言的設定モジュール
+# =========================================================================
 { config, dotfilesPath, ... }:
+
 {
-  # komorebi のメイン設定ファイル
+  # --- Komorebi設定ファイル ---
+  # メイン設定ファイル．
   xdg.configFile."komorebi/komorebi.json" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/komorebi.json";
     force = true;
   };
 
-  # komorebi 用の AutoHotkey 設定ファイル
-  xdg.configFile."komorebi/komorebi.ahk" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/komorebi.ahk";
-    force = true;
-  };
-
-  # komorebi のアプリケーション個別設定
+  # アプリケーションごとの個別設定ファイル．
   xdg.configFile."komorebi/applications.json" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/applications.json";
     force = true;
   };
 
-  # ログオン時にタスクスケーラで呼び出されるスタートアップスクリプト
+  # --- Windows環境向け連携スクリプトおよび設定 ---
+  # 操作用ホットキーを定義するAutoHotkeyスクリプト．
+  xdg.configFile."komorebi/komorebi.ahk" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/komorebi.ahk";
+    force = true;
+  };
+
+  # ログオン時にタスクスケジューラから呼び出されるスタートアップスクリプト．
   xdg.configFile."komorebi/startup.ps1" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/startup.ps1";
     force = true;
   };
 
-  # Windows環境構築・自動化スクリプト
+  # Windows環境構築時のパッケージ導入などを自動化するスクリプト．
   xdg.configFile."komorebi/setup-windows.ps1" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/setup-windows.ps1";
     force = true;

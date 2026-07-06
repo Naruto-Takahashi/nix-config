@@ -4,29 +4,29 @@
 { config, pkgs, ... }:
 
 {
-  programs.direnv = {
-    enable = true;
-    nix-direnv.enable = true;
-  };
+  # programs.direnv は modules/shell/direnv.nix で定義されているため，ここでは定義しない．
 
+  # --- ユーティリティツールの有効化 ---
+  # fzf（ファジーファインダー）の有効化とZsh連携を設定します．
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
   };
 
+  # zoxide（スマートなcdコマンド）の有効化を設定します．
+  # （Zshとの自動連携は無効化し，initContent内で手動初期化します）
   programs.zoxide = {
     enable = true;
     enableZshIntegration = false;
     options = [ "--cmd cd" ];
   };
 
+  # --- Zsh本体の設定 ---
   programs.zsh = {
     enable = true;
     enableCompletion = true; # compinit & complist 相当の自動読み込み
 
-    # ---------------------------------------------------------------------
     # 履歴管理（History）の設定
-    # ---------------------------------------------------------------------
     history = {
       size           = 50000;
       save           = 50000;
@@ -36,11 +36,9 @@
       ignoreSpace    = true;  # HIST_IGNORE_SPACE
     };
 
-    # ---------------------------------------------------------------------
-    # コマンドエイリアス (shellAliases) の定義
-    # ---------------------------------------------------------------------
+    # コマンドエイリアス（shellAliases）の定義
     shellAliases = {
-      # WezTerm用ラッパー (Nvidia環境対応)
+      # WezTerm用ラッパー（Nvidia環境対応）
       wezterm = "nixGL wezterm";
       
       # ユーティリティ & 表示クリア
@@ -71,7 +69,7 @@
       vim     = "nvim";
       lg      = "lazygit";
 
-      # GitHub Copilot (Manual Install - v1.0.63+)
+      # GitHub Copilot（Manual Install - v1.0.63+）
       chat    = "copilot";
       ask     = "copilot -i";
       exp     = "copilot -i 'explain '";
@@ -103,9 +101,7 @@
       raspi        = "cd ~/mnt/raspi";
     };
 
-    # ---------------------------------------------------------------------
-    # プラグイン (Nixによる絶対パスでの超安定自動配置)
-    # ---------------------------------------------------------------------
+    # プラグイン設定（Nixによる絶対パスでの自動配置）
     plugins = [
       {
         name = "zsh-autosuggestions";
@@ -119,9 +115,7 @@
       }
     ];
 
-    # ---------------------------------------------------------------------
-    # ディレクトリハッシュ (hash -d による `~ショートカット`)
-    # ---------------------------------------------------------------------
+    # ディレクトリハッシュ（hash -d による「~ショートカット」）
     dirHashes = {
       d    = "$HOME/dotfiles";
       p    = "$HOME/projects";
@@ -130,84 +124,96 @@
       win  = "$HOME/win";
     };
 
-    # ---------------------------------------------------------------------
-    # 環境固有の設定、キーバインド、カスタム関数
-    # ---------------------------------------------------------------------
+    # 環境固有の設定，キーバインド，カスタム関数（.zshrcへの流し込み）
     initContent = ''
-      # zsh-autosuggestions の検索を非同期化し，ラグをゼロにする設定
+      # --- zsh-autosuggestions設定 ---
+      # zsh-autosuggestionsの検索を非同期化し，ラグをゼロにする設定です．
       export ZSH_AUTOSUGGEST_USE_ASYNC="true"
-      # 入力文字数が1文字以下の場合はサジェスト探索をスキップ（空ENTER時のラグを完全にゼロにする）
+      # 入力文字数が1文字以下の場合はサジェスト探索をスキップします（空ENTER時のラグを完全にゼロにするため）．
       export ZSH_AUTOSUGGEST_MIN_SIZE=2
 
-      # 外部ツールなどのパス追加・設定
+      # --- パスおよび環境変数設定 ---
+      # 外部ツールなどのパスを追加します．
       export PATH="$HOME/.local/bin:$HOME/.fzf/bin:$PATH"
       export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/home/nalt/lib/ac-library-master
       export PATH=$PATH:/usr/local/go/bin
       export PATH=$PATH:$HOME/go/bin
 
-      # LS_COLORS のカラーパレット定義
+      # LS_COLORSのカラーパレット定義です．
       export LS_COLORS="di=1;38;5;110:ex=1;38;5;109:ln=1;38;5;139:*.tar=1;38;5;203:*.tgz=1;38;5;203:*.zip=1;38;5;203:*.z=1;38;5;203:*.gz=1;38;5;203:*.bz2=1;38;5;203:*.deb=1;38;5;203:*.rpm=1;38;5;203:*.jar=1;38;5;203:*.rar=1;38;5;203:*.7z=1;38;5;203:*.xz=1;38;5;203:*.rs=1;38;5;151:*.js=1;38;5;151:*.ts=1;38;5;151:*.c=1;38;5;151:*.cpp=1;38;5;151:*.go=1;38;5;151:*.py=1;38;5;151:*.java=1;38;5;151:*.lua=1;38;5;151:*.html=1;38;5;151:*.css=1;38;5;151:*.md=1;38;5;151:*.json=1;38;5;151:*.toml=1;38;5;151:*.yaml=1;38;5;151:*.yml=1;38;5;151"
 
-      # ディレクトリ移動（cdなしでの移動を許可）
+      # --- シェルオプション設定 ---
+      # ディレクトリ移動（cdなしでの移動を許可）を有効化します．
       setopt auto_cd
 
-      # 履歴保存オプションの追加拡張
+      # 履歴保存オプションの追加拡張を設定します．
       setopt EXTENDED_HISTORY
       setopt HIST_SAVE_NO_DUPS
       setopt HIST_REDUCE_BLANKS
       setopt HIST_FIND_NO_DUPS
       setopt HIST_NO_STORE
 
-      # システムスタック制限の解除 (開発時等の安定化)
+      # システムスタック制限の解除を行います（開発時等の安定化のため）．
       ulimit -s unlimited
 
-      # 補完選択メニュー用モジュール (complist) のロード
+      # --- 補完およびメニュー設定 ---
+      # 補完選択メニュー用モジュール（complist）をロードします．
       zmodload zsh/complist
 
       [ -f "$HOME/.cargo/env" ]  && . "$HOME/.cargo/env"
 
-      # 補完メニューの挙動最適化（大文字小文字の曖昧補完、カーソル選択）
+      # 補完メニューの挙動最適化（大文字小文字の曖昧補完，カーソル選択）を設定します．
       zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
       zstyle ':completion:*' menu select
 
-      # fzf オプションおよびCtrl+T, Ctrl+Rのプレビュー表示設定
+      # --- fzf設定 ---
+      # fzfオプションおよびCtrl+T，Ctrl+Rのプレビュー表示を設定します．
       export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=pointer:#ffc20d,marker:#ffc20d,prompt:#ffc20d,info:#b48ead,hl:#b48ead,hl+:#b48ead'
-      # matugen 生成の fzf 配色があれば上書き (yasb-theme が生成)
+      # matugen生成のfzf配色があれば上書きします（yasb-themeが生成します）．
       [[ -f ~/.cache/matugen/fzf-colors.sh ]] && source ~/.cache/matugen/fzf-colors.sh
       export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
       export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview,tab:down,btab:up'"
 
-      # Vi Mode (Vim風キーマップ) の有効化とインサート時のバックスペース調整
+      # --- キーマップ・Vimモード設定 ---
+      # Vi Mode（Vim風キーマップ）の有効化とインサート時のバックスペース調整を行います．
       bindkey -v
       bindkey "^?" backward-delete-char
 
-      # コマンドラインのVim編集機能（ノーマルモードで 'v' でエディタ起動）
+      # コマンドラインのVim編集機能を有効化します（ノーマルモードで 'v' でエディタ起動）．
       autoload -Uz edit-command-line
       zle -N edit-command-line
       bindkey -M vicmd 'v' edit-command-line
 
-      # 補完選択メニュー中の Vim風 (HJKL) 移動キーマップ
+      # 補完選択メニュー中のVim風（HJKL）移動キーマップを定義します．
       bindkey -M menuselect 'h' vi-backward-char
       bindkey -M menuselect 'j' vi-down-line-or-history
       bindkey -M menuselect 'k' vi-up-line-or-history
       bindkey -M menuselect 'l' vi-forward-char
 
+      # --- 配色環境変数設定 ---
+      # matugen生成のstarship配色があればそちらを優先します．
+      [[ -f ~/.cache/matugen/starship.toml ]] && export STARSHIP_CONFIG=~/.cache/matugen/starship.toml
+
+      # matugen生成のlazygit完全設定があれば単一ファイルで渡します（マージ問題回避のため）．
+      [[ -f ~/.cache/matugen/lazygit-config.yml ]] && \
+        export LG_CONFIG_FILE="$HOME/.cache/matugen/lazygit-config.yml"
+
       # ===================================================================
       # カスタムシェル関数
       # ===================================================================
       
-      # 1. ディレクトリを作成して即時に移動
+      # 1. ディレクトリを作成して即時に移動します．
       mkcd() {
           mkdir -p "$1"
           cd "$1" || return
       }
       
-      # 2. ディレクトリ移動 (cd) 後に自動的に eza (ls) を実行
+      # 2. ディレクトリ移動 (cd) 後に自動的に eza (ls) を実行します．
       function chpwd() {
           ls
       }
       
-      # 3. 競技プログラミング用 C++ コンパイル＆実行
+      # 3. 競技プログラミング用C++のコンパイル＆実行を行います．
       runcpp() {
           g++ -std=c++20 -O2 "$1" -o "''${1%.cpp}.out" && "./''${1%.cpp}.out"
       }
@@ -215,7 +221,7 @@
           g++ -std=c++20 -O2 "$1" -o "''${1%.cpp}.out" && "./''${1%.cpp}.out" < input.txt > output.txt
       }
 
-      # 4. WezTerm OSC 7 サポート (新しいタブを開いた際のカレントディレクトリ同期用)
+      # 4. WezTerm OSC 7サポート（新しいタブを開いた際のカレントディレクトリ同期用）を設定します．
       if [[ "$TERM_PROGRAM" == "WezTerm" ]]; then
           wezterm_osc7() {
               printf "\033]7;file://%s%s\033\\" "$HOST" "$PWD"
@@ -224,7 +230,7 @@
           add-zsh-hook precmd wezterm_osc7
       fi
 
-      # 5. ghq + fzf による超高速ディレクトリジャンプ
+      # 5. ghq + fzfによる超高速ディレクトリジャンプを定義します．
       function ghq-fzf() {
         local src=$(ghq list | fzf --bind 'tab:down,btab:up' --preview "ls -laTp $(ghq root)/{} | tail -n+2 | head -n 200")
         if [ -n "$src" ]; then
@@ -238,7 +244,7 @@
       bindkey -M viins '^g' ghq-fzf
       bindkey -M vicmd '^g' ghq-fzf
 
-      # 6. zsh-syntax-highlighting 用のカスタムカラースタイル
+      # 6. zsh-syntax-highlighting用のカスタムカラースタイルを設定します．
       typeset -A ZSH_HIGHLIGHT_STYLES
       ZSH_HIGHLIGHT_STYLES[command]='fg=green,bold'
       ZSH_HIGHLIGHT_STYLES[alias]='fg=green,bold'
@@ -246,19 +252,12 @@
       ZSH_HIGHLIGHT_STYLES[function]='fg=green,bold'
       ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=red,bold'
 
-      # matugen 生成の starship 配色があればそちらを優先
-      [[ -f ~/.cache/matugen/starship.toml ]] && export STARSHIP_CONFIG=~/.cache/matugen/starship.toml
-
-      # matugen 生成の lazygit 完全設定があれば単一ファイルで渡す (マージ問題回避)
-      [[ -f ~/.cache/matugen/lazygit-config.yml ]] && \
-        export LG_CONFIG_FILE="$HOME/.cache/matugen/lazygit-config.yml"
-
-      # 7. Windowsとの設定同期用関数 (WSL環境用)
+      # 7. Windowsとの設定同期を行います（WSL環境用）．
       function sync-win() {
           echo "Syncing WezTerm config..."
           cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
           mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-          # ~/.config/ahk は現在未使用 (AHK は komorebi.ahk のみ)。存在する場合だけ同期
+          # ~/.config/ahkは現在未使用（AHKはkomorebi.ahkのみ）．存在する場合だけ同期します．
           if [ -d ~/.config/ahk ]; then
               echo "Syncing AutoHotkey scripts..."
               cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
@@ -268,29 +267,25 @@
           cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
           cp -L ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
           cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
-          # 読み込みの確実性を高めるため、ホーム直下にも配置
+          # 読み込みの確実性を高めるため，ホーム直下にも配置します．
           cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
           cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
           rm -f "/mnt/c/Users/tnaru/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/komorebi.ahk"
-          # スタートアップ・環境構築スクリプトの同期
+          # スタートアップ・環境構築スクリプトの同期を行います．
           cp -L ~/.config/komorebi/startup.ps1 /mnt/c/Users/tnaru/Tools/Customization/
           cp -L ~/.config/komorebi/setup-windows.ps1 /mnt/c/Users/tnaru/Tools/Customization/
           echo "Syncing YASB config..."
           mkdir -p /mnt/c/Users/tnaru/.config/yasb
           cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
-          # matugen 生成済みパレットがあれば styles.css に再適用
+          # matugen生成済みパレットがあればstyles.cssに再適用します．
           [ -x ~/.local/bin/yasb-theme ] && ~/.local/bin/yasb-theme --reapply
           echo "Syncing Vivaldi CSS..."
           mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
           cp -L ~/.config/vivaldi/custom.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
-          # komorebi のリロードは yasb-theme --reapply 内で実行済み。
-          # ここで重ねて reload-configuration すると同時実行でパイプが
-          # デッドロックし komorebi がハングすることがあるため呼ばない。
           echo "Done."
       }
 
-      # 8. 最新のスクリーンショットを Antigravity チャットへ連携する関数
-      # (撮影した ~/Pictures/Screenshots/ 下の最新画像を sync)
+      # 8. 最新のスクリーンショットをAntigravityチャットへ連携します（撮影した ~/Pictures/Screenshots/ 下の最新画像を同期）．
       function agy-ss() {
           local ss_dir="$HOME/Pictures/Screenshots"
           local latest_file=$(ls -t "$ss_dir"/Screenshot*.png 2>/dev/null | head -n 1)
@@ -303,20 +298,15 @@
               fi
               echo "最新のスクリーンショットを登録しました！"
               echo "  元ファイル: $latest_file"
-              echo "  -> $ss_dir/latest.png としてコピーしました。"
-              echo "  (クリップボードにコピーしたため、チャットへ Ctrl+V で直接貼り付け可能です)"
+              echo "  -> $ss_dir/latest.png としてコピーしました．"
+              echo "  （クリップボードにコピーしたため，チャットへ Ctrl+V で直接貼り付け可能です）"
           else
-              echo "スクリーンショットが見つかりませんでした。($ss_dir)"
+              echo "スクリーンショットが見つかりませんでした．($ss_dir)"
           fi
       }
 
-      # zoxide の初期化（nvmロード後に実行することで、nvm内部のcd処理との衝突を防ぐ）
+      # zoxideの初期化を行います（nvmロード後に実行することで，nvm内部のcd処理との衝突を防ぎます）．
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
-
-      # Run fastfetch on interactive shell startup
-      if [[ -o interactive ]] && command -v fastfetch >/dev/null; then
-          fastfetch
-      fi
     '';
   };
 }

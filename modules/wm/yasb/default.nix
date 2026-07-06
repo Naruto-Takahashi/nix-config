@@ -1,15 +1,20 @@
+# =========================================================================
+# YASB (Yet Another Status Bar) 宣言的設定モジュール
+# =========================================================================
 { config, dotfilesPath, ... }:
+
 {
-  # YASB 設定ディレクトリ
+  # --- YASB設定ディレクトリ ---
+  # 設定ファイル一式を配置するディレクトリへのシンボリックリンク．
   xdg.configFile."yasb" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/yasb";
     force = true;
   };
 
-  # 壁紙変更時に matugen で YASB の配色を再生成するスクリプト
+  # --- 配色連携スクリプト ---
+  # 壁紙変更時にmatugenで生成された配色をYASBに反映させるためのスクリプト．
   home.file.".local/bin/yasb-theme" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/yasb/matugen/yasb-theme.sh";
     force = true;
   };
-
 }

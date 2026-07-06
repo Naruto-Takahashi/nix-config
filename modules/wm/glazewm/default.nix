@@ -4,7 +4,8 @@
 { config, pkgs, ... }:
 
 let
-  # Zebar用の外部ライブラリをNixで管理
+  # --- 外部ライブラリ定義 ---
+  # Zebar用の外部ライブラリをNixで管理します．
   fetchLib = { name, url, sha256 }: pkgs.fetchurl { inherit name url sha256; };
   
   libs = {
@@ -31,15 +32,18 @@ let
   };
 in
 {
-  # GlazeWM 設定ディレクトリの宣言的配置
+  # --- GlazeWM設定 ---
+  # GlazeWM設定ディレクトリを宣言的に配置します．
   xdg.configFile."glazewm".source = ./glazewm;
 
-  # Zebar 設定ディレクトリの宣言的配置 (再帰的リンクを有効化)
+  # --- Zebar設定 ---
+  # Zebar設定ディレクトリを宣言的に配置します（再帰的リンクを有効化）．
   xdg.configFile."zebar" = {
     source = ./zebar;
     recursive = true;
   };
 
-  # AutoHotkey 設定ディレクトリの宣言的配置
+  # --- AutoHotkey設定 ---
+  # AutoHotkey設定ディレクトリを宣言的に配置します．
   xdg.configFile."ahk".source = ./ahk;
 }

@@ -1,17 +1,19 @@
 # =========================================================================
-# Starship プロンプト設定モジュール
+# Starship プロンプト宣言的設定モジュール
 # =========================================================================
 { config, dotfilesPath, ... }:
 
 {
-  # Starship プロンプトの有効化
+  # --- Starshipの有効化 ---
+  # Starshipプロンプトを有効化します．
   programs.starship = {
     enable = true;
   };
 
-  # starship.toml (フォールバック配色入りテンプレート)
-  # yasb-theme が matugen の配色を流し込んだ版を ~/.cache/matugen/starship.toml
-  # に生成し、存在すれば zsh が STARSHIP_CONFIG でそちらを優先する
+  # --- 設定ファイルの配置 ---
+  # starship.toml（フォールバック配色入りテンプレート）のシンボリックリンクを配置します．
+  # yasb-themeがmatugenの配色を流し込んだ版を ~/.cache/matugen/starship.toml
+  # に生成し，存在すればzshがSTARSHIP_CONFIGでそちらを優先します．
   xdg.configFile."starship.toml" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/shell/starship.toml";
     force = true;
