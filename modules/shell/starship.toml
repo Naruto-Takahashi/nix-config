@@ -13,14 +13,21 @@ $git_status\
 \n$character\
 """
 
-right_format = """$cmd_duration$username $time"""
+right_format = """$username$hostname$cmd_duration$time"""
 
 add_newline = true
 
 [username]
-style_user = "white bold"
-style_root = "black bold"
-format = "user: [$user]($style) "
+show_always = false
+style_user = "fg:accent_sub bold"
+style_root = "fg:red bold"
+format = "[ $user]($style)"
+disabled = false
+
+[hostname]
+ssh_only = true
+style = "fg:accent_sub bold"
+format = "[@󰒋 $hostname]($style) "
 disabled = false
 
 [fill]
