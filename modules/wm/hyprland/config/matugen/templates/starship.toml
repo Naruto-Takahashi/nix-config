@@ -1,0 +1,88 @@
+# Starship performance optimizations for WSL
+scan_timeout = 20
+command_timeout = 500
+
+palette = "matugen"
+
+format = """
+$username$hostname\
+$directory\
+[](fg:accent bg:dark)\
+$git_branch\
+$git_status\
+[](fg:dark)\
+\n$character\
+"""
+
+right_format = """$cmd_duration$time"""
+
+add_newline = true
+
+[username]
+show_always = false
+style_user = "fg:accent_sub bg:dark bold"
+style_root = "fg:red bg:dark bold"
+format = "[ $user]($style)"
+disabled = false
+
+[hostname]
+ssh_only = true
+style = "fg:accent_sub bg:dark bold"
+format = "[@$hostname ]($style)[](fg:dark bg:accent)"
+disabled = false
+
+[fill]
+symbol = ' '
+
+[directory]
+style = "fg:on_accent bg:accent bold"
+truncation_length = 10
+truncate_to_repo = false
+truncation_symbol = "…/"
+read_only = ' 󰌾 '
+read_only_style = 'fg:on_accent bg:accent'
+format = '[ $path ]($style)[$read_only]($read_only_style)'
+
+[directory.substitutions]
+"Documents" = "󰈙 "
+"Downloads" = " "
+"Music" = " "
+"Pictures" = " "
+
+[aws]
+disabled = true
+[gcloud]
+disabled = true
+
+[git_branch]
+symbol = ""
+style = "bg:dark"
+format = '[[ $symbol $branch ](fg:accent bg:dark)]($style)'
+
+[git_status]
+style = "bg:dark"
+format = '[[($all_status$ahead_behind )](fg:accent bg:dark)]($style)'
+
+[cmd_duration]
+min_time = 1
+style = 'fg:accent_sub'
+format = "[[  ](fg:muted) $duration]($style)"
+
+[time]
+disabled = false
+time_format = "%R"
+format = '[[  $time ](fg:muted)]($style)'
+
+[character]
+success_symbol = "[❯](bold accent)"
+error_symbol = "[❯](bold accent)"
+vicmd_symbol = "[❯](bold #8e8e8e)"
+
+# MATUGEN:START
+[palettes.matugen]
+accent = "{{colors.primary.default.hex}}"
+accent_sub = "{{colors.secondary.default.hex}}"
+muted = "{{colors.surface_variant.default.hex}}"
+dark = "{{colors.surface.default.hex}}"
+on_accent = "{{colors.on_primary.default.hex}}"
+# MATUGEN:END
