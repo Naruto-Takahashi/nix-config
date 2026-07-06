@@ -1,7 +1,10 @@
+# =========================================================================
+# Obsidian MCP 連携サービス設定モジュール
+# =========================================================================
 { config, pkgs, lib, ... }:
 
 let
-  # 共通のルールプロンプト定義
+  # --- 共通ルールプロンプトの定義 ---
   rulePrompt = ''
     あなたは私のAIアシスタントです．
     ObsidianのVaultを「外部脳」として扱い，セッションを跨いで知識を引き継いでください．
@@ -14,7 +17,7 @@ let
        - 行動ルール（04_Library/Knowledge/mistakes.md）と，05_Profile/ 配下のユーザープロファイルを最初に必ず読み込んでください．
        - 私の質問に関連するキーワードでVaultを検索し，ヒットしたノートを読んでその内容を踏まえて回答してください．
 
-    2. 書き込み（その場でVaultに書き込む。「後で書く」はしない）：
+    2. 書き込み（その場でVaultに書き込みます．「後で書く」は行いません）：
        - バグ解決，設定ハマり対策，新しい発見などは「04_Library/Knowledge/」に書き込む．
        - 判断・設計の方針決定は「04_Library/Decisions/」に書き込む．
        - プロジェクトの状態変更は「03_Projects/」に書き込む．
@@ -29,7 +32,7 @@ let
        related: [[Other Note]]
        ---
        タイトル
-       本文。関連ノートには [[wiki link]] でリンクする．
+       本文．関連ノートには [[wiki link]] でリンクする．
 
     4. mistakes.md への追記ルール：
        ユーザーから明示的な訂正を受け，かつ「繰り返し起こり得るパターン」を満たす場合，即座に 04_Library/Knowledge/mistakes.md に追記してください．
@@ -41,6 +44,7 @@ let
     それでは，指示通り初期ファイルを読み込んでから回答を開始してください．
   '';
 
+  # --- agy-brain (Antigravity用連携スクリプト) ---
   agy-brain = pkgs.writeShellApplication {
     name = "agy-brain";
     runtimeInputs = [ pkgs.gum pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
@@ -59,7 +63,7 @@ let
 
       antigravity-cli --prompt-interactive "$RULE_PROMPT"
 
-      echo "対話セッションが終了しました．会話履歴をObsidianに保存します..."
+      echo "対話セッションが終了しました．会話履歴をObsidianに保存します．"
       sleep 2
       
       if [ -d "$BRAIN_DIR" ]; then
@@ -97,6 +101,7 @@ let
     '';
   };
 
+  # --- gemini-brain (Gemini-CLI用連携スクリプト) ---
   gemini-brain = pkgs.writeShellApplication {
     name = "gemini-brain";
     runtimeInputs = [ pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
@@ -116,7 +121,7 @@ let
 
       gemini --prompt-interactive "$RULE_PROMPT"
 
-      echo "対話セッションが終了しました．会話履歴をObsidianに保存します..."
+      echo "対話セッションが終了しました．会話履歴をObsidianに保存します．"
       sleep 2
       
       if [ -d "$HISTORY_DIR" ]; then
@@ -151,12 +156,14 @@ let
   };
 in
 {
+  # --- 連携パッケージの追加 ---
   home.packages = [
     agy-brain
     gemini-brain
   ];
 
-  # ~/.gemini/config/mcp_config.json の生成
+  # --- mcp_config.json の生成 ---
+  # ~/.gemini/config/mcp_config.json の宣言的生成を行います．
   home.file."${config.home.homeDirectory}/.gemini/config/mcp_config.json".text = builtins.toJSON {
     mcpServers = {
       obsidian = {
@@ -169,7 +176,8 @@ in
     };
   };
 
-  # ObsidianのVaultディレクトリを初期作成するフック
+  # --- Obsidian Vault作成アクティベーションフック ---
+  # ObsidianのVaultディレクトリを初期作成するフックです．
   home.activation = {
     createObsidianVault = lib.hm.dag.entryAfter ["writeBoundary"] ''
       $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "/mnt/c/Users/tnaru/Obsidian/Vault"
