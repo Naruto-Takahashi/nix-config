@@ -6,9 +6,7 @@
     --mauve: {{colors.tertiary.default.hex}};
     --red: {{colors.error.default.hex}};
     --maroon: {{colors.error.default.hex}};
-    --peach: {{colors.secondary.default.hex}};
-    --peachedit: {{colors.on_surface_variant.default.hex}};
-    --peachedit2: {{colors.secondary.default.hex}};
+    --secondary: {{colors.secondary.default.hex}};
     --yellow: {{colors.primary.default.hex}};
     --green: {{colors.secondary.default.hex}};
     --teal: {{colors.tertiary.default.hex}};
