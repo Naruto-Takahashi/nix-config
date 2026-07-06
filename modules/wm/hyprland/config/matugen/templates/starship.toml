@@ -19,14 +19,14 @@ right_format = """$cmd_duration$time"""
 add_newline = true
 
 [username]
-show_always = false
+show_always = true
 style_user = "fg:on_accent bg:accent_sub bold"
 style_root = "fg:red bg:accent_sub bold"
 format = "[ $user]($style)"
 disabled = false
 
 [hostname]
-ssh_only = true
+ssh_only = false
 style = "fg:on_accent bg:accent_sub bold"
 format = "[@$hostname ]($style)[](fg:accent_sub bg:accent)"
 disabled = false
