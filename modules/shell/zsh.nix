@@ -307,6 +307,14 @@
 
       # zoxideの初期化を行います（nvmロード後に実行することで，nvm内部のcd処理との衝突を防ぎます）．
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
+
+      # 9. Starship のプロンプト内時刻表示をリアルタイム（1秒ごと）に自動更新します．
+      TMOUT=1
+      TRAPALRM() {
+          if zle; then
+              zle reset-prompt
+          fi
+      }
     '';
   };
 }
