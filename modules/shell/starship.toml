@@ -1,6 +1,6 @@
 # Starship performance optimizations for WSL
-scan_timeout = 1000
-command_timeout = 2000
+scan_timeout = 5000
+command_timeout = 5000
 
 palette = "matugen"
 
