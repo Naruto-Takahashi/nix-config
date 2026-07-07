@@ -232,7 +232,7 @@
 
       # 5. ghq + fzfによる超高速ディレクトリジャンプを定義します．
       function ghq-fzf() {
-        local src=$(ghq list | fzf --bind 'tab:down,btab:up' --preview "ls -laTp $(ghq root)/{} | tail -n+2 | head -n 200")
+        local src=$(ghq list | fzf --bind 'tab:down,btab:up' --preview "ls -lap $(ghq root)/{} | tail -n+2 | head -n 200")
         if [ -n "$src" ]; then
           BUFFER="cd $(ghq root)/$src"
           zle accept-line
