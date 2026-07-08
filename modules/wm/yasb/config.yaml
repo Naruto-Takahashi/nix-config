@@ -35,7 +35,7 @@ bars:
     widgets:
       left:
         [
-          "komorebi_workspaces_main",
+          "komorebi_workspaces",
           "taskbar",
         ]
       center:
@@ -81,7 +81,7 @@ bars:
     widgets:
       left:
         [
-          "komorebi_workspaces_sub",
+          "komorebi_workspaces",
           "taskbar",
         ]
       center:
@@ -132,24 +132,9 @@ widgets:
         system: "System Settings"
         about: "About This PC"
         task_manager: "Task Manager"
-  komorebi_workspaces_main:
+  komorebi_workspaces:
     type: "komorebi.workspaces.WorkspaceWidget"
     options:
-        monitor_index: 0
-        label_offline: "⚡ Offline"
-        label_workspace_btn: ""
-        # アクティブなワークスペースだけ通し番号 (komorebi.json の name) を表示
-        label_workspace_active_btn: "{name}"
-        label_workspace_populated_btn: ""
-        label_default_name: "{index}"
-        label_zero_index: false
-        hide_empty_workspaces: false
-        hide_if_offline: true
-        animation: true
-  komorebi_workspaces_sub:
-    type: "komorebi.workspaces.WorkspaceWidget"
-    options:
-        monitor_index: 1
         label_offline: "⚡ Offline"
         label_workspace_btn: ""
         # アクティブなワークスペースだけ通し番号 (komorebi.json の name) を表示
