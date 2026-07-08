@@ -81,63 +81,63 @@
       ]
     }
   ],
- "ignore_rules": [
+  "ignore_rules": [
     {
-"kind": "Exe",
-"id": "explorer.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "ACShadows.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "Overwatch.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "Photos.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "PotPlayerMini64.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "Files.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "Microsoft.CmdPal.UI.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "SnippingTool.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Exe",
-"id": "ScreenClippingHost.exe",
-"matching_strategy": "Equals",
-},
-{
-"kind": "Title",
-"id": "切り取り領域とスケッチ",
-"matching_strategy": "Contains",
-},
-{
-"kind": "Title",
-"id": "Snipping Tool",
-"matching_strategy": "Contains",
-}
-]
+      "kind": "Exe",
+      "id": "explorer.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "ACShadows.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Overwatch.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Photos.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "PotPlayerMini64.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Files.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "Microsoft.CmdPal.UI.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "SnippingTool.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Exe",
+      "id": "ScreenClippingHost.exe",
+      "matching_strategy": "Equals"
+    },
+    {
+      "kind": "Title",
+      "id": "切り取り領域とスケッチ",
+      "matching_strategy": "Contains"
+    },
+    {
+      "kind": "Title",
+      "id": "Snipping Tool",
+      "matching_strategy": "Contains"
+    }
+  ]
 }
 
 
