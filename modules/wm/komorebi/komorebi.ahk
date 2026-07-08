@@ -59,10 +59,7 @@ SetWorkingDir %A_ScriptDir%
 ; --- Workspaces (Move Window & Follow Focus) ---
 ; move-to-monitor-workspace はフォーカス追従するため focus の追撃は不要
 ; Monitor 0 (Workspaces 1-5)
-!+vk31::
-    MsgBox, Alt+Shift+vk31 Pressed!
-    Run, komorebic move-to-monitor-workspace 0 0, , Hide
-    Return
+!+vk31::Run, komorebic move-to-monitor-workspace 0 0, , Hide
 !+vk32::Run, komorebic move-to-monitor-workspace 0 1, , Hide
 !+vk33::Run, komorebic move-to-monitor-workspace 0 2, , Hide
 !+vk34::Run, komorebic move-to-monitor-workspace 0 3, , Hide
