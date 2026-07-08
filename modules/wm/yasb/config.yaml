@@ -54,7 +54,7 @@ bars:
         ]
   secondary-bar:
     enabled: true
-    screens: ['\\.\DISPLAY2']
+    screens: ['Mi Monitor']
     class_name: "yasb-bar"
     alignment:
       position: "top"
