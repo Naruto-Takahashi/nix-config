@@ -10,6 +10,16 @@
 SendMode Input
 SetWorkingDir %A_ScriptDir%
 
+; --- モニタ構成変化 (WM_DISPLAYCHANGE) で komorebi/YASB を自動復旧 ---
+; ケーブル抜き差しでワークスペース表示が崩れる問題対策
+Gui, +LastFound
+OnMessage(0x007E, "HandleDisplayChange")
+
+HandleDisplayChange(wParam, lParam) {
+    ; イベントは連発するためデバウンスして1回だけ実行
+    SetTimer, ReapplyDisplayConfig, -5000
+}
+
 ; --- Focus ---
 !h::Run, komorebic focus left, , Hide
 !l::Run, komorebic focus right, , Hide
@@ -36,8 +46,14 @@ SetWorkingDir %A_ScriptDir%
 !t::Run, komorebic toggle-tiling, , Hide
 !b::Run, komorebic flip-layout horizontal-and-vertical, , Hide
 !r::Run, komorebic retile, , Hide
-; モニタ再接続でワークスペース名が飛んだとき等に設定を再適用
-!+r::Run, komorebic reload-configuration, , Hide
+; モニタ再接続で表示が崩れたとき等に手動で復旧 (自動復旧と同じ処理)
+!+r::Gosub, ReapplyDisplayConfig
+
+ReapplyDisplayConfig:
+    Run, komorebic reload-configuration, , Hide
+    Sleep, 1500
+    Run, "C:\Program Files\YASB\yasbc.exe" reload, , Hide
+Return
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
