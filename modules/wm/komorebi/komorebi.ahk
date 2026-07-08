@@ -50,11 +50,13 @@ HandleDisplayChange(wParam, lParam) {
 !+r::Gosub, ReapplyDisplayConfig
 
 ReapplyDisplayConfig:
-    Run, komorebic reload-configuration, , Hide
-    Sleep, 1500
-    ; config.yaml のタイムスタンプ更新で YASB の watch_config を発火させ、
-    ; バーを再起動せずにウィジェットだけ再構築させる (sync-win と同じ経路)
-    FileSetTime, , C:\Users\tnaru\.config\yasb\config.yaml, M
+    ; komorebic reload-configuration では再検出モニタにワークスペース定義が
+    ; 再適用されない。komorebi.json を同一内容で書き戻してホットリロードを
+    ; 発火させるのが唯一有効な復旧手段 (sync-win が治していた実経路)
+    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\komorebi\komorebi.json" "%TEMP%\komorebi-reapply.json" & copy /y "%TEMP%\komorebi-reapply.json" "C:\Users\tnaru\.config\komorebi\komorebi.json" & copy /y "C:\Users\tnaru\komorebi.json" "%TEMP%\komorebi-reapply2.json" & copy /y "%TEMP%\komorebi-reapply2.json" "C:\Users\tnaru\komorebi.json", , Hide
+    Sleep, 2000
+    ; YASB のウィジェットも watch_config 経由で再構築 (バー再起動なし)
+    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\yasb\config.yaml" "%TEMP%\yasb-reapply.yaml" & copy /y "%TEMP%\yasb-reapply.yaml" "C:\Users\tnaru\.config\yasb\config.yaml", , Hide
 Return
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
