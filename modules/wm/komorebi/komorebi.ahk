@@ -52,7 +52,9 @@ HandleDisplayChange(wParam, lParam) {
 ReapplyDisplayConfig:
     Run, komorebic reload-configuration, , Hide
     Sleep, 1500
-    Run, "C:\Program Files\YASB\yasbc.exe" reload, , Hide
+    ; config.yaml のタイムスタンプ更新で YASB の watch_config を発火させ、
+    ; バーを再起動せずにウィジェットだけ再構築させる (sync-win と同じ経路)
+    FileSetTime, , C:\Users\tnaru\.config\yasb\config.yaml, M
 Return
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
