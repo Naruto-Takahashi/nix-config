@@ -59,16 +59,19 @@ SetWorkingDir %A_ScriptDir%
 ; --- Workspaces (Move Window & Follow Focus) ---
 ; move-to-monitor-workspace はフォーカス追従するため focus の追撃は不要
 ; Monitor 0 (Workspaces 1-5)
-!+1::Run, komorebic move-to-monitor-workspace 0 0, , Hide
-!+2::Run, komorebic move-to-monitor-workspace 0 1, , Hide
-!+3::Run, komorebic move-to-monitor-workspace 0 2, , Hide
-!+4::Run, komorebic move-to-monitor-workspace 0 3, , Hide
-!+5::Run, komorebic move-to-monitor-workspace 0 4, , Hide
+!+vk31::
+    MsgBox, Alt+Shift+vk31 Pressed!
+    Run, komorebic move-to-monitor-workspace 0 0, , Hide
+    Return
+!+vk32::Run, komorebic move-to-monitor-workspace 0 1, , Hide
+!+vk33::Run, komorebic move-to-monitor-workspace 0 2, , Hide
+!+vk34::Run, komorebic move-to-monitor-workspace 0 3, , Hide
+!+vk35::Run, komorebic move-to-monitor-workspace 0 4, , Hide
 ; Monitor 1 (Workspaces 6-9)
-!+6::Run, komorebic move-to-monitor-workspace 1 0, , Hide
-!+7::Run, komorebic move-to-monitor-workspace 1 1, , Hide
-!+8::Run, komorebic move-to-monitor-workspace 1 2, , Hide
-!+9::Run, komorebic move-to-monitor-workspace 1 3, , Hide
+!+vk36::Run, komorebic move-to-monitor-workspace 1 0, , Hide
+!+vk37::Run, komorebic move-to-monitor-workspace 1 1, , Hide
+!+vk38::Run, komorebic move-to-monitor-workspace 1 2, , Hide
+!+vk39::Run, komorebic move-to-monitor-workspace 1 3, , Hide
 
 ; --- Move Workspace to Monitor ---
 !+a::Run, komorebic move-workspace-to-monitor 0, , Hide
