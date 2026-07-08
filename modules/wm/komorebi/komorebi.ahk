@@ -86,3 +86,20 @@ SetWorkingDir %A_ScriptDir%
     Run, wezterm-gui
 Return
 #IfWinNotActive
+
+; --- Monitor Hotplug (Auto Reload on Display Change) ---
+; WM_DISPLAYCHANGE event (0x007E) to detect monitor plug/unplug
+OnMessage(0x007E, "OnDisplayChange")
+
+OnDisplayChange(wParam, lParam)
+{
+    ; Prevent rapid firing (chattering) by waiting 3 seconds before executing
+    SetTimer, ReloadDisplayConfig, -3000
+    return
+}
+
+ReloadDisplayConfig:
+    Run, komorebic.exe replace-configuration "C:\Users\tnaru\komorebi.json", , Hide
+    Run, powershell.exe -Command "Stop-Process -Name yasb -Force; Start-Sleep -Seconds 1; Start-Process 'C:\Program Files\YASB\yasb.exe'", , Hide
+return
+
