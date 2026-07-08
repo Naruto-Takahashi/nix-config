@@ -8,7 +8,7 @@ komorebi:
 bars:
   primary-bar:
     enabled: true
-    screens: ['*']
+    screens: ['DISPLAY1']
     class_name: "yasb-bar"
     alignment:
       position: "top"
@@ -35,7 +35,53 @@ bars:
     widgets:
       left:
         [
-          "komorebi_workspaces",
+          "komorebi_workspaces_main",
+          "taskbar",
+        ]
+      center:
+        ["clock"]
+      right:
+        [
+          "cava",
+          "media",
+          "volume",
+          "cpu",
+          "memory",
+          "wifi",
+          "battery",
+          "wallpapers",
+          "power_menu"
+        ]
+  secondary-bar:
+    enabled: true
+    screens: ['DISPLAY2']
+    class_name: "yasb-bar"
+    alignment:
+      position: "top"
+      center: false
+    blur_effect:
+      enabled: true
+      acrylic: true
+      dark_mode: false
+      round_corners: true
+      round_corners_type: "normal"
+      border_color: None
+    window_flags:
+      always_on_top: true
+      windows_app_bar: true
+      hide_on_fullscreen: true
+    dimensions:
+      width: "100%"
+      height: 34
+    padding:
+      top: 2
+      left: 8
+      bottom: 0
+      right: 8
+    widgets:
+      left:
+        [
+          "komorebi_workspaces_sub",
           "taskbar",
         ]
       center:
@@ -86,9 +132,24 @@ widgets:
         system: "System Settings"
         about: "About This PC"
         task_manager: "Task Manager"
-  komorebi_workspaces:
+  komorebi_workspaces_main:
     type: "komorebi.workspaces.WorkspaceWidget"
     options:
+        monitor_index: 0
+        label_offline: "⚡ Offline"
+        label_workspace_btn: ""
+        # アクティブなワークスペースだけ通し番号 (komorebi.json の name) を表示
+        label_workspace_active_btn: "{name}"
+        label_workspace_populated_btn: ""
+        label_default_name: "{index}"
+        label_zero_index: false
+        hide_empty_workspaces: false
+        hide_if_offline: true
+        animation: true
+  komorebi_workspaces_sub:
+    type: "komorebi.workspaces.WorkspaceWidget"
+    options:
+        monitor_index: 1
         label_offline: "⚡ Offline"
         label_workspace_btn: ""
         # アクティブなワークスペースだけ通し番号 (komorebi.json の name) を表示
