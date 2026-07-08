@@ -36,6 +36,8 @@ SetWorkingDir %A_ScriptDir%
 !t::Run, komorebic toggle-tiling, , Hide
 !b::Run, komorebic flip-layout horizontal-and-vertical, , Hide
 !r::Run, komorebic retile, , Hide
+; モニタ再接続でワークスペース名が飛んだとき等に設定を再適用
+!+r::Run, komorebic reload-configuration, , Hide
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
