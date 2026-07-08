@@ -50,11 +50,10 @@ HandleDisplayChange(wParam, lParam) {
 !+r::Gosub, ReapplyDisplayConfig
 
 ReapplyDisplayConfig:
-    ; komorebic reload-configuration では再検出モニタにワークスペース定義が
-    ; 再適用されない。komorebi.json を同一内容で書き戻してホットリロードを
-    ; 発火させるのが唯一有効な復旧手段 (sync-win が治していた実経路)
-    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\komorebi\komorebi.json" "%A_Temp%\komorebi-reapply.json" & copy /y "%A_Temp%\komorebi-reapply.json" "C:\Users\tnaru\.config\komorebi\komorebi.json" & copy /y "C:\Users\tnaru\komorebi.json" "%A_Temp%\komorebi-reapply2.json" & copy /y "%A_Temp%\komorebi-reapply2.json" "C:\Users\tnaru\komorebi.json", , Hide
-    ; ホットリロード完了を待つ (早すぎると YASB が古い状態を読んで再構築する)
+    ; reload-configuration では再検出モニタにワークスペース定義が再適用
+    ; されないため、replace-configuration で明示的に再適用する
+    Run, komorebic replace-configuration "C:\Users\tnaru\.config\komorebi\komorebi.json", , Hide
+    ; 再適用完了を待つ (早すぎると YASB が古い状態を読んで再構築する)
     Sleep, 4000
     ; YASB のウィジェットも watch_config 経由で再構築 (バー再起動なし)
     Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\yasb\config.yaml" "%A_Temp%\yasb-reapply.yaml" & copy /y "%A_Temp%\yasb-reapply.yaml" "C:\Users\tnaru\.config\yasb\config.yaml", , Hide
@@ -114,19 +113,6 @@ Return
 Return
 #IfWinNotActive
 
-; --- Monitor Hotplug (Auto Reload on Display Change) ---
-; WM_DISPLAYCHANGE event (0x007E) to detect monitor plug/unplug
-OnMessage(0x007E, "OnDisplayChange")
-
-OnDisplayChange(wParam, lParam)
-{
-    ; Prevent rapid firing (chattering) by waiting 3 seconds before executing
-    SetTimer, ReloadDisplayConfig, -3000
-    return
-}
-
-ReloadDisplayConfig:
-    Run, komorebic.exe replace-configuration "C:\Users\tnaru\komorebi.json", , Hide
-    Run, powershell.exe -Command "Stop-Process -Name yasb -Force; Start-Sleep -Seconds 1; Start-Process 'C:\Program Files\YASB\yasb.exe'", , Hide
-return
+; (モニタ抜き差しの自動復旧はファイル冒頭の HandleDisplayChange →
+;  ReapplyDisplayConfig に統合済み。OnMessage は後勝ちのため二重登録しないこと)
 
