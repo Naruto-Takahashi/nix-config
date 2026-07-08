@@ -53,11 +53,11 @@ ReapplyDisplayConfig:
     ; komorebic reload-configuration では再検出モニタにワークスペース定義が
     ; 再適用されない。komorebi.json を同一内容で書き戻してホットリロードを
     ; 発火させるのが唯一有効な復旧手段 (sync-win が治していた実経路)
-    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\komorebi\komorebi.json" "%TEMP%\komorebi-reapply.json" & copy /y "%TEMP%\komorebi-reapply.json" "C:\Users\tnaru\.config\komorebi\komorebi.json" & copy /y "C:\Users\tnaru\komorebi.json" "%TEMP%\komorebi-reapply2.json" & copy /y "%TEMP%\komorebi-reapply2.json" "C:\Users\tnaru\komorebi.json", , Hide
+    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\komorebi\komorebi.json" "%A_Temp%\komorebi-reapply.json" & copy /y "%A_Temp%\komorebi-reapply.json" "C:\Users\tnaru\.config\komorebi\komorebi.json" & copy /y "C:\Users\tnaru\komorebi.json" "%A_Temp%\komorebi-reapply2.json" & copy /y "%A_Temp%\komorebi-reapply2.json" "C:\Users\tnaru\komorebi.json", , Hide
     ; ホットリロード完了を待つ (早すぎると YASB が古い状態を読んで再構築する)
     Sleep, 4000
     ; YASB のウィジェットも watch_config 経由で再構築 (バー再起動なし)
-    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\yasb\config.yaml" "%TEMP%\yasb-reapply.yaml" & copy /y "%TEMP%\yasb-reapply.yaml" "C:\Users\tnaru\.config\yasb\config.yaml", , Hide
+    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\yasb\config.yaml" "%A_Temp%\yasb-reapply.yaml" & copy /y "%A_Temp%\yasb-reapply.yaml" "C:\Users\tnaru\.config\yasb\config.yaml", , Hide
     Sleep, 2000
     ; komorebi イベントを発火させて YASB のラベルを最新状態に更新する
     ; (ALT+6 で治るのと同じ原理。focus-monitor 0 は実害のない no-op)
