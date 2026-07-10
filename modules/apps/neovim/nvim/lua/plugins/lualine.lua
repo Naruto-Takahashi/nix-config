@@ -11,7 +11,7 @@ return {
       local a = { fg = c.on_accent, bg = c.accent, gui = "bold" }
       local sub = { fg = c.on_accent, bg = c.accent_sub, gui = "bold" }
       local mid = { fg = c.accent, bg = c.surface }
-      local plain = { fg = c.muted, bg = "NONE" }
+      local plain = { fg = c.muted, bg = "none" }
       theme = {
         normal = { a = a, b = mid, c = plain },
         insert = { a = sub, b = mid, c = plain },
