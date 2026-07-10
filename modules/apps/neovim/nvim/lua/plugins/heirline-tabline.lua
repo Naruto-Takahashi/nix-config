@@ -51,7 +51,6 @@ return {
     local LeadBlock = {
       { provider = " ", hl = { bg = mc.secondary } },
       { provider = "\u{e0b0}", hl = { fg = mc.secondary } },
-      { provider = " " },
     }
 
     require("heirline").setup({ tabline = { LeadBlock, BufferLine } })
