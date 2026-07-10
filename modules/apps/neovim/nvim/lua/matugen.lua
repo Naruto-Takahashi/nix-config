@@ -6,6 +6,7 @@
 local M = {
   accent = "#ffc20d",
   accent_sub = "#8ea4a2",
+  secondary = "#d08770",
   text = "#c5c9c5",
   muted = "#a0a9cb",
   surface = "#333333",

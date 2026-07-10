@@ -35,6 +35,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NeoTreePreview", no_bg)
         hl(0, "NormalNC", no_bg)
         hl(0, "SignColumn", no_bg)
+        -- lualine の透過セクションは StatusLine にフォールバックするため、ここも透過必須
+        hl(0, "StatusLine", no_bg)
+        hl(0, "StatusLineNC", no_bg)
         hl(0, "LineNr", { bg = "none" })
         hl(0, "CursorLineNr", { bg = "none", bold = true })
         hl(0, "CursorLine", { bg = "#444444" })
@@ -75,29 +78,18 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         -- Lazygit Active Border Color
         hl(0, "LazygitActiveBorder", { fg = mc.accent, bold = true })
 
-        -- Dashboard: matugen パレット (ロゴは accent → accent_sub の6段グラデーション)
-        local function blend(h1, h2, t)
-            local r1, g1, b1 = tonumber(h1:sub(2, 3), 16), tonumber(h1:sub(4, 5), 16), tonumber(h1:sub(6, 7), 16)
-            local r2, g2, b2 = tonumber(h2:sub(2, 3), 16), tonumber(h2:sub(4, 5), 16), tonumber(h2:sub(6, 7), 16)
-            return string.format("#%02x%02x%02x",
-                math.floor(r1 + (r2 - r1) * t + 0.5),
-                math.floor(g1 + (g2 - g1) * t + 0.5),
-                math.floor(b1 + (b2 - b1) * t + 0.5))
-        end
+        -- Dashboard: matugen パレット
+        --   ロゴ = accent，アイコン = accent，メニュー文字 = secondary，
+        --   キー割当 = accent_sub，起動メッセージ = secondary，Quit = 赤系
         for i = 1, 6 do
-            hl(0, "SnacksDashboardHeader" .. i, { fg = blend(mc.accent, mc.accent_sub, (i - 1) / 5), bold = true })
+            hl(0, "SnacksDashboardHeader" .. i, { fg = mc.accent, bold = true })
         end
-
-        -- メニュー: アイコン = accent_sub，文字 = text，キー割当 = accent，Quit = 赤系
-        hl(0, "SnacksDashboardIconCyan", { fg = mc.accent_sub })
-        hl(0, "SnacksDashboardIconGreen", { fg = mc.accent_sub })
-        hl(0, "SnacksDashboardIconYellow", { fg = mc.accent_sub })
-        hl(0, "SnacksDashboardIconOrange", { fg = mc.accent })
-        hl(0, "SnacksDashboardIconPink", { fg = mc.accent_sub })
-        hl(0, "SnacksDashboardIconPurple", { fg = mc.accent_sub })
-        hl(0, "SnacksDashboardIconBlue", { fg = mc.accent_sub })
+        hl(0, "SnacksDashboardIcon", { fg = mc.accent })
+        hl(0, "SnacksDashboardWhite", { fg = mc.secondary })
+        hl(0, "SnacksDashboardKeyHint", { fg = mc.accent_sub, bold = true })
         hl(0, "SnacksDashboardIconRed", { fg = "#c4746e" })
-        hl(0, "SnacksDashboardWhite", { fg = mc.text })
+        hl(0, "SnacksDashboardFooter", { fg = mc.secondary })
+        hl(0, "SnacksDashboardSpecial", { fg = mc.secondary })
     end,
 })
 

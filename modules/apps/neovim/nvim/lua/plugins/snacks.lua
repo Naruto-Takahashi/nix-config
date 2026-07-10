@@ -59,13 +59,13 @@ return {
 
     -- 各メニュー項目の表示幅を「44」に統一し，アイコン色を戻しつつキーバインドを右端に配置
     opts.dashboard.preset.keys = {
-      { action = ":lua Snacks.dashboard.pick('files')",           key = "f", text = { { " ", hl = "SnacksDashboardIconCyan" }, { "Find File", hl = "SnacksDashboardWhite" }, { string.rep(" ", 31) }, { "f", hl = "SnacksDashboardIconOrange" } } },
-      { action = ":lua Snacks.dashboard.pick('oldfiles')",        key = "r", text = { { " ", hl = "SnacksDashboardIconGreen" }, { "Recent Files", hl = "SnacksDashboardWhite" }, { string.rep(" ", 28) }, { "r", hl = "SnacksDashboardIconOrange" } } },
-      { action = ":lua Snacks.dashboard.pick('live_grep')",       key = "g", text = { { " ", hl = "SnacksDashboardIconYellow" }, { "Find Text", hl = "SnacksDashboardWhite" }, { string.rep(" ", 31) }, { "g", hl = "SnacksDashboardIconOrange" } } },
-      { action = ":ene | startinsert",                            key = "n", text = { { " ", hl = "SnacksDashboardIconOrange" }, { "New File", hl = "SnacksDashboardWhite" }, { string.rep(" ", 32) }, { "n", hl = "SnacksDashboardIconOrange" } } },
-      { action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})", key = "c", text = { { " ", hl = "SnacksDashboardIconPurple" }, { "Config", hl = "SnacksDashboardWhite" }, { string.rep(" ", 34) }, { "c", hl = "SnacksDashboardIconOrange" } } },
-      { action = ":Lazy",                                         key = "l", text = { { "󰒲 ", hl = "SnacksDashboardIconBlue" }, { "Lazy", hl = "SnacksDashboardWhite" }, { string.rep(" ", 36) }, { "l", hl = "SnacksDashboardIconOrange" } } },
-      { action = ":lua require('persistence').load()",            key = "s", text = { { " ", hl = "SnacksDashboardIconPink" }, { "Restore Session", hl = "SnacksDashboardWhite" }, { string.rep(" ", 25) }, { "s", hl = "SnacksDashboardIconOrange" } } },
+      { action = ":lua Snacks.dashboard.pick('files')",           key = "f", text = { { " ", hl = "SnacksDashboardIcon" }, { "Find File", hl = "SnacksDashboardWhite" }, { string.rep(" ", 31) }, { "f", hl = "SnacksDashboardKeyHint" } } },
+      { action = ":lua Snacks.dashboard.pick('oldfiles')",        key = "r", text = { { " ", hl = "SnacksDashboardIcon" }, { "Recent Files", hl = "SnacksDashboardWhite" }, { string.rep(" ", 28) }, { "r", hl = "SnacksDashboardKeyHint" } } },
+      { action = ":lua Snacks.dashboard.pick('live_grep')",       key = "g", text = { { " ", hl = "SnacksDashboardIcon" }, { "Find Text", hl = "SnacksDashboardWhite" }, { string.rep(" ", 31) }, { "g", hl = "SnacksDashboardKeyHint" } } },
+      { action = ":ene | startinsert",                            key = "n", text = { { " ", hl = "SnacksDashboardIconOrange" }, { "New File", hl = "SnacksDashboardWhite" }, { string.rep(" ", 32) }, { "n", hl = "SnacksDashboardKeyHint" } } },
+      { action = ":lua Snacks.dashboard.pick('files', {cwd = vim.fn.stdpath('config')})", key = "c", text = { { " ", hl = "SnacksDashboardIcon" }, { "Config", hl = "SnacksDashboardWhite" }, { string.rep(" ", 34) }, { "c", hl = "SnacksDashboardKeyHint" } } },
+      { action = ":Lazy",                                         key = "l", text = { { "󰒲 ", hl = "SnacksDashboardIcon" }, { "Lazy", hl = "SnacksDashboardWhite" }, { string.rep(" ", 36) }, { "l", hl = "SnacksDashboardKeyHint" } } },
+      { action = ":lua require('persistence').load()",            key = "s", text = { { " ", hl = "SnacksDashboardIcon" }, { "Restore Session", hl = "SnacksDashboardWhite" }, { string.rep(" ", 25) }, { "s", hl = "SnacksDashboardKeyHint" } } },
       { action = ":qa",                                           key = "q", text = { { " ", hl = "SnacksDashboardIconRed" }, { "Quit", hl = "SnacksDashboardIconRed" }, { string.rep(" ", 36) }, { "q", hl = "SnacksDashboardIconRed" } } },
     }
 
