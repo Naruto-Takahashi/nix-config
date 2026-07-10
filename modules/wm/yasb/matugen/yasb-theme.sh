@@ -96,7 +96,7 @@ if [[ -f "$CACHE" && -f "$STARSHIP_SRC" ]]; then
         WIN_STARSHIP="/mnt/c/Users/tnaru/.config/starship.toml"
         awk '
             /^\$\{custom\.os_logo\}\\$/ {
-                print "[ \xef\x85\xba ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
+                print "[ \xf3\xb0\x96\xb3 ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
                 next
             }
             /^\[custom\.os_logo\]/ { skip=1 }
