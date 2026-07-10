@@ -75,14 +75,7 @@ Space & x:: Send, {Delete}    ; デリート (Delete)
 Return
 #IfWinActive
 
-#IfWinNotActive ahk_exe wezterm-gui.exe
-; WezTerm以外ではCtrl+SpaceをEscape送信＆IME OFFにリマップ
-^Space::
-    SendInput, {Esc}
-    Sleep 10
-    IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
-Return
-#IfWinNotActive
+^Space::    Send, ^{Space}    ; Ctrl + Space のパススルー（衝突回避）
 !Space::    Send, !{Space}    ; Alt + Space のパススルー（衝突回避）
 
 ; =============================================================================
