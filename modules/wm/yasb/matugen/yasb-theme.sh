@@ -89,6 +89,22 @@ if [[ -f "$CACHE" && -f "$STARSHIP_SRC" ]]; then
             /# MATUGEN:END/ { skip=0 }
             !skip
         ' "$STARSHIP_SRC" > "$STARSHIP_OUT.tmp" && mv "$STARSHIP_OUT.tmp" "$STARSHIP_OUT"
+
+        # Windows (PowerShell) 向け変種: custom.os_logo は POSIX sh 依存で
+        # Windows では動かない (プロンプト遅延の原因) ため、静的な Windows
+        # ロゴセグメントに置き換えて配置する
+        WIN_STARSHIP="/mnt/c/Users/tnaru/.config/starship.toml"
+        awk '
+            /^\$\{custom\.os_logo\}\\$/ {
+                print "[ \xf3\xb0\x8d\xb2 ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
+                next
+            }
+            /^\[custom\.os_logo\]/ { skip=1 }
+            skip && /^\[username\]/ { skip=0 }
+            !skip
+        ' "$STARSHIP_OUT" > "${WIN_STARSHIP}.tmp" 2>/dev/null \
+            && rm -f "$WIN_STARSHIP" \
+            && mv "${WIN_STARSHIP}.tmp" "$WIN_STARSHIP" || true
     fi
 fi
 
