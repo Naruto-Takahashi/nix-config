@@ -95,11 +95,11 @@
           fg_color = colors.on_accent,
         },
         inactive_tab = {
-          bg_color = "rgba(0, 0, 0, 0.85)",
+          bg_color = "none",
           fg_color = colors.muted,
         },
         inactive_tab_hover = {
-          bg_color = "rgba(68, 68, 68, 0.85)",
+          bg_color = "none",
           fg_color = colors.text,
         },
         new_tab = {
@@ -124,9 +124,9 @@
     local SOLID_RIGHT_ARROW = wezterm.nerdfonts.ple_upper_left_triangle
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      local background = "rgba(0, 0, 0, 0.85)"
+      local background = colors.surface
       local foreground = colors.text
-      local edge_background = "rgba(0, 0, 0, 0.85)"
+      local edge_background = "none"
       local edge_foreground = background
 
       if tab.is_active then
