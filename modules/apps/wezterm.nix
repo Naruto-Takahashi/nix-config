@@ -75,10 +75,10 @@
     -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
 
-    -- タブバーの背景を設定（メインの背景と同じ黒にするため，不透明な黒を指定して全体の透過度 0.85 を適用させます）．
+    -- タブバーの背景を設定（メインの背景と同じ黒にするため，全体の透過度 0.85 と同じ透過黒を指定します）．
     config.window_frame = {
-      inactive_titlebar_bg = "#000000",
-      active_titlebar_bg = "#000000",
+      inactive_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+      active_titlebar_bg = "rgba(0, 0, 0, 0.85)",
     }
 
     -- タブの追加ボタンを表示しません．
@@ -89,7 +89,7 @@
     -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
-        background = "#000000",
+        background = "rgba(0, 0, 0, 0.85)",
         active_tab = {
           bg_color = colors.accent,
           fg_color = colors.on_accent,
@@ -126,7 +126,7 @@
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
       local background = colors.surface
       local foreground = colors.text
-      local edge_background = "#000000"
+      local edge_background = "rgba(0, 0, 0, 0.85)"
       local edge_foreground = background
 
       if tab.is_active then
