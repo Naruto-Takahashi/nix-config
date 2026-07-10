@@ -77,12 +77,6 @@
     -- タブの美しく整った形状や高さを維持するため，ファンシータブバーを有効化します．
     config.use_fancy_tab_bar = true
 
-    -- タブバーの背景を設定（タイトルバーの描画を透明にして背景透過を適用します）．
-    config.window_frame = {
-      inactive_titlebar_bg = "none",
-      active_titlebar_bg = "none",
-    }
-
     -- タブの追加ボタンを表示しません．
     config.show_new_tab_button_in_tab_bar = false
     -- タブの閉じるボタンを表示しません．
@@ -97,11 +91,11 @@
           fg_color = colors.on_accent,
         },
         inactive_tab = {
-          bg_color = "rgba(0, 0, 0, 0.85)",
+          bg_color = "rgba(0, 0, 0, 0)",
           fg_color = colors.muted,
         },
         inactive_tab_hover = {
-          bg_color = "rgba(68, 68, 68, 0.85)",
+          bg_color = "rgba(255, 255, 255, 0.1)",
           fg_color = colors.text,
         },
         new_tab = {
