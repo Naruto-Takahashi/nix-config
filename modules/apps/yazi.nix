@@ -126,6 +126,8 @@
           -- 丸型ではなく Starship と同じ鋭角矢印
           th.status.sep_left  = { open = "", close = "\u{e0b0}" }
           th.status.sep_right = { open = "\u{e0b2}", close = "" }
+          -- フレーバーがバー全体 (overall) に敷く青背景を無効化し端末地に馴染ませる
+          th.status.overall = ui.Style():fg(pal.text)
           -- パーセンテージ (progress) セグメントもフレーバーの青からパレット色へ
           th.status.progress_label  = ui.Style():fg(pal.text):bold()
           th.status.progress_normal = ui.Style():fg(pal.accent):bg(pal.surface)
