@@ -104,10 +104,10 @@
       cursor_border = colors.accent_sub,
     }
 
-    -- タブの形状 (YASB 風の角丸アイランド/ピル型)．
-    -- アクティブ = アクセント色ピル + Bold，非アクティブ = YASB 非フォーカス島色のピル．
-    local LEFT_CAP = wezterm.nerdfonts.ple_left_half_circle_thick
-    local RIGHT_CAP = wezterm.nerdfonts.ple_right_half_circle_thick
+    -- タブの形状 (平行四辺形: 左下三角 + 本体 + 右上三角)．
+    -- アクティブ = アクセント色 + Bold，非アクティブはバー地に溶け込み．
+    local LEFT_CAP = wezterm.nerdfonts.ple_lower_right_triangle
+    local RIGHT_CAP = wezterm.nerdfonts.ple_upper_left_triangle
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
       local background = INACTIVE_BG
