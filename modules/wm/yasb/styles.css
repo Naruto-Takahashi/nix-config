@@ -204,7 +204,7 @@
 .taskbar-widget .app-container.foreground {
     background-color: var(--highlight);
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
 }
 .taskbar-widget .app-container:hover {
     background-color: var(--surface2);
