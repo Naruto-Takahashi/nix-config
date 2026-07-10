@@ -32,7 +32,7 @@ return {
       sections = {
         lualine_a = {
           {
-            function() return "\u{e62b}" end, -- Neovim ロゴ
+            function() return " " end, -- 無地の装飾ブロック
             color = { fg = c.on_accent, bg = c.secondary, gui = "bold" },
             separator = { left = "", right = "\u{e0b0}" },
           },

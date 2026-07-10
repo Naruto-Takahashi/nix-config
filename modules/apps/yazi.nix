@@ -142,7 +142,7 @@
             if mode == "select" then mode_bg = pal.accent_sub
             elseif mode == "unset" then mode_bg = pal.muted end
             return ui.Line {
-              ui.Span(" \u{f413} "):style(ui.Style():fg(pal.on_accent):bg(pal.secondary):bold()),
+              ui.Span("   "):style(ui.Style():bg(pal.secondary)),
               ui.Span("\u{e0b0}"):style(ui.Style():fg(pal.secondary):bg(mode_bg)),
             }
           end, 100, Status.LEFT)
