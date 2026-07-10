@@ -77,6 +77,12 @@
     -- タブの美しく整った形状や高さを維持するため，ファンシータブバーを有効化します．
     config.use_fancy_tab_bar = true
 
+    -- タイトルバー（フレーム）自体の描画を完全透明化し，タブバー背景の透過色を通します．
+    config.window_frame = {
+      inactive_titlebar_bg = "rgba(0, 0, 0, 0)",
+      active_titlebar_bg = "rgba(0, 0, 0, 0)",
+    }
+
     -- タブの追加ボタンを表示しません．
     config.show_new_tab_button_in_tab_bar = false
     -- タブの閉じるボタンを表示しません．
