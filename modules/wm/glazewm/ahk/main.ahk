@@ -67,11 +67,22 @@ Space & e::Send {Blind}{End}  ; 行末移動
 Space & u:: Send, ^z          ; 元に戻す (Undo)
 Space & b:: Send, {Backspace} ; バックスペース (Backspace)
 Space & x:: Send, {Delete}    ; デリート (Delete)
+#IfWinActive ahk_exe wezterm-gui.exe
+; WezTermアクティブ時はCtrl+Spaceを透過してLeaderキーとして機能させつつ，IMEをOFFにする
+~^Space::
+    Sleep 10
+    IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
+Return
+#IfWinActive
+
+#IfWinNotActive ahk_exe wezterm-gui.exe
+; WezTerm以外ではCtrl+SpaceをEscape送信＆IME OFFにリマップ
 ^Space::
     SendInput, {Esc}
     Sleep 10
     IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
 Return
+#IfWinNotActive
 !Space::    Send, !{Space}    ; Alt + Space のパススルー（衝突回避）
 
 ; =============================================================================
