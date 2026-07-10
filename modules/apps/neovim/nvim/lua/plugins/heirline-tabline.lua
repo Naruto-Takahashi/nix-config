@@ -47,7 +47,14 @@ return {
       { provider = " \u{e0b1} ", hl = { fg = mc.muted } }  -- 右に隠れタブあり
     )
 
-    require("heirline").setup({ tabline = { BufferLine } })
+    -- Starship / lualine / yazi と同じ左端の secondary 装飾ブロック
+    local LeadBlock = {
+      { provider = " ", hl = { bg = mc.secondary } },
+      { provider = "\u{e0b0}", hl = { fg = mc.secondary } },
+      { provider = " " },
+    }
+
+    require("heirline").setup({ tabline = { LeadBlock, BufferLine } })
 
     -- タブライン自体の地を透過させる
     vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
