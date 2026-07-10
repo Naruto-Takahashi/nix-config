@@ -2,12 +2,35 @@ return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
+    -- Matugen 由来のパレット (yasb-theme が壁紙変更のたびに生成する)
+    -- が読めればステータスバーへ適用し、無ければ従来の "auto" にフォールバック
+    local theme = "auto"
+    local ok, c = pcall(dofile, vim.fn.expand("~/.cache/matugen/colors.lua"))
+    if ok and type(c) == "table" then
+      local a = { fg = c.on_accent, bg = c.accent, gui = "bold" }
+      local sub = { fg = c.on_accent, bg = c.accent_sub, gui = "bold" }
+      local mid = { fg = c.text, bg = c.surface }
+      local plain = { fg = c.muted, bg = "NONE" }
+      theme = {
+        normal = { a = a, b = mid, c = plain },
+        insert = { a = sub, b = mid, c = plain },
+        visual = { a = { fg = c.on_accent, bg = c.muted, gui = "bold" }, b = mid, c = plain },
+        replace = { a = { fg = c.on_accent, bg = "#c4746e", gui = "bold" }, b = mid, c = plain },
+        command = { a = a, b = mid, c = plain },
+        inactive = {
+          a = { fg = c.muted, bg = c.surface },
+          b = { fg = c.muted, bg = c.surface },
+          c = plain,
+        },
+      }
+    end
+
     require("lualine").setup({
       options = {
-        theme = "auto", -- 現在のカラースキームに合わせる
-        section_separators = { left = '', right = ''},
-        component_separators = { left = '', right = ''},
-      }
+        theme = theme,
+        section_separators = { left = "", right = "" },
+        component_separators = { left = "", right = "" },
+      },
     })
   end,
 }
