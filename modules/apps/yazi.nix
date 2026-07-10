@@ -104,6 +104,32 @@
       th.mgr.cwd = ui.Style():fg(path_color)
     end)
 
+    -- ステータスバー: Starship プロンプト / nvim lualine と同じデザイン．
+    --   モードセグメント = matugen accent 系 + Bold，鋭角 powerline 矢印で接続
+    do
+      local pal = {}
+      local fh = io.open((os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua", "r")
+      if fh then
+        local s = fh:read("*a")
+        fh:close()
+        for k, v in s:gmatch('([%w_]+)%s*=%s*"(#%x+)"') do pal[k] = v end
+      end
+      if pal.accent and pal.on_accent and pal.surface then
+        pcall(function()
+          -- Normal = accent / Select = accent_sub / Unset = muted (lualine と同じ割当)
+          th.mode.normal_main = ui.Style():fg(pal.on_accent):bg(pal.accent):bold()
+          th.mode.normal_alt  = ui.Style():fg(pal.accent):bg(pal.surface)
+          th.mode.select_main = ui.Style():fg(pal.on_accent):bg(pal.accent_sub):bold()
+          th.mode.select_alt  = ui.Style():fg(pal.accent_sub):bg(pal.surface)
+          th.mode.unset_main  = ui.Style():fg(pal.on_accent):bg(pal.muted):bold()
+          th.mode.unset_alt   = ui.Style():fg(pal.muted):bg(pal.surface)
+          -- 丸型ではなく Starship と同じ鋭角矢印
+          th.status.sep_left  = { open = "", close = "\u{e0b0}" }
+          th.status.sep_right = { open = "\u{e0b2}", close = "" }
+        end)
+      end
+    end
+
     -- フルボーダー（yazi 26 API / 公式 full-borderプラグイン相当）．
     pcall(function()
       th.mgr.border_style = ui.Style():fg("#665c54")

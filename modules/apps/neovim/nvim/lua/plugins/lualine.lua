@@ -30,8 +30,8 @@ return {
       options = {
         theme = theme,
         -- Starship と同じ鋭角 powerline 矢印
-        section_separators = { left = "", right = "" },
-        component_separators = { left = "", right = "" },
+        section_separators = { left = "\u{e0b0}", right = "\u{e0b2}" },
+        component_separators = { left = "\u{e0b1}", right = "\u{e0b3}" },
       },
     })
   end,
