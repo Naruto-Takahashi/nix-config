@@ -15,7 +15,7 @@ return {
       theme = {
         normal = { a = a, b = mid, c = plain },
         insert = { a = sub, b = mid, c = plain },
-        visual = { a = { fg = c.on_accent, bg = c.visual or c.muted, gui = "bold" }, b = mid, c = plain },
+        visual = { a = { fg = c.on_accent, bg = c.muted, gui = "bold" }, b = mid, c = plain },
         replace = { a = { fg = c.on_accent, bg = "#c4746e", gui = "bold" }, b = mid, c = plain },
         command = { a = a, b = mid, c = plain },
         inactive = {
