@@ -79,13 +79,18 @@
     config.use_fancy_tab_bar = false
     config.tab_max_width = 24
 
-    -- 本体と同じ「surface 色 × 0.85」の半透明 (matugen 追従)
-    local function surface_rgba(alpha)
-      local hex = colors.surface
-      local r = tonumber(hex:sub(2, 3), 16)
-      local g = tonumber(hex:sub(4, 5), 16)
-      local b = tonumber(hex:sub(6, 7), 16)
-      return string.format("rgba(%d, %d, %d, %s)", r, g, b, alpha)
+    -- レトロタブバーはセル色のアルファを合成できないが、不透明色には
+    -- window_background_opacity が掛かる。よって配色はすべて不透明で指定し、
+    -- YASB の rgba(192,192,192,0.15) 相当は surface に灰色を事前ブレンドして作る
+    local function hex_channels(hex)
+      return tonumber(hex:sub(2, 3), 16), tonumber(hex:sub(4, 5), 16), tonumber(hex:sub(6, 7), 16)
+    end
+    local function mix_over_surface(r2, g2, b2, ratio)
+      local r1, g1, b1 = hex_channels(colors.surface)
+      return string.format("#%02x%02x%02x",
+        math.floor(r1 * (1 - ratio) + r2 * ratio + 0.5),
+        math.floor(g1 * (1 - ratio) + g2 * ratio + 0.5),
+        math.floor(b1 * (1 - ratio) + b2 * ratio + 0.5))
     end
 
     -- タブの追加ボタンを表示しません．
@@ -96,8 +101,8 @@
     -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
-        -- 本体パネルと同じ半透明ティント
-        background = surface_rgba(0.85),
+        -- 不透明 surface (window_background_opacity で本体と同じ透過になる)
+        background = colors.surface,
         active_tab = {
           bg_color = colors.accent,
           fg_color = colors.on_accent,
@@ -130,15 +135,15 @@
     local RIGHT_CAP = wezterm.nerdfonts.ple_right_half_circle_thick
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      -- 非アクティブ: YASB の非フォーカスウィンドウ島と同じ色/透過度
-      local background = "rgba(192, 192, 192, 0.15)"
+      -- 非アクティブ: YASB の非フォーカス島 rgba(192,192,192,0.15) 相当
+      local background = mix_over_surface(192, 192, 192, 0.15)
       local foreground = colors.muted
 
       if tab.is_active then
         background = colors.accent
         foreground = colors.on_accent
       elseif hover then
-        background = "rgba(192, 192, 192, 0.3)"
+        background = mix_over_surface(192, 192, 192, 0.3)
         foreground = colors.text
       end
 
