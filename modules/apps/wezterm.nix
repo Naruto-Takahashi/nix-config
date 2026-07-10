@@ -79,8 +79,8 @@
 
     -- タイトルバー（フレーム）自体の描画を完全透明化し，タブバー背景の透過色を通します．
     config.window_frame = {
-      inactive_titlebar_bg = "rgba(0, 0, 0, 0)",
-      active_titlebar_bg = "rgba(0, 0, 0, 0)",
+      inactive_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+      active_titlebar_bg = "rgba(0, 0, 0, 0.85)",
     }
 
     -- タブの追加ボタンを表示しません．
