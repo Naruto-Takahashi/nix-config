@@ -3,9 +3,12 @@
 -- =========================================================================
 return {
     "nvim-treesitter/nvim-treesitter",
+    -- 新しい main ブランチ(書き直し版)には nvim-treesitter.configs が存在しないため，
+    -- 従来APIを提供する master ブランチに固定する．
+    branch = "master",
     build = ":TSUpdate",
     dependencies = {
-        "nvim-treesitter/nvim-treesitter-textobjects",
+        { "nvim-treesitter/nvim-treesitter-textobjects", branch = "master" },
     },
     config = function()
         -- Windows環境用コンパイラ設定
