@@ -74,8 +74,8 @@
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
-    -- カスタム形状のタブタイトルを描画するため，ファンシータブバーを無効化します．
-    config.use_fancy_tab_bar = false
+    -- タブの形状や高さを維持するため，ファンシータブバーを有効化します．
+    config.use_fancy_tab_bar = true
 
     -- タブバーの背景を設定（タイトルバーの描画を透明にして背景透過を適用します）．
     config.window_frame = {
