@@ -48,9 +48,27 @@ return {
     )
 
     -- Starship / lualine / yazi と同じ左端の secondary 装飾ブロック
+    -- 先頭のタブがアクティブなら矢印の背景を accent にして Starship 同様に
+    -- セグメント同士を「重ねて」見せる (それ以外は透過地に流す)
+    local function first_listed_buf()
+      for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted then
+          return b
+        end
+      end
+    end
+
     local LeadBlock = {
       { provider = " ", hl = { bg = mc.secondary } },
-      { provider = "\u{e0b0}", hl = { fg = mc.secondary } },
+      {
+        provider = "\u{e0b0}",
+        hl = function()
+          if first_listed_buf() == vim.api.nvim_get_current_buf() then
+            return { fg = mc.secondary, bg = mc.accent }
+          end
+          return { fg = mc.secondary }
+        end,
+      },
     }
 
     require("heirline").setup({ tabline = { LeadBlock, BufferLine } })
