@@ -156,7 +156,8 @@
         title_text = "Neovim"  -- ついでにNeovimを開いているときも分かりやすく表示します
       end
 
-      local title = "   " .. wezterm.truncate_right(title_text, max_width - 7) .. "   "
+      -- 前後の余白 (3+3) だけ差し引いてタイトルを切り詰める
+      local title = "   " .. wezterm.truncate_right(title_text, max_width - 6) .. "   "
 
       return {
         { Background = { Color = background } },
