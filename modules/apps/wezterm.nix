@@ -74,11 +74,13 @@
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
+    -- カスタム形状のタブタイトルを描画するため，ファンシータブバーを無効化します．
+    config.use_fancy_tab_bar = false
 
-    -- タブバーの背景を設定（メインの背景と同じ黒にするため，全体の透過度 0.85 と同じ透過黒を指定します）．
+    -- タブバーの背景を設定（タイトルバーの描画を透明にして背景透過を適用します）．
     config.window_frame = {
-      inactive_titlebar_bg = "rgba(0, 0, 0, 0.85)",
-      active_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+      inactive_titlebar_bg = "none",
+      active_titlebar_bg = "none",
     }
 
     -- タブの追加ボタンを表示しません．
@@ -95,11 +97,11 @@
           fg_color = colors.on_accent,
         },
         inactive_tab = {
-          bg_color = "rgba(0, 0, 0, 0.85)",
+          bg_color = "none",
           fg_color = colors.muted,
         },
         inactive_tab_hover = {
-          bg_color = "rgba(0, 0, 0, 0.85)",
+          bg_color = "none",
           fg_color = colors.text,
         },
         new_tab = {
