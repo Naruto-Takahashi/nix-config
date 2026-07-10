@@ -26,6 +26,21 @@ return {
       }
     end
 
+    -- Starship の左端と同じ「secondary 色のブロック」を先頭に置く
+    local sections = nil
+    if type(theme) == "table" then
+      sections = {
+        lualine_a = {
+          {
+            function() return "\u{e62b}" end, -- Neovim ロゴ
+            color = { fg = c.on_accent, bg = c.secondary, gui = "bold" },
+            separator = { left = "", right = "\u{e0b0}" },
+          },
+          { "mode" },
+        },
+      }
+    end
+
     require("lualine").setup({
       options = {
         theme = theme,
@@ -33,6 +48,7 @@ return {
         section_separators = { left = "\u{e0b0}", right = "\u{e0b2}" },
         component_separators = { left = "\u{e0b1}", right = "\u{e0b3}" },
       },
+      sections = sections,
     })
   end,
 }

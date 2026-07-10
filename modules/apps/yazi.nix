@@ -133,6 +133,20 @@
           th.status.progress_normal = ui.Style():fg(pal.accent):bg(pal.surface)
           th.status.progress_error  = ui.Style():fg("#c4746e"):bg(pal.surface)
         end)
+
+        -- Starship の左端と同じ secondary 色ブロックをモードセグメントの前に追加
+        pcall(function()
+          Status:children_add(function()
+            local mode = tostring(cx.active.mode)
+            local mode_bg = pal.accent
+            if mode == "select" then mode_bg = pal.accent_sub
+            elseif mode == "unset" then mode_bg = pal.muted end
+            return ui.Line {
+              ui.Span(" \u{f413} "):style(ui.Style():fg(pal.on_accent):bg(pal.secondary):bold()),
+              ui.Span("\u{e0b0}"):style(ui.Style():fg(pal.secondary):bg(mode_bg)),
+            }
+          end, 100, Status.LEFT)
+        end)
       end
     end
 
