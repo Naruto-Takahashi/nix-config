@@ -79,6 +79,15 @@
     config.use_fancy_tab_bar = false
     config.tab_max_width = 24
 
+    -- 本体と同じ「surface 色 × 0.85」の半透明 (matugen 追従)
+    local function surface_rgba(alpha)
+      local hex = colors.surface
+      local r = tonumber(hex:sub(2, 3), 16)
+      local g = tonumber(hex:sub(4, 5), 16)
+      local b = tonumber(hex:sub(6, 7), 16)
+      return string.format("rgba(%d, %d, %d, %s)", r, g, b, alpha)
+    end
+
     -- タブの追加ボタンを表示しません．
     config.show_new_tab_button_in_tab_bar = false
     -- タブの閉じるボタンを表示しません．
@@ -87,8 +96,8 @@
     -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
-        -- 完全透過にして window_background_opacity のティントをそのまま通す
-        background = "rgba(0, 0, 0, 0)",
+        -- 本体パネルと同じ半透明ティント
+        background = surface_rgba(0.85),
         active_tab = {
           bg_color = colors.accent,
           fg_color = colors.on_accent,
@@ -116,22 +125,18 @@
       cursor_border = colors.accent_sub,
     }
 
-    -- タブの形状をカスタマイズします．
-    -- タブの左側の装飾を設定します．
-    local SOLID_LEFT_ARROW = wezterm.nerdfonts.ple_lower_right_triangle
-    -- タブの右側の装飾を設定します．
-    local SOLID_RIGHT_ARROW = wezterm.nerdfonts.ple_upper_left_triangle
-
+    -- タブの形状をカスタマイズします (fancy 風のシンプルな矩形タブ)．
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      local background = colors.surface
-      local foreground = colors.text
-      local edge_background = "none"
-      local edge_foreground = background
+      -- 非アクティブタブは背景を敷かずバーのティントに溶け込ませる
+      local background = "none"
+      local foreground = colors.muted
 
       if tab.is_active then
         background = colors.accent
         foreground = colors.on_accent
-        edge_foreground = background
+      elseif hover then
+        background = colors.surface
+        foreground = colors.text
       end
 
       -- 1. まずデフォルトのタイトルを取得します．
@@ -151,18 +156,12 @@
         title_text = "Neovim"  -- ついでにNeovimを開いているときも分かりやすく表示します
       end
 
-      local title = "   " .. wezterm.truncate_right(title_text, max_width - 1) .. "   "
+      local title = "   " .. wezterm.truncate_right(title_text, max_width - 7) .. "   "
 
       return {
-        { Background = { Color = edge_background } },
-        { Foreground = { Color = edge_foreground } },
-        { Text = SOLID_LEFT_ARROW },
         { Background = { Color = background } },
         { Foreground = { Color = foreground } },
         { Text = title },
-        { Background = { Color = edge_background } },
-        { Foreground = { Color = edge_foreground } },
-        { Text = SOLID_RIGHT_ARROW },
       }
     end)
 
