@@ -77,10 +77,18 @@
     -- タブの美しく整った形状や高さを維持するため，ファンシータブバーを有効化します．
     config.use_fancy_tab_bar = true
 
-    -- タイトルバー（フレーム）自体の描画を完全透明化し，タブバー背景の透過色を通します．
+    -- タブバー背景を本体と同じ「surface 色 × 0.85」の透過にする (matugen 追従)
+    local function surface_rgba(alpha)
+      local hex = colors.surface
+      local r = tonumber(hex:sub(2, 3), 16)
+      local g = tonumber(hex:sub(4, 5), 16)
+      local b = tonumber(hex:sub(6, 7), 16)
+      return string.format("rgba(%d, %d, %d, %s)", r, g, b, alpha)
+    end
+
     config.window_frame = {
-      inactive_titlebar_bg = "rgba(0, 0, 0, 0.85)",
-      active_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+      inactive_titlebar_bg = surface_rgba(0.85),
+      active_titlebar_bg = surface_rgba(0.85),
     }
 
     -- タブの追加ボタンを表示しません．
@@ -91,7 +99,7 @@
     -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
-        background = "rgba(0, 0, 0, 0.85)",
+        background = surface_rgba(0.85),
         active_tab = {
           bg_color = colors.accent,
           fg_color = colors.on_accent,
