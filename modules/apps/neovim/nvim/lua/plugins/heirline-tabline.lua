@@ -25,7 +25,7 @@ return {
         provider = function(self)
           local name = self.filename == "" and "[No Name]" or vim.fn.fnamemodify(self.filename, ":t")
           local mod = vim.bo[self.bufnr].modified and " \u{25cf}" or ""
-          return "  " .. name .. mod .. "  "
+          return " " .. name .. mod .. " "
         end,
         hl = function(self)
           if self.is_active then
