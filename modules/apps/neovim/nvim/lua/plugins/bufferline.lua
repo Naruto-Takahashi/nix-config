@@ -11,7 +11,9 @@ return {
     require("bufferline").setup({
       options = {
         mode = "buffers", -- 開いているファイルをタブ状に表示
-        separator_style = "slant", -- 平行四辺形風の斜めセパレータ
+        -- slant 系は透過背景で描画が崩れるため、WezTerm タブと同じ
+        -- 「色ブロック + 透過地」スタイルにする (セパレータなし)
+        separator_style = { "", "" },
         always_show_bufferline = false, -- 1枚だけのときは非表示 (WezTermと同じ挙動)
         show_buffer_close_icons = false,
         show_close_icon = false,
@@ -22,9 +24,9 @@ return {
         background = { fg = mc.muted, bg = none },
         buffer_visible = { fg = mc.muted, bg = none },
         buffer_selected = { fg = mc.on_accent, bg = mc.accent, bold = true, italic = false },
-        separator = { fg = mc.surface, bg = none },
-        separator_visible = { fg = mc.surface, bg = none },
-        separator_selected = { fg = mc.accent, bg = none },
+        separator = { fg = none, bg = none },
+        separator_visible = { fg = none, bg = none },
+        separator_selected = { fg = none, bg = none },
         modified = { fg = mc.accent_sub, bg = none },
         modified_visible = { fg = mc.accent_sub, bg = none },
         modified_selected = { fg = mc.on_accent, bg = mc.accent },
