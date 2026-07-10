@@ -101,8 +101,9 @@
     -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
-        -- 不透明 surface (window_background_opacity で本体と同じ透過になる)
-        background = colors.surface,
+        -- 本体はデフォルト黒背景 × opacity 0.85 なので、バーも同じ「黒 0.85」
+        -- で塗ってメイン表示領域と完全に溶け込ませる
+        background = "rgba(0, 0, 0, 0.85)",
         active_tab = {
           bg_color = colors.accent,
           fg_color = colors.on_accent,
@@ -145,9 +146,12 @@
       fallback = { icon = wezterm.nerdfonts.dev_terminal, color = "#808080" },
     }
 
+    -- バー地の色 ("none" は素通しになってしまうため明示的に敷く)
+    local BAR_BG = "rgba(0, 0, 0, 0.85)"
+
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
       -- mozumasu 式: アクティブだけアクセント色のピル、非アクティブは装飾なし
-      local background = "none"
+      local background = BAR_BG
       local foreground = colors.muted
 
       if tab.is_active then
@@ -194,7 +198,7 @@
 
       return {
         -- 島同士の間隔
-        { Background = { Color = "none" } },
+        { Background = { Color = BAR_BG } },
         { Text = " " },
         -- 左の丸: 前景色をピルの背景色にして半円を描く
         { Foreground = { Color = background } },
@@ -209,7 +213,7 @@
         { Text = title },
         { Attribute = { Intensity = "Normal" } },
         -- 右の丸
-        { Background = { Color = "none" } },
+        { Background = { Color = BAR_BG } },
         { Foreground = { Color = background } },
         { Text = right_cap },
       }
