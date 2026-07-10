@@ -74,13 +74,15 @@
     config.show_tabs_in_tab_bar = true
     -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
-    -- タブの形状や高さを維持するため，ファンシータブバーを有効化します．
-    config.use_fancy_tab_bar = true
+    -- 不透明な立体ボタン枠を消去するため，ファンシータブバーを無効化します．
+    config.use_fancy_tab_bar = false
 
-    -- タブバーの背景を設定（タイトルバーの描画を透明にして背景透過を適用します）．
+    -- タブバーの高さ（フォントサイズ）を確保しつつ，背景を透過黒で埋めて帯状の完全透過を防ぎます．
     config.window_frame = {
-      inactive_titlebar_bg = "none",
-      active_titlebar_bg = "none",
+      font = wezterm.font 'HackGen Console NF',
+      font_size = 10.5,
+      inactive_titlebar_bg = "rgba(0, 0, 0, 0.85)",
+      active_titlebar_bg = "rgba(0, 0, 0, 0.85)",
     }
 
     -- タブの追加ボタンを表示しません．
