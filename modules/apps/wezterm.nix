@@ -146,15 +146,14 @@
     }
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      -- 非アクティブ: YASB の非フォーカス島 rgba(192,192,192,0.15) 相当
-      local background = mix_over_surface(192, 192, 192, 0.15)
+      -- mozumasu 式: アクティブだけアクセント色のピル、非アクティブは装飾なし
+      local background = "none"
       local foreground = colors.muted
 
       if tab.is_active then
         background = colors.accent
         foreground = colors.on_accent
       elseif hover then
-        background = mix_over_surface(192, 192, 192, 0.3)
         foreground = colors.text
       end
 
@@ -187,8 +186,11 @@
       -- 非アクティブはアイコン固有色でアプリを判別しやすく
       local icon_color = tab.is_active and foreground or tabicon.color
 
-      -- 余白と半円・アイコンぶんを差し引いてタイトルを切り詰める
-      local title = " " .. wezterm.truncate_right(title_text, max_width - 8) .. " "
+      -- 半円はアクティブタブのみ (mozumasu 式)
+      local left_cap = tab.is_active and LEFT_CAP or " "
+      local right_cap = tab.is_active and RIGHT_CAP or " "
+
+      local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
       return {
         -- 島同士の間隔
@@ -196,7 +198,7 @@
         { Text = " " },
         -- 左の丸: 前景色をピルの背景色にして半円を描く
         { Foreground = { Color = background } },
-        { Text = LEFT_CAP },
+        { Text = left_cap },
         -- アイコン
         { Background = { Color = background } },
         { Foreground = { Color = icon_color } },
@@ -209,7 +211,7 @@
         -- 右の丸
         { Background = { Color = "none" } },
         { Foreground = { Color = background } },
-        { Text = RIGHT_CAP },
+        { Text = right_cap },
       }
     end)
 
