@@ -125,17 +125,20 @@
       cursor_border = colors.accent_sub,
     }
 
-    -- タブの形状をカスタマイズします (fancy 風のシンプルな矩形タブ)．
+    -- タブの形状をカスタマイズします (YASB 風の角丸アイランド/ピル型)．
+    local LEFT_CAP = wezterm.nerdfonts.ple_left_half_circle_thick
+    local RIGHT_CAP = wezterm.nerdfonts.ple_right_half_circle_thick
+
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      -- 非アクティブタブは背景を敷かずバーのティントに溶け込ませる
-      local background = "none"
+      -- 非アクティブ: YASB の非フォーカスウィンドウ島と同じ色/透過度
+      local background = "rgba(192, 192, 192, 0.15)"
       local foreground = colors.muted
 
       if tab.is_active then
         background = colors.accent
         foreground = colors.on_accent
       elseif hover then
-        background = colors.surface
+        background = "rgba(192, 192, 192, 0.3)"
         foreground = colors.text
       end
 
@@ -156,13 +159,23 @@
         title_text = "Neovim"  -- ついでにNeovimを開いているときも分かりやすく表示します
       end
 
-      -- 前後の余白 (3+3) だけ差し引いてタイトルを切り詰める
-      local title = "   " .. wezterm.truncate_right(title_text, max_width - 6) .. "   "
+      -- 前後の余白と半円グリフぶんを差し引いてタイトルを切り詰める
+      local title = " " .. wezterm.truncate_right(title_text, max_width - 6) .. " "
 
       return {
+        -- 島同士の間隔
+        { Background = { Color = "none" } },
+        { Text = " " },
+        -- 左の丸: 前景色をピルの背景色にして半円を描く
+        { Foreground = { Color = background } },
+        { Text = LEFT_CAP },
         { Background = { Color = background } },
         { Foreground = { Color = foreground } },
         { Text = title },
+        -- 右の丸
+        { Background = { Color = "none" } },
+        { Foreground = { Color = background } },
+        { Text = RIGHT_CAP },
       }
     end)
 
