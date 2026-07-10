@@ -67,7 +67,11 @@ Space & e::Send {Blind}{End}  ; 行末移動
 Space & u:: Send, ^z          ; 元に戻す (Undo)
 Space & b:: Send, {Backspace} ; バックスペース (Backspace)
 Space & x:: Send, {Delete}    ; デリート (Delete)
-^Space::    Send, ^{Space}    ; Ctrl + Space のパススルー（衝突回避）
+^Space::
+    SendInput, {Esc}
+    Sleep 10
+    IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
+Return
 !Space::    Send, !{Space}    ; Alt + Space のパススルー（衝突回避）
 
 ; =============================================================================

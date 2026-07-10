@@ -53,6 +53,11 @@
     config.ime_preedit_rendering = "Builtin"
     config.warn_about_missing_glyphs = false
     config.window_close_confirmation = 'NeverPrompt'
+    config.skip_close_confirmation_for_processes_named = {
+      "bash", "zsh", "fish", "sh", "tmux",
+      "wsl.exe", "wslhost.exe", "conhost.exe",
+      "powershell.exe", "pwsh.exe", "cmd.exe"
+    }
     config.window_background_opacity = 0.85
     config.macos_window_background_blur = 20
 
@@ -300,7 +305,7 @@
         -- ペイン操作（分割・移動）．
         { key = "d", mods = "LEADER", action = split_pane("Down") },
         { key = "r", mods = "LEADER", action = split_pane("Right") },
-        { key = "x", mods = "LEADER", action = act({ CloseCurrentPane = { confirm = true } }) },
+        { key = "x", mods = "LEADER", action = act.CloseCurrentPane { confirm = false } },
         { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
         { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
         { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
