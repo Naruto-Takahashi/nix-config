@@ -70,21 +70,21 @@
     -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
 
-    -- タブバーの透過設定を行います．
+    -- タブバーの背景を設定（メインの背景と同じ黒にするため，不透明な黒を指定して全体の透過度 0.85 を適用させます）．
     config.window_frame = {
-      inactive_titlebar_bg = "none",
-      active_titlebar_bg = "none",
+      inactive_titlebar_bg = "#000000",
+      active_titlebar_bg = "#000000",
     }
 
-    -- タブの追加ボタンを表示します．
-    config.show_new_tab_button_in_tab_bar = true
-    -- タブの閉じるボタンを表示します．
-    config.show_close_tab_button_in_tabs = true
+    -- タブの追加ボタンを表示しません．
+    config.show_new_tab_button_in_tab_bar = false
+    -- タブの閉じるボタンを表示しません．
+    config.show_close_tab_button_in_tabs = false
 
     -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
     config.colors = {
       tab_bar = {
-        background = "none",
+        background = "#000000",
         active_tab = {
           bg_color = colors.accent,
           fg_color = colors.on_accent,
@@ -121,7 +121,7 @@
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
       local background = colors.surface
       local foreground = colors.text
-      local edge_background = "none"
+      local edge_background = "#000000"
       local edge_foreground = background
 
       if tab.is_active then
@@ -253,8 +253,8 @@
         -- Leader + T (Shift+t) でPowerShellを新しいタブで開きます．
         { key = "T", mods = "LEADER|SHIFT", action = act.SpawnCommandInNewTab { args = { "pwsh.exe", "-NoLogo" } } },
 
-        -- Leader + w でタブを閉じます（Close Window）．
-        { key = "w", mods = "LEADER", action = act({ CloseCurrentTab = { confirm = true } }) },
+        -- Leader + w でタブを閉じます（確認ダイアログなし）．
+        { key = "w", mods = "LEADER", action = act({ CloseCurrentTab = { confirm = false } }) },
 
         -- ============================================================
         -- ワークスペース関連（W に変更）
