@@ -7,9 +7,10 @@ return {
     local theme = "auto"
     local ok, c = pcall(dofile, vim.fn.expand("~/.cache/matugen/colors.lua"))
     if ok and type(c) == "table" then
+      -- Starship プロンプトと同じ文法: 明色セグメント → 暗色セグメント(accent 文字) → 無地
       local a = { fg = c.on_accent, bg = c.accent, gui = "bold" }
       local sub = { fg = c.on_accent, bg = c.accent_sub, gui = "bold" }
-      local mid = { fg = c.text, bg = c.surface }
+      local mid = { fg = c.accent, bg = c.surface }
       local plain = { fg = c.muted, bg = "NONE" }
       theme = {
         normal = { a = a, b = mid, c = plain },
@@ -28,6 +29,7 @@ return {
     require("lualine").setup({
       options = {
         theme = theme,
+        -- Starship と同じ鋭角 powerline 矢印
         section_separators = { left = "", right = "" },
         component_separators = { left = "", right = "" },
       },
