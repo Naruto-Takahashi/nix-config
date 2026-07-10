@@ -1,6 +1,11 @@
 # matugen 設定 (YASB用): 壁紙から抽出した色で :root パレットブロックを生成する
 [config]
 
+# 既存3色相 (primary/secondary/tertiary) に無い青系の第4色相。
+# blend = true で壁紙のトーンに調和させる (Visual モード等に使用)
+[config.custom_colors]
+visual = { color = "#7fb4ca", blend = true }
+
 [templates.yasb]
 input_path = '~/.config/yasb/matugen/palette.css'
 output_path = '~/.cache/matugen/yasb-palette.css'

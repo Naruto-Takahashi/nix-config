@@ -119,8 +119,9 @@
           -- Normal = accent / Select = accent_sub / Unset = muted (lualine と同じ割当)
           th.mode.normal_main = ui.Style():fg(pal.on_accent):bg(pal.accent):bold()
           th.mode.normal_alt  = ui.Style():fg(pal.accent):bg(pal.surface)
-          th.mode.select_main = ui.Style():fg(pal.on_accent):bg(pal.accent_sub):bold()
-          th.mode.select_alt  = ui.Style():fg(pal.accent_sub):bg(pal.surface)
+          local vis = pal.visual or pal.accent_sub
+          th.mode.select_main = ui.Style():fg(pal.on_accent):bg(vis):bold()
+          th.mode.select_alt  = ui.Style():fg(vis):bg(pal.surface)
           th.mode.unset_main  = ui.Style():fg(pal.on_accent):bg(pal.muted):bold()
           th.mode.unset_alt   = ui.Style():fg(pal.muted):bg(pal.surface)
           -- 丸型ではなく Starship と同じ鋭角矢印
@@ -139,7 +140,7 @@
           Status:children_add(function()
             local mode = tostring(cx.active.mode)
             local mode_bg = pal.accent
-            if mode == "select" then mode_bg = pal.accent_sub
+            if mode == "select" then mode_bg = pal.visual or pal.accent_sub
             elseif mode == "unset" then mode_bg = pal.muted end
             return ui.Line {
               ui.Span(" "):style(ui.Style():bg(pal.secondary)),

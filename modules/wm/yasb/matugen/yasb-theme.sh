@@ -117,6 +117,8 @@ if [[ -f "$CACHE" ]]; then
     mut="$(grep -m1 -- '--subtext1:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     srf="$(grep -m1 -- '--surface2:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     bas="$(grep -m1 -- '--base:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    vis="$(grep -m1 -- '--visual:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    [[ -n "$vis" ]] || vis="#7fb4ca"
     if [[ -n "$hl" && -n "$sb" && -n "$sec" && -n "$txt" && -n "$mut" && -n "$srf" && -n "$bas" ]]; then
         wz_tmp="$(mktemp)"
         cat > "$wz_tmp" <<LUA
@@ -125,6 +127,7 @@ return {
   accent = "${hl}",
   accent_sub = "${sb}",
   secondary = "${sec}",
+  visual = "${vis}",
   text = "${txt}",
   muted = "${mut}",
   surface = "${srf}",
