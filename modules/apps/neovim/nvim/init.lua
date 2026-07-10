@@ -26,6 +26,24 @@ local lockfile_path = config_dir .. "/lazy-lock.json"
 -- Nix store環境など設定フォルダが書き込み不可能な場合、書き込み可能なデータディレクトリに回避する
 if vim.fn.filewritable(config_dir) == 0 then
   lockfile_path = vim.fn.stdpath("data") .. "/lazy-lock.json"
+  -- リポジトリ(Nixストア)側の lazy-lock.json を正として同期する．
+  -- これがないと、ローカル側の古いピンが残り続け、設定側でブランチを
+  -- 変更してもプラグインが古いコミットに復元されてしまう．
+  local function read_file(path)
+    local f = io.open(path, "r")
+    if not f then return nil end
+    local s = f:read("*a")
+    f:close()
+    return s
+  end
+  local want = read_file(config_dir .. "/lazy-lock.json")
+  if want and want ~= read_file(lockfile_path) then
+    local f = io.open(lockfile_path, "w")
+    if f then
+      f:write(want)
+      f:close()
+    end
+  end
 end
 
 require("lazy").setup("plugins", {
