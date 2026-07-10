@@ -104,23 +104,12 @@
       cursor_border = colors.accent_sub,
     }
 
-    -- タブの形状 (平行四辺形: 左下三角 + 本体 + 右上三角)．
-    -- アクティブ = アクセント色 + Bold，非アクティブはバー地に溶け込み．
-    local LEFT_CAP = wezterm.nerdfonts.ple_lower_right_triangle
-    local RIGHT_CAP = wezterm.nerdfonts.ple_upper_left_triangle
+    -- タブの形状: Starship プロンプトと同じ powerline セグメント構成．
+    --   アクティブ = [secondary: タブ番号][accent: タブ名 Bold] を  で接続
+    --   非アクティブ = [dark(surface): タブ名] を  でバーに流す
+    local ARROW = wezterm.nerdfonts.pl_left_hard_divider  -- ""
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      local background = INACTIVE_BG
-      local foreground = colors.muted
-
-      if tab.is_active then
-        background = colors.accent
-        foreground = colors.on_accent
-      elseif hover then
-        background = INACTIVE_HOVER_BG
-        foreground = colors.text
-      end
-
       -- プロセス名からタブ名を決めます．
       local title_text = tab.active_pane.title
       local process = tab.active_pane.foreground_process_name or ""
@@ -137,29 +126,45 @@
         title_text = "Ubuntu"
       end
 
+      local index = tostring(tab.tab_index + 1)
       local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
-      -- 半円キャップはアクティブタブのみ (非アクティブはバーに溶け込む)
-      local left_cap = tab.is_active and LEFT_CAP or " "
-      local right_cap = tab.is_active and RIGHT_CAP or " "
+      if tab.is_active then
+        return {
+          -- 島同士の間隔
+          { Background = { Color = BAR_BG } },
+          { Text = " " },
+          -- タブ番号セグメント (Starship の OS ロゴ部分に相当)
+          { Background = { Color = colors.secondary } },
+          { Foreground = { Color = colors.on_accent } },
+          { Attribute = { Intensity = "Bold" } },
+          { Text = " " .. index .. " " },
+          -- secondary → accent の接続矢印
+          { Background = { Color = colors.accent } },
+          { Foreground = { Color = colors.secondary } },
+          { Text = ARROW },
+          -- タブ名セグメント (Starship のディレクトリ部分に相当)
+          { Foreground = { Color = colors.on_accent } },
+          { Text = title },
+          { Attribute = { Intensity = "Normal" } },
+          -- accent → バー地へ抜ける矢印
+          { Background = { Color = BAR_BG } },
+          { Foreground = { Color = colors.accent } },
+          { Text = ARROW },
+        }
+      end
 
+      -- 非アクティブ (Starship の git セグメントに相当する暗色セグメント)
+      local foreground = hover and colors.text or colors.muted
       return {
-        -- 島同士の間隔
         { Background = { Color = BAR_BG } },
         { Text = " " },
-        -- 左の丸 (前景色をピルの背景色にして半円を描く)
-        { Foreground = { Color = background } },
-        { Text = left_cap },
-        -- タブ名 (アクティブは Bold)
-        { Background = { Color = background } },
+        { Background = { Color = colors.surface } },
         { Foreground = { Color = foreground } },
-        { Attribute = { Intensity = tab.is_active and "Bold" or "Normal" } },
-        { Text = title },
-        { Attribute = { Intensity = "Normal" } },
-        -- 右の丸
+        { Text = " " .. index .. " " .. title },
         { Background = { Color = BAR_BG } },
-        { Foreground = { Color = background } },
-        { Text = right_cap },
+        { Foreground = { Color = colors.surface } },
+        { Text = ARROW },
       }
     end)
 
