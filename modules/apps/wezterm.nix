@@ -131,8 +131,19 @@
     }
 
     -- タブの形状をカスタマイズします (YASB 風の角丸アイランド/ピル型)．
+    -- mozumasu/dotfiles のタブ設定を参考: プロセス連動アイコン + Bold タイトル
     local LEFT_CAP = wezterm.nerdfonts.ple_left_half_circle_thick
     local RIGHT_CAP = wezterm.nerdfonts.ple_right_half_circle_thick
+
+    local TAB_ICONS = {
+      ubuntu = { icon = wezterm.nerdfonts.linux_ubuntu, color = "#E95420" },
+      neovim = { icon = wezterm.nerdfonts.linux_neovim, color = "#57A143" },
+      pwsh = { icon = wezterm.nerdfonts.md_powershell, color = "#5391FE" },
+      cmd = { icon = wezterm.nerdfonts.cod_terminal_cmd, color = "#C0C0C0" },
+      claude = { icon = "✳", color = "#D97757" },
+      docker = { icon = wezterm.nerdfonts.md_docker, color = "#4169E1" },
+      fallback = { icon = wezterm.nerdfonts.dev_terminal, color = "#808080" },
+    }
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
       -- 非アクティブ: YASB の非フォーカス島 rgba(192,192,192,0.15) 相当
@@ -147,25 +158,37 @@
         foreground = colors.text
       end
 
-      -- 1. まずデフォルトのタイトルを取得します．
+      -- プロセス名からタイトルとアイコンを決める
       local title_text = tab.active_pane.title
-
-      -- 2. 裏で動いているプログラムのファイル名を取得します（例: "C:\Windows\System32\cmd.exe"）．
       local process = tab.active_pane.foreground_process_name or ""
+      local pane_title = tab.active_pane.title or ""
+      local tabicon = TAB_ICONS.fallback
 
-      -- 3. プロセス名に含まれる文字でタイトルを強制上書きします．
-      if process:find("cmd.exe") then
+      if pane_title:find("^✳") or pane_title:lower():find("claude") then
+        tabicon = TAB_ICONS.claude
+        title_text = "Claude"
+      elseif process:find("nvim") or pane_title == "nvim" then
+        tabicon = TAB_ICONS.neovim
+        title_text = "Neovim"
+      elseif process:find("docker") or pane_title:find("docker") then
+        tabicon = TAB_ICONS.docker
+      elseif process:find("cmd.exe") then
+        tabicon = TAB_ICONS.cmd
         title_text = "CMD"
       elseif process:find("powershell.exe") or process:find("pwsh.exe") then
+        tabicon = TAB_ICONS.pwsh
         title_text = "PowerShell"
       elseif process:find("wsl.exe") or process:find("wslhost.exe") then
-        title_text = "Ubuntu"  -- WSLなら「Ubuntu」にします
-      elseif process:find("nvim") then
-        title_text = "Neovim"  -- ついでにNeovimを開いているときも分かりやすく表示します
+        tabicon = TAB_ICONS.ubuntu
+        title_text = "Ubuntu"
       end
 
-      -- 前後の余白と半円グリフぶんを差し引いてタイトルを切り詰める
-      local title = " " .. wezterm.truncate_right(title_text, max_width - 6) .. " "
+      -- アクティブタブのアイコンは地の文字色 (アクセント上で見やすく)、
+      -- 非アクティブはアイコン固有色でアプリを判別しやすく
+      local icon_color = tab.is_active and foreground or tabicon.color
+
+      -- 余白と半円・アイコンぶんを差し引いてタイトルを切り詰める
+      local title = " " .. wezterm.truncate_right(title_text, max_width - 8) .. " "
 
       return {
         -- 島同士の間隔
@@ -174,9 +197,15 @@
         -- 左の丸: 前景色をピルの背景色にして半円を描く
         { Foreground = { Color = background } },
         { Text = LEFT_CAP },
+        -- アイコン
         { Background = { Color = background } },
+        { Foreground = { Color = icon_color } },
+        { Text = tabicon.icon },
+        -- タイトル (アクティブは Bold)
         { Foreground = { Color = foreground } },
+        { Attribute = { Intensity = tab.is_active and "Bold" or "Normal" } },
         { Text = title },
+        { Attribute = { Intensity = "Normal" } },
         -- 右の丸
         { Background = { Color = "none" } },
         { Foreground = { Color = background } },
