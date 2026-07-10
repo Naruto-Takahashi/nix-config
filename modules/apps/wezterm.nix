@@ -95,11 +95,11 @@
           fg_color = colors.on_accent,
         },
         inactive_tab = {
-          bg_color = "none",
+          bg_color = "rgba(0, 0, 0, 0)",
           fg_color = colors.muted,
         },
         inactive_tab_hover = {
-          bg_color = "none",
+          bg_color = "rgba(0, 0, 0, 0)",
           fg_color = colors.text,
         },
         new_tab = {
