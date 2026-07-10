@@ -35,6 +35,7 @@ return {
             function() return " " end, -- 無地の装飾ブロック
             color = { fg = c.on_accent, bg = c.secondary, gui = "bold" },
             separator = { left = "", right = "\u{e0b0}" },
+            padding = 0,
           },
           { "mode" },
         },

@@ -82,9 +82,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         --   ロゴ = accent，アイコン = accent，メニュー文字 = secondary，
         --   キー割当 = accent_sub，起動メッセージ = secondary，Quit = 赤系
         -- snacks は行別指定が効かない場合に基底グループで描くため、基底も上書きする
-        hl(0, "SnacksDashboardHeader", { fg = mc.accent, bold = true })
+        hl(0, "SnacksDashboardHeader", { fg = mc.secondary, bold = true })
         for i = 1, 6 do
-            hl(0, "SnacksDashboardHeader" .. i, { fg = mc.accent, bold = true })
+            hl(0, "SnacksDashboardHeader" .. i, { fg = mc.secondary, bold = true })
         end
         hl(0, "SnacksDashboardIcon", { fg = mc.accent })
         hl(0, "SnacksDashboardWhite", { fg = mc.text })
