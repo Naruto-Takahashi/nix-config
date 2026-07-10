@@ -254,7 +254,7 @@
         { key = "T", mods = "LEADER|SHIFT", action = act.SpawnCommandInNewTab { args = { "pwsh.exe", "-NoLogo" } } },
 
         -- Leader + w でタブを閉じます（確認ダイアログなし）．
-        { key = "w", mods = "LEADER", action = act({ CloseCurrentTab = { confirm = false } }) },
+        { key = "w", mods = "LEADER", action = act.CloseCurrentTab { confirm = false } },
 
         -- ============================================================
         -- ワークスペース関連（W に変更）
