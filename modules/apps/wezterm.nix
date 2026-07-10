@@ -84,11 +84,9 @@
     --   バー地も同じ「黒 0.85」で塗ると境目なく馴染みます．
     --   ("none" 指定は素通し=完全透過になるため使いません)
     local BAR_BG = "rgba(0, 0, 0, 0.85)"
-    -- 非アクティブタブ: YASB の非フォーカス島 rgba(192,192,192,0.15) と同じ見え方．
-    --   YASB では 15% 灰色が「黒 0.85 のバー」の上に載るため，
-    --   壁紙へ直接載るセル色としては合成済みの rgba(33,33,33,0.87) が等価です．
-    local INACTIVE_BG = "rgba(33, 33, 33, 0.87)"
-    local INACTIVE_HOVER_BG = "rgba(64, 64, 64, 0.9)"
+    -- 非アクティブタブは装飾なしでバー地に溶け込ませます (mozumasu 式)．
+    local INACTIVE_BG = BAR_BG
+    local INACTIVE_HOVER_BG = BAR_BG
 
     config.colors = {
       tab_bar = {
@@ -141,13 +139,17 @@
 
       local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
+      -- 半円キャップはアクティブタブのみ (非アクティブはバーに溶け込む)
+      local left_cap = tab.is_active and LEFT_CAP or " "
+      local right_cap = tab.is_active and RIGHT_CAP or " "
+
       return {
         -- 島同士の間隔
         { Background = { Color = BAR_BG } },
         { Text = " " },
         -- 左の丸 (前景色をピルの背景色にして半円を描く)
         { Foreground = { Color = background } },
-        { Text = LEFT_CAP },
+        { Text = left_cap },
         -- タブ名 (アクティブは Bold)
         { Background = { Color = background } },
         { Foreground = { Color = foreground } },
@@ -157,7 +159,7 @@
         -- 右の丸
         { Background = { Color = BAR_BG } },
         { Foreground = { Color = background } },
-        { Text = RIGHT_CAP },
+        { Text = right_cap },
       }
     end)
 
