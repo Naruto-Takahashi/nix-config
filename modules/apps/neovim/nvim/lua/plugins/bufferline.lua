@@ -11,8 +11,8 @@ return {
     require("bufferline").setup({
       options = {
         mode = "buffers", -- 開いているファイルをタブ状に表示
-        -- WezTerm タブと同じ「色ブロック + ▶ 矢印」(Starship の powerline 意匠)
-        separator_style = { "\u{e0b0}", "\u{e0b0}" },
+        -- 矢印セパレータは bufferline では色制御できないため矩形スタイル
+        separator_style = { "", "" },
         always_show_bufferline = false, -- 1枚だけのときは非表示 (WezTermと同じ挙動)
         show_buffer_close_icons = false,
         show_close_icon = false,
@@ -23,10 +23,9 @@ return {
         background = { fg = mc.muted, bg = none },
         buffer_visible = { fg = mc.muted, bg = none },
         buffer_selected = { fg = mc.on_accent, bg = mc.accent, bold = true, italic = false },
-        -- 非アクティブ間の矢印は控えめな暗色、アクティブ直後だけ accent の ▶
-        separator = { fg = mc.surface, bg = none },
-        separator_visible = { fg = mc.surface, bg = none },
-        separator_selected = { fg = mc.accent, bg = none },
+        separator = { fg = none, bg = none },
+        separator_visible = { fg = none, bg = none },
+        separator_selected = { fg = none, bg = none },
         modified = { fg = mc.accent_sub, bg = none },
         modified_visible = { fg = mc.accent_sub, bg = none },
         modified_selected = { fg = mc.on_accent, bg = mc.accent },
