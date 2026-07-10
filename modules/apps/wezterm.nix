@@ -66,64 +66,39 @@
     end
 
     ----------------------------------------------------
-    -- Tab設定
+    -- タブバー設定
     ----------------------------------------------------
     -- タイトルバーを非表示にし，マウスでのドラッグリサイズを有効化します．
     config.window_decorations = (is_darwin or is_windows) and "RESIZE" or "NONE"
-    -- タブバーを表示します．
     config.show_tabs_in_tab_bar = true
-    -- タブが一つだけのときはタブバーを非表示にします．
     config.hide_tab_bar_if_only_one_tab = true
-    -- fancy タブバーはウィンドウ透過の外側で描画されアルファが黒に潰れるため、
-    -- 本体と同じ透過にするにはターミナル面と同レイヤーのレトロタブバーを使う
-    config.use_fancy_tab_bar = false
-    config.tab_max_width = 24
-
-    -- レトロタブバーはセル色のアルファを合成できないが、不透明色には
-    -- window_background_opacity が掛かる。よって配色はすべて不透明で指定し、
-    -- YASB の rgba(192,192,192,0.15) 相当は surface に灰色を事前ブレンドして作る
-    local function hex_channels(hex)
-      return tonumber(hex:sub(2, 3), 16), tonumber(hex:sub(4, 5), 16), tonumber(hex:sub(6, 7), 16)
-    end
-    local function mix_over_surface(r2, g2, b2, ratio)
-      local r1, g1, b1 = hex_channels(colors.surface)
-      return string.format("#%02x%02x%02x",
-        math.floor(r1 * (1 - ratio) + r2 * ratio + 0.5),
-        math.floor(g1 * (1 - ratio) + g2 * ratio + 0.5),
-        math.floor(b1 * (1 - ratio) + b2 * ratio + 0.5))
-    end
-
-    -- タブの追加ボタンを表示しません．
     config.show_new_tab_button_in_tab_bar = false
-    -- タブの閉じるボタンを表示しません．
     config.show_close_tab_button_in_tabs = false
+    config.tab_max_width = 24
+    -- fancy タブバーはウィンドウ透過の外側で描画されアルファが黒に潰れるため，
+    -- 本体と同じ透過にできるレトロタブバー（ターミナル面と同レイヤー）を使います．
+    config.use_fancy_tab_bar = false
 
-    -- タブの配色設定（背景のみを透過させ，タブ名などのテキストをハッキリ表示させます）．
+    -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
+    --   本体 = デフォルト黒背景 × window_background_opacity 0.85
+    --   バー地も同じ「黒 0.85」で塗ると境目なく馴染みます．
+    --   ("none" 指定は素通し=完全透過になるため使いません)
+    local BAR_BG = "rgba(0, 0, 0, 0.85)"
+    -- 非アクティブタブ: YASB の非フォーカス島 rgba(192,192,192,0.15) と同じ見え方．
+    --   YASB では 15% 灰色が「黒 0.85 のバー」の上に載るため，
+    --   壁紙へ直接載るセル色としては合成済みの rgba(33,33,33,0.87) が等価です．
+    local INACTIVE_BG = "rgba(33, 33, 33, 0.87)"
+    local INACTIVE_HOVER_BG = "rgba(64, 64, 64, 0.9)"
+
     config.colors = {
       tab_bar = {
-        -- 本体はデフォルト黒背景 × opacity 0.85 なので、バーも同じ「黒 0.85」
-        -- で塗ってメイン表示領域と完全に溶け込ませる
-        background = "rgba(0, 0, 0, 0.85)",
-        active_tab = {
-          bg_color = colors.accent,
-          fg_color = colors.on_accent,
-        },
-        inactive_tab = {
-          bg_color = "rgba(0, 0, 0, 0)",
-          fg_color = colors.muted,
-        },
-        inactive_tab_hover = {
-          bg_color = "rgba(255, 255, 255, 0.1)",
-          fg_color = colors.text,
-        },
-        new_tab = {
-          bg_color = colors.surface,
-          fg_color = colors.text,
-        },
-        new_tab_hover = {
-          bg_color = colors.accent,
-          fg_color = colors.on_accent,
-        },
+        background = BAR_BG,
+        -- 実際のタブ描画は下の format-tab-title が行うため，ここは保険の既定値
+        active_tab = { bg_color = colors.accent, fg_color = colors.on_accent },
+        inactive_tab = { bg_color = INACTIVE_BG, fg_color = colors.muted },
+        inactive_tab_hover = { bg_color = INACTIVE_HOVER_BG, fg_color = colors.text },
+        new_tab = { bg_color = BAR_BG, fg_color = colors.text },
+        new_tab_hover = { bg_color = colors.accent, fg_color = colors.on_accent },
         inactive_tab_edge = "none",
       },
       cursor_bg = colors.accent_sub,
@@ -131,68 +106,38 @@
       cursor_border = colors.accent_sub,
     }
 
-    -- タブの形状をカスタマイズします (YASB 風の角丸アイランド/ピル型)．
-    -- mozumasu/dotfiles のタブ設定を参考: プロセス連動アイコン + Bold タイトル
+    -- タブの形状 (YASB 風の角丸アイランド/ピル型)．
+    -- アクティブ = アクセント色ピル + Bold，非アクティブ = YASB 非フォーカス島色のピル．
     local LEFT_CAP = wezterm.nerdfonts.ple_left_half_circle_thick
     local RIGHT_CAP = wezterm.nerdfonts.ple_right_half_circle_thick
 
-    local TAB_ICONS = {
-      ubuntu = { icon = wezterm.nerdfonts.linux_ubuntu, color = "#E95420" },
-      neovim = { icon = wezterm.nerdfonts.linux_neovim, color = "#57A143" },
-      pwsh = { icon = wezterm.nerdfonts.md_powershell, color = "#5391FE" },
-      cmd = { icon = wezterm.nerdfonts.cod_terminal_cmd, color = "#C0C0C0" },
-      claude = { icon = "✳", color = "#D97757" },
-      docker = { icon = wezterm.nerdfonts.md_docker, color = "#4169E1" },
-      fallback = { icon = wezterm.nerdfonts.dev_terminal, color = "#808080" },
-    }
-
-    -- バー地の色 ("none" は素通しになってしまうため明示的に敷く)
-    local BAR_BG = "rgba(0, 0, 0, 0.85)"
-
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-      -- mozumasu 式: アクティブだけアクセント色のピル、非アクティブは装飾なし
-      local background = BAR_BG
+      local background = INACTIVE_BG
       local foreground = colors.muted
 
       if tab.is_active then
         background = colors.accent
         foreground = colors.on_accent
       elseif hover then
+        background = INACTIVE_HOVER_BG
         foreground = colors.text
       end
 
-      -- プロセス名からタイトルとアイコンを決める
+      -- プロセス名からタブ名を決めます．
       local title_text = tab.active_pane.title
       local process = tab.active_pane.foreground_process_name or ""
-      local pane_title = tab.active_pane.title or ""
-      local tabicon = TAB_ICONS.fallback
 
-      if pane_title:find("^✳") or pane_title:lower():find("claude") then
-        tabicon = TAB_ICONS.claude
+      if title_text:find("^✳") or title_text:lower():find("claude") then
         title_text = "Claude"
-      elseif process:find("nvim") or pane_title == "nvim" then
-        tabicon = TAB_ICONS.neovim
+      elseif process:find("nvim") or title_text == "nvim" then
         title_text = "Neovim"
-      elseif process:find("docker") or pane_title:find("docker") then
-        tabicon = TAB_ICONS.docker
       elseif process:find("cmd.exe") then
-        tabicon = TAB_ICONS.cmd
         title_text = "CMD"
       elseif process:find("powershell.exe") or process:find("pwsh.exe") then
-        tabicon = TAB_ICONS.pwsh
         title_text = "PowerShell"
       elseif process:find("wsl.exe") or process:find("wslhost.exe") then
-        tabicon = TAB_ICONS.ubuntu
         title_text = "Ubuntu"
       end
-
-      -- アクティブタブのアイコンは地の文字色 (アクセント上で見やすく)、
-      -- 非アクティブはアイコン固有色でアプリを判別しやすく
-      local icon_color = tab.is_active and foreground or tabicon.color
-
-      -- 半円はアクティブタブのみ (mozumasu 式)
-      local left_cap = tab.is_active and LEFT_CAP or " "
-      local right_cap = tab.is_active and RIGHT_CAP or " "
 
       local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
@@ -200,14 +145,11 @@
         -- 島同士の間隔
         { Background = { Color = BAR_BG } },
         { Text = " " },
-        -- 左の丸: 前景色をピルの背景色にして半円を描く
+        -- 左の丸 (前景色をピルの背景色にして半円を描く)
         { Foreground = { Color = background } },
-        { Text = left_cap },
-        -- アイコン
+        { Text = LEFT_CAP },
+        -- タブ名 (アクティブは Bold)
         { Background = { Color = background } },
-        { Foreground = { Color = icon_color } },
-        { Text = tabicon.icon },
-        -- タイトル (アクティブは Bold)
         { Foreground = { Color = foreground } },
         { Attribute = { Intensity = tab.is_active and "Bold" or "Normal" } },
         { Text = title },
@@ -215,15 +157,13 @@
         -- 右の丸
         { Background = { Color = BAR_BG } },
         { Foreground = { Color = background } },
-        { Text = right_cap },
+        { Text = RIGHT_CAP },
       }
     end)
 
-    -- =============================================================================
-    -- Shell Configuration (Auto-detected for OS platform)
-    -- =============================================================================
-    local is_windows = wezterm.target_triple:find("windows") ~= nil
-
+    ----------------------------------------------------
+    -- シェル設定 (OS 別)
+    ----------------------------------------------------
     if is_windows then
       -- 起動時にWSL (Ubuntu) を立ち上げる設定です（ホームディレクトリで開始します）．
       config.default_prog = { 'wsl.exe', '--cd', '~' }
