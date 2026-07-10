@@ -85,7 +85,13 @@ return {
       vim.o.showtabline = #listed > 1 and 2 or 0
     end
     vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete", "BufEnter" }, {
-      callback = function() vim.schedule(update_showtabline) end,
+      callback = function()
+        vim.schedule(function()
+          update_showtabline()
+          -- フォーカス移動で先頭矢印のハイライトが取り残されないよう明示再描画
+          vim.cmd("redrawtabline")
+        end)
+      end,
     })
     update_showtabline()
 
