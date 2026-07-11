@@ -10,6 +10,27 @@
 {
   home.packages = [ pkgs.ytermusic ];
 
+  # WSL には ALSA デバイスが無いため、既定 PCM を WSLg の PulseAudio
+  # (PULSE_SERVER=unix:/mnt/wslg/PulseServer) へブリッジする。
+  # ytermusic (rodio/cpal) など ALSA 直叩きのアプリの音を Windows 側へ出す。
+  home.file.".asoundrc".text = ''
+    pcm_type.pulse {
+      lib "${pkgs.alsa-plugins}/lib/alsa-lib/libasound_module_pcm_pulse.so"
+    }
+    ctl_type.pulse {
+      lib "${pkgs.alsa-plugins}/lib/alsa-lib/libasound_module_ctl_pulse.so"
+    }
+    pcm.!default {
+      type plug
+      slave.pcm {
+        type pulse
+      }
+    }
+    ctl.!default {
+      type pulse
+    }
+  '';
+
   xdg.configFile."ytermusic/config-template.toml".text = ''
     [global]
     parallel_downloads = 4
