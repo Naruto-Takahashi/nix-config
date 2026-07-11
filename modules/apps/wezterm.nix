@@ -61,8 +61,9 @@
     config.window_background_opacity = 0.85
     config.macos_window_background_blur = 20
     -- 左右は既定値のまま、上下はピクセル指定で控えめな余白にする
-    -- 本文の上下に同じだけの控えめな余白 (タブバー自体は仕様上、上端固定)
-    config.window_padding = { left = "1cell", right = "1cell", top = 8, bottom = 8 }
+    -- 本文の上下に同じだけの控えめな余白 (タブバー自体は仕様上、上端固定)。
+    -- 上下合計 12px はこの環境でセル高の端数がほぼゼロになる値
+    config.window_padding = { left = "1cell", right = "1cell", top = 6, bottom = 6 }
     -- セル高の端数ピクセルは中央揃えで上下に等分し、対称性を保つ
     -- (nightly 限定オプション。未対応版では pcall で黙って無視される)
     pcall(function()
