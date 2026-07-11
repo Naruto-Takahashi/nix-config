@@ -9,7 +9,7 @@
   # -----------------------------------------------------------------------
   imports = [
     ../../modules/shell/fastfetch.nix
-    ../../modules/shell/zsh.nix
+    ../../modules/shell/zsh
     ../../modules/shell/starship.nix
     ../../modules/apps/wezterm
     ../../modules/apps/neovim

@@ -10,7 +10,7 @@
   imports = [
     ../../modules/shell/fastfetch.nix
     ../../modules/desktop/packages.nix
-    ../../modules/shell/zsh.nix
+    ../../modules/shell/zsh
     ../../modules/shell/starship.nix
     ../../modules/desktop/kanata.nix
     # ../../modules/desktop
