@@ -1,5 +1,5 @@
 return {
-  -- Core Copilot engine
+  -- Copilot 本体
   {
     "zbirenbaum/copilot.lua",
     cmd = "Copilot",

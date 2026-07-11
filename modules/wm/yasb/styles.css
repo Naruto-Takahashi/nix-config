@@ -1,4 +1,4 @@
-/*VARIABLES AND SOME DEFAULT SETTINGS*/
+/* ===== 変数と基本設定 ===== */
 /* Kanagawa Dragon palette (fallback; yasb-theme が壁紙から生成した色で差し替える) */
 /* MATUGEN:START */
 :root {
@@ -45,7 +45,7 @@
     margin: 0;
     padding: 0;
 }
-/*GENERAL CONFIGRATIONS*/
+/* ===== 全体設定 ===== */
 .yasb-bar {
 	padding: 0;
 	margin: 0;
@@ -121,31 +121,7 @@
 .widget .label {
     color: var(--text);
 }
-/*WIDGET*/
-.home-widget {
-    padding-bottom: 1px;
-}
-/*HOME WIDGET DROPDOWN*/
-.home-menu {
-    background-color: var(--mantle);
-    padding: 0;
-    margin-left: 0px;
-}
-.home-menu .menu-item {
-    padding: 6px 48px 7px 16px;
-    font-size: 12px;
-    font-family: 'Segoe UI';
-    font-weight: 600;
-}
-.home-menu .menu-item:hover {
-    background-color:rgba(122, 131, 130, 0.15);
-    color: #fff;
-}
-.home-menu .separator {
-    max-height: 1px;
-    background-color:rgba(122, 131, 130, 0.3);
-}
-/*KOMOREBI WORKSPACES WIDGET*/
+/* ===== komorebi ワークスペース ===== */
 .komorebi-workspaces {
     margin: 2px 4px;
     border-radius: 13px;
@@ -179,16 +155,7 @@
     height: 16px;
     border-radius: 8px;
 }
-/*WEATHER WIDGET*/
-.weather-widget .icon {
-    color: var(--yellow);
-    padding: 6px;
-}
-.weather-widget .label {
-    font-size: 14px;
-    font-family: Bahnschrift;
-}
-/*TASKBAR WIDGET*/
+/* ===== タスクバー (ウィンドウ一覧) ===== */
 .taskbar-widget {
     margin-left: 4px;
 }
@@ -225,12 +192,12 @@
     padding-right: 4px;
     border: none;
 }
-/*CLOCK - CALENDAR WIDGET*/
+/* ===== 時計 ===== */
 .clock-widget .label {
     font-size: 14px;
     font-family: Bahnschrift;
 }
-/*CLOCK - CALENDAR WIDGET DROPDOWN*/
+/* ===== カレンダーポップアップ ===== */
 /* バーのアイランドと同じ半透明背景にして DWM ブラーを透過させる */
 .calendar {
     background-color: var(--island);
@@ -271,41 +238,7 @@
     color: var(--highlight);
     margin-top: -20px;
 }
-/*DISK DROPDOWN*/
-.disk-group {
-    background-color: var(--mantle);    
-}
-.disk-group-row {
-    min-width: 220px;
-    max-width: 220px;
-    max-height: 40px;
-    margin: 0;
-    padding: 0;
-    border-radius: 6px;
-    border: 1px solid rgba(128, 128, 128, 0);
-}
-.disk-group-row:hover {
-    background-color:rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-.disk-group-label-bar{
-    max-height: 8px;
-    border:0px solid rgba(128, 128, 128, 0);
-    background-color: rgba(142, 164, 162, 0.3);
-    border-radius: 4px;
-}
-.disk-group-label-bar::chunk{
-    background-color: rgba(142, 164, 162, 1);
-    border-radius: 4px;
-}
-.disk-group-label {
-    font-size: 13px;
-}
-.disk-group-label-size {
-    font-size: 12px;
-    color: rgba(197, 201, 197, 0.5);
-}
-/*AUDIO WIDGET*/
+/* ===== 音量 ===== */
 .volume-widget .icon {
     padding: 0 6px;
     color: var(--icon);
@@ -314,7 +247,7 @@
     font-size: 14px;
     font-family: Bahnschrift;
 }
-/*AUDIO DROPDOWN*/
+/* ===== 音量ポップアップ ===== */
 .audio-menu {
     background-color: var(--mantle);
 }
@@ -334,7 +267,7 @@
     background-color: rgba(255, 255, 255, 0.06);
 }
 
-/*MEDIA WIDGET*/
+/* ===== メディア (再生中の曲) ===== */
 .media-widget .label {
     font-family: Bahnschrift;
     font-size: 14px;
@@ -346,7 +279,7 @@
 .media-widget .icon{
     padding: 0 6px;
 }
-/*WALLPAPERS GALLERY*/
+/* ===== 壁紙ギャラリー ===== */
 .wallpapers-gallery-window {
     background-color: #181616;
     border: 0;
@@ -377,12 +310,12 @@
 .wallpapers-gallery-image.focused {
     border: 4px solid var(--highlight);
 }
-/*POWER WIDGET*/
+/* ===== 電源ボタン ===== */
 .power-menu-widget .label {
 	color: var(--accent-sub);
     font-size: 16px;
 }
-/*POWER MENU POPUP*/
+/* ===== 電源メニューポップアップ ===== */
 .uptime {
 	font-size: 14px;
 	margin-bottom: 10px;
@@ -422,74 +355,4 @@
 }
 .power-menu-popup .button.cancel .label {
 	color: var(--red);
-}
-/*GITHUB WIDGET*/
-.github-widget {
-    padding: 0;
-}
-.github-widget .icon {
-    font-size: 16px;
-}
-/*GITHUB DROPDOWN*/
-.github-menu    {
-    background-color:  rgba(13, 12, 12, 0.2);
-    max-height: 500px;
-    min-height: 500px;
-    min-width: 420px;
-}
-.github-menu .header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 15px;
-    font-weight: 400;
-    font-family: 'Segoe UI';
-    padding: 8px;
-    color: white;
-    background-color: rgba(13, 12, 12, 0.75);
-}
-.github-menu .footer {
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    font-size: 12px;
-    padding: 4px 8px 6px 8px;
-    font-family: 'Segoe UI';
-    color: #7a8382;
-    background-color: rgba(13, 12, 12, 0.75);
-}
-.github-menu .contents {
-    background-color:  rgba(13, 12, 12, 0.2);
-}
-.github-menu .contents .item {
-    min-height: 40px;
-    padding: 6px 0;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.075);
-}
-.github-menu .contents .item:hover {
-    background-color: rgba(255, 255, 255, 0.05);
-    border-bottom: 1px solid rgba(255, 255, 255, 0);
-}
-.github-menu .contents .item .title,
-.github-menu .contents .item .description {
-    color: #7a8382;
-    font-family: Segoe UI;
-}
-.github-menu .contents .item .title {
-    font-size: 14px;
-    font-weight: 600; 
-}
-.github-menu .contents .item .description {
-    font-size: 12px;
-    font-weight: 500
-}
-.github-menu .contents .item.new .title,
-.github-menu .contents .item.new .description {
-    color: #ffffff
-}
-.github-menu .contents .item .icon {
-    font-size: 16px;
-    padding-right: 0;
-    padding-left: 8px;
-    padding-right: 4px;
-    color: #7a8382;
-}
-.github-menu .contents .item.new .icon {
-    color: #3fb950;
 }

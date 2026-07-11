@@ -1,5 +1,5 @@
 -- ==========================================================================
---  General Settings (vim-options.lua)
+--  基本設定 (vim-options.lua)
 -- ==========================================================================
 
 vim.cmd("set expandtab")
@@ -81,7 +81,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         -- Mode Message (-- INSERT -- などのモード表示をゴールド化)
         hl(0, "ModeMsg", { fg = mc.accent, bold = true })
 
-        -- Lazygit Active Border Color
+        -- Lazygit のアクティブ枠色
         hl(0, "LazygitActiveBorder", { fg = mc.accent, bold = true })
 
         -- Dashboard: matugen パレット
@@ -101,48 +101,46 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     end,
 })
 
--- Keymaps
+-- キーマップ
 vim.keymap.set("n", "<leader>cd", ":Ex<CR>", { desc = "Open Netrw Explorer" })
 
--- OS Specific Settings
+-- OS 別設定
 if vim.fn.has("win32") == 1 then
-    -- [Windows]
     vim.opt.makeprg = "mingw32-make"
-    -- Shell configuration (PowerShell)
+    -- Windows: シェルを PowerShell にする
     vim.opt.shell = "powershell.exe"
     vim.opt.shellcmdflag = "-NoProfile -NoLogo -NonInteractive -Command"
     vim.opt.shellquote = ""
     vim.opt.shellxquote = ""
 else
-    -- [Linux / WSL]
     vim.opt.makeprg = "make"
-    -- Shell is usually bash/zsh by default, so no need to change
+    -- Linux / WSL: シェルは既定 (bash/zsh) のまま
 end
 
--- Window Navigation
+-- ウィンドウ間の移動 (Ctrl+HJKL)
 vim.keymap.set("n", "<C-h>", "<C-w>h", { desc = "Navigate Left" })
 vim.keymap.set("n", "<C-j>", "<C-w>j", { desc = "Navigate Down" })
 vim.keymap.set("n", "<C-k>", "<C-w>k", { desc = "Navigate Up" })
 vim.keymap.set("n", "<C-l>", "<C-w>l", { desc = "Navigate Right" })
 
--- Better Indent
+-- ビジュアルモードでインデント後も選択を維持
 vim.keymap.set("v", "<", "<gv", { desc = "Indent Left and Stay" })
 vim.keymap.set("v", ">", ">gv", { desc = "Indent Right and Stay" })
 
--- Exit Insert Mode with jk
+-- jk でインサートモードを抜ける
 vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit Insert Mode" })
 
--- Clear Highlight
+-- 検索ハイライトの消去
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear Highlight" })
 
--- Open KEYBINDINGS on GitHub
+-- GitHub 上の KEYBINDINGS.md を開く
 vim.keymap.set("n", "<leader>m", function()
     local url = "https://github.com/Naruto-Takahashi/dotfiles/blob/main/nvim/KEYBINDINGS.md"
     local cmd
     if vim.fn.has("win32") == 1 then
         cmd = "start " .. url
     else
-        -- WSL / Linux: Use powershell.exe to open the browser on Windows
+        -- WSL / Linux: powershell.exe 経由で Windows 側のブラウザを開く
         cmd = string.format("powershell.exe -Command Start-Process '%s'", url)
     end
     vim.fn.jobstart(cmd, { detach = true })
