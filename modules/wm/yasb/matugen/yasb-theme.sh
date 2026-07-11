@@ -124,7 +124,8 @@ import sys, colorsys
 h = sys.argv[1].lstrip("#")
 r, g, b = (int(h[i:i+2], 16) / 255 for i in (0, 2, 4))
 hh, l, s = colorsys.rgb_to_hls(r, g, b)
-r, g, b = colorsys.hls_to_rgb((hh + 0.5) % 1.0, l, s)
+# matugen のトーンに合わせて彩度を抑える (回転のみだと鮮やかに浮く)
+r, g, b = colorsys.hls_to_rgb((hh + 0.5) % 1.0, l, s * 0.75)
 print("#%02x%02x%02x" % (round(r*255), round(g*255), round(b*255)))
 ' "$hl" 2>/dev/null)"
     [[ -n "$vis" ]] || vis="#7fb4ca"
@@ -134,7 +135,8 @@ import sys, colorsys
 h = sys.argv[1].lstrip("#")
 r, g, b = (int(h[i:i+2], 16) / 255 for i in (0, 2, 4))
 hh, l, s = colorsys.rgb_to_hls(r, g, b)
-r, g, b = colorsys.hls_to_rgb((hh + 1.0 / 3.0) % 1.0, l, s)
+# matugen のトーンに合わせて彩度を抑える (回転のみだと鮮やかに浮く)
+r, g, b = colorsys.hls_to_rgb((hh + 1.0 / 3.0) % 1.0, l, s * 0.75)
 print("#%02x%02x%02x" % (round(r*255), round(g*255), round(b*255)))
 ' "$hl" 2>/dev/null)"
     [[ -n "$tri" ]] || tri="#c8e69a"
