@@ -14,7 +14,8 @@ let
         pkgName = "tree-sitter-${pkgs.lib.replaceStrings ["_"] ["-"] lang}";
         parserPkg = pkgs.vimPlugins.nvim-treesitter.builtGrammars.${pkgName};
       in ''
-        ln -sf ${parserPkg}/parser/${lang}.so $out/parser/
+        # builtGrammars の各パッケージは $out/parser 自体がELF共有ライブラリ
+        ln -sf ${parserPkg}/parser $out/parser/${lang}.so
       ''
     ) [
       "rust"
@@ -29,6 +30,7 @@ let
       "typescript"
       "markdown"
       "markdown_inline"
+      "systemverilog" # verilog ファイルタイプ用 (旧 verilog パーサーの後継)
     ]}
   '';
 in
@@ -42,6 +44,15 @@ in
     vimAlias = true;
     # Copilot.luaはNeovim内でNode.jsを使うため，Neovim自体にも同梱します．
     withNodeJs = true;
+    # nvim-treesitter (main) の :TSInstall がNix管理外の言語を追加できるように
+    # tree-sitter CLI を同梱します．
+    extraPackages = [
+      pkgs.tree-sitter
+      # masonが落とすビルド済みclangdはNixOSの動的リンカで動かないため，Nixで供給します．
+      pkgs.clang-tools
+      # masonがzip形式のパッケージを展開する際に必要です．
+      pkgs.unzip
+    ];
   };
 
   # --- 設定ファイルおよびパーサーの配置 ---
