@@ -9,8 +9,14 @@ return {
     "williamboman/mason-lspconfig.nvim",
     dependencies = { "williamboman/mason.nvim" },
     config = function()
+      -- clangd はNix (clang-tools) から供給されるため、PATHに無い環境でのみmasonに任せる．
+      -- masonのビルド済みclangdバイナリはNixOSの動的リンカでは起動できない．
+      local ensure_installed = { "lua_ls", "pylsp", "marksman" }
+      if vim.fn.executable("clangd") == 0 then
+        table.insert(ensure_installed, "clangd")
+      end
       require("mason-lspconfig").setup({
-        ensure_installed = { "lua_ls", "pylsp", "marksman", "clangd" },
+        ensure_installed = ensure_installed,
       })
     end,
   },

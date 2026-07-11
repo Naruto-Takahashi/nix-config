@@ -45,7 +45,13 @@ in
     withNodeJs = true;
     # nvim-treesitter (main) の :TSInstall がNix管理外の言語を追加できるように
     # tree-sitter CLI を同梱します．
-    extraPackages = [ pkgs.tree-sitter ];
+    extraPackages = [
+      pkgs.tree-sitter
+      # masonが落とすビルド済みclangdはNixOSの動的リンカで動かないため，Nixで供給します．
+      pkgs.clang-tools
+      # masonがzip形式のパッケージを展開する際に必要です．
+      pkgs.unzip
+    ];
   };
 
   # --- 設定ファイルおよびパーサーの配置 ---
