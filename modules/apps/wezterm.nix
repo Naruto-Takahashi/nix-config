@@ -61,8 +61,9 @@
     config.window_background_opacity = 0.85
     config.macos_window_background_blur = 20
     -- 左右は既定値のまま、上下はピクセル指定で控えめな余白にする
-    -- 上は 1 セルぶん (行割り付けを崩さずに余白を確保できる)、下は 4px
-    config.window_padding = { left = "1cell", right = "1cell", top = "1cell", bottom = 4 }
+    -- タブバーが上端に張り付く仕様 (レトロタブバーは余白不可) に合わせ、
+    -- 下端も詰めて上下対称にする
+    config.window_padding = { left = "1cell", right = "1cell", top = "1cell", bottom = 0 }
 
     if is_windows then
       config.tiling_desktop_environments = { "komorebi" }
