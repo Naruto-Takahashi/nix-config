@@ -11,7 +11,7 @@
     ../../modules/shell/fastfetch.nix
     ../../modules/shell/zsh.nix
     ../../modules/shell/starship.nix
-    ../../modules/apps/wezterm.nix
+    ../../modules/apps/wezterm
     ../../modules/apps/neovim
     ../../modules/shell/direnv.nix
     ../../modules/apps/yazi.nix

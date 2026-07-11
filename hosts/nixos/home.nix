@@ -14,7 +14,7 @@
     ../../modules/shell/starship.nix
     ../../modules/desktop/kanata.nix
     # ../../modules/desktop
-    ../../modules/apps/wezterm.nix
+    ../../modules/apps/wezterm
     ../../modules/apps/neovim
     ../../modules/wm/hyprland
     ../../modules/shell/direnv.nix
