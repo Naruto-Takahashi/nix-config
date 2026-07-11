@@ -44,15 +44,67 @@
 - 赤系 (Replace モード、yazi のコンパイル言語/アーカイブ、Quit) は matugen の
   `error` 色または固定 `#c4746e` を使用。
 
-## 生成の流れ
+## 反映の仕組み
+
+同じパレットを 2 つのホストで別の経路で反映している。
+
+### WSL (Windows / komorebi + YASB)
+
+中核は `modules/wm/yasb/matugen/yasb-theme.sh`
+(home-manager が `~/.local/bin/yasb-theme` へ配置。**store ファイルなので
+編集後は `home-manager switch` が必要**)。
 
 ```
-壁紙変更 (YASB wallpapers ウィジェット)
+壁紙変更 (YASB wallpapers ウィジェットの run_after)
   → yasb-theme <image>
-    → matugen が ~/.cache/matugen/yasb-palette.css を生成 (palette.css テンプレート)
-    → colors.lua / starship.toml / lazygit / fzf / yazi theme.toml などへ配色を展開
-    → Windows 側 (styles.css, config.yaml, komorebi.json, starship.toml) にも配置
+     1. matugen image <壁紙> -c ~/.config/yasb/matugen/config.toml
+        → テンプレート palette.css から ~/.cache/matugen/yasb-palette.css を生成
+          (matugen が作るのはこの CSS 1枚だけ)
+     2. yasb-theme が palette.css を読み、各アプリ向けに自前で展開する:
+        - YASB styles.css   : MATUGEN マーカー間を差し替えて /mnt/c へ配置
+        - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)
+        - starship          : palettes.matugen ブロックを awk で差し替え
+                              (~/.cache 用と、os_logo を除去した Windows 用の2種)
+        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット
+                              (complement / triad はここで Python により色相回転で計算)
+        - lazygit / fzf     : 設定ファイルを丸ごと生成
+        - yazi theme.toml   : theme-template.toml の @@プレースホルダ@@ を sed で置換
+        - komorebi.json     : 枠色 (single/floating/monocle) を sed → reload
 ```
 
-`sync-win` は最後に `yasb-theme --reapply` を呼ぶため、設定を書き換えて同期すれば
-常に最新パレットが再適用される。
+- 各アプリの反映タイミング: YASB はファイル監視 (watch_config/watch_stylesheet) で即時、
+  WezTerm は自動リロードで即時、nvim / yazi / starship / lazygit / fzf は次回起動時。
+- `sync-win` は設定コピー後に必ず `yasb-theme --reapply` を呼ぶ。
+  raw コピーはフォールバック色に戻ってしまうため、**手動で /mnt/c へコピーした場合も
+  必ず reapply を実行する**こと。
+- `--reapply` は `~/.cache/matugen/last-wallpaper` に記録された前回の壁紙から
+  フル再生成する (テンプレート更新も反映される)。
+
+### NixOS (Hyprland)
+
+こちらは matugen の**テンプレート機能と post_hook に全部任せる**構成
+(`modules/wm/hyprland/config/matugen/config.toml`)。
+
+```
+壁紙変更 (rofi の壁紙ピッカー wppicker.sh)
+  → matugen image <壁紙>
+     - [config.wallpaper] で awww により壁紙も matugen が設定
+     - [templates.*] で各アプリの設定を直接生成 + post_hook で即時リロード:
+       waybar (SIGUSR2) / kitty (SIGUSR1) / hyprland (hyprctl reload) /
+       cava (SIGUSR1) / gtk3・gtk4 / rofi / spicetify / vesktop /
+       starship / wezterm / colors.lua (nvim・yazi) / lazygit / fzf
+  → wppicker.sh が colors.lua に complement を追記
+     (matugen テンプレートは色相回転ができないため、WSL と同じ Python 計算を後付け)
+```
+
+### 2経路の違いまとめ
+
+| | WSL | NixOS |
+| :--- | :--- | :--- |
+| matugen の役割 | palette.css を1枚生成するだけ | 全テンプレート生成 + post_hook |
+| 展開ロジック | yasb-theme.sh (bash) に集約 | matugen config.toml に宣言 |
+| 色相回転色 | yasb-theme 内で計算 | wppicker.sh が後付け追記 |
+| 反映先が Windows | あり (/mnt/c へ配置 + sed) | なし |
+
+新しいアプリを追従させたいときは、WSL なら yasb-theme.sh にセクションを足し、
+NixOS なら templates/ にテンプレートを足して config.toml に登録する。
