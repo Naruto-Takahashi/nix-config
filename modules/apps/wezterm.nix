@@ -60,8 +60,8 @@
     }
     config.window_background_opacity = 0.85
     config.macos_window_background_blur = 20
-    -- 左右・上は既定値のまま、下だけ詰めてステータスバーを底辺に密着させる
-    config.window_padding = { left = "1cell", right = "1cell", top = "0.5cell", bottom = 0 }
+    -- 左右・上は既定値のまま、下は控えめに詰める (密着しすぎない程度の余白)
+    config.window_padding = { left = "1cell", right = "1cell", top = "0.5cell", bottom = "0.2cell" }
 
     if is_windows then
       config.tiling_desktop_environments = { "komorebi" }
