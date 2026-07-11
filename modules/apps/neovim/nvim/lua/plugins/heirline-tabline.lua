@@ -14,6 +14,18 @@ return {
       init = function(self)
         self.filename = vim.api.nvim_buf_get_name(self.bufnr)
       end,
+      -- マウス左クリックでそのバッファに切り替え
+      on_click = {
+        callback = function(_, minwid)
+          vim.schedule(function()
+            if vim.api.nvim_buf_is_valid(minwid) then
+              vim.api.nvim_set_current_buf(minwid)
+            end
+          end)
+        end,
+        minwid = function(self) return self.bufnr end,
+        name = "heirline_tabline_buffer_callback",
+      },
       -- 左端の secondary 装飾ブロック (アクティブタブのみ)
       {
         condition = function(self) return self.is_active end,
