@@ -17,6 +17,25 @@ SELECTED_PATH="$WALLPAPER_DIR/$SELECTED_WALL"
 # === SET WALLPAPER ===
 matugen image --source-color-index 0 "$SELECTED_PATH"
 
+# === ADD visual COLOR (WSL の yasb-theme.sh と同じ計算) ===
+# matugen テンプレートでは色相回転ができないため、生成後の colors.lua に
+# accent の色相を 180° 回した補色 (visual) を追記する
+COLORS_LUA="$HOME/.cache/matugen/colors.lua"
+if [[ -f "$COLORS_LUA" ]] && ! grep -q 'visual' "$COLORS_LUA"; then
+    hl="$(grep -m1 '^  accent = ' "$COLORS_LUA" | grep -oE '#[0-9a-fA-F]{6}')"
+    vis="$(python3 -c '
+import sys, colorsys
+h = sys.argv[1].lstrip("#")
+r, g, b = (int(h[i:i+2], 16) / 255 for i in (0, 2, 4))
+hh, l, s = colorsys.rgb_to_hls(r, g, b)
+r, g, b = colorsys.hls_to_rgb((hh + 0.5) % 1.0, l, s)
+print("#%02x%02x%02x" % (round(r*255), round(g*255), round(b*255)))
+' "$hl" 2>/dev/null)"
+    if [[ -n "$vis" ]]; then
+        sed -i "s|^\(  accent_sub = .*\)$|\1\n  visual = \"$vis\",|" "$COLORS_LUA"
+    fi
+fi
+
 # === CREATE SYMLINK ===
 mkdir -p "$(dirname "$SYMLINK_PATH")"
 ln -sf "$SELECTED_PATH" "$SYMLINK_PATH"
