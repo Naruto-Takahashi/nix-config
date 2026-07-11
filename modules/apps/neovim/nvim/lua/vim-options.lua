@@ -35,6 +35,10 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NeoTreeFloatNormal", no_bg)
         hl(0, "NeoTreeTitleBar", no_bg)
         hl(0, "NeoTreePreview", no_bg)
+        -- フォルダのアイコンと名前は matugen の secondary (2番めの色)
+        hl(0, "NeoTreeDirectoryIcon", { fg = mc.secondary })
+        hl(0, "NeoTreeDirectoryName", { fg = mc.secondary })
+        hl(0, "NeoTreeRootName", { fg = mc.secondary, bold = true })
         hl(0, "NormalNC", no_bg)
         hl(0, "SignColumn", no_bg)
         -- lualine の透過セクションは StatusLine にフォールバックするため、ここも透過必須
