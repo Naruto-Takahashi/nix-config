@@ -166,7 +166,8 @@
 
         -- 既定のモード表示は3文字略記 (NOR/SEL/UNS) のため、フル表記に置き換える
         pcall(function()
-          Status:children_remove(1000, Status.LEFT)
+          -- 既定コンポーネントの id は登録順 (mode=1, size=2, name=3)
+          Status:children_remove(1, Status.LEFT)
           Status:children_add(function()
             local mode = tostring(cx.active.mode)
             local bg = pal.accent
