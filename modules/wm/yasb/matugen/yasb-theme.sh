@@ -189,8 +189,20 @@ fi
 YAZI_TPL="$HOME/.config/yazi/theme-template.toml"
 if [[ -f "$CACHE" && -f "$YAZI_TPL" ]]; then
     sec="$(grep -m1 -- '--secondary:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    sub="$(grep -m1 -- '--accent-sub:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    err="$(grep -m1 -- '--red:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     [[ -n "$sec" ]] || sec="#d08770"
-    sed "s/@@SECONDARY@@/${sec}/g" "$YAZI_TPL" > "$HOME/.config/yazi/theme.toml.tmp" \
+    [[ -n "$hl" ]] || hl="#e6c384"
+    [[ -n "$sub" ]] || sub="#76946a"
+    [[ -n "$err" ]] || err="#e46876"
+    [[ -n "${vis:-}" ]] || vis="#a292a3"
+    sed -e "s/@@SECONDARY@@/${sec}/g" \
+        -e "s/@@ACCENT@@/${hl}/g" \
+        -e "s/@@ACCENT_SUB@@/${sub}/g" \
+        -e "s/@@VISUAL@@/${vis}/g" \
+        -e "s/@@ERROR@@/${err}/g" \
+        "$YAZI_TPL" > "$HOME/.config/yazi/theme.toml.tmp" \
         && rm -f "$HOME/.config/yazi/theme.toml" \
         && mv "$HOME/.config/yazi/theme.toml.tmp" "$HOME/.config/yazi/theme.toml"
 fi
