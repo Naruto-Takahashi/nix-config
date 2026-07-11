@@ -230,9 +230,10 @@
   # フレーバーリポジトリの配置を行います．
   xdg.configFile."yazi/flavors/kanagawa-dragon.yazi".source = kanagawa-dragon-yazi;
 
-  # --- テーマ設定 (theme.toml) ---
-  # スクリーンショットの色使いを再現したテーマ設定を行います．
-  xdg.configFile."yazi/theme.toml".text = ''
+  # --- テーマ設定 (テンプレート) ---
+  # フォルダ色などに @@SECONDARY@@ プレースホルダを含むテンプレート。
+  # yasb-theme が matugen の secondary を差し込んで theme.toml を生成する．
+  xdg.configFile."yazi/theme-template.toml".text = ''
     #:schema https://yazi-rs.github.io/schemas/theme.json
 
     [manager]
@@ -327,7 +328,7 @@
       # バイナリ・その他 (Fallback)
       { url = "**.exe", fg = "#76946a" },
       { url = "**.out", fg = "#76946a" },
-      { url = "**/", fg = "#8ba4b0" }, # ディレクトリ
+      { url = "**/", fg = "@@SECONDARY@@" }, # ディレクトリ (matugen secondary)
       { url = "*", fg = "#c5c9c5" }   # その他
     ]
 
@@ -336,14 +337,14 @@
 
     [icon]
     prepend_dirs = [
-      { name = "Desktop", text = "󰉋", fg = "#e6c384" },
-      { name = "Downloads", text = "󰉋", fg = "#e6c384" },
-      { name = "Documents", text = "󰉋", fg = "#e6c384" },
-      { name = "Pictures", text = "󰉋", fg = "#e6c384" },
-      { name = "Music", text = "󰉋", fg = "#e6c384" },
-      { name = "Videos", text = "󰉋", fg = "#e6c384" },
-      { name = "Public", text = "󰉋", fg = "#e6c384" },
-      { name = "Templates", text = "󰉋", fg = "#e6c384" }
+      { name = "Desktop", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Downloads", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Documents", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Pictures", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Music", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Videos", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Public", text = "󰉋", fg = "@@SECONDARY@@" },
+      { name = "Templates", text = "󰉋", fg = "@@SECONDARY@@" }
     ]
     prepend_files = [
       { name = "Cargo.toml", text = "", fg = "#76946a" },
@@ -440,7 +441,7 @@
       { url = "**.xz", text = "", fg = "#e46876" }
     ]
     prepend_conds = [
-      { if = "dir", text = "󰉋", fg = "#e6c384" },
+      { if = "dir", text = "󰉋", fg = "@@SECONDARY@@" },
       { if = "link", text = "", fg = "#7fb4ca" }
     ]
   '';

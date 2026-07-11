@@ -185,6 +185,16 @@ YML
     fi
 fi
 
+# yazi のテーマ: テンプレートの @@SECONDARY@@ を差し込んで theme.toml を生成
+YAZI_TPL="$HOME/.config/yazi/theme-template.toml"
+if [[ -f "$CACHE" && -f "$YAZI_TPL" ]]; then
+    sec="$(grep -m1 -- '--secondary:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    [[ -n "$sec" ]] || sec="#d08770"
+    sed "s/@@SECONDARY@@/${sec}/g" "$YAZI_TPL" > "$HOME/.config/yazi/theme.toml.tmp" \
+        && rm -f "$HOME/.config/yazi/theme.toml" \
+        && mv "$HOME/.config/yazi/theme.toml.tmp" "$HOME/.config/yazi/theme.toml"
+fi
+
 # fzf (Ctrl+G の ghq ジャンプ等) のハイライト配色を生成
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
