@@ -48,8 +48,8 @@ if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
     echo "  "
   fi
 else
-  # アイコン無し: 幅1のスリムブロック
-  echo " "
+  # アイコン無し: 幅2のブロック (以前のちょうど良い幅)
+  echo "  "
 fi
 """
 when = "true"
