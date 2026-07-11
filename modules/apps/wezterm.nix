@@ -61,13 +61,12 @@
     config.window_background_opacity = 0.85
     config.macos_window_background_blur = 20
     -- 左右は既定値のまま、上下はピクセル指定で控えめな余白にする
-    -- タブバーが上端に張り付く仕様 (レトロタブバーは余白不可) に合わせ、
-    -- 下端も詰めて上下対称にする
-    config.window_padding = { left = "1cell", right = "1cell", top = "1cell", bottom = 0 }
-    -- セル高の端数ピクセルを上側に逃がし、下端を完全に密着させる
+    -- 本文の上下に同じだけの控えめな余白 (タブバー自体は仕様上、上端固定)
+    config.window_padding = { left = "1cell", right = "1cell", top = 8, bottom = 8 }
+    -- セル高の端数ピクセルは中央揃えで上下に等分し、対称性を保つ
     -- (nightly 限定オプション。未対応版では pcall で黙って無視される)
     pcall(function()
-      config.window_content_alignment = { horizontal = "Left", vertical = "Bottom" }
+      config.window_content_alignment = { horizontal = "Left", vertical = "Center" }
     end)
 
     if is_windows then
