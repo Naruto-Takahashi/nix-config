@@ -185,7 +185,25 @@
 
     -- フルボーダー（yazi 26 API / 公式 full-borderプラグイン相当）．
     pcall(function()
-      th.mgr.border_style = ui.Style():fg("#665c54")
+      -- ボーダー色は matugen の muted と surface の中間 (控えめなグレー)
+      local border = "#665c54"
+      pcall(function()
+        local fh2 = io.open((os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua", "r")
+        if fh2 then
+          local s2 = fh2:read("*a")
+          fh2:close()
+          local m = s2:match('muted%s*=%s*"(#%x+)"')
+          local sf = s2:match('surface%s*=%s*"(#%x+)"')
+          if m and sf then
+            local function ch(hex, i) return tonumber(hex:sub(i, i + 1), 16) end
+            border = string.format("#%02x%02x%02x",
+              math.floor((ch(m, 2) + ch(sf, 2)) / 2),
+              math.floor((ch(m, 4) + ch(sf, 4)) / 2),
+              math.floor((ch(m, 6) + ch(sf, 6)) / 2))
+          end
+        end
+      end)
+      th.mgr.border_style = ui.Style():fg(border)
       local old_build = Tab.build
 
       Tab.build = function(self, ...)

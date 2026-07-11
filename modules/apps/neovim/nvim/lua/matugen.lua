@@ -13,6 +13,7 @@ local M = {
   muted = "#a0a9cb",
   surface = "#333333",
   on_accent = "#000000",
+  error = "#c4746e",
 }
 
 local f = (os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua"

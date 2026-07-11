@@ -67,6 +67,7 @@ if [[ -f "$CACHE" ]]; then
     surface="$(pal surface2)"
     on_accent="$(pal base)"
     error="$(pal red)"
+    outline="$(pal subtext0)"
     if [[ -n "$accent" && -n "$tertiary" && -n "$secondary" && -n "$text" \
           && -n "$muted" && -n "$surface" && -n "$on_accent" ]]; then
         HAS_PALETTE=1
@@ -75,6 +76,7 @@ if [[ -f "$CACHE" ]]; then
         [[ -n "$complement" ]] || complement="#7fb4ca"
         [[ -n "$triad" ]] || triad="#c8e69a"
         [[ -n "$error" ]] || error="#e46876"
+        [[ -n "$outline" ]] || outline="#4f4f4f"
     fi
 fi
 
@@ -172,6 +174,7 @@ return {
   muted = "${muted}",
   surface = "${surface}",
   on_accent = "${on_accent}",
+  error = "${error}",
 }
 LUA
 command cp -f "$lua_tmp" "$HOME/.config/wezterm/matugen-colors.lua"
@@ -197,21 +200,21 @@ gui:
       - "${accent}"
       - bold
     inactiveBorderColor:
-      - "#a89984"
+      - "${muted}"
     searchingActiveBorderColor:
       - "${tertiary}"
     optionsTextColor:
-      - "#7e9cd8"
+      - "${tertiary}"
     selectedLineBgColor:
-      - "#2d4f67"
+      - "${surface}"
     cherryPickedCommitBgColor:
-      - "#2d4f67"
+      - "${surface}"
     cherryPickedCommitFgColor:
-      - "#7e9cd8"
+      - "${complement}"
     unstagedChangesColor:
-      - "#c4746e"
+      - "${error}"
     defaultFgColor:
-      - "#c5c9c5"
+      - "${text}"
 YML
 mv "$HOME/.cache/matugen/lazygit-config.yml.tmp" "$HOME/.cache/matugen/lazygit-config.yml"
 
@@ -240,13 +243,14 @@ SH
 mv "$HOME/.cache/matugen/fzf-colors.sh.tmp" "$HOME/.cache/matugen/fzf-colors.sh"
 
 # -------------------------------------------------------------------------
-# 10. komorebi のフォーカス枠 (single/floating = accent, monocle = tertiary)
+# 10. komorebi の枠色 (single/floating = accent, monocle = tertiary, unfocused = outline)
 # -------------------------------------------------------------------------
 for f in "/mnt/c/Users/tnaru/.config/komorebi/komorebi.json" "/mnt/c/Users/tnaru/komorebi.json"; do
     [[ -f "$f" ]] && sed -i -E \
         -e "s/(\"single\": *\")#[0-9a-fA-F]{6}/\1${accent}/" \
         -e "s/(\"floating\": *\")#[0-9a-fA-F]{6}/\1${accent}/" \
-        -e "s/(\"monocle\": *\")#[0-9a-fA-F]{6}/\1${tertiary}/" "$f"
+        -e "s/(\"monocle\": *\")#[0-9a-fA-F]{6}/\1${tertiary}/" \
+        -e "s/(\"unfocused\": *\")#[0-9a-fA-F]{6}/\1${outline}/" "$f"
 done
 # 設定リロードはバックグラウンドで (ラグ軽減)
 "/mnt/c/Program Files/komorebi/bin/komorebic.exe" reload-configuration 2>/dev/null &
