@@ -8,7 +8,8 @@
 { config, pkgs, ... }:
 
 {
-  home.packages = [ pkgs.ytermusic ];
+  # yt-dlp は ytermusic のダウンローダ (config の downloader = "ytdlp") が呼ぶ
+  home.packages = [ pkgs.ytermusic pkgs.yt-dlp ];
 
   # WSL には ALSA デバイスが無いため、既定 PCM を WSLg の PulseAudio
   # (PULSE_SERVER=unix:/mnt/wslg/PulseServer) へブリッジする。
