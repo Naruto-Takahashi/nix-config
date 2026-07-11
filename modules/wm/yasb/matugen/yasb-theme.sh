@@ -128,6 +128,16 @@ r, g, b = colorsys.hls_to_rgb((hh + 0.5) % 1.0, l, s)
 print("#%02x%02x%02x" % (round(r*255), round(g*255), round(b*255)))
 ' "$hl" 2>/dev/null)"
     [[ -n "$vis" ]] || vis="#7fb4ca"
+    # 第5色 (triad): 色相を 120° 回したトライアド。accent とも visual とも 120° 離れる
+    tri="$(python3 -c '
+import sys, colorsys
+h = sys.argv[1].lstrip("#")
+r, g, b = (int(h[i:i+2], 16) / 255 for i in (0, 2, 4))
+hh, l, s = colorsys.rgb_to_hls(r, g, b)
+r, g, b = colorsys.hls_to_rgb((hh + 1.0 / 3.0) % 1.0, l, s)
+print("#%02x%02x%02x" % (round(r*255), round(g*255), round(b*255)))
+' "$hl" 2>/dev/null)"
+    [[ -n "$tri" ]] || tri="#c8e69a"
     if [[ -n "$hl" && -n "$sb" && -n "$sec" && -n "$txt" && -n "$mut" && -n "$srf" && -n "$bas" ]]; then
         wz_tmp="$(mktemp)"
         cat > "$wz_tmp" <<LUA
@@ -137,6 +147,7 @@ return {
   accent_sub = "${sb}",
   secondary = "${sec}",
   visual = "${vis}",
+  triad = "${tri}",
   text = "${txt}",
   muted = "${mut}",
   surface = "${srf}",
@@ -189,16 +200,15 @@ fi
 YAZI_TPL="$HOME/.config/yazi/theme-template.toml"
 if [[ -f "$CACHE" && -f "$YAZI_TPL" ]]; then
     sec="$(grep -m1 -- '--secondary:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     sub="$(grep -m1 -- '--accent-sub:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     err="$(grep -m1 -- '--red:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     [[ -n "$sec" ]] || sec="#d08770"
-    [[ -n "$hl" ]] || hl="#e6c384"
     [[ -n "$sub" ]] || sub="#76946a"
     [[ -n "$err" ]] || err="#e46876"
     [[ -n "${vis:-}" ]] || vis="#a292a3"
+    [[ -n "${tri:-}" ]] || tri="#c8e69a"
     sed -e "s/@@SECONDARY@@/${sec}/g" \
-        -e "s/@@ACCENT@@/${hl}/g" \
+        -e "s/@@TRIAD@@/${tri}/g" \
         -e "s/@@ACCENT_SUB@@/${sub}/g" \
         -e "s/@@VISUAL@@/${vis}/g" \
         -e "s/@@ERROR@@/${err}/g" \
