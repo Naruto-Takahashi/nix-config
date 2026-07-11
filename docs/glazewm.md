@@ -1,3 +1,8 @@
+> [!NOTE]
+> **このドキュメントは過去構成の記録です．** 現在の Windows / WSL2 環境は
+> GlazeWM + Zebar から **komorebi + YASB** に移行済みです (モジュールは
+> `modules/wm/komorebi` / `modules/wm/yasb`，配色は [matugen-palette.md](matugen-palette.md) 参照)．
+
 # 🗔 GlazeWM ウィンドウマネージャ設定・キーバインド詳細
 
 このドキュメントでは，Windows環境においてタイル型ウィンドウマネージャを実現する **GlazeWM** の基本設計，こだわり設定，および詳細なキーバインドについて解説します．

@@ -33,16 +33,19 @@
 | **yazi ステータスバー** | Normal モード | 左端ブロック (Normal時) | — | Select モード | — |
 | **yazi ファイル色** | — | フォルダ名/アイコン | ドキュメント・テキスト系 | スクリプト・メディア系 | Web・データ系 |
 | **nvim タブライン** | アクティブタブ | — | — | — | — |
-| **nvim ダッシュボード** | メニューアイコン | ロゴ / メニュー文字 / 起動メッセージ | キー割当 (f, r...) | — | — |
+| **nvim ダッシュボード** | メニューアイコン | ロゴ / 起動メッセージ | キー割当 (f, r...) | — | — |
 | **Neo-tree** | — | フォルダ名/アイコン | — | — | — |
 | **komorebi 枠** | single / floating | — | monocle (ALT+F) | — | — |
+| **lazygit** | アクティブ枠 | — | 検索枠 / オプション文字 | チェリーピック文字 | — |
 | **YASB** | フォーカス島 / アクティブWS | — | cava 波形 / 空WSドット | — | — |
 
 補足:
 - Insert/Visual などモード変化時、lualine / yazi の左端ブロックは
   「モード色を白へ 40% 寄せたパステル版」になる (Normal の secondary と同じ関係)。
-- 赤系 (Replace モード、yazi のコンパイル言語/アーカイブ、Quit) は matugen の
-  `error` 色または固定 `#c4746e` を使用。
+- 赤系 (Replace モード、yazi のコンパイル言語/アーカイブ、lazygit の未ステージ、Quit) は
+  matugen の `error` 色 (colors.lua にも出力) または固定 `#c4746e` を使用。
+- komorebi の unfocused 枠は matugen の outline トーン、yazi のフルボーダーは
+  muted と surface の中間色 (実行時合成)、nvim のメニュー文字は text。
 
 ## 反映の仕組み
 

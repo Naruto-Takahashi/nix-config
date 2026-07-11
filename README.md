@@ -13,12 +13,12 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | 対象環境 | コンポーネント / モジュール | ガイドと詳細 | 主な役割 |
 | :--- | :--- | :--- | :--- |
 | **NixOS** | 🗔 Hyprland | [hyprland.md](docs/hyprland.md) | Waylandタイル操作，Matugen動的配色，Waybar連携． |
-| **Windows / WSL2** | 🗔 GlazeWM | [glazewm.md](docs/glazewm.md) | Windows側タイルウィンドウ操作，Zebarステータスバー連携． |
+| **Windows / WSL2** | 🗔 komorebi + YASB | [matugen-palette.md](docs/matugen-palette.md) | Windows側タイルウィンドウ操作，YASBステータスバー，Matugen動的配色連携． |
 | **macOS** | 🗔 AeroSpace | [aerospace.nix](modules/apps/aerospace.nix) | macOS用タイル操作，`Cmd+Ctrl`二重修飾キー，JankyBorders枠線表示． |
 | **NixOS / Desktop** | ⌨️ Kanata | [kanata.md](docs/kanata.md) | システム級キーマップ（SandS Vim風移動，Mac風IME切り替え）． |
-| **共通 (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 75%半透明適用，動的タブタイトル，Leaderキー（`Ctrl+Space`）管理． |
+| **共通 (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 85%半透明適用，Matugen配色タブ，Leaderキー（`Ctrl+Space`）管理． |
 | **共通 (App)** | 📝 Neovim | [neovim.md](docs/neovim.md) | Lazy.nvimによる構成，高度なカスタムマクロとプラグイン群． |
-| **共通 (App)** | 📁 Yazi | [yazi.md](docs/yazi.md) | Cyberdreamテーマ透過ファイラー，シェル連携による移動同期． |
+| **共通 (App)** | 📁 Yazi | [yazi.md](docs/yazi.md) | Matugen配色の透過ファイラー，シェル連携による移動同期． |
 | **NixOS ⇄ Windows** | 🖥️ Remote Desktop | [remote-desktop.md](docs/remote-desktop.md) | Tailscale + Sunshine/Moonlight による大学VPN不要の無人リモート接続． |
 
 ---
@@ -34,10 +34,12 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 │   ├── wsl/                   # WSL2用 Home Manager スタンドアロン設定
 │   └── mac/                   # macOS用 nix-darwin + Home Manager 統合設定
 ├── modules/                   # 再利用可能な共通設定モジュール群
-│   ├── wm/                    # ウィンドウマネージャー設定 (hyprland, glazewm, zebar)
+│   ├── wm/                    # ウィンドウマネージャー設定 (hyprland, komorebi, yasb)
 │   ├── apps/                  # アプリケーション個別設定 (wezterm, neovim, yazi, lazygit)
+│   ├── services/              # ユーザーサービス (obsidian-mcp)
 │   ├── shell/                 # シェル・端末環境 (zsh, starship, fastfetch, direnv)
 │   └── desktop/               # システムキーリマップ / ユーティリティ (kanata, packages)
+├── profiles/                  # 全ホスト共通プロファイル (base.nix)
 └── docs/                      # 各種仕様・キーマップ解説ドキュメント
 ```
 
@@ -119,7 +121,7 @@ WSL2環境で動作させる手順です．
    nix run github:nix-community/home-manager -- switch --flake .#nalt-wsl --impure
    ```
 3. **Windows側への設定ファイル同期**  
-   WSL2環境下で管理される WezTerm や GlazeWM の設定を Windows ホストに反映するため，以下の同期コマンドを実行します．
+   WSL2環境下で管理される WezTerm や komorebi / YASB の設定を Windows ホストに反映するため，以下の同期コマンドを実行します．
    ```bash
    sync-win
    exec zsh
@@ -179,7 +181,7 @@ Declarative configurations for NixOS, Ubuntu (Desktop), WSL2, and macOS managed 
 | Target | Module | Guide | Key Functionality |
 | :--- | :--- | :--- | :--- |
 | **NixOS** | 🗔 Hyprland | [hyprland.md](docs/hyprland.md) | Wayland tiling, Matugen color scheme, Waybar. |
-| **Windows / WSL2** | 🗔 GlazeWM | [glazewm.md](docs/glazewm.md) | Windows-side tiling WM, Zebar status bar integration. |
+| **Windows / WSL2** | 🗔 komorebi + YASB | [matugen-palette.md](docs/matugen-palette.md) | Windows-side tiling WM, YASB status bar, Matugen dynamic theming. |
 | **macOS** | 🗔 AeroSpace | [aerospace.nix](modules/apps/aerospace.nix) | macOS tiling, `Cmd+Ctrl` modifier, JankyBorders highlight. |
 | **NixOS / Desktop** | ⌨️ Kanata | [kanata.md](docs/kanata.md) | System-level remap (SandS navigation, macOS-like IME). |
 | **Common (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 75% transparent window, dynamic tab parsing, Leader key. |

@@ -2,7 +2,7 @@
 
 Yaziは**Rust製の高速CUIファイルマネージャ**です．  
 非同期I/Oと非同期プレビューによる極めて高いレスポンス性が特長で，Vim風のキーバインドを採用しています．  
-本環境では **Cyberdreamテーマ** をベースに，背景透過・塗りつぶしフォルダアイコン・選択行ハイライトをカスタマイズして適用しています．
+本環境では **kanagawa-dragon フレーバー** をベースに，Matugen パレット (壁紙連動) でフォルダ色・ファイル種別色・ステータスバーを動的に上書きしています ([matugen-palette.md](matugen-palette.md) 参照)．
 
 ---
 
@@ -154,7 +154,9 @@ yazi <path>   # 指定ディレクトリで起動
 
 設定ファイル: [`modules/yazi.nix`](../modules/yazi.nix)
 
-### 色彩設定（Cyberdreamテーマ準拠）
+### 色彩設定（Matugen パレット準拠）
+
+現在の配色は壁紙から動的生成されます: フォルダ = secondary，ドキュメント系 = tertiary，スクリプト/メディア系 = complement，Web/データ系 = triad，コンパイル言語/アーカイブ = error．ステータスバーは Starship / lualine と同じ powerline デザインです．以下は移行前の静的配色の記録です．
 
 | 要素 | 色コード | 説明 |
 |------|---------|------|
