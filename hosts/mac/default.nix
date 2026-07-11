@@ -8,14 +8,7 @@
   # 各種機能・アプリケーションモジュールの読み込み
   # -----------------------------------------------------------------------
   imports = [
-    ../../modules/shell/fastfetch.nix
-    ../../modules/shell/zsh
-    ../../modules/shell/starship.nix
-    ../../modules/apps/wezterm
-    ../../modules/apps/neovim
-    ../../modules/shell/direnv.nix
-    ../../modules/apps/yazi
-    ../../modules/apps/lazygit.nix
+    ../../profiles/base.nix
     ../../modules/apps/aerospace.nix
   ];
 

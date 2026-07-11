@@ -8,18 +8,11 @@
   # 各種機能・アプリケーションモジュールの読み込み
   # -----------------------------------------------------------------------
   imports = [
-    ../../modules/shell/fastfetch.nix
-    ../../modules/shell/zsh
-    ../../modules/shell/starship.nix
-    ../../modules/apps/wezterm
-    ../../modules/apps/neovim
+    ../../profiles/base.nix
     # ../../modules/wm/glazewm
     ../../modules/wm/komorebi
     ../../modules/wm/yasb
-    ../../modules/shell/direnv.nix
-    ../../modules/apps/yazi
     ../../modules/services/obsidian-mcp.nix
-    ../../modules/apps/lazygit.nix
     ../../modules/apps/vivaldi
   ];
 

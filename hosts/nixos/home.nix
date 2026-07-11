@@ -8,18 +8,11 @@
   # 各種機能・アプリケーションモジュールの読み込み
   # -----------------------------------------------------------------------
   imports = [
-    ../../modules/shell/fastfetch.nix
+    ../../profiles/base.nix
     ../../modules/desktop/packages.nix
-    ../../modules/shell/zsh
-    ../../modules/shell/starship.nix
     ../../modules/desktop/kanata.nix
     # ../../modules/desktop
-    ../../modules/apps/wezterm
-    ../../modules/apps/neovim
     ../../modules/wm/hyprland
-    ../../modules/shell/direnv.nix
-    ../../modules/apps/yazi
-    ../../modules/apps/lazygit.nix
   ];
 
   # ユーザーメタデータ
