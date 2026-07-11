@@ -14,7 +14,8 @@ let
         pkgName = "tree-sitter-${pkgs.lib.replaceStrings ["_"] ["-"] lang}";
         parserPkg = pkgs.vimPlugins.nvim-treesitter.builtGrammars.${pkgName};
       in ''
-        ln -sf ${parserPkg}/parser/${lang}.so $out/parser/
+        # builtGrammars の各パッケージは $out/parser 自体がELF共有ライブラリ
+        ln -sf ${parserPkg}/parser $out/parser/${lang}.so
       ''
     ) [
       "rust"
