@@ -53,7 +53,7 @@ fi
 """
 when = "true"
 style = "fg:on_accent bg:secondary bold"
-format = "[ $output]($style)[](fg:secondary bg:accent)"
+format = "[ $output ]($style)[](fg:secondary bg:accent)"
 
 [username]
 disabled = true
