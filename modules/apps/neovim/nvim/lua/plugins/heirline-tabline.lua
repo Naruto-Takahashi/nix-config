@@ -95,6 +95,8 @@ return {
     vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true, desc = "Next buffer tab" })
     vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { silent = true, desc = "Prev buffer tab" })
     vim.keymap.set("n", "<leader>bd", ":bdelete<CR>", { silent = true, desc = "Close buffer" })
+    -- Q 1キーでも閉じられるようにする (標準の Q = マクロ再生は使用頻度が低いため転用)
+    vim.keymap.set("n", "Q", ":bdelete<CR>", { silent = true, desc = "Close buffer" })
     -- 現在のバッファ以外をまとめて閉じる
     vim.keymap.set("n", "<leader>bo", function()
       local cur = vim.api.nvim_get_current_buf()
