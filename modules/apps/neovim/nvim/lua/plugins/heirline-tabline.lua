@@ -31,19 +31,15 @@ return {
           if self.is_active then
             return { fg = mc.on_accent, bg = mc.accent, bold = true }
           end
-          return { fg = mc.muted }
+          -- 非アクティブ: WezTerm の非アクティブタブと同じ surface ブロック
+          return { fg = mc.muted, bg = mc.surface }
         end,
       },
-      -- アクティブタブの右にだけ accent 色の ▶ を出す (背景は透過)
+      -- タブの右の ▶ (アクティブ = accent、非アクティブ = surface。背景は透過)
       {
-        provider = function(self)
-          return self.is_active and "\u{e0b0}" or " "
-        end,
+        provider = "\u{e0b0}",
         hl = function(self)
-          if self.is_active then
-            return { fg = mc.accent }
-          end
-          return {}
+          return { fg = self.is_active and mc.accent or mc.surface }
         end,
       },
     }
