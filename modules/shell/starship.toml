@@ -49,7 +49,7 @@ if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
   fi
 else
   # アイコン無し: 幅2のブロック (以前のちょうど良い幅)
-  echo "⠀⠀"
+  echo "⠀"
 fi
 """
 when = "true"
