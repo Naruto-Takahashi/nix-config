@@ -64,6 +64,11 @@
     -- タブバーが上端に張り付く仕様 (レトロタブバーは余白不可) に合わせ、
     -- 下端も詰めて上下対称にする
     config.window_padding = { left = "1cell", right = "1cell", top = "1cell", bottom = 0 }
+    -- セル高の端数ピクセルを上側に逃がし、下端を完全に密着させる
+    -- (nightly 限定オプション。未対応版では pcall で黙って無視される)
+    pcall(function()
+      config.window_content_alignment = { horizontal = "Left", vertical = "Bottom" }
+    end)
 
     if is_windows then
       config.tiling_desktop_environments = { "komorebi" }
