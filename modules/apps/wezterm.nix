@@ -62,6 +62,8 @@
     config.macos_window_background_blur = 20
     -- ステータスバー下などに余白が出ないようウィンドウ内パディングをゼロに
     config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
+    -- セル高で割り切れない端数ピクセルは上側に逃がし、下端を密着させる
+    config.window_content_alignment = { horizontal = "left", vertical = "bottom" }
 
     if is_windows then
       config.tiling_desktop_environments = { "komorebi" }
