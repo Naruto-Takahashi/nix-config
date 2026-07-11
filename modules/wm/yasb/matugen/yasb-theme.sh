@@ -219,28 +219,6 @@ if [[ -f "$CACHE" && -f "$YAZI_TPL" ]]; then
         && mv "$HOME/.config/yazi/theme.toml.tmp" "$HOME/.config/yazi/theme.toml"
 fi
 
-# ytermusic のテーマ: テンプレートの @@プレースホルダ@@ を差し込んで config.toml を生成
-YTM_TPL="$HOME/.config/ytermusic/config-template.toml"
-if [[ -f "$CACHE" && -f "$YTM_TPL" ]]; then
-    hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    sub="$(grep -m1 -- '--accent-sub:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    sec="$(grep -m1 -- '--secondary:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    mut="$(grep -m1 -- '--subtext1:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
-    [[ -n "$hl" ]] || hl="#ffc20d"
-    [[ -n "$sub" ]] || sub="#8ea4a2"
-    [[ -n "$sec" ]] || sec="#d08770"
-    [[ -n "$mut" ]] || mut="#a0a9cb"
-    [[ -n "${vis:-}" ]] || vis="#7fb4ca"
-    sed -e "s/@@ACCENT@@/${hl}/g" \
-        -e "s/@@TERTIARY@@/${sub}/g" \
-        -e "s/@@SECONDARY@@/${sec}/g" \
-        -e "s/@@MUTED@@/${mut}/g" \
-        -e "s/@@COMPLEMENT@@/${vis}/g" \
-        "$YTM_TPL" > "$HOME/.config/ytermusic/config.toml.tmp" \
-        && rm -f "$HOME/.config/ytermusic/config.toml" \
-        && mv "$HOME/.config/ytermusic/config.toml.tmp" "$HOME/.config/ytermusic/config.toml"
-fi
-
 # fzf (Ctrl+G の ghq ジャンプ等) のハイライト配色を生成
 if [[ -f "$CACHE" ]]; then
     hl="$(grep -m1 -- '--highlight:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
