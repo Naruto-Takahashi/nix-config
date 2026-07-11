@@ -43,8 +43,12 @@ return {
         },
       }
 
-      -- 左端の装飾ブロック: Normal は secondary、他モードは
-      -- 「モード色を surface へ 45% 寄せた薄め色」(secondary と同じ関係を再現)
+      -- 白側に寄せたパステル調の「薄め色」(装飾ブロック用)
+      local function pale(color)
+        return blend(color, "#ffffff", 0.4)
+      end
+
+      -- 左端の装飾ブロック: Normal は secondary、他モードはモード色のパステル版
       local mode_colors = {
         i = c.accent_sub,
         v = visual, V = visual, ["\22"] = visual,
@@ -57,7 +61,7 @@ return {
         if not mcol then
           return { fg = c.on_accent, bg = c.secondary, gui = "bold" }
         end
-        return { fg = c.on_accent, bg = blend(mcol, c.surface, 0.45), gui = "bold" }
+        return { fg = c.on_accent, bg = pale(mcol), gui = "bold" }
       end
 
       sections = {

@@ -136,7 +136,7 @@
         end)
 
         -- Starship の左端と同じ装飾ブロックをモードセグメントの前に追加。
-        -- Normal は secondary、他モードは「モード色を surface へ 45% 寄せた薄め色」
+        -- Normal は secondary、他モードはモード色を白側に寄せたパステル版
         local function blend(h1, h2, t)
           local r1, g1, b1 = tonumber(h1:sub(2, 3), 16), tonumber(h1:sub(4, 5), 16), tonumber(h1:sub(6, 7), 16)
           local r2, g2, b2 = tonumber(h2:sub(2, 3), 16), tonumber(h2:sub(4, 5), 16), tonumber(h2:sub(6, 7), 16)
@@ -152,10 +152,10 @@
             local block_bg = pal.secondary
             if mode == "select" then
               mode_bg = pal.visual or pal.accent_sub
-              block_bg = blend(mode_bg, pal.surface, 0.45)
+              block_bg = blend(mode_bg, "#ffffff", 0.4)
             elseif mode == "unset" then
               mode_bg = pal.muted
-              block_bg = blend(mode_bg, pal.surface, 0.45)
+              block_bg = blend(mode_bg, "#ffffff", 0.4)
             end
             return ui.Line {
               ui.Span(" "):style(ui.Style():bg(block_bg)),
