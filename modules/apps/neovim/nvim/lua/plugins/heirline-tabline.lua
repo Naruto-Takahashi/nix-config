@@ -95,5 +95,14 @@ return {
     vim.keymap.set("n", "<Tab>", ":bnext<CR>", { silent = true, desc = "Next buffer tab" })
     vim.keymap.set("n", "<S-Tab>", ":bprevious<CR>", { silent = true, desc = "Prev buffer tab" })
     vim.keymap.set("n", "<leader>bd", ":bdelete<CR>", { silent = true, desc = "Close buffer" })
+    -- 現在のバッファ以外をまとめて閉じる
+    vim.keymap.set("n", "<leader>bo", function()
+      local cur = vim.api.nvim_get_current_buf()
+      for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if b ~= cur and vim.bo[b].buflisted and not vim.bo[b].modified then
+          vim.api.nvim_buf_delete(b, {})
+        end
+      end
+    end, { silent = true, desc = "Close other buffers" })
   end,
 }
