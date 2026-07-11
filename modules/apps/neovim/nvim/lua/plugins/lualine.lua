@@ -5,35 +5,66 @@ return {
     -- Matugen 由来のパレット (yasb-theme が壁紙変更のたびに生成する)
     -- が読めればステータスバーへ適用し、無ければ従来の "auto" にフォールバック
     local theme = "auto"
+    local sections = nil
     local ok, c = pcall(dofile, vim.fn.expand("~/.cache/matugen/colors.lua"))
     if ok and type(c) == "table" then
-      -- Starship プロンプトと同じ文法: 明色セグメント → 暗色セグメント(accent 文字) → 無地
-      local a = { fg = c.on_accent, bg = c.accent, gui = "bold" }
-      local sub = { fg = c.on_accent, bg = c.accent_sub, gui = "bold" }
-      local mid = { fg = c.accent, bg = c.surface }
-      local plain = { fg = c.muted, bg = "none" }
+      local visual = c.visual or c.muted
+      local replace = "#c4746e"
+
+      -- 2色を t:0..1 で混ぜる (「薄め色」計算用)
+      local function blend(h1, h2, t)
+        local r1, g1, b1 = tonumber(h1:sub(2, 3), 16), tonumber(h1:sub(4, 5), 16), tonumber(h1:sub(6, 7), 16)
+        local r2, g2, b2 = tonumber(h2:sub(2, 3), 16), tonumber(h2:sub(4, 5), 16), tonumber(h2:sub(6, 7), 16)
+        return string.format("#%02x%02x%02x",
+          math.floor(r1 + (r2 - r1) * t + 0.5),
+          math.floor(g1 + (g2 - g1) * t + 0.5),
+          math.floor(b1 + (b2 - b1) * t + 0.5))
+      end
+
+      -- Starship プロンプトと同じ文法: 明色セグメント → 暗色セグメント → 無地。
+      -- 暗色セグメント (b) の文字色はモード色に追従させる
+      local function mode_theme(color)
+        return {
+          a = { fg = c.on_accent, bg = color, gui = "bold" },
+          b = { fg = color, bg = c.surface },
+          c = { fg = c.muted, bg = "none" },
+        }
+      end
       theme = {
-        normal = { a = a, b = mid, c = plain },
-        insert = { a = sub, b = mid, c = plain },
-        visual = { a = { fg = c.on_accent, bg = c.visual or c.muted, gui = "bold" }, b = mid, c = plain },
-        replace = { a = { fg = c.on_accent, bg = "#c4746e", gui = "bold" }, b = mid, c = plain },
-        command = { a = a, b = mid, c = plain },
+        normal = mode_theme(c.accent),
+        insert = mode_theme(c.accent_sub),
+        visual = mode_theme(visual),
+        replace = mode_theme(replace),
+        command = mode_theme(c.accent),
         inactive = {
           a = { fg = c.muted, bg = c.surface },
           b = { fg = c.muted, bg = c.surface },
-          c = plain,
+          c = { fg = c.muted, bg = "none" },
         },
       }
-    end
 
-    -- Starship の左端と同じ「secondary 色のブロック」を先頭に置く
-    local sections = nil
-    if type(theme) == "table" then
+      -- 左端の装飾ブロック: Normal は secondary、他モードは
+      -- 「モード色を surface へ 45% 寄せた薄め色」(secondary と同じ関係を再現)
+      local mode_colors = {
+        i = c.accent_sub,
+        v = visual, V = visual, ["\22"] = visual,
+        s = visual, S = visual,
+        R = replace,
+      }
+      local function lead_color()
+        local m = vim.fn.mode():sub(1, 1)
+        local mcol = mode_colors[m]
+        if not mcol then
+          return { fg = c.on_accent, bg = c.secondary, gui = "bold" }
+        end
+        return { fg = c.on_accent, bg = blend(mcol, c.surface, 0.45), gui = "bold" }
+      end
+
       sections = {
         lualine_a = {
           {
             function() return " " end, -- 無地の装飾ブロック
-            color = { fg = c.on_accent, bg = c.secondary, gui = "bold" },
+            color = lead_color,
             separator = { left = "", right = "\u{e0b0}" },
             padding = 0,
           },
