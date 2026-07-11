@@ -60,9 +60,7 @@
     }
     config.window_background_opacity = 0.85
     config.macos_window_background_blur = 20
-    -- 左右は既定値のまま、上下はピクセル指定で控えめな余白にする
-    -- 本文の上下に同じだけの控えめな余白 (タブバー自体は仕様上、上端固定)。
-    -- 上下合計 12px はこの環境でセル高の端数がほぼゼロになる値
+    -- 本文の上下に控えめな余白 (タブバー自体は仕様上、常に上端に張り付く)
     config.window_padding = { left = "1cell", right = "1cell", top = 6, bottom = 6 }
     -- 本文はタブバー直下に固定 (間隔が常に一定になる)。
     -- セル高の端数ピクセルはすべて下端に落ちる (ウィンドウ高さ次第で 0〜1行弱)
@@ -93,17 +91,14 @@
     --   バー地も同じ「黒 0.85」で塗ると境目なく馴染みます．
     --   ("none" 指定は素通し=完全透過になるため使いません)
     local BAR_BG = "rgba(0, 0, 0, 0.85)"
-    -- 非アクティブタブは装飾なしでバー地に溶け込ませます (mozumasu 式)．
-    local INACTIVE_BG = BAR_BG
-    local INACTIVE_HOVER_BG = BAR_BG
 
     config.colors = {
       tab_bar = {
         background = BAR_BG,
         -- 実際のタブ描画は下の format-tab-title が行うため，ここは保険の既定値
         active_tab = { bg_color = colors.accent, fg_color = colors.on_accent },
-        inactive_tab = { bg_color = INACTIVE_BG, fg_color = colors.muted },
-        inactive_tab_hover = { bg_color = INACTIVE_HOVER_BG, fg_color = colors.text },
+        inactive_tab = { bg_color = BAR_BG, fg_color = colors.muted },
+        inactive_tab_hover = { bg_color = BAR_BG, fg_color = colors.text },
         new_tab = { bg_color = BAR_BG, fg_color = colors.text },
         new_tab_hover = { bg_color = colors.accent, fg_color = colors.on_accent },
         inactive_tab_edge = "none",

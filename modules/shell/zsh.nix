@@ -306,6 +306,8 @@
       }
 
       # zoxideの初期化を行います（nvmロード後に実行することで，nvm内部のcd処理との衝突を防ぎます）．
+      # 非対話シェル (zsh -ic) では初期化順の診断警告が誤検知されるため抑止します．
+      export _ZO_DOCTOR=0
       eval "$(${pkgs.zoxide}/bin/zoxide init zsh --cmd cd)"
     '';
   };

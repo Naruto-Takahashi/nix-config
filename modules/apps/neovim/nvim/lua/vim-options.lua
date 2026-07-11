@@ -85,8 +85,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "LazygitActiveBorder", { fg = mc.accent, bold = true })
 
         -- Dashboard: matugen パレット
-        --   ロゴ = accent，アイコン = accent，メニュー文字 = secondary，
-        --   キー割当 = tertiary，起動メッセージ = secondary，Quit = 赤系
+        --   ロゴ/起動メッセージ = secondary，アイコン = accent，メニュー文字 = text，
+        --   キー割当 = tertiary，Quit = 赤系
         -- snacks は行別指定が効かない場合に基底グループで描くため、基底も上書きする
         hl(0, "SnacksDashboardHeader", { fg = mc.secondary, bold = true })
         for i = 1, 6 do

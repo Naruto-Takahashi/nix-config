@@ -1,6 +1,6 @@
 -- バッファタブライン (heirline.nvim)
--- WezTerm のタブ / Starship プロンプトと同じ「accent 色ブロック + ▶」意匠を
--- matugen パレットで描く。bufferline では ▶ の色連鎖が制御できないため自作する。
+-- WezTerm のタブと同じ平行四辺形タブを matugen パレットで描く。
+-- (bufferline では三角キャップの色連鎖が制御できないため自作している)
 return {
   "rebelot/heirline.nvim",
   event = "UIEnter",
