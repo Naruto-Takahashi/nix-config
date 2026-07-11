@@ -116,10 +116,10 @@
       end
       if pal.accent and pal.on_accent and pal.surface then
         pcall(function()
-          -- Normal = accent / Select = accent_sub / Unset = muted (lualine と同じ割当)
+          -- Normal = accent / Select = complement / Unset = muted (lualine と同じ割当)
           th.mode.normal_main = ui.Style():fg(pal.on_accent):bg(pal.accent):bold()
           th.mode.normal_alt  = ui.Style():fg(pal.accent):bg(pal.surface)
-          local vis = pal.visual or pal.accent_sub
+          local vis = pal.complement or pal.tertiary
           th.mode.select_main = ui.Style():fg(pal.on_accent):bg(vis):bold()
           th.mode.select_alt  = ui.Style():fg(vis):bg(pal.surface)
           th.mode.unset_main  = ui.Style():fg(pal.on_accent):bg(pal.muted):bold()
@@ -150,9 +150,9 @@
             local mode = tostring(cx.active.mode)
             local mode_bg = pal.accent
             -- secondary が無いパレット(旧テンプレート)でも壊れないようフォールバック
-            local block_bg = pal.secondary or pal.accent_sub
+            local block_bg = pal.secondary or pal.tertiary
             if mode == "select" then
-              mode_bg = pal.visual or pal.accent_sub
+              mode_bg = pal.complement or pal.tertiary
               block_bg = blend(mode_bg, "#ffffff", 0.4)
             elseif mode == "unset" then
               mode_bg = pal.muted
@@ -172,7 +172,7 @@
           Status:children_add(function()
             local mode = tostring(cx.active.mode)
             local bg = pal.accent
-            if mode == "select" then bg = pal.visual or pal.accent_sub
+            if mode == "select" then bg = pal.complement or pal.tertiary
             elseif mode == "unset" then bg = pal.muted end
             return ui.Line {
               ui.Span(" " .. mode:upper() .. " "):style(ui.Style():fg(pal.on_accent):bg(bg):bold()),
@@ -249,44 +249,44 @@
       { url = "**/config.toml", fg = "@@TRIAD@@" },
       { url = "**/theme.toml", fg = "@@TRIAD@@" },
       { url = "**/yazi.toml", fg = "@@TRIAD@@" },
-      { url = "**/desktop.ini", fg = "@@ACCENT_SUB@@" },
+      { url = "**/desktop.ini", fg = "@@TERTIARY@@" },
       { url = "**/.env*", fg = "@@TRIAD@@" },
-      { url = "**/Dockerfile", fg = "@@ACCENT_SUB@@" },
-      # ドキュメント・テキスト・インフラ系 (matugen accent_sub)
-      { url = "**.md", fg = "@@ACCENT_SUB@@" },
-      { url = "**.pdf", fg = "@@ACCENT_SUB@@" },
-      { url = "**.txt", fg = "@@ACCENT_SUB@@" },
-      { url = "**.log", fg = "@@ACCENT_SUB@@" },
-      { url = "**.csv", fg = "@@ACCENT_SUB@@" },
-      { url = "**.docx", fg = "@@ACCENT_SUB@@" },
-      { url = "**.doc", fg = "@@ACCENT_SUB@@" },
-      { url = "**.xlsx", fg = "@@ACCENT_SUB@@" },
-      { url = "**.xls", fg = "@@ACCENT_SUB@@" },
-      { url = "**.pptx", fg = "@@ACCENT_SUB@@" },
-      { url = "**.ppt", fg = "@@ACCENT_SUB@@" },
-      { url = "**.ini", fg = "@@ACCENT_SUB@@" },
-      { url = "**.toml", fg = "@@ACCENT_SUB@@" },
-      { url = "**.tex", fg = "@@ACCENT_SUB@@" },
-      { url = "**.bib", fg = "@@ACCENT_SUB@@" },
-      { url = "**.nix", fg = "@@ACCENT_SUB@@" },
-      { url = "**.sql", fg = "@@ACCENT_SUB@@" },
-      # スクリプト・メディア系 (matugen visual)
-      { url = "**.py", fg = "@@VISUAL@@" },
-      { url = "**.sh", fg = "@@VISUAL@@" },
-      { url = "**.lua", fg = "@@VISUAL@@" },
-      { url = "**.rb", fg = "@@VISUAL@@" },
-      { url = "**.php", fg = "@@VISUAL@@" },
-      { url = "**.pl", fg = "@@VISUAL@@" },
-      { url = "**.mp4", fg = "@@VISUAL@@" },
-      { url = "**.mkv", fg = "@@VISUAL@@" },
-      { url = "**.avi", fg = "@@VISUAL@@" },
-      { url = "**.mov", fg = "@@VISUAL@@" },
-      { url = "**.webm", fg = "@@VISUAL@@" },
-      { url = "**.mp3", fg = "@@VISUAL@@" },
-      { url = "**.wav", fg = "@@VISUAL@@" },
-      { url = "**.flac", fg = "@@VISUAL@@" },
-      { url = "**.m4a", fg = "@@VISUAL@@" },
-      { url = "**.ogg", fg = "@@VISUAL@@" },
+      { url = "**/Dockerfile", fg = "@@TERTIARY@@" },
+      # ドキュメント・テキスト・インフラ系 (matugen tertiary)
+      { url = "**.md", fg = "@@TERTIARY@@" },
+      { url = "**.pdf", fg = "@@TERTIARY@@" },
+      { url = "**.txt", fg = "@@TERTIARY@@" },
+      { url = "**.log", fg = "@@TERTIARY@@" },
+      { url = "**.csv", fg = "@@TERTIARY@@" },
+      { url = "**.docx", fg = "@@TERTIARY@@" },
+      { url = "**.doc", fg = "@@TERTIARY@@" },
+      { url = "**.xlsx", fg = "@@TERTIARY@@" },
+      { url = "**.xls", fg = "@@TERTIARY@@" },
+      { url = "**.pptx", fg = "@@TERTIARY@@" },
+      { url = "**.ppt", fg = "@@TERTIARY@@" },
+      { url = "**.ini", fg = "@@TERTIARY@@" },
+      { url = "**.toml", fg = "@@TERTIARY@@" },
+      { url = "**.tex", fg = "@@TERTIARY@@" },
+      { url = "**.bib", fg = "@@TERTIARY@@" },
+      { url = "**.nix", fg = "@@TERTIARY@@" },
+      { url = "**.sql", fg = "@@TERTIARY@@" },
+      # スクリプト・メディア系 (matugen complement)
+      { url = "**.py", fg = "@@COMPLEMENT@@" },
+      { url = "**.sh", fg = "@@COMPLEMENT@@" },
+      { url = "**.lua", fg = "@@COMPLEMENT@@" },
+      { url = "**.rb", fg = "@@COMPLEMENT@@" },
+      { url = "**.php", fg = "@@COMPLEMENT@@" },
+      { url = "**.pl", fg = "@@COMPLEMENT@@" },
+      { url = "**.mp4", fg = "@@COMPLEMENT@@" },
+      { url = "**.mkv", fg = "@@COMPLEMENT@@" },
+      { url = "**.avi", fg = "@@COMPLEMENT@@" },
+      { url = "**.mov", fg = "@@COMPLEMENT@@" },
+      { url = "**.webm", fg = "@@COMPLEMENT@@" },
+      { url = "**.mp3", fg = "@@COMPLEMENT@@" },
+      { url = "**.wav", fg = "@@COMPLEMENT@@" },
+      { url = "**.flac", fg = "@@COMPLEMENT@@" },
+      { url = "**.m4a", fg = "@@COMPLEMENT@@" },
+      { url = "**.ogg", fg = "@@COMPLEMENT@@" },
       # Web・データ系 (matugen triad: 色相120°シフト)
       { url = "**.js", fg = "@@TRIAD@@" },
       { url = "**.ts", fg = "@@TRIAD@@" },
@@ -326,8 +326,8 @@
       { url = "**.rar", fg = "@@ERROR@@" },
       { url = "**.xz", fg = "@@ERROR@@" },
       # バイナリ・その他 (Fallback)
-      { url = "**.exe", fg = "@@ACCENT_SUB@@" },
-      { url = "**.out", fg = "@@ACCENT_SUB@@" },
+      { url = "**.exe", fg = "@@TERTIARY@@" },
+      { url = "**.out", fg = "@@TERTIARY@@" },
       { url = "**/", fg = "@@SECONDARY@@" }, # ディレクトリ (matugen secondary)
       { url = "*", fg = "#c5c9c5" }   # その他
     ]
@@ -347,11 +347,11 @@
       { name = "Templates", text = "󰉋", fg = "@@SECONDARY@@" }
     ]
     prepend_files = [
-      { name = "Cargo.toml", text = "", fg = "@@ACCENT_SUB@@" },
+      { name = "Cargo.toml", text = "", fg = "@@TERTIARY@@" },
       { name = "config.toml", text = "", fg = "@@TRIAD@@" },
       { name = "theme.toml", text = "", fg = "@@TRIAD@@" },
       { name = "yazi.toml", text = "", fg = "@@TRIAD@@" },
-      { name = "desktop.ini", text = "", fg = "@@ACCENT_SUB@@" },
+      { name = "desktop.ini", text = "", fg = "@@TERTIARY@@" },
       { name = "package-lock.json", text = "󰘦", fg = "@@TRIAD@@" },
       { name = "pnpm-lock.yaml", text = "󰘦", fg = "@@TRIAD@@" },
       { name = "flake.lock", text = "󰘦", fg = "@@TRIAD@@" }
@@ -362,47 +362,47 @@
       { url = "**/config.toml", text = "", fg = "@@TRIAD@@" },
       { url = "**/theme.toml", text = "", fg = "@@TRIAD@@" },
       { url = "**/yazi.toml", text = "", fg = "@@TRIAD@@" },
-      { url = "**/desktop.ini", text = "", fg = "@@ACCENT_SUB@@" },
+      { url = "**/desktop.ini", text = "", fg = "@@TERTIARY@@" },
       { url = "**/package-lock.json", text = "󰘦", fg = "@@TRIAD@@" },
       { url = "**/pnpm-lock.yaml", text = "󰘦", fg = "@@TRIAD@@" },
       { url = "**/flake.lock", text = "󰘦", fg = "@@TRIAD@@" },
-      { url = "**/Dockerfile", text = "󰡨", fg = "@@ACCENT_SUB@@" },
-      # ドキュメント・テキスト・インフラ系 (matugen accent_sub)
-      { url = "**.md", text = "󰍔", fg = "@@ACCENT_SUB@@" },
-      { url = "**.pdf", text = "󰈦", fg = "@@ACCENT_SUB@@" },
-      { url = "**.txt", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.log", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.csv", text = "󰈛", fg = "@@ACCENT_SUB@@" },
-      { url = "**.docx", text = "󰈬", fg = "@@ACCENT_SUB@@" },
-      { url = "**.doc", text = "󰈬", fg = "@@ACCENT_SUB@@" },
-      { url = "**.xlsx", text = "󰈛", fg = "@@ACCENT_SUB@@" },
-      { url = "**.xls", text = "󰈛", fg = "@@ACCENT_SUB@@" },
-      { url = "**.pptx", text = "󰈫", fg = "@@ACCENT_SUB@@" },
-      { url = "**.ppt", text = "󰈫", fg = "@@ACCENT_SUB@@" },
-      { url = "**.ini", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.toml", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.tex", text = "󰙩", fg = "@@ACCENT_SUB@@" },
-      { url = "**.bib", text = "󰙩", fg = "@@ACCENT_SUB@@" },
-      { url = "**.nix", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.sql", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.exe", text = "", fg = "@@ACCENT_SUB@@" },
-      { url = "**.out", text = "", fg = "@@ACCENT_SUB@@" },
-      # スクリプト・メディア系 (matugen visual)
-      { url = "**.py", text = "", fg = "@@VISUAL@@" },
-      { url = "**.sh", text = "", fg = "@@VISUAL@@" },
-      { url = "**.lua", text = "", fg = "@@VISUAL@@" },
-      { url = "**.rb", text = "", fg = "@@VISUAL@@" },
-      { url = "**.php", text = "", fg = "@@VISUAL@@" },
-      { url = "**.pl", text = "", fg = "@@VISUAL@@" },
-      { url = "**.mp4", text = "󰈫", fg = "@@VISUAL@@" },
-      { url = "**.mkv", text = "󰈫", fg = "@@VISUAL@@" },
-      { url = "**.mov", text = "󰈫", fg = "@@VISUAL@@" },
-      { url = "**.webm", text = "󰈫", fg = "@@VISUAL@@" },
-      { url = "**.mp3", text = "󰎈", fg = "@@VISUAL@@" },
-      { url = "**.wav", text = "󰎈", fg = "@@VISUAL@@" },
-      { url = "**.flac", text = "󰎈", fg = "@@VISUAL@@" },
-      { url = "**.m4a", text = "󰎈", fg = "@@VISUAL@@" },
-      { url = "**.ogg", text = "󰎈", fg = "@@VISUAL@@" },
+      { url = "**/Dockerfile", text = "󰡨", fg = "@@TERTIARY@@" },
+      # ドキュメント・テキスト・インフラ系 (matugen tertiary)
+      { url = "**.md", text = "󰍔", fg = "@@TERTIARY@@" },
+      { url = "**.pdf", text = "󰈦", fg = "@@TERTIARY@@" },
+      { url = "**.txt", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.log", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.csv", text = "󰈛", fg = "@@TERTIARY@@" },
+      { url = "**.docx", text = "󰈬", fg = "@@TERTIARY@@" },
+      { url = "**.doc", text = "󰈬", fg = "@@TERTIARY@@" },
+      { url = "**.xlsx", text = "󰈛", fg = "@@TERTIARY@@" },
+      { url = "**.xls", text = "󰈛", fg = "@@TERTIARY@@" },
+      { url = "**.pptx", text = "󰈫", fg = "@@TERTIARY@@" },
+      { url = "**.ppt", text = "󰈫", fg = "@@TERTIARY@@" },
+      { url = "**.ini", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.toml", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.tex", text = "󰙩", fg = "@@TERTIARY@@" },
+      { url = "**.bib", text = "󰙩", fg = "@@TERTIARY@@" },
+      { url = "**.nix", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.sql", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.exe", text = "", fg = "@@TERTIARY@@" },
+      { url = "**.out", text = "", fg = "@@TERTIARY@@" },
+      # スクリプト・メディア系 (matugen complement)
+      { url = "**.py", text = "", fg = "@@COMPLEMENT@@" },
+      { url = "**.sh", text = "", fg = "@@COMPLEMENT@@" },
+      { url = "**.lua", text = "", fg = "@@COMPLEMENT@@" },
+      { url = "**.rb", text = "", fg = "@@COMPLEMENT@@" },
+      { url = "**.php", text = "", fg = "@@COMPLEMENT@@" },
+      { url = "**.pl", text = "", fg = "@@COMPLEMENT@@" },
+      { url = "**.mp4", text = "󰈫", fg = "@@COMPLEMENT@@" },
+      { url = "**.mkv", text = "󰈫", fg = "@@COMPLEMENT@@" },
+      { url = "**.mov", text = "󰈫", fg = "@@COMPLEMENT@@" },
+      { url = "**.webm", text = "󰈫", fg = "@@COMPLEMENT@@" },
+      { url = "**.mp3", text = "󰎈", fg = "@@COMPLEMENT@@" },
+      { url = "**.wav", text = "󰎈", fg = "@@COMPLEMENT@@" },
+      { url = "**.flac", text = "󰎈", fg = "@@COMPLEMENT@@" },
+      { url = "**.m4a", text = "󰎈", fg = "@@COMPLEMENT@@" },
+      { url = "**.ogg", text = "󰎈", fg = "@@COMPLEMENT@@" },
       # Web・データ系 (matugen triad: 色相120°シフト)
       { url = "**.html", text = "", fg = "@@TRIAD@@" },
       { url = "**.htm", text = "", fg = "@@TRIAD@@" },

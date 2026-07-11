@@ -95,7 +95,7 @@ format = '[[($all_status$ahead_behind )](fg:accent bg:dark)]($style)'
 
 [cmd_duration]
 min_time = 1
-style = 'fg:accent_sub'
+style = 'fg:tertiary'
 format = "[[  ](fg:muted) $duration]($style)"
 
 [time]
@@ -113,7 +113,7 @@ vicmd_symbol = "[❯](bold #8e8e8e)"
 # MATUGEN:START
 [palettes.matugen]
 accent = "#ffc20d"
-accent_sub = "#b48ead"
+tertiary = "#b48ead"
 secondary = "#d08770"
 muted = "#a0a9cb"
 dark = "#333333"

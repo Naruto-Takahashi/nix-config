@@ -21,7 +21,7 @@
     -- 他環境（Linuxデスクトップ/mac）ではファイルがなく，フォールバックがそのまま使われます．
     local colors = {
       accent = "#ffc20d",
-      accent_sub = "#8ea4a2",
+      tertiary = "#8ea4a2",
       secondary = "#d08770",
       text = "#c5c9c5",
       muted = "#a0a9cb",
@@ -108,9 +108,9 @@
         new_tab_hover = { bg_color = colors.accent, fg_color = colors.on_accent },
         inactive_tab_edge = "none",
       },
-      cursor_bg = colors.accent_sub,
+      cursor_bg = colors.tertiary,
       cursor_fg = 'white',
-      cursor_border = colors.accent_sub,
+      cursor_border = colors.tertiary,
     }
 
     -- タブの形状: 平行四辺形 (左下三角 + 本体 + 右上三角)．

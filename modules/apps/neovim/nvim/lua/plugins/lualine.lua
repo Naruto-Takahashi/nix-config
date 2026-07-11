@@ -8,7 +8,7 @@ return {
     local sections = nil
     local ok, c = pcall(dofile, vim.fn.expand("~/.cache/matugen/colors.lua"))
     if ok and type(c) == "table" then
-      local visual = c.visual or c.muted
+      local complement = c.complement or c.muted
       local replace = "#c4746e"
 
       -- 2色を t:0..1 で混ぜる (「薄め色」計算用)
@@ -32,8 +32,8 @@ return {
       end
       theme = {
         normal = mode_theme(c.accent),
-        insert = mode_theme(c.accent_sub),
-        visual = mode_theme(visual),
+        insert = mode_theme(c.tertiary),
+        visual = mode_theme(complement),
         replace = mode_theme(replace),
         command = mode_theme(c.accent),
         inactive = {
@@ -50,9 +50,9 @@ return {
 
       -- 左端の装飾ブロック: Normal は secondary、他モードはモード色のパステル版
       local mode_colors = {
-        i = c.accent_sub,
-        v = visual, V = visual, ["\22"] = visual,
-        s = visual, S = visual,
+        i = c.tertiary,
+        v = complement, V = complement, ["\22"] = complement,
+        s = complement, S = complement,
         R = replace,
       }
       local function lead_color()
