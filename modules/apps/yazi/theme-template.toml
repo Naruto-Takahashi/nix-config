@@ -1,0 +1,210 @@
+#:schema https://yazi-rs.github.io/schemas/theme.json
+
+[manager]
+cwd = { fg = "@@ERROR@@" }
+
+[mgr]
+cwd = { fg = "@@ERROR@@" }
+
+[filetype]
+rules = [
+  # 特定ファイル
+  { url = "**/Cargo.toml", fg = "@@ERROR@@" },
+  { url = "**/config.toml", fg = "@@TRIAD@@" },
+  { url = "**/theme.toml", fg = "@@TRIAD@@" },
+  { url = "**/yazi.toml", fg = "@@TRIAD@@" },
+  { url = "**/desktop.ini", fg = "@@TERTIARY@@" },
+  { url = "**/.env*", fg = "@@TRIAD@@" },
+  { url = "**/Dockerfile", fg = "@@TERTIARY@@" },
+  # ドキュメント・テキスト・インフラ系 (matugen tertiary)
+  { url = "**.md", fg = "@@TERTIARY@@" },
+  { url = "**.pdf", fg = "@@TERTIARY@@" },
+  { url = "**.txt", fg = "@@TERTIARY@@" },
+  { url = "**.log", fg = "@@TERTIARY@@" },
+  { url = "**.csv", fg = "@@TERTIARY@@" },
+  { url = "**.docx", fg = "@@TERTIARY@@" },
+  { url = "**.doc", fg = "@@TERTIARY@@" },
+  { url = "**.xlsx", fg = "@@TERTIARY@@" },
+  { url = "**.xls", fg = "@@TERTIARY@@" },
+  { url = "**.pptx", fg = "@@TERTIARY@@" },
+  { url = "**.ppt", fg = "@@TERTIARY@@" },
+  { url = "**.ini", fg = "@@TERTIARY@@" },
+  { url = "**.toml", fg = "@@TERTIARY@@" },
+  { url = "**.tex", fg = "@@TERTIARY@@" },
+  { url = "**.bib", fg = "@@TERTIARY@@" },
+  { url = "**.nix", fg = "@@TERTIARY@@" },
+  { url = "**.sql", fg = "@@TERTIARY@@" },
+  # スクリプト・メディア系 (matugen complement)
+  { url = "**.py", fg = "@@COMPLEMENT@@" },
+  { url = "**.sh", fg = "@@COMPLEMENT@@" },
+  { url = "**.lua", fg = "@@COMPLEMENT@@" },
+  { url = "**.rb", fg = "@@COMPLEMENT@@" },
+  { url = "**.php", fg = "@@COMPLEMENT@@" },
+  { url = "**.pl", fg = "@@COMPLEMENT@@" },
+  { url = "**.mp4", fg = "@@COMPLEMENT@@" },
+  { url = "**.mkv", fg = "@@COMPLEMENT@@" },
+  { url = "**.avi", fg = "@@COMPLEMENT@@" },
+  { url = "**.mov", fg = "@@COMPLEMENT@@" },
+  { url = "**.webm", fg = "@@COMPLEMENT@@" },
+  { url = "**.mp3", fg = "@@COMPLEMENT@@" },
+  { url = "**.wav", fg = "@@COMPLEMENT@@" },
+  { url = "**.flac", fg = "@@COMPLEMENT@@" },
+  { url = "**.m4a", fg = "@@COMPLEMENT@@" },
+  { url = "**.ogg", fg = "@@COMPLEMENT@@" },
+  # Web・データ系 (matugen triad: 色相120°シフト)
+  { url = "**.js", fg = "@@TRIAD@@" },
+  { url = "**.ts", fg = "@@TRIAD@@" },
+  { url = "**.jsx", fg = "@@TRIAD@@" },
+  { url = "**.tsx", fg = "@@TRIAD@@" },
+  { url = "**.json", fg = "@@TRIAD@@" },
+  { url = "**.jsonc", fg = "@@TRIAD@@" },
+  { url = "**.yaml", fg = "@@TRIAD@@" },
+  { url = "**.yml", fg = "@@TRIAD@@" },
+  { url = "**.toml", fg = "@@TRIAD@@" },
+  { url = "**.lock", fg = "@@TRIAD@@" },
+  { url = "**.html", fg = "@@TRIAD@@" },
+  { url = "**.htm", fg = "@@TRIAD@@" },
+  { url = "**.css", fg = "@@TRIAD@@" },
+  { url = "**.scss", fg = "@@TRIAD@@" },
+  { url = "**.png", fg = "@@TRIAD@@" },
+  { url = "**.jpg", fg = "@@TRIAD@@" },
+  { url = "**.jpeg", fg = "@@TRIAD@@" },
+  { url = "**.gif", fg = "@@TRIAD@@" },
+  { url = "**.webp", fg = "@@TRIAD@@" },
+  { url = "**.svg", fg = "@@TRIAD@@" },
+  # コンパイル言語・アーカイブ (matugen error)
+  { url = "**.rs", fg = "@@ERROR@@" },
+  { url = "**.cpp", fg = "@@ERROR@@" },
+  { url = "**.c", fg = "@@ERROR@@" },
+  { url = "**.h", fg = "@@ERROR@@" },
+  { url = "**.hpp", fg = "@@ERROR@@" },
+  { url = "**.go", fg = "@@ERROR@@" },
+  { url = "**.java", fg = "@@ERROR@@" },
+  { url = "**.kt", fg = "@@ERROR@@" },
+  { url = "**.cs", fg = "@@ERROR@@" },
+  { url = "**.swift", fg = "@@ERROR@@" },
+  { url = "**.zip", fg = "@@ERROR@@" },
+  { url = "**.tar", fg = "@@ERROR@@" },
+  { url = "**.gz", fg = "@@ERROR@@" },
+  { url = "**.7z", fg = "@@ERROR@@" },
+  { url = "**.rar", fg = "@@ERROR@@" },
+  { url = "**.xz", fg = "@@ERROR@@" },
+  # バイナリ・その他 (Fallback)
+  { url = "**.exe", fg = "@@TERTIARY@@" },
+  { url = "**.out", fg = "@@TERTIARY@@" },
+  { url = "**/", fg = "@@SECONDARY@@" }, # ディレクトリ (matugen secondary)
+  { url = "*", fg = "#c5c9c5" }   # その他
+]
+
+[flavor]
+dark = "kanagawa-dragon"
+
+[icon]
+prepend_dirs = [
+  { name = "Desktop", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Downloads", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Documents", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Pictures", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Music", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Videos", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Public", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Templates", text = "󰉋", fg = "@@SECONDARY@@" }
+]
+prepend_files = [
+  { name = "Cargo.toml", text = "", fg = "@@TERTIARY@@" },
+  { name = "config.toml", text = "", fg = "@@TRIAD@@" },
+  { name = "theme.toml", text = "", fg = "@@TRIAD@@" },
+  { name = "yazi.toml", text = "", fg = "@@TRIAD@@" },
+  { name = "desktop.ini", text = "", fg = "@@TERTIARY@@" },
+  { name = "package-lock.json", text = "󰘦", fg = "@@TRIAD@@" },
+  { name = "pnpm-lock.yaml", text = "󰘦", fg = "@@TRIAD@@" },
+  { name = "flake.lock", text = "󰘦", fg = "@@TRIAD@@" }
+]
+prepend_globs = [
+  # 特定ファイル
+  { url = "**/Cargo.toml", text = "", fg = "@@ERROR@@" },
+  { url = "**/config.toml", text = "", fg = "@@TRIAD@@" },
+  { url = "**/theme.toml", text = "", fg = "@@TRIAD@@" },
+  { url = "**/yazi.toml", text = "", fg = "@@TRIAD@@" },
+  { url = "**/desktop.ini", text = "", fg = "@@TERTIARY@@" },
+  { url = "**/package-lock.json", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**/pnpm-lock.yaml", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**/flake.lock", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**/Dockerfile", text = "󰡨", fg = "@@TERTIARY@@" },
+  # ドキュメント・テキスト・インフラ系 (matugen tertiary)
+  { url = "**.md", text = "󰍔", fg = "@@TERTIARY@@" },
+  { url = "**.pdf", text = "󰈦", fg = "@@TERTIARY@@" },
+  { url = "**.txt", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.log", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.csv", text = "󰈛", fg = "@@TERTIARY@@" },
+  { url = "**.docx", text = "󰈬", fg = "@@TERTIARY@@" },
+  { url = "**.doc", text = "󰈬", fg = "@@TERTIARY@@" },
+  { url = "**.xlsx", text = "󰈛", fg = "@@TERTIARY@@" },
+  { url = "**.xls", text = "󰈛", fg = "@@TERTIARY@@" },
+  { url = "**.pptx", text = "󰈫", fg = "@@TERTIARY@@" },
+  { url = "**.ppt", text = "󰈫", fg = "@@TERTIARY@@" },
+  { url = "**.ini", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.toml", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.tex", text = "󰙩", fg = "@@TERTIARY@@" },
+  { url = "**.bib", text = "󰙩", fg = "@@TERTIARY@@" },
+  { url = "**.nix", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.sql", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.exe", text = "", fg = "@@TERTIARY@@" },
+  { url = "**.out", text = "", fg = "@@TERTIARY@@" },
+  # スクリプト・メディア系 (matugen complement)
+  { url = "**.py", text = "", fg = "@@COMPLEMENT@@" },
+  { url = "**.sh", text = "", fg = "@@COMPLEMENT@@" },
+  { url = "**.lua", text = "", fg = "@@COMPLEMENT@@" },
+  { url = "**.rb", text = "", fg = "@@COMPLEMENT@@" },
+  { url = "**.php", text = "", fg = "@@COMPLEMENT@@" },
+  { url = "**.pl", text = "", fg = "@@COMPLEMENT@@" },
+  { url = "**.mp4", text = "󰈫", fg = "@@COMPLEMENT@@" },
+  { url = "**.mkv", text = "󰈫", fg = "@@COMPLEMENT@@" },
+  { url = "**.mov", text = "󰈫", fg = "@@COMPLEMENT@@" },
+  { url = "**.webm", text = "󰈫", fg = "@@COMPLEMENT@@" },
+  { url = "**.mp3", text = "󰎈", fg = "@@COMPLEMENT@@" },
+  { url = "**.wav", text = "󰎈", fg = "@@COMPLEMENT@@" },
+  { url = "**.flac", text = "󰎈", fg = "@@COMPLEMENT@@" },
+  { url = "**.m4a", text = "󰎈", fg = "@@COMPLEMENT@@" },
+  { url = "**.ogg", text = "󰎈", fg = "@@COMPLEMENT@@" },
+  # Web・データ系 (matugen triad: 色相120°シフト)
+  { url = "**.html", text = "", fg = "@@TRIAD@@" },
+  { url = "**.htm", text = "", fg = "@@TRIAD@@" },
+  { url = "**.js", text = "", fg = "@@TRIAD@@" },
+  { url = "**.ts", text = "", fg = "@@TRIAD@@" },
+  { url = "**.jsx", text = "", fg = "@@TRIAD@@" },
+  { url = "**.tsx", text = "", fg = "@@TRIAD@@" },
+  { url = "**.json", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**.jsonc", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**.yaml", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**.yml", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**.lock", text = "󰘦", fg = "@@TRIAD@@" },
+  { url = "**.css", text = "", fg = "@@TRIAD@@" },
+  { url = "**.scss", text = "", fg = "@@TRIAD@@" },
+  { url = "**.png", text = "󰈟", fg = "@@TRIAD@@" },
+  { url = "**.jpg", text = "󰈟", fg = "@@TRIAD@@" },
+  { url = "**.jpeg", text = "󰈟", fg = "@@TRIAD@@" },
+  { url = "**.webp", text = "󰈟", fg = "@@TRIAD@@" },
+  { url = "**.svg", text = "󰈟", fg = "@@TRIAD@@" },
+  # コンパイル言語・アーカイブ (matugen error)
+  { url = "**.rs", text = "", fg = "@@ERROR@@" },
+  { url = "**.cpp", text = "", fg = "@@ERROR@@" },
+  { url = "**.c", text = "", fg = "@@ERROR@@" },
+  { url = "**.h", text = "", fg = "@@ERROR@@" },
+  { url = "**.hpp", text = "", fg = "@@ERROR@@" },
+  { url = "**.go", text = "", fg = "@@ERROR@@" },
+  { url = "**.java", text = "", fg = "@@ERROR@@" },
+  { url = "**.kt", text = "", fg = "@@ERROR@@" },
+  { url = "**.cs", text = "󰌛", fg = "@@ERROR@@" },
+  { url = "**.swift", text = "", fg = "@@ERROR@@" },
+  { url = "**.zip", text = "", fg = "@@ERROR@@" },
+  { url = "**.tar", text = "", fg = "@@ERROR@@" },
+  { url = "**.gz", text = "", fg = "@@ERROR@@" },
+  { url = "**.7z", text = "", fg = "@@ERROR@@" },
+  { url = "**.rar", text = "", fg = "@@ERROR@@" },
+  { url = "**.xz", text = "", fg = "@@ERROR@@" }
+]
+prepend_conds = [
+  { if = "dir", text = "󰉋", fg = "@@SECONDARY@@" },
+  { if = "link", text = "", fg = "#7fb4ca" }
+]

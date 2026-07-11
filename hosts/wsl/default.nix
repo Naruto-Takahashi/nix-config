@@ -17,7 +17,7 @@
     ../../modules/wm/komorebi
     ../../modules/wm/yasb
     ../../modules/shell/direnv.nix
-    ../../modules/apps/yazi.nix
+    ../../modules/apps/yazi
     ../../modules/services/obsidian-mcp.nix
     ../../modules/apps/lazygit.nix
     ../../modules/apps/vivaldi

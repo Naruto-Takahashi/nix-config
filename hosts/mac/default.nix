@@ -14,7 +14,7 @@
     ../../modules/apps/wezterm
     ../../modules/apps/neovim
     ../../modules/shell/direnv.nix
-    ../../modules/apps/yazi.nix
+    ../../modules/apps/yazi
     ../../modules/apps/lazygit.nix
     ../../modules/apps/aerospace.nix
   ];

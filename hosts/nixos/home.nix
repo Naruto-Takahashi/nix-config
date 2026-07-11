@@ -18,7 +18,7 @@
     ../../modules/apps/neovim
     ../../modules/wm/hyprland
     ../../modules/shell/direnv.nix
-    ../../modules/apps/yazi.nix
+    ../../modules/apps/yazi
     ../../modules/apps/lazygit.nix
   ];
 
