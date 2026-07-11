@@ -163,6 +163,21 @@
             }
           end, 100, Status.LEFT)
         end)
+
+        -- 既定のモード表示は3文字略記 (NOR/SEL/UNS) のため、フル表記に置き換える
+        pcall(function()
+          Status:children_remove(1000, Status.LEFT)
+          Status:children_add(function()
+            local mode = tostring(cx.active.mode)
+            local bg = pal.accent
+            if mode == "select" then bg = pal.visual or pal.accent_sub
+            elseif mode == "unset" then bg = pal.muted end
+            return ui.Line {
+              ui.Span(" " .. mode:upper() .. " "):style(ui.Style():fg(pal.on_accent):bg(bg):bold()),
+              ui.Span("\u{e0b0}"):style(ui.Style():fg(bg):bg(pal.surface)),
+            }
+          end, 1000, Status.LEFT)
+        end)
       end
     end
 
