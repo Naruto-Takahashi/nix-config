@@ -21,6 +21,7 @@
     ../../modules/services/obsidian-mcp.nix
     ../../modules/apps/lazygit.nix
     ../../modules/apps/vivaldi
+    ../../modules/apps/ytermusic.nix
   ];
 
   # -----------------------------------------------------------------------
