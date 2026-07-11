@@ -8,8 +8,11 @@ return {
     local mc = require("matugen")
     local utils = require("heirline.utils")
 
-    -- 1つのバッファタブ: アクティブのみ [secondary]▶[accent name]▶ の
-    -- Starship セグメント (装飾ブロックはアクティブタブと一緒に移動する)
+    -- 1つのバッファタブ: 平行四辺形 (左下三角 + 本体 + 右上三角)。
+    -- アクティブ = accent、非アクティブ = surface (WezTerm タブと同じ)
+    local LEFT_TRI = "\u{e0ba}"
+    local RIGHT_TRI = "\u{e0bc}"
+
     local Buffer = {
       init = function(self)
         self.filename = vim.api.nvim_buf_get_name(self.bufnr)
@@ -26,11 +29,12 @@ return {
         minwid = function(self) return self.bufnr end,
         name = "heirline_tabline_buffer_callback",
       },
-      -- 左端の secondary 装飾ブロック (アクティブタブのみ)
+      -- 左下三角
       {
-        condition = function(self) return self.is_active end,
-        { provider = " ", hl = { bg = mc.secondary } },
-        { provider = "\u{e0b0}", hl = { fg = mc.secondary, bg = mc.accent } },
+        provider = LEFT_TRI,
+        hl = function(self)
+          return { fg = self.is_active and mc.accent or mc.surface }
+        end,
       },
       -- タブ本体
       {
@@ -47,9 +51,9 @@ return {
           return { fg = mc.muted, bg = mc.surface }
         end,
       },
-      -- タブの右の ▶ (アクティブ = accent、非アクティブ = surface。背景は透過)
+      -- 右上三角
       {
-        provider = "\u{e0b0}",
+        provider = RIGHT_TRI,
         hl = function(self)
           return { fg = self.is_active and mc.accent or mc.surface }
         end,

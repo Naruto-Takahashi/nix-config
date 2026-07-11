@@ -113,10 +113,10 @@
       cursor_border = colors.accent_sub,
     }
 
-    -- タブの形状: Starship プロンプトと同じ powerline セグメント構成．
-    --   アクティブ = [secondary: タブ番号][accent: タブ名 Bold] を  で接続
-    --   非アクティブ = [dark(surface): タブ名] を  でバーに流す
-    local ARROW = wezterm.nerdfonts.pl_left_hard_divider  -- ""
+    -- タブの形状: 平行四辺形 (左下三角 + 本体 + 右上三角)．
+    --   アクティブ = accent、非アクティブ = surface のグレーブロック
+    local LEFT_TRI = wezterm.nerdfonts.ple_lower_right_triangle
+    local RIGHT_TRI = wezterm.nerdfonts.ple_upper_left_triangle
 
     wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
       -- プロセス名からタブ名を決めます．
@@ -138,42 +138,32 @@
       local index = tostring(tab.tab_index + 1)
       local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
+      local bg = colors.surface
+      local fg = hover and colors.text or colors.muted
+      local bold = "Normal"
       if tab.is_active then
-        return {
-          -- 島同士の間隔
-          { Background = { Color = BAR_BG } },
-          { Text = " " },
-          -- タブ番号セグメント (Starship の OS ロゴ部分に相当)
-          { Background = { Color = colors.secondary } },
-          { Foreground = { Color = colors.on_accent } },
-          { Attribute = { Intensity = "Bold" } },
-          { Text = " " .. index .. " " },
-          -- secondary → accent の接続矢印
-          { Background = { Color = colors.accent } },
-          { Foreground = { Color = colors.secondary } },
-          { Text = ARROW },
-          -- タブ名セグメント (Starship のディレクトリ部分に相当)
-          { Foreground = { Color = colors.on_accent } },
-          { Text = title },
-          { Attribute = { Intensity = "Normal" } },
-          -- accent → バー地へ抜ける矢印
-          { Background = { Color = BAR_BG } },
-          { Foreground = { Color = colors.accent } },
-          { Text = ARROW },
-        }
+        bg = colors.accent
+        fg = colors.on_accent
+        bold = "Bold"
       end
 
-      -- 非アクティブ (Starship の git セグメントに相当する暗色セグメント)
-      local foreground = hover and colors.text or colors.muted
       return {
+        -- 島同士の間隔
         { Background = { Color = BAR_BG } },
         { Text = " " },
-        { Background = { Color = colors.surface } },
-        { Foreground = { Color = foreground } },
-        { Text = " " .. index .. " " .. title },
+        -- 左下三角
+        { Foreground = { Color = bg } },
+        { Text = LEFT_TRI },
+        -- 本体 (番号 + タブ名)
+        { Background = { Color = bg } },
+        { Foreground = { Color = fg } },
+        { Attribute = { Intensity = bold } },
+        { Text = index .. title },
+        { Attribute = { Intensity = "Normal" } },
+        -- 右上三角
         { Background = { Color = BAR_BG } },
-        { Foreground = { Color = colors.surface } },
-        { Text = ARROW },
+        { Foreground = { Color = bg } },
+        { Text = RIGHT_TRI },
       }
     end)
 
