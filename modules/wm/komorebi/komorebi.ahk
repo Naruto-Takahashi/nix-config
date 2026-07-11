@@ -49,19 +49,6 @@ HandleDisplayChange(wParam, lParam) {
 ; モニタ再接続で表示が崩れたとき等に手動で復旧 (自動復旧と同じ処理)
 !+r::Gosub, ReapplyDisplayConfig
 
-ReapplyDisplayConfig:
-    ; reload-configuration では再検出モニタにワークスペース定義が再適用
-    ; されないため、replace-configuration で明示的に再適用する
-    Run, komorebic replace-configuration "C:\Users\tnaru\.config\komorebi\komorebi.json", , Hide
-    ; 再適用完了を待つ (早すぎると YASB が古い状態を読んで再構築する)
-    Sleep, 4000
-    ; YASB のウィジェットも watch_config 経由で再構築 (バー再起動なし)
-    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\yasb\config.yaml" "%A_Temp%\yasb-reapply.yaml" & copy /y "%A_Temp%\yasb-reapply.yaml" "C:\Users\tnaru\.config\yasb\config.yaml", , Hide
-    Sleep, 2000
-    ; komorebi イベントを発火させて YASB のラベルを最新状態に更新する
-    ; (ALT+6 で治るのと同じ原理。focus-monitor 0 は実害のない no-op)
-    Run, komorebic focus-monitor 0, , Hide
-Return
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
@@ -113,6 +100,18 @@ Return
 Return
 #IfWinNotActive
 
-; (モニタ抜き差しの自動復旧はファイル冒頭の HandleDisplayChange →
-;  ReapplyDisplayConfig に統合済み。OnMessage は後勝ちのため二重登録しないこと)
+; --- Display Recovery (モニタ抜き差し時の自動復旧処理本体) ---
+ReapplyDisplayConfig:
+    ; reload-configuration では再検出モニタにワークスペース定義が再適用
+    ; されないため、replace-configuration で明示的に再適用する
+    Run, komorebic replace-configuration "C:\Users\tnaru\.config\komorebi\komorebi.json", , Hide
+    ; 再適用完了を待つ (早すぎると YASB が古い状態を読んで再構築する)
+    Sleep, 4000
+    ; YASB のウィジェットも watch_config 経由で再構築 (バー再起動なし)
+    Run, %ComSpec% /c copy /y "C:\Users\tnaru\.config\yasb\config.yaml" "%A_Temp%\yasb-reapply.yaml" & copy /y "%A_Temp%\yasb-reapply.yaml" "C:\Users\tnaru\.config\yasb\config.yaml", , Hide
+    Sleep, 2000
+    ; komorebi イベントを発火させて YASB のラベルを最新状態に更新する
+    ; (ALT+6 で治るのと同じ原理。focus-monitor 0 は実害のない no-op)
+    Run, komorebic focus-monitor 0, , Hide
+Return
 
