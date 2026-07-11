@@ -1,5 +1,5 @@
 /* ===== 変数と基本設定 ===== */
-/* Kanagawa Dragon palette (fallback; yasb-theme が壁紙から生成した色で差し替える) */
+/* Kanagawa Dragon palette (fallback; matugen-apply が壁紙から生成した色で差し替える) */
 /* MATUGEN:START */
 :root {
     --rosewater: #c8c093;

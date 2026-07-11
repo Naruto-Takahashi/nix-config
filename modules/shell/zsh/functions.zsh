@@ -45,7 +45,7 @@ zstyle ':completion:*' menu select
 # --- fzf設定 ---
 # fzfオプションおよびCtrl+T，Ctrl+Rのプレビュー表示を設定します．
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=pointer:#ffc20d,marker:#ffc20d,prompt:#ffc20d,info:#b48ead,hl:#b48ead,hl+:#b48ead'
-# matugen生成のfzf配色があれば上書きします（yasb-themeが生成します）．
+# matugen生成のfzf配色があれば上書きします（matugen-applyが生成します）．
 [[ -f ~/.cache/matugen/fzf-colors.sh ]] && source ~/.cache/matugen/fzf-colors.sh
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview,tab:down,btab:up'"
@@ -154,7 +154,7 @@ function sync-win() {
     mkdir -p /mnt/c/Users/tnaru/.config/yasb
     cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
     # matugen生成済みパレットがあればstyles.cssに再適用します．
-    [ -x ~/.local/bin/yasb-theme ] && ~/.local/bin/yasb-theme --reapply
+    [ -x ~/.local/bin/matugen-apply ] && ~/.local/bin/matugen-apply --reapply
     echo "Syncing Vivaldi CSS..."
     mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
     cp -L ~/.config/vivaldi/custom.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css

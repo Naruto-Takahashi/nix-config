@@ -109,7 +109,7 @@ success_symbol = "[❯](bold secondary)"
 error_symbol = "[❯](bold secondary)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
-# フォールバック配色 (yasb-theme が壁紙から生成した色で差し替える)
+# フォールバック配色 (matugen-apply が壁紙から生成した色で差し替える)
 # TOML の制約上、テーブル定義はトップレベルキーより後 (ファイル末尾) に置くこと
 # MATUGEN:START
 [palettes.matugen]

@@ -13,8 +13,8 @@
 
   # --- 配色連携スクリプト ---
   # 壁紙変更時にmatugenで生成された配色をYASBに反映させるためのスクリプト．
-  home.file.".local/bin/yasb-theme" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/yasb/matugen/yasb-theme.sh";
+  home.file.".local/bin/matugen-apply" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/yasb/matugen/matugen-apply.sh";
     force = true;
   };
 }

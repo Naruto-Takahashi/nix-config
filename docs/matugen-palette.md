@@ -1,7 +1,7 @@
 # Matugen パレット — 色の名前と用途
 
 壁紙から matugen で抽出・生成される動的パレットの一覧。
-`yasb-theme` (WSL: `~/.local/bin/yasb-theme`) が壁紙変更のたびに
+`matugen-apply` (WSL: `~/.local/bin/matugen-apply`) が壁紙変更のたびに
 `~/.cache/matugen/colors.lua` へ書き出し、各アプリがそこから読む。
 
 ## 色の定義
@@ -18,7 +18,7 @@
 | `surface` | Material surface_container_high | 暗色セグメントの地 (黒ブロック) |
 | `on_accent` | Material surface | accent 等の明色地に載せる暗い文字色 |
 
-- 色相回転 (`complement` / `triad`) は `yasb-theme.sh` 内の Python (colorsys) で
+- 色相回転 (`complement` / `triad`) は `matugen-apply.sh` 内の Python (colorsys) で
   HLS の H だけ回して計算する。明度・彩度は accent と同じなのでパレットに馴染む。
 - 各設定にはファイルが無い環境用のフォールバック値がハードコードされている
   (`nvim/lua/matugen.lua`, wezterm.nix の colors テーブルなど)。
@@ -50,17 +50,17 @@
 
 ### WSL (Windows / komorebi + YASB)
 
-中核は `modules/wm/yasb/matugen/yasb-theme.sh`
-(home-manager が `~/.local/bin/yasb-theme` へ配置。**store ファイルなので
-編集後は `home-manager switch` が必要**)。
+中核は `modules/wm/yasb/matugen/matugen-apply.sh`
+(home-manager が `~/.local/bin/matugen-apply` として mkOutOfStoreSymlink 配置。
+リポジトリを編集すればそのまま反映され、switch は不要)。
 
 ```
 壁紙変更 (YASB wallpapers ウィジェットの run_after)
-  → yasb-theme <image>
+  → matugen-apply <image>
      1. matugen image <壁紙> -c ~/.config/yasb/matugen/config.toml
         → テンプレート palette.css から ~/.cache/matugen/yasb-palette.css を生成
           (matugen が作るのはこの CSS 1枚だけ)
-     2. yasb-theme が palette.css を読み、各アプリ向けに自前で展開する:
+     2. matugen-apply が palette.css を読み、各アプリ向けに自前で展開する:
         - YASB styles.css   : MATUGEN マーカー間を差し替えて /mnt/c へ配置
         - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)
         - starship          : palettes.matugen ブロックを awk で差し替え
@@ -74,7 +74,7 @@
 
 - 各アプリの反映タイミング: YASB はファイル監視 (watch_config/watch_stylesheet) で即時、
   WezTerm は自動リロードで即時、nvim / yazi / starship / lazygit / fzf は次回起動時。
-- `sync-win` は設定コピー後に必ず `yasb-theme --reapply` を呼ぶ。
+- `sync-win` は設定コピー後に必ず `matugen-apply --reapply` を呼ぶ。
   raw コピーはフォールバック色に戻ってしまうため、**手動で /mnt/c へコピーした場合も
   必ず reapply を実行する**こと。
 - `--reapply` は `~/.cache/matugen/last-wallpaper` に記録された前回の壁紙から
@@ -102,9 +102,9 @@
 | | WSL | NixOS |
 | :--- | :--- | :--- |
 | matugen の役割 | palette.css を1枚生成するだけ | 全テンプレート生成 + post_hook |
-| 展開ロジック | yasb-theme.sh (bash) に集約 | matugen config.toml に宣言 |
-| 色相回転色 | yasb-theme 内で計算 | wppicker.sh が後付け追記 |
+| 展開ロジック | matugen-apply.sh (bash) に集約 | matugen config.toml に宣言 |
+| 色相回転色 | matugen-apply 内で計算 | wppicker.sh が後付け追記 |
 | 反映先が Windows | あり (/mnt/c へ配置 + sed) | なし |
 
-新しいアプリを追従させたいときは、WSL なら yasb-theme.sh にセクションを足し、
+新しいアプリを追従させたいときは、WSL なら matugen-apply.sh にセクションを足し、
 NixOS なら templates/ にテンプレートを足して config.toml に登録する。

@@ -2,7 +2,7 @@ return {
   "nvim-lualine/lualine.nvim",
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
-    -- Matugen 由来のパレット (yasb-theme が壁紙変更のたびに生成する)
+    -- Matugen 由来のパレット (matugen-apply が壁紙変更のたびに生成する)
     -- が読めればステータスバーへ適用し、無ければ従来の "auto" にフォールバック
     local theme = "auto"
     local sections = nil

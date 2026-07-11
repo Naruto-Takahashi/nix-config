@@ -17,7 +17,7 @@ SELECTED_PATH="$WALLPAPER_DIR/$SELECTED_WALL"
 # === SET WALLPAPER ===
 matugen image --source-color-index 0 "$SELECTED_PATH"
 
-# === ADD complement COLOR (WSL の yasb-theme.sh と同じ計算) ===
+# === ADD complement COLOR (WSL の matugen-apply.sh と同じ計算) ===
 # matugen テンプレートでは色相回転ができないため、生成後の colors.lua に
 # accent の色相を 180° 回した補色 (complement) を追記する
 COLORS_LUA="$HOME/.cache/matugen/colors.lua"

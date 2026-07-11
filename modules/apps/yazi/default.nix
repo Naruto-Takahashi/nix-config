@@ -84,6 +84,6 @@
   xdg.configFile."yazi/flavors/kanagawa-dragon.yazi".source = kanagawa-dragon-yazi;
 
   # --- テーマ設定 (テンプレート) ---
-  # @@プレースホルダ@@ を yasb-theme が matugen パレットで置換して theme.toml を生成する．
+  # @@プレースホルダ@@ を matugen-apply が matugen パレットで置換して theme.toml を生成する．
   xdg.configFile."yazi/theme-template.toml".source = ./theme-template.toml;
 }

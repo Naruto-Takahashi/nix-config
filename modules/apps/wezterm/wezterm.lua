@@ -1,7 +1,7 @@
 local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
--- 配色：フォールバック値．matugen-colors.luaがあれば上書きします（yasb-themeが生成します）．
+-- 配色：フォールバック値．matugen-colors.luaがあれば上書きします（matugen-applyが生成します）．
 -- 他環境（Linuxデスクトップ/mac）ではファイルがなく，フォールバックがそのまま使われます．
 local colors = {
   accent = "#ffc20d",

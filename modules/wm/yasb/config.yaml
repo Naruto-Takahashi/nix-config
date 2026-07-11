@@ -247,7 +247,7 @@ widgets:
         enable_cache: true
       run_after:
         # 壁紙変更をトリガーに WSL 側の matugen で配色を再生成する
-        - "wsl.exe -e /home/nalt/.local/bin/yasb-theme \"{image}\""
+        - "wsl.exe -e /home/nalt/.local/bin/matugen-apply \"{image}\""
   power_menu:
       type: "yasb.power_menu.PowerMenuWidget"
       options:

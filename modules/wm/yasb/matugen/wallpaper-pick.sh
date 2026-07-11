@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # fzf による壁紙ピッカー (ALT+W から WezTerm 内で起動)
-# TAB/矢印で移動し ENTER で選択 → Windows の壁紙を変更し yasb-theme で配色を追従
+# TAB/矢印で移動し ENTER で選択 → Windows の壁紙を変更し matugen-apply で配色を追従
 set -euo pipefail
 
 export PATH="$HOME/.nix-profile/bin:$PATH"
@@ -24,4 +24,4 @@ win_path="${WIN_DIR}\\${sel}"
 "
 
 # 配色一式 (YASB/komorebi/starship/WezTerm/fzf/lazygit/nvim/yazi) を追従
-"$HOME/.local/bin/yasb-theme" "$win_path"
+"$HOME/.local/bin/matugen-apply" "$win_path"
