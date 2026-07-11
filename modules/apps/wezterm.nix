@@ -64,10 +64,10 @@
     -- 本文の上下に同じだけの控えめな余白 (タブバー自体は仕様上、上端固定)。
     -- 上下合計 12px はこの環境でセル高の端数がほぼゼロになる値
     config.window_padding = { left = "1cell", right = "1cell", top = 6, bottom = 6 }
-    -- セル高の端数ピクセルは中央揃えで上下に等分し、対称性を保つ
-    -- (nightly 限定オプション。未対応版では pcall で黙って無視される)
+    -- 本文はタブバー直下に固定 (間隔が常に一定になる)。
+    -- セル高の端数ピクセルはすべて下端に落ちる (ウィンドウ高さ次第で 0〜1行弱)
     pcall(function()
-      config.window_content_alignment = { horizontal = "Left", vertical = "Center" }
+      config.window_content_alignment = { horizontal = "Left", vertical = "Top" }
     end)
 
     if is_windows then
