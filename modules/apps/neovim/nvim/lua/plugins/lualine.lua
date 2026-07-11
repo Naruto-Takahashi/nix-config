@@ -80,6 +80,9 @@ return {
     require("lualine").setup({
       options = {
         theme = theme,
+        -- 画面全体で1本のステータスライン (Neo-tree 等にフォーカスしても
+        -- ウィンドウごとに分割されず、常に最下部に表示される)
+        globalstatus = true,
         -- Starship と同じ鋭角 powerline 矢印
         section_separators = { left = "\u{e0b0}", right = "\u{e0b2}" },
         component_separators = { left = "\u{e0b1}", right = "\u{e0b3}" },
