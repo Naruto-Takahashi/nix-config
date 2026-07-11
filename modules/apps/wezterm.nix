@@ -135,7 +135,6 @@
         title_text = "Ubuntu"
       end
 
-      local index = tostring(tab.tab_index + 1)
       local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
       local bg = colors.surface
@@ -148,17 +147,15 @@
       end
 
       return {
-        -- 島同士の間隔
-        { Background = { Color = BAR_BG } },
-        { Text = " " },
         -- 左下三角
+        { Background = { Color = BAR_BG } },
         { Foreground = { Color = bg } },
         { Text = LEFT_TRI },
-        -- 本体 (番号 + タブ名)
+        -- 本体
         { Background = { Color = bg } },
         { Foreground = { Color = fg } },
         { Attribute = { Intensity = bold } },
-        { Text = index .. title },
+        { Text = title },
         { Attribute = { Intensity = "Normal" } },
         -- 右上三角
         { Background = { Color = BAR_BG } },
