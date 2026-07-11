@@ -26,30 +26,30 @@ command = """
 if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
   if [ -f /etc/os-release ]; then
     if grep -qi nixos /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     elif grep -qi ubuntu /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     elif grep -qi debian /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     elif grep -qi alpine /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     elif grep -qi arch /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     elif grep -qi fedora /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     elif grep -qi gentoo /etc/os-release; then
-      echo "  "
+      echo "⠀⠀"
     else
-      echo "  "
+      echo "⠀⠀"
     fi
   elif [ "$(uname)" = "Darwin" ]; then
-    echo "  "
+    echo "⠀⠀"
   else
-    echo "  "
+    echo "⠀⠀"
   fi
 else
   # アイコン無し: 幅2のブロック (以前のちょうど良い幅)
-  echo "  "
+  echo "⠀⠀"
 fi
 """
 when = "true"
