@@ -117,6 +117,17 @@ if [[ -f "$CACHE" ]]; then
     mut="$(grep -m1 -- '--subtext1:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     srf="$(grep -m1 -- '--surface2:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
     bas="$(grep -m1 -- '--base:' "$CACHE" | grep -oE '#[0-9a-fA-F]{6}')"
+    # 第4色 (visual): メインハイライトの色相を 180° 回した補色。
+    # 固定シードと違い、どんな壁紙でも accent から最も遠い色相になる
+    vis="$(python3 -c '
+import sys, colorsys
+h = sys.argv[1].lstrip("#")
+r, g, b = (int(h[i:i+2], 16) / 255 for i in (0, 2, 4))
+hh, l, s = colorsys.rgb_to_hls(r, g, b)
+r, g, b = colorsys.hls_to_rgb((hh + 0.5) % 1.0, l, s)
+print("#%02x%02x%02x" % (round(r*255), round(g*255), round(b*255)))
+' "$hl" 2>/dev/null)"
+    [[ -n "$vis" ]] || vis="#7fb4ca"
     if [[ -n "$hl" && -n "$sb" && -n "$sec" && -n "$txt" && -n "$mut" && -n "$srf" && -n "$bas" ]]; then
         wz_tmp="$(mktemp)"
         cat > "$wz_tmp" <<LUA
@@ -125,6 +136,7 @@ return {
   accent = "${hl}",
   accent_sub = "${sb}",
   secondary = "${sec}",
+  visual = "${vis}",
   text = "${txt}",
   muted = "${mut}",
   surface = "${srf}",
