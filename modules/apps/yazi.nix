@@ -149,7 +149,8 @@
           Status:children_add(function()
             local mode = tostring(cx.active.mode)
             local mode_bg = pal.accent
-            local block_bg = pal.secondary
+            -- secondary が無いパレット(旧テンプレート)でも壊れないようフォールバック
+            local block_bg = pal.secondary or pal.accent_sub
             if mode == "select" then
               mode_bg = pal.visual or pal.accent_sub
               block_bg = blend(mode_bg, "#ffffff", 0.4)
