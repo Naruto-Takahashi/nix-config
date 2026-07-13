@@ -3,17 +3,18 @@
 --  matugen-apply (WSL) が壁紙から生成する ~/.cache/matugen/colors.lua を読み込む。
 --  ファイルが無い環境 (Linuxデスクトップ/mac 等) ではフォールバック値を使う。
 -- ==========================================================================
+-- フォールバック配色は kanagawa-dragon (rebelot/kanagawa.nvim) パレットに準拠．
 local M = {
-  accent = "#ffc20d",
-  tertiary = "#8ea4a2",
-  secondary = "#d08770",
-  complement = "#7fb4ca",
-  triad = "#c8e69a",
-  text = "#c5c9c5",
-  muted = "#a0a9cb",
-  surface = "#333333",
+  accent = "#e6c384",     -- carpYellow
+  tertiary = "#7aa89f",   -- waveAqua2
+  secondary = "#a292a3",  -- oniViolet
+  complement = "#7fb4ca", -- oldWhite
+  triad = "#8a9a7b",      -- springGreen
+  text = "#c5c9c5",       -- fujiWhite
+  muted = "#a6a69c",      -- fujiGray
+  surface = "#181616",    -- sumiInk3
   on_accent = "#000000",
-  error = "#c4746e",
+  error = "#c4746e",      -- autumnRed
 }
 
 local f = (os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua"

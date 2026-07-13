@@ -44,7 +44,7 @@ zstyle ':completion:*' menu select
 
 # --- fzf設定 ---
 # fzfオプションおよびCtrl+T，Ctrl+Rのプレビュー表示を設定します．
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=pointer:#ffc20d,marker:#ffc20d,prompt:#ffc20d,info:#b48ead,hl:#b48ead,hl+:#b48ead'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --color=pointer:#e6c384,marker:#e6c384,prompt:#e6c384,info:#a292a3,hl:#a292a3,hl+:#a292a3'
 # matugen生成のfzf配色があれば上書きします（matugen-applyが生成します）．
 [[ -f ~/.cache/matugen/fzf-colors.sh ]] && source ~/.cache/matugen/fzf-colors.sh
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
