@@ -73,6 +73,14 @@ if [[ -f "$CACHE" ]]; then
         HAS_PALETTE=1
         complement="$(rotate_hue "$accent" 0.5)"       # 180° 補色
         triad="$(rotate_hue "$accent" 0.3333333)"      # 120° トライアド
+        # accent を白側に 40% 寄せた控えめな装飾色 (starship/nvim の装飾ブロック用)
+        accent_pale="$(python3 -c '
+import sys
+h = sys.argv[1].lstrip("#")
+r, g, b = (int(h[i:i+2], 16) for i in (0, 2, 4))
+print("#%02x%02x%02x" % tuple(round(v + (255 - v) * 0.4) for v in (r, g, b)))
+' "$accent" 2>/dev/null)"
+        [[ -n "$accent_pale" ]] || accent_pale="#f0dbb5"
         [[ -n "$complement" ]] || complement="#7fb4ca"
         [[ -n "$triad" ]] || triad="#c8e69a"
         [[ -n "$error" ]] || error="#e46876"
@@ -125,7 +133,7 @@ STARSHIP_SRC="$HOME/.config/starship.toml"
 STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
 if [[ -f "$STARSHIP_SRC" ]]; then
     awk -v hl="$accent" -v ter="$tertiary" -v sec="$secondary" \
-        -v mut="$muted" -v drk="$surface" -v bas="$on_accent" '
+        -v mut="$muted" -v drk="$surface" -v bas="$on_accent" -v pale="$accent_pale" '
         /# MATUGEN:START/ {
             print
             print "[palettes.matugen]"
@@ -135,6 +143,7 @@ if [[ -f "$STARSHIP_SRC" ]]; then
             print "muted = \"" mut "\""
             print "dark = \"" drk "\""
             print "on_accent = \"" bas "\""
+            print "accent_pale = \"" pale "\""
             skip=1; next
         }
         /# MATUGEN:END/ { skip=0 }
@@ -174,6 +183,7 @@ return {
   muted = "${muted}",
   surface = "${surface}",
   on_accent = "${on_accent}",
+  accent_pale = "${accent_pale}",
   error = "${error}",
 }
 LUA
@@ -224,6 +234,7 @@ mv "$HOME/.cache/matugen/lazygit-config.yml.tmp" "$HOME/.cache/matugen/lazygit-c
 YAZI_TPL="$HOME/.config/yazi/theme-template.toml"
 if [[ -f "$YAZI_TPL" ]]; then
     sed -e "s/@@SECONDARY@@/${secondary}/g" \
+        -e "s/@@ACCENT_PALE@@/${accent_pale}/g" \
         -e "s/@@TRIAD@@/${triad}/g" \
         -e "s/@@TERTIARY@@/${tertiary}/g" \
         -e "s/@@COMPLEMENT@@/${complement}/g" \
