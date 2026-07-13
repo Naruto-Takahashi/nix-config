@@ -15,6 +15,11 @@ set -euo pipefail
 
 export PATH="$HOME/.nix-profile/bin:$PATH"
 
+# 多重起動ガード: 壁紙を素早く切り替えると run_after が並走し、
+# 古いパレットのプロセスが後から生成物を上書きして世代が混ざるため直列化する
+exec 9>"$HOME/.cache/matugen/.apply.lock"
+flock 9
+
 CACHE="$HOME/.cache/matugen/yasb-palette.css"
 
 # -------------------------------------------------------------------------
