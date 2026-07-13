@@ -51,6 +51,9 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NeoTreeDirectoryIcon", { fg = mc.secondary })
         hl(0, "NeoTreeDirectoryName", { fg = mc.secondary })
         hl(0, "NeoTreeRootName", { fg = mc.secondary, bold = true })
+        -- ファイル既定アイコン (devicons が拡張子別に色を持たない場合の色)
+        -- = statusline Normal の左端装飾と同じ accent_pale
+        hl(0, "NeoTreeFileIcon", { fg = accent_pale })
         hl(0, "NormalNC", no_bg)
         hl(0, "SignColumn", no_bg)
         -- lualine の透過セクションは StatusLine にフォールバックするため、ここも透過必須
