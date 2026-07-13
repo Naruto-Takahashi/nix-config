@@ -59,6 +59,13 @@
           extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
         };
 
+        # Rocky Linux環境用プロファイル（CLI部分のみ、GUI/WM除外）
+        "nalt-rocky" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./hosts/rocky ];
+          extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
+        };
+
         # 互換性維持のためのデフォルトプロファイル（WSL設定を参照）
         "nalt" = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
