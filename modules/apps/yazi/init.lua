@@ -27,7 +27,18 @@ end)
 -- ステータスバー: Starship プロンプト / nvim lualine と同じデザイン．
 --   モードセグメント = matugen accent 系 + Bold，鋭角 powerline 矢印で接続
 do
-  local pal = {}
+  -- lua/matugen.lua と同じ kanagawa-dragon フォールバック配色．
+  -- matugen cache (壁紙由来) があればそちらで上書きする．
+  local pal = {
+    accent = "#e6c384",
+    tertiary = "#7aa89f",
+    secondary = "#a292a3",
+    complement = "#7fb4ca",
+    text = "#c5c9c5",
+    muted = "#a6a69c",
+    surface = "#181616",
+    on_accent = "#000000",
+  }
   local fh = io.open((os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua", "r")
   if fh then
     local s = fh:read("*a")
@@ -56,7 +67,7 @@ do
     end)
 
     -- Starship の左端と同じ装飾ブロックをモードセグメントの前に追加。
-    -- Normal は secondary、他モードはモード色を白側に寄せたパステル版
+    -- どのモードでも、モード色を白側に寄せたパステル版を使う (装飾は控えめに)
     local function blend(h1, h2, t)
       local r1, g1, b1 = tonumber(h1:sub(2, 3), 16), tonumber(h1:sub(4, 5), 16), tonumber(h1:sub(6, 7), 16)
       local r2, g2, b2 = tonumber(h2:sub(2, 3), 16), tonumber(h2:sub(4, 5), 16), tonumber(h2:sub(6, 7), 16)
@@ -69,15 +80,12 @@ do
       Status:children_add(function()
         local mode = tostring(cx.active.mode)
         local mode_bg = pal.accent
-        -- secondary が無いパレット(旧テンプレート)でも壊れないようフォールバック
-        local block_bg = pal.secondary or pal.tertiary
         if mode == "select" then
           mode_bg = pal.complement or pal.tertiary
-          block_bg = blend(mode_bg, "#ffffff", 0.4)
         elseif mode == "unset" then
           mode_bg = pal.muted
-          block_bg = blend(mode_bg, "#ffffff", 0.4)
         end
+        local block_bg = blend(mode_bg, "#ffffff", 0.4)
         return ui.Line {
           ui.Span(" "):style(ui.Style():bg(block_bg)),
           ui.Span("\u{e0b0}"):style(ui.Style():fg(block_bg):bg(mode_bg)),

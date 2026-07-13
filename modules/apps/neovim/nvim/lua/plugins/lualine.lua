@@ -3,11 +3,12 @@ return {
   dependencies = { "nvim-tree/nvim-web-devicons" },
   config = function()
     -- Matugen 由来のパレット (matugen-apply が壁紙変更のたびに生成する)
-    -- が読めればステータスバーへ適用し、無ければ従来の "auto" にフォールバック
+    -- が読めればステータスバーへ適用し、無ければ lua/matugen.lua の
+    -- kanagawa-dragon フォールバック配色を使う (常にカスタムテーマを適用)
     local theme = "auto"
     local sections = nil
-    local ok, c = pcall(dofile, vim.fn.expand("~/.cache/matugen/colors.lua"))
-    if ok and type(c) == "table" then
+    do
+      local c = require("matugen")
       local complement = c.complement or c.muted
       local replace = "#c4746e"
 
@@ -48,8 +49,9 @@ return {
         return blend(color, "#ffffff", 0.4)
       end
 
-      -- 左端の装飾ブロック: Normal は secondary、他モードはモード色のパステル版
+      -- 左端の装飾ブロック: どのモードでもモード色のパステル版 (装飾は控えめに)
       local mode_colors = {
+        n = c.accent,
         i = c.tertiary,
         v = complement, V = complement, ["\22"] = complement,
         s = complement, S = complement,
@@ -57,10 +59,7 @@ return {
       }
       local function lead_color()
         local m = vim.fn.mode():sub(1, 1)
-        local mcol = mode_colors[m]
-        if not mcol then
-          return { fg = c.on_accent, bg = c.secondary, gui = "bold" }
-        end
+        local mcol = mode_colors[m] or c.accent
         return { fg = c.on_accent, bg = pale(mcol), gui = "bold" }
       end
 
