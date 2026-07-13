@@ -35,9 +35,8 @@ end
 
 -- yazi 26+ ではコンポーネントのrender差し替えが効かないため，
 -- テーマ（th.mgr.cwd）を直接上書きしてヘッダーのパス色を変更します．
--- (フレーバーの theme-template.toml でも cwd = error ロールなので合わせる)
 pcall(function()
-  th.mgr.cwd = ui.Style():fg(pal.error)
+  th.mgr.cwd = ui.Style():fg(pal.accent)
 end)
 
 -- ステータスバー: Starship プロンプト / nvim lualine と同じデザイン．
