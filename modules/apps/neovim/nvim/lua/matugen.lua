@@ -14,8 +14,8 @@ local M = {
   muted = "#a6a69c",      -- fujiGray
   surface = "#181616",    -- sumiInk3
   on_accent = "#000000",
-  error = "#c4746e",
-  accent_pale = "#f0dbb5",      -- autumnRed
+  error = "#c4746e",      -- autumnRed
+  accent_pale = "#f0dbb5", -- accent を白側に40%寄せた装飾色
 }
 
 local f = (os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua"
