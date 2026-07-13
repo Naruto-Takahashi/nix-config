@@ -92,7 +92,7 @@ rules = [
   # バイナリ・その他 (Fallback)
   { url = "**.exe", fg = "@@TERTIARY@@" },
   { url = "**.out", fg = "@@TERTIARY@@" },
-  { url = "**/", fg = "@@ACCENT_PALE@@" }, # ディレクトリ (Neo-tree と同じ accent_pale)
+  { url = "**/", fg = "@@SECONDARY@@" }, # ディレクトリ (matugen secondary)
   { url = "*", fg = "#c5c9c5" }   # その他
 ]
 
@@ -101,14 +101,14 @@ dark = "kanagawa-dragon"
 
 [icon]
 prepend_dirs = [
-  { name = "Desktop", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Downloads", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Documents", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Pictures", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Music", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Videos", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Public", text = "󰉋", fg = "@@ACCENT_PALE@@" },
-  { name = "Templates", text = "󰉋", fg = "@@ACCENT_PALE@@" }
+  { name = "Desktop", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Downloads", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Documents", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Pictures", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Music", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Videos", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Public", text = "󰉋", fg = "@@SECONDARY@@" },
+  { name = "Templates", text = "󰉋", fg = "@@SECONDARY@@" }
 ]
 prepend_files = [
   { name = "Cargo.toml", text = "", fg = "@@TERTIARY@@" },
@@ -205,6 +205,6 @@ prepend_globs = [
   { url = "**.xz", text = "", fg = "@@ERROR@@" }
 ]
 prepend_conds = [
-  { if = "dir", text = "󰉋", fg = "@@ACCENT_PALE@@" },
+  { if = "dir", text = "󰉋", fg = "@@SECONDARY@@" },
   { if = "link", text = "", fg = "#7fb4ca" }
 ]

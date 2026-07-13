@@ -49,8 +49,8 @@ else
 fi
 """
 when = "true"
-style = "fg:on_accent bg:accent_pale bold"
-format = "[$output]($style)[](fg:accent_pale bg:accent)"
+style = "fg:on_accent bg:secondary bold"
+format = "[$output]($style)[](fg:secondary bg:accent)"
 
 [username]
 disabled = true

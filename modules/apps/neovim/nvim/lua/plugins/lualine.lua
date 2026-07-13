@@ -33,7 +33,7 @@ return {
       end
       theme = {
         normal = mode_theme(c.accent),
-        insert = mode_theme(c.triad),
+        insert = mode_theme(c.tertiary),
         visual = mode_theme(complement),
         replace = mode_theme(replace),
         command = mode_theme(c.accent),
@@ -49,17 +49,19 @@ return {
         return blend(color, "#ffffff", 0.4)
       end
 
-      -- 左端の装飾ブロック: どのモードでもモード色のパステル版 (装飾は控えめに)
+      -- 左端の装飾ブロック: Normal は secondary、他モードはモード色のパステル版
       local mode_colors = {
-        n = c.accent,
-        i = c.triad,
+        i = c.tertiary,
         v = complement, V = complement, ["\22"] = complement,
         s = complement, S = complement,
         R = replace,
       }
       local function lead_color()
         local m = vim.fn.mode():sub(1, 1)
-        local mcol = mode_colors[m] or c.accent
+        local mcol = mode_colors[m]
+        if not mcol then
+          return { fg = c.on_accent, bg = c.secondary, gui = "bold" }
+        end
         return { fg = c.on_accent, bg = pale(mcol), gui = "bold" }
       end
 

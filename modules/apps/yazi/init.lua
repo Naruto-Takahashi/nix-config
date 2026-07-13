@@ -59,21 +59,23 @@ if pal.accent and pal.on_accent and pal.surface then
     -- パーセンテージ (progress) セグメントもフレーバーの青からパレット色へ
     th.status.progress_label  = ui.Style():fg(pal.text):bold()
     th.status.progress_normal = ui.Style():fg(pal.accent):bg(pal.surface)
-    th.status.progress_error  = ui.Style():fg(pal.error):bg(pal.surface)
+    th.status.progress_error  = ui.Style():fg("#c4746e"):bg(pal.surface)
   end)
 
   -- Starship の左端と同じ装飾ブロックをモードセグメントの前に追加。
-  -- どのモードでも、モード色を白側に寄せたパステル版を使う (装飾は控えめに)
+  -- Normal は secondary、他モードはモード色を白側に寄せたパステル版
   pcall(function()
     Status:children_add(function()
       local mode = tostring(cx.active.mode)
       local mode_bg = pal.accent
+      local block_bg = pal.secondary
       if mode == "select" then
         mode_bg = pal.complement or pal.tertiary
+        block_bg = blend(mode_bg, "#ffffff", 0.4)
       elseif mode == "unset" then
         mode_bg = pal.muted
+        block_bg = blend(mode_bg, "#ffffff", 0.4)
       end
-      local block_bg = blend(mode_bg, "#ffffff", 0.4)
       return ui.Line {
         ui.Span(" "):style(ui.Style():bg(block_bg)),
         ui.Span("\u{e0b0}"):style(ui.Style():fg(block_bg):bg(mode_bg)),
