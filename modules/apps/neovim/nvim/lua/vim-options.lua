@@ -47,13 +47,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NeoTreeFloatNormal", no_bg)
         hl(0, "NeoTreeTitleBar", no_bg)
         hl(0, "NeoTreePreview", no_bg)
-        -- フォルダのアイコンと名前は matugen の secondary (2番めの色)
-        hl(0, "NeoTreeDirectoryIcon", { fg = mc.secondary })
-        hl(0, "NeoTreeDirectoryName", { fg = mc.secondary })
-        hl(0, "NeoTreeRootName", { fg = mc.secondary, bold = true })
-        -- ファイル既定アイコン (devicons が拡張子別に色を持たない場合の色)
-        -- = statusline Normal の左端装飾と同じ accent_pale
-        hl(0, "NeoTreeFileIcon", { fg = accent_pale })
+        -- フォルダのアイコンと名前 = statusline Normal の左端装飾と同じ accent_pale
+        hl(0, "NeoTreeDirectoryIcon", { fg = accent_pale })
+        hl(0, "NeoTreeDirectoryName", { fg = accent_pale })
+        hl(0, "NeoTreeRootName", { fg = accent_pale, bold = true })
+        -- ファイルアイコンは devicons の拡張子別配色 (matugen 由来の色分け) をそのまま使う
         hl(0, "NormalNC", no_bg)
         hl(0, "SignColumn", no_bg)
         -- lualine の透過セクションは StatusLine にフォールバックするため、ここも透過必須
