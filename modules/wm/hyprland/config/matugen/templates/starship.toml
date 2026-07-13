@@ -53,8 +53,8 @@ else
 fi
 """
 when = "true"
-style = "fg:on_accent bg:secondary bold"
-format = "[$output]($style)[](fg:secondary bg:accent)"
+style = "fg:on_accent bg:accent_pale bold"
+format = "[$output]($style)[](fg:accent_pale bg:accent)"
 
 [username]
 disabled = true
@@ -112,6 +112,7 @@ vicmd_symbol = "[❯](bold #8e8e8e)"
 # MATUGEN:START
 [palettes.matugen]
 accent = "{{colors.primary.default.hex}}"
+accent_pale = "{{colors.primary_container.default.hex}}"
 tertiary = "{{colors.tertiary.default.hex}}"
 secondary = "{{colors.secondary.default.hex}}"
 muted = "{{colors.on_surface_variant.default.hex}}"
