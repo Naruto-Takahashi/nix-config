@@ -25,23 +25,19 @@ disabled = true
 command = """
 if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
   if [ -f /etc/os-release ]; then
-    if grep -qi nixos /etc/os-release; then
-      echo "⠀⠀"
-    elif grep -qi ubuntu /etc/os-release; then
-      echo "⠀⠀"
-    elif grep -qi debian /etc/os-release; then
-      echo "⠀⠀"
-    elif grep -qi alpine /etc/os-release; then
-      echo "⠀⠀"
-    elif grep -qi arch /etc/os-release; then
-      echo "⠀⠀"
-    elif grep -qi fedora /etc/os-release; then
-      echo "⠀⠀"
-    elif grep -qi gentoo /etc/os-release; then
-      echo "⠀⠀"
-    else
-      echo "⠀⠀"
-    fi
+    # ID_LIKE 等の部分一致(例: RockyのID_LIKEにfedoraを含む)による誤判定を避けるため、
+    # ID= 行だけを見て判定する。一致しないディストリは汎用Linuxアイコンにフォールバック。
+    os_id=$(. /etc/os-release 2>/dev/null && echo "$ID")
+    case "$os_id" in
+      nixos)  echo "⠀⠀" ;;
+      ubuntu) echo "⠀⠀" ;;
+      debian) echo "⠀⠀" ;;
+      alpine) echo "⠀⠀" ;;
+      arch)   echo "⠀⠀" ;;
+      fedora) echo "⠀⠀" ;;
+      gentoo) echo "⠀⠀" ;;
+      *)      echo "⠀⠀" ;;
+    esac
   elif [ "$(uname)" = "Darwin" ]; then
     echo "⠀⠀"
   else

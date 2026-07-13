@@ -33,7 +33,7 @@ return {
       end
       theme = {
         normal = mode_theme(c.accent),
-        insert = mode_theme(c.tertiary),
+        insert = mode_theme(c.triad),
         visual = mode_theme(complement),
         replace = mode_theme(replace),
         command = mode_theme(c.accent),
@@ -52,7 +52,7 @@ return {
       -- 左端の装飾ブロック: どのモードでもモード色のパステル版 (装飾は控えめに)
       local mode_colors = {
         n = c.accent,
-        i = c.tertiary,
+        i = c.triad,
         v = complement, V = complement, ["\22"] = complement,
         s = complement, S = complement,
         R = replace,
