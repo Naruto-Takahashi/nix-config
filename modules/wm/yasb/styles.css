@@ -213,14 +213,15 @@
     outline: none;
 }
 .calendar .calendar-table {
-    selection-background-color: transparent;
-    selection-color: var(--highlight);
+    selection-background-color: var(--highlight);
+    selection-color: var(--base);
 }
 .calendar .calendar-table::item:selected,
 .calendar .calendar-table::item:focus {
-    background-color: transparent;
-    color: var(--highlight);
+    background-color: var(--highlight);
+    color: var(--base);
     border: none;
+    border-radius: 8px;
     outline: none;
 }
 .calendar .day-label {
