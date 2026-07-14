@@ -61,4 +61,9 @@ in
 
   # ビルド済みのTreesitterパーサーをNeovimのランタイムパスにシンボリックリンクします．
   xdg.dataFile."nvim/site/parser".source = "${treesitter-parsers}/parser";
+
+  # nvim-treesitter (main) は highlights 等のクエリを :TSInstall 時にしか配置しないため，
+  # Nix供給パーサーと同一スナップショットのクエリを runtimepath に配置します．
+  # (これが無いと Neovim 同梱クエリの無い言語 (python, rust 等) が無色になる)
+  xdg.dataFile."nvim/site/queries".source = "${pkgs.vimPlugins.nvim-treesitter}/runtime/queries";
 }
