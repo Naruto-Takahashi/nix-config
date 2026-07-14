@@ -46,15 +46,15 @@ HandleDisplayChange(wParam, lParam) {
 !b::Run, komorebic flip-layout horizontal-and-vertical, , Hide
 !r::Run, komorebic retile, , Hide
 ; モニタ再接続で表示が崩れたとき等に手動で復旧 (自動復旧と同じ処理)
-!+r::Gosub, ReapplyDisplayConfig
+!+d::Gosub, ReapplyDisplayConfig
 
 !+q::Run, komorebic close, , Hide
 !+w::Run, komorebic close, , Hide
 
 ; --- 追跡から外れたウィンドウの手動復旧 ---
 ; komorebi は WinEvent 通知の取りこぼしで稀にウィンドウの追跡を失うことがある。
-; その場でフォーカス中のウィンドウを再登録できるようにする。
-!+m::Run, komorebic manage, , Hide
+; その場でフォーカス中のウィンドウを再登録できるようにする (R = Recover)。
+!+r::Run, komorebic manage, , Hide
 
 ; --- ワークスペース (巡回) ---
 !a::Run, komorebic cycle-workspace previous, , Hide
