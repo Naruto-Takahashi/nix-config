@@ -25,7 +25,8 @@ setopt auto_cd
 # 履歴保存オプションの追加拡張を設定します．
 setopt EXTENDED_HISTORY
 setopt HIST_SAVE_NO_DUPS
-setopt HIST_REDUCE_BLANKS
+# HIST_REDUCE_BLANKS は行継続の "\" による改行も余分な空白とみなして
+# 1行に詰めてしまい、履歴を遡ったときに複数行コマンドが潰れる原因になるため無効化
 setopt HIST_FIND_NO_DUPS
 setopt HIST_NO_STORE
 
