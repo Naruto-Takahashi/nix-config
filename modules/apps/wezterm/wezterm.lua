@@ -88,7 +88,7 @@ config.colors = {
     inactive_tab_edge = "none",
   },
   cursor_bg = colors.tertiary,
-  cursor_fg = 'white',
+  cursor_fg = colors.surface,
   cursor_border = colors.tertiary,
 }
 
