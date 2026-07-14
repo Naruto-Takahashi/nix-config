@@ -103,7 +103,7 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         -- (他プラグインが同じ ColorScheme イベントで後からデフォルト色を
         --  再適用することがあるため，イベントループの最後に回して確実に勝たせる)
         vim.schedule(function()
-            hl(0, "MatchParen", { bg = mc.tertiary, fg = mc.surface, bold = true })
+            hl(0, "MatchParen", { bg = mc.tertiary, fg = "white", bold = true })
         end)
     end,
 })
