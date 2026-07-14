@@ -99,11 +99,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "SnacksDashboardFooter", { fg = mc.secondary })
         hl(0, "SnacksDashboardSpecial", { fg = mc.secondary })
 
-        -- 対応する括弧のハイライトを matugen の accent 色に統一
+        -- 対応する括弧を WezTerm のカーソル色 (matugen の tertiary) で塗りつぶす
         -- (他プラグインが同じ ColorScheme イベントで後からデフォルト色を
         --  再適用することがあるため，イベントループの最後に回して確実に勝たせる)
         vim.schedule(function()
-            hl(0, "MatchParen", { fg = mc.accent, bold = true, underline = true })
+            hl(0, "MatchParen", { bg = mc.tertiary, fg = mc.surface, bold = true })
         end)
     end,
 })
