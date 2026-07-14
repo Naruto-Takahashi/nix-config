@@ -16,5 +16,96 @@
         "matching_strategy": "Equals"
       }
     ]
+  },
+  "Microsoft Word": {
+    "layered": [
+      {
+        "kind": "Exe",
+        "id": "WINWORD.EXE",
+        "matching_strategy": "Equals"
+      }
+    ],
+    "ignore": [
+      {
+        "kind": "Class",
+        "id": "_WwB",
+        "matching_strategy": "Equals"
+      },
+      {
+        "kind": "Class",
+        "id": "MsoSplash",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
+  "Microsoft Excel": {
+    "layered": [
+      {
+        "kind": "Exe",
+        "id": "EXCEL.EXE",
+        "matching_strategy": "Equals"
+      }
+    ],
+    "ignore": [
+      {
+        "kind": "Class",
+        "id": "_WwB",
+        "matching_strategy": "Equals"
+      },
+      {
+        "kind": "Class",
+        "id": "MsoSplash",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
+  "Microsoft PowerPoint": {
+    "layered": [
+      {
+        "kind": "Exe",
+        "id": "POWERPNT.EXE",
+        "matching_strategy": "Equals"
+      }
+    ],
+    "ignore": [
+      {
+        "kind": "Class",
+        "id": "_WwB",
+        "matching_strategy": "Equals"
+      },
+      {
+        "kind": "Class",
+        "id": "MsoSplash",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
+  "Microsoft Outlook": {
+    "tray_and_multi_window": [
+      {
+        "kind": "Exe",
+        "id": "OUTLOOK.EXE",
+        "matching_strategy": "Equals"
+      }
+    ],
+    "layered": [
+      {
+        "kind": "Exe",
+        "id": "OUTLOOK.EXE",
+        "matching_strategy": "Equals"
+      }
+    ],
+    "ignore": [
+      {
+        "kind": "Class",
+        "id": "_WwB",
+        "matching_strategy": "Equals"
+      },
+      {
+        "kind": "Class",
+        "id": "MsoSplash",
+        "matching_strategy": "Equals"
+      }
+    ]
   }
 }
