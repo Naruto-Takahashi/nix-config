@@ -212,6 +212,10 @@
     border: none;
     outline: none;
 }
+.calendar .calendar-table {
+    selection-background-color: transparent;
+    selection-color: var(--highlight);
+}
 .calendar .calendar-table::item:selected,
 .calendar .calendar-table::item:focus {
     background-color: transparent;
@@ -245,7 +249,7 @@
 }
 /* ===== ツールチップ (音量・壁紙などのホバー説明) ===== */
 .tooltip {
-    background-color: var(--island-inner);
+    background-color: var(--mantle);
     color: var(--text);
     border: 1px solid var(--overlay0);
     border-radius: 6px;
