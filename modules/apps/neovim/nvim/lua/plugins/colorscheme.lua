@@ -55,9 +55,10 @@ local function hsl_to_rgb(h, s, l)
   return r + m, g + m, b + m
 end
 
-local function brighten(hex, sat_boost, light_boost)
+local function brighten(hex, sat_boost, light_boost, hue_shift)
   local r, g, b = hex_to_rgb(hex)
   local h, s, l = rgb_to_hsl(r, g, b)
+  h = (h + (hue_shift or 0)) % 360
   s = math.min(1, s * sat_boost)
   l = math.min(0.92, l * light_boost)
   local nr, ng, nb = hsl_to_rgb(h, s, l)
@@ -84,9 +85,16 @@ local dragon_accent_colors = {
   dragonYellow = "#c4b28a",
 }
 
+-- dragonBlue2 (関数名, h≈200°) と dragonViolet (キーワード, h≈222°) は
+-- 色相差がわずか22度しかなく，彩度・明度を底上げしただけでは見分けづらい．
+-- dragonViolet だけ色相を紫寄り (+45°) に回し，はっきり離す．
+local hue_shifts = {
+  dragonViolet = 45,
+}
+
 local brightened_palette = {}
 for key, hex in pairs(dragon_accent_colors) do
-  brightened_palette[key] = brighten(hex, 1.32, 1.25)
+  brightened_palette[key] = brighten(hex, 1.32, 1.25, hue_shifts[key])
 end
 
 return {
