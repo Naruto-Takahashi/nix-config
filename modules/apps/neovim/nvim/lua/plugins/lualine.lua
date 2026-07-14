@@ -10,7 +10,7 @@ return {
     do
       local c = require("matugen")
       local complement = c.complement or c.muted
-      local replace = "#c4746e"
+      local replace = c.error
 
       -- 2色を t:0..1 で混ぜる (「薄め色」計算用)
       local function blend(h1, h2, t)

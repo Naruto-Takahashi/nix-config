@@ -59,7 +59,7 @@ if pal.accent and pal.on_accent and pal.surface then
     -- パーセンテージ (progress) セグメントもフレーバーの青からパレット色へ
     th.status.progress_label  = ui.Style():fg(pal.text):bold()
     th.status.progress_normal = ui.Style():fg(pal.accent):bg(pal.surface)
-    th.status.progress_error  = ui.Style():fg("#c4746e"):bg(pal.surface)
+    th.status.progress_error  = ui.Style():fg(pal.error):bg(pal.surface)
   end)
 
   -- Starship の左端と同じ装飾ブロックをモードセグメントの前に追加。
