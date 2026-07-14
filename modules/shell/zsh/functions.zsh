@@ -123,11 +123,14 @@ bindkey -M vicmd '^g' ghq-fzf
 # 6. zsh-syntax-highlighting用のカスタムカラースタイルを設定します．
 # Kanagawa Dragon 系の落ち着いた色に合わせる（ネオンな green/red,bold を回避）
 typeset -A ZSH_HIGHLIGHT_STYLES
-ZSH_HIGHLIGHT_STYLES[command]='fg=#8a9a7b,bold'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=#8a9a7b,bold'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=#8a9a7b,bold'
-ZSH_HIGHLIGHT_STYLES[function]='fg=#8a9a7b,bold'
-ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#c4746e,bold'
+ZSH_HIGHLIGHT_STYLES[command]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[function]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[precommand]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[arg0]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=#98bb6c,bold'
+ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#e46876,bold'
 
 # 7. Windowsとの設定同期を行います（WSL環境用）．
 function sync-win() {
