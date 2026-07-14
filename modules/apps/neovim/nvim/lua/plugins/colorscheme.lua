@@ -94,7 +94,7 @@ local hue_shifts = {
 
 local brightened_palette = {}
 for key, hex in pairs(dragon_accent_colors) do
-  brightened_palette[key] = brighten(hex, 1.32, 1.25, hue_shifts[key])
+  brightened_palette[key] = brighten(hex, 1.4, 1.3, hue_shifts[key])
 end
 
 return {
