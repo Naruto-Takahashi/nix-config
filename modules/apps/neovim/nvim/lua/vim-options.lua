@@ -98,6 +98,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "SnacksDashboardIconRed", { fg = "#c4746e" })
         hl(0, "SnacksDashboardFooter", { fg = mc.secondary })
         hl(0, "SnacksDashboardSpecial", { fg = mc.secondary })
+
+        -- 対応する括弧のハイライトを matugen の accent 色に統一
+        -- (他プラグインが同じ ColorScheme イベントで後からデフォルト色を
+        --  再適用することがあるため，イベントループの最後に回して確実に勝たせる)
+        vim.schedule(function()
+            hl(0, "MatchParen", { fg = mc.accent, bold = true, underline = true })
+        end)
     end,
 })
 
