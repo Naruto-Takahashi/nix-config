@@ -86,7 +86,7 @@ local dragon_accent_colors = {
 
 local brightened_palette = {}
 for key, hex in pairs(dragon_accent_colors) do
-  brightened_palette[key] = brighten(hex, 1.22, 1.18)
+  brightened_palette[key] = brighten(hex, 1.32, 1.25)
 end
 
 return {
