@@ -7,10 +7,14 @@ local colors = {
   accent = "#ffc20d",
   tertiary = "#8ea4a2",
   secondary = "#d08770",
+  complement = "#2b59e1",
+  triad = "#2be1b3",
   text = "#c5c9c5",
   muted = "#a0a9cb",
   surface = "#333333",
   on_accent = "#ffffff",
+  error = "#c4746e",
+  accent_pale = "#ffda6e",
 }
 local ok, m = pcall(require, "matugen-colors")
 if ok and type(m) == "table" then

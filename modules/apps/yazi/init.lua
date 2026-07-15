@@ -8,11 +8,13 @@ local pal = {
   tertiary = "#7aa89f",
   secondary = "#a292a3",
   complement = "#7fb4ca",
+  triad = "#8a9a7b",
   text = "#c5c9c5",
   muted = "#a6a69c",
   surface = "#181616",
   on_accent = "#000000",
   error = "#c4746e",
+  accent_pale = "#f0dbb5",
 }
 do
   local fh = io.open((os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua", "r")
