@@ -1,10 +1,25 @@
-# 🌌 nix-config
+<div align="center">
+
+![header](https://capsule-render.vercel.app/api?type=waving&height=210&color=0:181616,35:2d4f67,65:7aa89f,100:e6c384&text=nix-config&fontColor=c5c9c5&fontSize=64&fontAlignY=36&desc=Declarative%20environments%20for%20NixOS%20%C2%B7%20WSL2%20%C2%B7%20Ubuntu%20%C2%B7%20macOS&descColor=c5c9c5&descSize=16&descAlignY=58)
+
+[![CI](https://img.shields.io/github/actions/workflow/status/Naruto-Takahashi/nix-config/check.yml?branch=main&style=flat-square&logo=github-actions&logoColor=white&label=CI&labelColor=181616)](https://github.com/Naruto-Takahashi/nix-config/actions/workflows/check.yml)
+[![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=flat-square&logo=nixos&logoColor=white&labelColor=181616)](https://nixos.org)
+[![Flakes](https://img.shields.io/badge/Nix-Flakes-7aa89f?style=flat-square&logo=nixos&logoColor=white&labelColor=181616)](https://nixos.wiki/wiki/Flakes)
+[![Home Manager](https://img.shields.io/badge/Home-Manager-e6c384?style=flat-square&logo=nixos&logoColor=white&labelColor=181616)](https://github.com/nix-community/home-manager)
+[![nix-darwin](https://img.shields.io/badge/nix-darwin-a292a3?style=flat-square&logo=apple&logoColor=white&labelColor=181616)](https://github.com/LnL7/nix-darwin)
+[![Last Commit](https://img.shields.io/github/last-commit/Naruto-Takahashi/nix-config?style=flat-square&logo=git&logoColor=white&labelColor=181616&color=7fb4ca)](https://github.com/Naruto-Takahashi/nix-config/commits/main)
+
+<br>
+
+[![Tech Stack](https://skillicons.dev/icons?i=nix,linux,ubuntu,windows,apple,neovim,lua,bash,py,git&theme=dark)](https://github.com/Naruto-Takahashi/nix-config)
+
+</div>
 
 **Nix Flakes** と **Home Manager** を使用して，NixOS，Linuxデスクトップ（Ubuntu），および WSL2 環境を宣言的に一元管理するための設定ファイル群（レシピ）です．
 
-OSレベルのシステム定義から，シェル環境，ウィンドウマネージャー，開発ツールまでを一元管理し，キーボード駆動の快適な開発環境を構築します．
+OSレベルのシステム定義から，シェル環境，ウィンドウマネージャー，開発ツールまでを一元管理し，キーボード駆動の快適な開発環境を構築します．すべての CLI/GUI が **Matugen** により壁紙から生成された配色で統一されます．
 
----
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
 
 ## 🗺️ 設定・キーマップ詳細
 
@@ -21,7 +36,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | **共通 (App)** | 📁 Yazi | [yazi.md](docs/yazi.md) | Matugen配色の透過ファイラー，シェル連携による移動同期． |
 | **NixOS ⇄ Windows** | 🖥️ Remote Desktop | [remote-desktop.md](docs/remote-desktop.md) | Tailscale + Sunshine/Moonlight による大学VPN不要の無人リモート接続． |
 
----
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
 
 ## 📂 ディレクトリ構造
 
@@ -43,7 +58,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 └── docs/                      # 各種仕様・キーマップ解説ドキュメント
 ```
 
----
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
 
 ## 🚀 セットアップとインストール手順 (移行ガイド)
 
@@ -168,7 +183,7 @@ M1 Mac などの macOS 環境でシステム設定およびアプリケーショ
    darwin-rebuild switch --flake .#nalt-mac
    ```
 
----
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
 
 <details>
 <summary>📖 <b>English Translation (Click to expand)</b></summary>
@@ -234,3 +249,9 @@ cd nix-config
 
 
 </details>
+
+<div align="center">
+
+![footer](https://capsule-render.vercel.app/api?type=waving&height=110&color=0:e6c384,35:7aa89f,65:2d4f67,100:181616&section=footer)
+
+</div>
