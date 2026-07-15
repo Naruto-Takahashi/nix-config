@@ -124,18 +124,13 @@
   ];
 
   # Kanata キーボードリマッパーのシステムサービス有効化
-  # config.kbd はプレースホルダー (cap-ctrl-action / wmmodifier-) を含むテンプレートなので、
-  # home-manager 側 (modules/desktop/kanata.nix) と同じ置換をしてから渡す必要がある。
+  # 置換ロジックは home-manager 側 (modules/desktop/kanata.nix) と共通の
+  # kanata-config.nix を使う。
   services.kanata = {
     enable = true;
     keyboards = {
       default = {
-        configFile = pkgs.writeText "kanata-config.kbd" (
-          builtins.replaceStrings
-            [ "cap-ctrl-action" "wmmodifier-" "eisu" "kana" ]
-            [ "lctl" "M-" "muhenkan" "henkan" ]
-            (builtins.readFile ../../modules/desktop/config.kbd)
-        );
+        configFile = pkgs.writeText "kanata-config.kbd" (import ../../modules/desktop/kanata-config.nix);
       };
     };
   };

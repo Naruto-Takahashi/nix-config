@@ -148,7 +148,7 @@ WM非依存のモジュール。`profiles/base.nix` から全ホスト共通で 
 
 ### 既知の残課題: starship.toml の二重管理
 
-`modules/shell/starship.toml`（全ホスト共通、kanagawa-dragon フォールバック値
+`modules/shell/starship/starship.toml`（全ホスト共通、kanagawa-dragon フォールバック値
 入り、`# MATUGEN:START`/`# MATUGEN:END` マーカー付き）と
 `modules/wm/hyprland/config/matugen/templates/starship.toml`（NixOS専用、
 `palettes.matugen` ブロックが `@@プレースホルダ@@` 版）は、末尾の
@@ -159,7 +159,7 @@ WM非依存のモジュール。`profiles/base.nix` から全ホスト共通で 
 これを直接使う。`modules/shell/zsh/functions.zsh` 参照)、後者は「壁紙変更の
 たびに上書きされる動的生成物」の入力テンプレート。`@@プレースホルダ@@` 化
 すると前者としての役割(フォールバック)が壊れるため、単純に1本化できない。
-WSL 側もこのフォールバック版 (`modules/shell/starship.toml`) 自体を
+WSL 側もこのフォールバック版 (`modules/shell/starship/starship.toml`) 自体を
 awk でマーカー間だけ差し替えて動的生成物にしており、NixOS 側の
 `@@プレースホルダ@@` 版とは異なる方式のまま。
 

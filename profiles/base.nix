@@ -3,18 +3,29 @@
 # =========================================================================
 # wsl / mac / desktop / nixos の全ホストが import する共通セット。
 # ホスト固有のモジュール (WM や OS 依存アプリ) は各 hosts/*/ 側で追加する。
-{ ... }:
+{ config, ... }:
 
 {
+  # -----------------------------------------------------------------------
+  # 各モジュールで利用するグローバル引数
+  # -----------------------------------------------------------------------
+  # mkOutOfStoreSymlink で参照するこのリポジトリのチェックアウト位置。
+  # リポジトリをこのパス以外に clone すると、symlink 配置される設定
+  # (starship / yasb / komorebi / vivaldi / matugen-common など) が
+  # すべて壊れるので注意。
+  _module.args = {
+    dotfilesPath = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/nix-config";
+  };
+
   imports = [
     ../modules/shell/zsh
-    ../modules/shell/starship.nix
-    ../modules/shell/direnv.nix
-    ../modules/shell/fastfetch.nix
+    ../modules/shell/starship
+    ../modules/shell/direnv
+    ../modules/shell/fastfetch
     ../modules/apps/wezterm
     ../modules/apps/neovim
     ../modules/apps/yazi
-    ../modules/apps/lazygit.nix
+    ../modules/apps/lazygit
     ../modules/theming/matugen
   ];
 }

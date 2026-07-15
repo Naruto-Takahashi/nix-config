@@ -14,7 +14,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | :--- | :--- | :--- | :--- |
 | **NixOS** | 🗔 Hyprland | [hyprland.md](docs/hyprland.md) | Waylandタイル操作，Matugen動的配色，Waybar連携． |
 | **Windows / WSL2** | 🗔 komorebi + YASB | [matugen-palette.md](docs/matugen-palette.md) | Windows側タイルウィンドウ操作，YASBステータスバー，Matugen動的配色連携． |
-| **macOS** | 🗔 AeroSpace | [aerospace.nix](modules/apps/aerospace.nix) | macOS用タイル操作，`Cmd+Ctrl`二重修飾キー，JankyBorders枠線表示． |
+| **macOS** | 🗔 AeroSpace | [aerospace.nix](modules/apps/aerospace/default.nix) | macOS用タイル操作，`Cmd+Ctrl`二重修飾キー，JankyBorders枠線表示． |
 | **NixOS / Desktop** | ⌨️ Kanata | [kanata.md](docs/kanata.md) | システム級キーマップ（SandS Vim風移動，Mac風IME切り替え）． |
 | **共通 (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 85%半透明適用，Matugen配色タブ，Leaderキー（`Ctrl+Space`）管理． |
 | **共通 (App)** | 📝 Neovim | [neovim.md](docs/neovim.md) | Lazy.nvimによる構成，高度なカスタムマクロとプラグイン群． |
@@ -182,7 +182,7 @@ Declarative configurations for NixOS, Ubuntu (Desktop), WSL2, and macOS managed 
 | :--- | :--- | :--- | :--- |
 | **NixOS** | 🗔 Hyprland | [hyprland.md](docs/hyprland.md) | Wayland tiling, Matugen color scheme, Waybar. |
 | **Windows / WSL2** | 🗔 komorebi + YASB | [matugen-palette.md](docs/matugen-palette.md) | Windows-side tiling WM, YASB status bar, Matugen dynamic theming. |
-| **macOS** | 🗔 AeroSpace | [aerospace.nix](modules/apps/aerospace.nix) | macOS tiling, `Cmd+Ctrl` modifier, JankyBorders highlight. |
+| **macOS** | 🗔 AeroSpace | [aerospace.nix](modules/apps/aerospace/default.nix) | macOS tiling, `Cmd+Ctrl` modifier, JankyBorders highlight. |
 | **NixOS / Desktop** | ⌨️ Kanata | [kanata.md](docs/kanata.md) | System-level remap (SandS navigation, macOS-like IME). |
 | **Common (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 75% transparent window, dynamic tab parsing, Leader key. |
 | **Common (App)** | 📝 Neovim | [neovim.md](docs/neovim.md) | Custom config built with Lazy.nvim, optimized Vim macros. |

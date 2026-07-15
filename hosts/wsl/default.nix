@@ -22,13 +22,6 @@
   home.homeDirectory = "/home/nalt";
   home.stateVersion  = "25.11";
 
-  # -----------------------------------------------------------------------
-  # 各モジュールで利用するグローバル引数
-  # -----------------------------------------------------------------------
-  _module.args = {
-    dotfilesPath = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/nix-config";
-  };
-
   # Home Manager 自体の管理を有効化
   programs.home-manager.enable = true;
 

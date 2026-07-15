@@ -15,7 +15,7 @@
   # matugen-applyがmatugenの配色を流し込んだ版を ~/.cache/matugen/starship.toml
   # に生成し，存在すればzshがSTARSHIP_CONFIGでそちらを優先します．
   xdg.configFile."starship.toml" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/shell/starship.toml";
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/shell/starship/starship.toml";
     force = true;
   };
 }

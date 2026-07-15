@@ -4,7 +4,7 @@
 { config, pkgs, ... }:
 
 {
-  # programs.direnv は modules/shell/direnv.nix で定義されているため，ここでは定義しない．
+  # programs.direnv は modules/shell/direnv で定義されているため，ここでは定義しない．
 
   # --- ユーティリティツールの有効化 ---
   # fzf（ファジーファインダー）の有効化とZsh連携を設定します．
