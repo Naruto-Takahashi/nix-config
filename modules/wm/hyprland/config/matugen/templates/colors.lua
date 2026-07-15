@@ -7,4 +7,5 @@ return {
   muted = "{{colors.on_surface_variant.default.hex}}",
   surface = "{{colors.surface_container_high.default.hex}}",
   on_accent = "{{colors.surface.default.hex}}",
+  error = "{{colors.error.default.hex}}",
 }
