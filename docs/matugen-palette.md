@@ -22,10 +22,10 @@
 - 色相回転 (`complement` / `triad`) は HLS の H だけ回して計算する
   (彩度は accent の 0.75 倍に抑える)。明度は accent と同じなのでパレットに馴染む。
   `accent_pale` は RGB を白へ 40% 線形ブレンドする。
-  NixOS は `modules/theming/matugen/lib/derive-colors.py` に実装が集約されている
-  (WSL は現状 `matugen-apply.sh` 内に同じ式が独立実装として残っている。後述)。
+  実装は `modules/theming/matugen/lib/derive-colors.py` に集約されており、
+  NixOS (wppicker.sh) と WSL (matugen-apply.sh) の両方がこれを呼ぶ。
 - 各設定にはファイルが無い環境用のフォールバック値がハードコードされている
-  (`nvim/lua/matugen.lua`, wezterm.nix の colors テーブルなど)。
+  (`nvim/lua/matugen.lua`, `modules/apps/wezterm/wezterm.lua` の colors テーブルなど)。
 
 ## 用途の割り当て
 
@@ -71,14 +71,13 @@
         (7キー: accent/tertiary/secondary/text/muted/surface/on_accent + error)
         を組み立てて NixOS と共通の modules/theming/matugen/lib/ に渡す:
         - derive-colors.py  : complement/triad/accent_pale を追記 (11キーに)
-        - render-template.sh: lazygit-config.yml と yazi theme.toml を生成
+        - render-template.sh: starship.toml / lazygit-config.yml /
+                              yazi theme.toml を共通テンプレートから生成
      3. 残りは WSL/YASB 固有のまま展開する:
         - YASB styles.css   : MATUGEN マーカー間を差し替えて /mnt/c へ配置
         - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)
-        - starship          : palettes.matugen ブロックを awk で差し替え
-                              (~/.cache 用と、os_logo を除去した Windows 用の2種。
-                              starship.toml 自体の生成方式は NixOS と異なるため
-                              未統一、後述)
+        - starship (Windows): 生成済み ~/.cache/matugen/starship.toml から
+                              os_logo を除去した PowerShell 用変種を /mnt/c へ配置
         - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット (完成形をコピー)
         - fzf               : 設定ファイルを丸ごと生成
         - komorebi.json     : 枠色 (single/floating/monocle) を sed → reload
