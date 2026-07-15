@@ -4,6 +4,9 @@
 { config, pkgs, lib, ... }:
 
 let
+  # --- Obsidian Vault の場所 (WSL から見た Windows 側パス) ---
+  vaultPath = "/mnt/c/Users/tnaru/Obsidian/Vault";
+
   # --- 共通ルールプロンプトの定義 ---
   rulePrompt = ''
     あなたは私のAIアシスタントです．
@@ -50,7 +53,7 @@ let
     runtimeInputs = [ pkgs.gum pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
     excludeShellChecks = [ "SC2012" ];
     text = ''
-      VAULT_PATH="/mnt/c/Users/tnaru/Obsidian/Vault"
+      VAULT_PATH="${vaultPath}"
       RULE_PROMPT="${rulePrompt}"
 
       echo "=== Obsidian 外部脳連携 Antigravity CLI ==="
@@ -107,7 +110,7 @@ let
     runtimeInputs = [ pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
     excludeShellChecks = [ "SC2012" ];
     text = ''
-      VAULT_PATH="/mnt/c/Users/tnaru/Obsidian/Vault"
+      VAULT_PATH="${vaultPath}"
       RULE_PROMPT="${rulePrompt}"
 
       echo "=== Obsidian 外部脳連携 Gemini CLI ==="
@@ -180,7 +183,7 @@ in
   # ObsidianのVaultディレクトリを初期作成するフックです．
   home.activation = {
     createObsidianVault = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "/mnt/c/Users/tnaru/Obsidian/Vault"
+      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "${vaultPath}"
     '';
   };
 }

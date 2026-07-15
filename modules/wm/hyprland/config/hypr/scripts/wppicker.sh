@@ -30,7 +30,7 @@ if [[ -f "$COLORS_LUA" ]]; then
         "$HOME/.config/yazi/theme.toml" "$COLORS_LUA"
     "$LIB/render-template.sh" "$TPL/lazygit-config.yml" \
         "$HOME/.cache/matugen/lazygit-config.yml" "$COLORS_LUA"
-    "$LIB/render-template.sh" "$HOME/.config/matugen/templates/starship.toml" \
+    "$LIB/render-template.sh" "$TPL/starship.toml" \
         "$HOME/.cache/matugen/starship.toml" "$COLORS_LUA"
     # wezterm は colors.lua と同一内容 (11キー) をそのまま使う
     cp -f "$COLORS_LUA" "$HOME/.config/wezterm/matugen-colors.lua"

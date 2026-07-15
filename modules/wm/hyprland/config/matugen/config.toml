@@ -52,7 +52,7 @@ output_path = '~/.cache/matugen/colors.lua'
 # 出力できないため、colors.lua 生成後に wppicker.sh が
 # modules/theming/matugen/lib/ の共通スクリプトで後処理する。
 # テンプレート本体:
-#   - modules/wm/hyprland/config/matugen/templates/starship.toml
+#   - modules/theming/matugen/templates/starship.toml
 #     (palettes.matugen ブロックのみ @@プレースホルダ@@、他は静的)
 #   - wezterm は colors.lua をそのまま ~/.config/wezterm/matugen-colors.lua
 #     へコピーするだけ (別テンプレート不要)

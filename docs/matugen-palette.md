@@ -139,29 +139,30 @@ WM非依存のモジュール。`profiles/base.nix` から全ホスト共通で 
   が colors.lua と形式が違うため、抽出後に一時 colors.lua を組み立てて
   `derive-colors.py` に渡す一手間がある (NixOS は matugen が直接 colors.lua
   を生成するため不要)。lazygit/yazi の生成は両OSとも `render-template.sh`
-  経由で完全に同じ。starship は WSL 側だけ生成方式が違うため未統一のまま
-  残っている (次項)。
+  経由で完全に同じ。starship も共通テンプレート
+  `modules/theming/matugen/templates/starship.toml` を両OSが
+  `render-template.sh` でレンダリングする方式に統一済み (次項)。
 - 新しいアプリを同様の「色相回転＋テンプレート」で追従させたいときは、
   `modules/theming/matugen/templates/`（または既存アプリのテンプレート）
   にプレースホルダ版を用意し、`wppicker.sh` と `matugen-apply.sh` の両方
   から `render-template.sh` を1行呼べばよい。
 
-### 既知の残課題: starship.toml の二重管理
+### starship.toml の2ファイル構成 (フォールバック + テンプレート)
 
-`modules/shell/starship/starship.toml`（全ホスト共通、kanagawa-dragon フォールバック値
-入り、`# MATUGEN:START`/`# MATUGEN:END` マーカー付き）と
-`modules/wm/hyprland/config/matugen/templates/starship.toml`（NixOS専用、
-`palettes.matugen` ブロックが `@@プレースホルダ@@` 版）は、末尾の
-`palettes.matugen` ブロック以外は完全に同一内容の重複ファイル。
+starship には役割の異なる2ファイルがある:
 
-統合しなかった理由: 前者は「matugen 未対応環境でも壊れず動く静的フォールバック」
-の役割を兼ねており (`~/.cache/matugen/starship.toml` が無ければ zsh が
-これを直接使う。`modules/shell/zsh/functions.zsh` 参照)、後者は「壁紙変更の
-たびに上書きされる動的生成物」の入力テンプレート。`@@プレースホルダ@@` 化
-すると前者としての役割(フォールバック)が壊れるため、単純に1本化できない。
-WSL 側もこのフォールバック版 (`modules/shell/starship/starship.toml`) 自体を
-awk でマーカー間だけ差し替えて動的生成物にしており、NixOS 側の
-`@@プレースホルダ@@` 版とは異なる方式のまま。
+- `modules/shell/starship/starship.toml` — 全ホスト共通の**静的フォールバック**。
+  kanagawa-dragon のフォールバック値入りで、matugen 未実行環境でも壊れず動く
+  (`~/.cache/matugen/starship.toml` が無ければ zsh がこれを直接使う。
+  `modules/shell/zsh/functions.zsh` 参照)。
+- `modules/theming/matugen/templates/starship.toml` — 両OS共通の**生成テンプレート**。
+  `palettes.matugen` ブロックだけが `@@プレースホルダ@@` で、壁紙変更のたびに
+  `render-template.sh` が `~/.cache/matugen/starship.toml` を生成する
+  (NixOS は `wppicker.sh`、WSL は `matugen-apply.sh` から呼ぶ)。
+
+`@@プレースホルダ@@` 化するとフォールバックとして壊れるため、この2ファイルは
+統合できない。プロンプト構成 (`format` やセグメント定義) を変えるときは
+**両方を同じ内容に保つ**こと (差分は `palettes.matugen` ブロックのみ)。
 
 ### 2経路の違いまとめ
 
@@ -170,7 +171,7 @@ awk でマーカー間だけ差し替えて動的生成物にしており、NixO
 | matugen の役割 | palette.css を1枚生成するだけ | 全テンプレート生成 + post_hook |
 | パレット抽出 | palette.css の CSS変数から | matugen が colors.lua を直接生成 |
 | 色相回転・プレースホルダ後処理 (yazi/lazygit) | `modules/theming/matugen/lib/` (共通) | `modules/theming/matugen/lib/` (共通) |
-| starship 生成方式 | awk でマーカー間を差し替え (独自) | render-template.sh (@@プレースホルダ@@) |
+| starship 生成方式 | render-template.sh (共通テンプレート) | render-template.sh (共通テンプレート) |
 | 反映先が Windows | あり (/mnt/c へ配置 + sed) | なし |
 
 新しいアプリを追従させたいときは、Material role の参照だけで足りるなら

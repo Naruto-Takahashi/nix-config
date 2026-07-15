@@ -5,8 +5,12 @@ set -euo pipefail
 
 export PATH="$HOME/.nix-profile/bin:$PATH"
 
-WSL_DIR="/mnt/c/Users/tnaru/OneDrive/画像/wallpapers"
-WIN_DIR='C:\Users\tnaru\OneDrive\画像\wallpapers'
+# Windows 側ユーザープロファイル (WSL から見たパス)。動的解決に失敗したら従来値
+WIN_HOME="$(wslpath "$(cd /mnt/c && /mnt/c/Windows/System32/cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\r')" 2>/dev/null || true)"
+[[ -d "$WIN_HOME" ]] || WIN_HOME="/mnt/c/Users/tnaru"
+
+WSL_DIR="${WIN_HOME}/OneDrive/画像/wallpapers"
+WIN_DIR="$(wslpath -w "$WSL_DIR")"
 
 sel="$(find "$WSL_DIR" -maxdepth 1 -type f \
         \( -iname '*.png' -o -iname '*.jpg' -o -iname '*.jpeg' -o -iname '*.webp' -o -iname '*.bmp' \) \

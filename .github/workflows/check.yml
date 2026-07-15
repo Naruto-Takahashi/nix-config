@@ -1,0 +1,26 @@
+# 全構成が評価 (eval) できることを検証する。ビルドはしない。
+# importパス切れ・構文エラー・オプションのtypoをpush時点で検出するのが目的。
+name: check
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - name: nix flake check
+        run: nix flake check --no-build
+      - name: evaluate all homeConfigurations
+        run: |
+          nix eval '.#homeConfigurations."nalt".activationPackage.drvPath'
+          nix eval '.#homeConfigurations."nalt-wsl".activationPackage.drvPath'
+          # nalt-desktop は nixGL が builtins.currentTime を使うため --impure 必須
+          nix eval --impure '.#homeConfigurations."nalt-desktop".activationPackage.drvPath'
+          nix eval '.#homeConfigurations."nalt-mac".activationPackage.drvPath'
+      - name: evaluate nixosConfigurations
+        run: nix eval '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'

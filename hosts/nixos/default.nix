@@ -53,16 +53,16 @@
       layout = "us";
       options = "ctrl:nocaps"; # CapsLockをCtrlに変更 (お好みで)
     };
-    
-    # ディスプレイマネージャー & デスクトップ環境設定
-    displayManager.gdm.enable = true;
-    desktopManager.gnome = {
-      enable = true;
-      extraGSettingsOverrides = ''
-        [org.gnome.desktop.input-sources]
-        sources=[('xkb', 'us')]
-      '';
-    };
+  };
+
+  # ディスプレイマネージャー & デスクトップ環境設定
+  services.displayManager.gdm.enable = true;
+  services.desktopManager.gnome = {
+    enable = true;
+    extraGSettingsOverrides = ''
+      [org.gnome.desktop.input-sources]
+      sources=[('xkb', 'us')]
+    '';
   };
 
   # ユーザー `nalt` の定義

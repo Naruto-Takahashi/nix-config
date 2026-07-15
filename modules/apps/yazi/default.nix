@@ -9,6 +9,8 @@
   programs.yazi = {
     enable = true;
     enableZshIntegration = true;
+    # stateVersion < 26.05 の従来デフォルト "yy" を明示 (デフォルト変更警告の抑止)
+    shellWrapperName = "yy";
 
     settings = {
       mgr = {

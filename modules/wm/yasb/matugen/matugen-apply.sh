@@ -11,11 +11,15 @@
 #   2. 本スクリプトがそこからパレットを一度だけ抽出し、NixOS と共通の
 #      modules/theming/matugen/lib/ (derive-colors.py / render-template.sh)
 #      で派生色 (complement/triad/accent_pale) の計算とテンプレート
-#      レンダリング (lazygit/yazi) を行う
+#      レンダリング (starship/lazygit/yazi) を行う
 #   3. 各アプリ向けセクションが順に配色を展開する
 set -euo pipefail
 
 export PATH="$HOME/.nix-profile/bin:$PATH"
+
+# Windows 側ユーザープロファイル (WSL から見たパス)。動的解決に失敗したら従来値
+WIN_HOME="$(wslpath "$(cd /mnt/c && /mnt/c/Windows/System32/cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\r')" 2>/dev/null || true)"
+[[ -d "$WIN_HOME" ]] || WIN_HOME="/mnt/c/Users/tnaru"
 
 # 多重起動ガード: 壁紙を素早く切り替えると run_after が並走し、
 # 古いパレットのプロセスが後から生成物を上書きして世代が混ざるため直列化する
@@ -103,7 +107,7 @@ fi
 # 3. YASB styles.css (MATUGEN マーカー間をパレットに差し替えて Windows へ配置)
 # -------------------------------------------------------------------------
 SRC="$HOME/.config/yasb/styles.css"
-DEST="/mnt/c/Users/tnaru/.config/yasb/styles.css"
+DEST="${WIN_HOME}/.config/yasb/styles.css"
 if [[ -f "$CACHE" ]]; then
     awk -v pal="$CACHE" '
         /\/\* MATUGEN:START \*\// { print; while ((getline line < pal) > 0) print line; skip=1; next }
@@ -120,7 +124,7 @@ if [[ "$HAS_PALETTE" == 1 ]]; then
 # -------------------------------------------------------------------------
 # 4. cava (YASB config.yaml 内の波形色): tertiary 基調 + accent へのグラデーション
 # -------------------------------------------------------------------------
-cfg="/mnt/c/Users/tnaru/.config/yasb/config.yaml"
+cfg="${WIN_HOME}/.config/yasb/config.yaml"
 if [[ -f "$cfg" ]]; then
     # 先に旧 cava を殺しておく (sed 後の自動リロードが新色で再起動する。
     # sed 後に kill すると再起動済みの新 cava を殺してしまう)
@@ -138,48 +142,7 @@ if [[ -f "$cfg" ]]; then
 fi
 
 # -------------------------------------------------------------------------
-# 5. starship (palettes.matugen ブロックの差し替え + Windows 用変種)
-# -------------------------------------------------------------------------
-STARSHIP_SRC="$HOME/.config/starship.toml"
-STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
-if [[ -f "$STARSHIP_SRC" ]]; then
-    awk -v hl="$accent" -v ter="$tertiary" -v sec="$secondary" \
-        -v mut="$muted" -v drk="$surface" -v bas="$on_accent" -v pale="$accent_pale" '
-        /# MATUGEN:START/ {
-            print
-            print "[palettes.matugen]"
-            print "accent = \"" hl "\""
-            print "tertiary = \"" ter "\""
-            print "secondary = \"" sec "\""
-            print "muted = \"" mut "\""
-            print "dark = \"" drk "\""
-            print "on_accent = \"" bas "\""
-            print "accent_pale = \"" pale "\""
-            skip=1; next
-        }
-        /# MATUGEN:END/ { skip=0 }
-        !skip
-    ' "$STARSHIP_SRC" > "$STARSHIP_OUT.tmp" && mv "$STARSHIP_OUT.tmp" "$STARSHIP_OUT"
-
-    # Windows (PowerShell) 向け変種: custom.os_logo は POSIX sh 依存で
-    # Windows では動かない (プロンプト遅延の原因) ため、静的な PS
-    # セグメントに置き換えて配置する
-    WIN_STARSHIP="/mnt/c/Users/tnaru/.config/starship.toml"
-    awk '
-        /^\$\{custom\.os_logo\}\\$/ {
-            print "[ PS ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
-            next
-        }
-        /^\[custom\.os_logo\]/ { skip=1 }
-        skip && /^\[username\]/ { skip=0 }
-        !skip
-    ' "$STARSHIP_OUT" > "${WIN_STARSHIP}.tmp" 2>/dev/null \
-        && rm -f "$WIN_STARSHIP" \
-        && mv "${WIN_STARSHIP}.tmp" "$WIN_STARSHIP" || true
-fi
-
-# -------------------------------------------------------------------------
-# 6. 共通 Lua パレット colors.lua (nvim / yazi / WezTerm が読む)
+# 5. 共通 Lua パレット colors.lua (nvim / yazi / WezTerm が読む)
 # -------------------------------------------------------------------------
 lua_tmp="$(mktemp)"
 cat > "$lua_tmp" <<LUA
@@ -199,19 +162,38 @@ return {
 }
 LUA
 command cp -f "$lua_tmp" "$HOME/.config/wezterm/matugen-colors.lua"
-command cp -f "$lua_tmp" "/mnt/c/Users/tnaru/.config/wezterm/matugen-colors.lua" 2>/dev/null || true
+command cp -f "$lua_tmp" "${WIN_HOME}/.config/wezterm/matugen-colors.lua" 2>/dev/null || true
 command cp -f "$lua_tmp" "$HOME/.cache/matugen/colors.lua"
 
 # -------------------------------------------------------------------------
-# 7. lazygit / 8. yazi theme.toml (NixOS と共通の render-template.sh で
-#    @@プレースホルダ@@ テンプレートをレンダリング。$lua_tmp を再利用する)
+# 6. starship / 7. lazygit / 8. yazi theme.toml (NixOS と共通の
+#    render-template.sh で @@プレースホルダ@@ テンプレートをレンダリング。
+#    $lua_tmp を再利用する)
 # -------------------------------------------------------------------------
 TPL="$HOME/.config/matugen-common/templates"
+STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
+"$LIB/render-template.sh" "$TPL/starship.toml" "$STARSHIP_OUT" "$lua_tmp"
 "$LIB/render-template.sh" "$TPL/lazygit-config.yml" \
     "$HOME/.cache/matugen/lazygit-config.yml" "$lua_tmp"
 "$LIB/render-template.sh" "$HOME/.config/yazi/theme-template.toml" \
     "$HOME/.config/yazi/theme.toml" "$lua_tmp"
 rm -f "$lua_tmp"
+
+# Windows (PowerShell) 向け starship 変種: custom.os_logo は POSIX sh 依存で
+# Windows では動かない (プロンプト遅延の原因) ため、静的な PS
+# セグメントに置き換えて配置する
+WIN_STARSHIP="${WIN_HOME}/.config/starship.toml"
+awk '
+    /^\$\{custom\.os_logo\}\\$/ {
+        print "[ PS ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
+        next
+    }
+    /^\[custom\.os_logo\]/ { skip=1 }
+    skip && /^\[username\]/ { skip=0 }
+    !skip
+' "$STARSHIP_OUT" > "${WIN_STARSHIP}.tmp" 2>/dev/null \
+    && rm -f "$WIN_STARSHIP" \
+    && mv "${WIN_STARSHIP}.tmp" "$WIN_STARSHIP" || true
 
 # -------------------------------------------------------------------------
 # 9. fzf (Ctrl+G の ghq ジャンプ等のハイライト配色。Material role のみで
@@ -226,7 +208,7 @@ mv "$HOME/.cache/matugen/fzf-colors.sh.tmp" "$HOME/.cache/matugen/fzf-colors.sh"
 # -------------------------------------------------------------------------
 # 10. komorebi の枠色 (single/floating = accent, monocle = tertiary, unfocused = outline)
 # -------------------------------------------------------------------------
-for f in "/mnt/c/Users/tnaru/.config/komorebi/komorebi.json" "/mnt/c/Users/tnaru/komorebi.json"; do
+for f in "${WIN_HOME}/.config/komorebi/komorebi.json" "${WIN_HOME}/komorebi.json"; do
     [[ -f "$f" ]] && sed -i -E \
         -e "s/(\"single\": *\")#[0-9a-fA-F]{6}/\1${accent}/" \
         -e "s/(\"floating\": *\")#[0-9a-fA-F]{6}/\1${accent}/" \
