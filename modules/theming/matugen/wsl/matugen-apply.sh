@@ -47,7 +47,7 @@ fi
 if [[ -n "${img:-}" ]]; then
     # --source-color-index 0: 候補色の対話選択を回避し最有力色を自動採用 (非TTYで必須)
     matugen image "$img" -m dark --source-color-index 0 \
-        -c "$HOME/.config/yasb/matugen/config.toml"
+        -c "$HOME/.config/matugen-wsl/config.toml"
     printf '%s\n' "$img" > "$HOME/.cache/matugen/last-wallpaper"
 fi
 

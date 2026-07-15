@@ -124,13 +124,13 @@
   ];
 
   # Kanata キーボードリマッパーのシステムサービス有効化
-  # 置換ロジックは home-manager 側 (modules/desktop/kanata.nix) と共通の
+  # 置換ロジックは home-manager 側 (modules/input/kanata) と共通の
   # kanata-config.nix を使う。
   services.kanata = {
     enable = true;
     keyboards = {
       default = {
-        configFile = pkgs.writeText "kanata-config.kbd" (import ../../modules/desktop/kanata-config.nix);
+        configFile = pkgs.writeText "kanata-config.kbd" (import ../../modules/input/kanata/kanata-config.nix);
       };
     };
   };

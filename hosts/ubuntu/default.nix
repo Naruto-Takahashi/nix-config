@@ -9,9 +9,10 @@
   # -----------------------------------------------------------------------
   imports = [
     ../../profiles/base.nix
-    ../../modules/desktop/packages.nix
-    ../../modules/desktop/kanata.nix
     ../../modules/desktop
+    ../../modules/desktop/packages.nix
+    ../../modules/input/kanata
+    ../../modules/input/fcitx5.nix
   ];
 
   # -----------------------------------------------------------------------

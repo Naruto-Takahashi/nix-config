@@ -17,10 +17,9 @@ jobs:
         run: nix flake check --no-build
       - name: evaluate all homeConfigurations
         run: |
-          nix eval '.#homeConfigurations."nalt".activationPackage.drvPath'
           nix eval '.#homeConfigurations."nalt-wsl".activationPackage.drvPath'
-          # nalt-desktop は nixGL が builtins.currentTime を使うため --impure 必須
-          nix eval --impure '.#homeConfigurations."nalt-desktop".activationPackage.drvPath'
+          # nalt-ubuntu は nixGL が builtins.currentTime を使うため --impure 必須
+          nix eval --impure '.#homeConfigurations."nalt-ubuntu".activationPackage.drvPath'
           nix eval '.#homeConfigurations."nalt-mac".activationPackage.drvPath'
       - name: evaluate nixosConfigurations
         run: nix eval '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'

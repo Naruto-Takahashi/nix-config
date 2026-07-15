@@ -2,5 +2,5 @@
 [config]
 
 [templates.yasb]
-input_path = '~/.config/yasb/matugen/palette.css'
+input_path = '~/.config/matugen-wsl/palette.css'
 output_path = '~/.cache/matugen/yasb-palette.css'

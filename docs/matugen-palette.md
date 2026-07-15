@@ -57,14 +57,14 @@
 
 ### WSL (Windows / komorebi + YASB)
 
-中核は `modules/wm/yasb/matugen/matugen-apply.sh`
+中核は `modules/theming/matugen/wsl/matugen-apply.sh`
 (home-manager が `~/.local/bin/matugen-apply` として mkOutOfStoreSymlink 配置。
 リポジトリを編集すればそのまま反映され、switch は不要)。
 
 ```
 壁紙変更 (YASB wallpapers ウィジェットの run_after)
   → matugen-apply <image>
-     1. matugen image <壁紙> -c ~/.config/yasb/matugen/config.toml
+     1. matugen image <壁紙> -c ~/.config/matugen-wsl/config.toml
         → テンプレート palette.css から ~/.cache/matugen/yasb-palette.css を生成
           (matugen が作るのはこの CSS 1枚だけ)
      2. matugen-apply が palette.css から CSS 変数を抽出し、一時 colors.lua

@@ -10,8 +10,7 @@
   imports = [
     ../../profiles/base.nix
     ../../modules/desktop/packages.nix
-    ../../modules/desktop/kanata.nix
-    # ../../modules/desktop
+    ../../modules/input/kanata
     ../../modules/wm/hyprland
   ];
 

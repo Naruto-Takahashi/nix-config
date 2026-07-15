@@ -128,7 +128,7 @@
   # Mac向け Kanata 設定ファイルの動的生成（Linux/他環境との互換性を維持する置換）
   xdg.configFile."kanata/config.kbd".text =
     let
-      original = builtins.readFile ../../modules/desktop/config.kbd;
+      original = builtins.readFile ../../modules/input/kanata/config.kbd;
       # 1. macOSでは Ctrl 長押し時に ctrl-layer を有効化する
       replaced1 = builtins.replaceStrings [ "cap-ctrl-action" ] [ "(layer-toggle ctrl-layer)" ] original;
       # 2. ウィンドウマネージャーのモディファイアは Ctrl + Cmd (C-M-) にする (wmmodifier- -> C-M-)
