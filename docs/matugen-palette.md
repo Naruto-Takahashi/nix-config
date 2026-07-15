@@ -18,10 +18,20 @@
 | `surface` | Material surface_container_high | 暗色セグメントの地 (黒ブロック) |
 | `on_accent` | Material surface | accent 等の明色地に載せる暗い文字色 |
 
-- 色相回転 (`complement` / `triad`) は `matugen-apply.sh` 内の Python (colorsys) で
-  HLS の H だけ回して計算する。明度・彩度は accent と同じなのでパレットに馴染む。
+- 色相回転 (`complement` / `triad`) は HLS の H だけ回して計算する
+  (彩度は accent の 0.75 倍に抑える)。明度は accent と同じなのでパレットに馴染む。
+  NixOS は `modules/theming/matugen/lib/derive-colors.py` に実装が集約されている
+  (WSL は現状 `matugen-apply.sh` 内に同じ式が独立実装として残っている。後述)。
 - 各設定にはファイルが無い環境用のフォールバック値がハードコードされている
   (`nvim/lua/matugen.lua`, wezterm.nix の colors テーブルなど)。
+- **既知の未解消ドリフト** (今回のNixOS側共通化では未着手):
+  - `accent_pale`（装飾ブロック用のパステル色）の定義が WSL と NixOS で異なる。
+    WSL は accent を白へ 40% ブレンドした Python 計算値、NixOS の starship
+    テンプレートは Material `primary_container` をそのまま使っている。別の色になる。
+  - wezterm 配色パレットのキー数が WSL (11キー、colors.lua と同一) と NixOS
+    (`[templates.wezterm]`、7キーのみ) でズレている。現状 wezterm.lua は7キー
+    しか読んでいないため症状は出ていないが、将来 complement/error 等を使う
+    設定を足すと NixOS だけ nil になる。
 
 ## 用途の割り当て
 
@@ -85,8 +95,10 @@
 
 ### NixOS (Hyprland)
 
-こちらは matugen の**テンプレート機能と post_hook に全部任せる**構成
-(`modules/wm/hyprland/config/matugen/config.toml`)。
+matugen の**テンプレート機能と post_hook**で完結するもの
+(`modules/wm/hyprland/config/matugen/config.toml`) と、色相回転が必要で
+matugen 単体では作れないものを分けている。後者は WSL/NixOS 共通モジュール
+`modules/theming/matugen/`（後述）に実装が集約されている。
 
 ```
 壁紙変更 (rofi の壁紙ピッカー wppicker.sh)
@@ -95,19 +107,43 @@
      - [templates.*] で各アプリの設定を直接生成 + post_hook で即時リロード:
        waybar (SIGUSR2) / kitty (SIGUSR1) / hyprland (hyprctl reload) /
        cava (SIGUSR1) / gtk3・gtk4 / rofi / spicetify / vesktop /
-       starship / wezterm / colors.lua (nvim・yazi) / lazygit / fzf
-  → wppicker.sh が colors.lua に complement を追記
-     (matugen テンプレートは色相回転ができないため、WSL と同じ Python 計算を後付け)
+       starship / wezterm / colors.lua (nvim・yazi の基本7キー) / fzf
+  → wppicker.sh が modules/theming/matugen/lib/ の共通スクリプトを呼ぶ:
+     1. derive-colors.py が colors.lua に complement/triad を追記
+     2. render-template.sh が yazi theme.toml と lazygit-config.yml を
+        (colors.lua の値で @@プレースホルダ@@ を埋めて) 生成する
 ```
+
+### 共通モジュール `modules/theming/matugen/`
+
+派生色計算 (`lib/derive-colors.py`) とテンプレート後処理
+(`lib/render-template.sh`、汎用の `@@KEY@@` 置換エンジン) を1箇所にまとめた
+WM非依存のモジュール。`profiles/base.nix` から全ホスト共通で import され、
+`~/.config/matugen-common/{lib,templates}` に mkOutOfStoreSymlink 配置される
+(python3 の依存もこのモジュール自身が `home.packages` で宣言する)。
+
+- 対象は yazi theme.toml / lazygit-config.yml の生成のみ（`@@プレースホルダ@@`
+  + 色相回転が両方必要なもの）。fzf は matugen 本体のテンプレート機能だけで
+  完結しているため対象外。starship / wezterm も対象外（上記の既知ドリフト参照）。
+- **現状 NixOS 側 (`wppicker.sh`) のみがこの共通モジュールを呼んでいる。
+  WSL 側 (`matugen-apply.sh`) はまだ独自実装（複製元と同じ式）のまま**で、
+  この共通モジュールへの移行は未着手。新しいアプリを yazi/lazygit 的な
+  「色相回転＋テンプレート」で追従させたいときは、
+  `modules/theming/matugen/templates/` にテンプレートを足し、
+  `wppicker.sh` (と将来的には `matugen-apply.sh`) から
+  `render-template.sh` を1行呼べばよい。
 
 ### 2経路の違いまとめ
 
 | | WSL | NixOS |
 | :--- | :--- | :--- |
 | matugen の役割 | palette.css を1枚生成するだけ | 全テンプレート生成 + post_hook |
-| 展開ロジック | matugen-apply.sh (bash) に集約 | matugen config.toml に宣言 |
-| 色相回転色 | matugen-apply 内で計算 | wppicker.sh が後付け追記 |
+| 展開ロジック | matugen-apply.sh (bash) に集約 | matugen config.toml + 共通モジュール |
+| 色相回転・プレースホルダ後処理 | matugen-apply 内で独自実装 | `modules/theming/matugen/lib/` (共通) |
 | 反映先が Windows | あり (/mnt/c へ配置 + sed) | なし |
 
-新しいアプリを追従させたいときは、WSL なら matugen-apply.sh にセクションを足し、
-NixOS なら templates/ にテンプレートを足して config.toml に登録する。
+新しいアプリを追従させたいときは、Material role の参照だけで足りるなら
+WSL は matugen-apply.sh に palette.css からの抽出を足し、NixOS は
+`config.toml` にネイティブ `[templates.x]` を足すだけでよい。色相回転が
+必要なら、NixOS は `modules/theming/matugen/` にテンプレートを足すだけで
+済む（WSL は今のところ手動で追従が必要）。

@@ -13,3 +13,7 @@ result
 .antigravitycli/
 .claude/
 
+# Python cache (mkOutOfStoreSymlink 経由でリポジトリ内に生成されうる)
+__pycache__/
+*.pyc
+

@@ -15,5 +15,6 @@
     ../modules/apps/neovim
     ../modules/apps/yazi
     ../modules/apps/lazygit.nix
+    ../modules/theming/matugen
   ];
 }
