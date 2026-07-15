@@ -43,22 +43,21 @@ output_path = '~/.config/spicetify/Themes/text/color.ini'
 input_path = '~/.config/matugen/templates/midnight-discord.css'
 output_path = '~/.config/vesktop/themes/matugen.css'
 
-[templates.starship]
-input_path = '~/.config/matugen/templates/starship.toml'
-output_path = '~/.cache/matugen/starship.toml'
-
-[templates.wezterm]
-input_path = '~/.config/matugen/templates/wezterm-colors.lua'
-output_path = '~/.config/wezterm/matugen-colors.lua'
-
 [templates.neovim_yazi]
 input_path = '~/.config/matugen/templates/colors.lua'
 output_path = '~/.cache/matugen/colors.lua'
 
-# lazygit-config.yml は cherryPickedCommitFgColor に色相回転が必要な
-# complement を使うため、matugen単体のテンプレート機能では出力できない。
-# theme.toml と同様、wppicker.sh が colors.lua 生成後に後処理で書き出す
-# (テンプレート本体は modules/apps/lazygit/lazygit-config-template.yml)。
+# starship / wezterm / lazygit / yazi theme.toml は、色相回転
+# (complement/triad/accent_pale) を含む値が必要で matugen 単体では
+# 出力できないため、colors.lua 生成後に wppicker.sh が
+# modules/theming/matugen/lib/ の共通スクリプトで後処理する。
+# テンプレート本体:
+#   - modules/wm/hyprland/config/matugen/templates/starship.toml
+#     (palettes.matugen ブロックのみ @@プレースホルダ@@、他は静的)
+#   - wezterm は colors.lua をそのまま ~/.config/wezterm/matugen-colors.lua
+#     へコピーするだけ (別テンプレート不要)
+#   - modules/theming/matugen/templates/lazygit-config.yml
+#   - modules/apps/yazi/theme-template.toml
 
 [templates.fzf]
 input_path = '~/.config/matugen/templates/fzf-colors.sh'

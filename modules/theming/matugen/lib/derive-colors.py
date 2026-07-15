@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""colors.lua に accent の色相回転から complement/triad を追記する (冪等)。
+"""colors.lua に accent 由来の派生色 (complement/triad/accent_pale) を
+追記する (冪等)。
 
-WSL の matugen-apply.sh と NixOS の wppicker.sh (旧実装) が別々に持っていた
-同じ計算式を1箇所にまとめたもの。
+WSL の matugen-apply.sh に元々あった計算式をそのまま移植したもの。
 """
 import colorsys
 import re
@@ -15,6 +15,12 @@ def rotate_hue(hex_color: str, amount: float) -> str:
     hh, l, s = colorsys.rgb_to_hls(r, g, b)
     r, g, b = colorsys.hls_to_rgb((hh + amount) % 1.0, l, s * 0.75)
     return "#%02x%02x%02x" % (round(r * 255), round(g * 255), round(b * 255))
+
+
+def blend_white(hex_color: str, amount: float) -> str:
+    h = hex_color.lstrip("#")
+    r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
+    return "#%02x%02x%02x" % tuple(round(v + (255 - v) * amount) for v in (r, g, b))
 
 
 def main() -> int:
@@ -37,6 +43,8 @@ def main() -> int:
         additions.append(f'  complement = "{rotate_hue(accent, 0.5)}",')
     if not re.search(r"^\s*triad\s*=", text, re.MULTILINE):
         additions.append(f'  triad = "{rotate_hue(accent, 0.3333333)}",')
+    if not re.search(r"^\s*accent_pale\s*=", text, re.MULTILINE):
+        additions.append(f'  accent_pale = "{blend_white(accent, 0.4)}",')
 
     if not additions:
         return 0
