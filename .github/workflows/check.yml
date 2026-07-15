@@ -24,3 +24,24 @@ jobs:
           nix eval '.#homeConfigurations."nalt-mac".activationPackage.drvPath'
       - name: evaluate nixosConfigurations
         run: nix eval '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - name: shellcheck (zsh スクリプトは対象外)
+        run: |
+          git ls-files '*.sh' \
+            | while read -r f; do head -1 "$f" | grep -q zsh || echo "$f"; done \
+            | xargs nix run nixpkgs#shellcheck -- --severity=warning
+      - name: starship fallback / template 同期チェック
+        # 2ファイルは palettes.matugen ブロック以外同一に保つ規約
+        # (docs/matugen-palette.md 参照)。コメント行を除いた本文を比較する。
+        run: |
+          strip() { awk '/^\[palettes\.matugen\]/{exit} !/^#/' "$1"; }
+          if ! diff <(strip modules/shell/starship/starship.toml) \
+                    <(strip modules/theming/matugen/templates/starship.toml); then
+            echo "::error::starship.toml のフォールバック版とテンプレート版の内容が乖離しています"
+            exit 1
+          fi

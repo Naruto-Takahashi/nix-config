@@ -1,0 +1,22 @@
+# 週1回 flake.lock を更新する PR を自動作成する。
+# check ワークフローが PR 上で全構成を評価するので、緑ならマージするだけでよい。
+name: update-flake-lock
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 21 * * 5" # 毎週土曜 06:00 JST
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/nix-installer-action@v16
+      - uses: DeterminateSystems/update-flake-lock@v24
+        with:
+          pr-title: "chore: update flake.lock"
+          commit-msg: "chore: update flake.lock"
