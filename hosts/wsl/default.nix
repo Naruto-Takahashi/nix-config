@@ -9,7 +9,6 @@
   # -----------------------------------------------------------------------
   imports = [
     ../../profiles/base.nix
-    # ../../modules/wm/glazewm
     ../../modules/wm/komorebi
     ../../modules/wm/yasb
     ../../modules/services/obsidian-mcp.nix
