@@ -45,13 +45,14 @@ if [[ -f "$COLORS_LUA" ]]; then
     fi
 fi
 
+pal() { grep -m1 "^  $1 = " "$COLORS_LUA" | grep -oE '#[0-9a-fA-F]{6}'; }
+
 # === GENERATE yazi theme.toml (WSL の matugen-apply.sh と同じ後処理) ===
 # theme-template.toml の @@プレースホルダ@@ を colors.lua の値で置換する。
 # matugen のテンプレート機能だけでは処理できない (colors.lua 自体が
 # 上の色相回転で完成する2段階構成のため)
 YAZI_TPL="$HOME/.config/yazi/theme-template.toml"
 if [[ -f "$YAZI_TPL" && -f "$COLORS_LUA" ]]; then
-    pal() { grep -m1 "^  $1 = " "$COLORS_LUA" | grep -oE '#[0-9a-fA-F]{6}'; }
     secondary="$(pal secondary)"
     tertiary="$(pal tertiary)"
     complement="$(pal complement)"
@@ -65,6 +66,32 @@ if [[ -f "$YAZI_TPL" && -f "$COLORS_LUA" ]]; then
             -e "s/@@ERROR@@/${error}/g" \
             "$YAZI_TPL" > "$HOME/.config/yazi/theme.toml.tmp" \
             && mv "$HOME/.config/yazi/theme.toml.tmp" "$HOME/.config/yazi/theme.toml"
+    fi
+fi
+
+# === GENERATE lazygit config (WSL の matugen-apply.sh と同じ後処理) ===
+# cherryPickedCommitFgColor が色相回転色 (complement) を使うため、
+# matugen 単体のテンプレート機能では出力できない。
+LAZYGIT_TPL="$HOME/.config/matugen/templates/lazygit-config.yml"
+if [[ -f "$LAZYGIT_TPL" && -f "$COLORS_LUA" ]]; then
+    accent="$(pal accent)"
+    muted="$(pal muted)"
+    tertiary="$(pal tertiary)"
+    surface="$(pal surface)"
+    complement="$(pal complement)"
+    error="$(pal error)"
+    text="$(pal text)"
+    if [[ -n "$accent" && -n "$muted" && -n "$tertiary" && -n "$surface" \
+          && -n "$complement" && -n "$error" && -n "$text" ]]; then
+        sed -e "s/@@ACCENT@@/${accent}/g" \
+            -e "s/@@MUTED@@/${muted}/g" \
+            -e "s/@@TERTIARY@@/${tertiary}/g" \
+            -e "s/@@SURFACE@@/${surface}/g" \
+            -e "s/@@COMPLEMENT@@/${complement}/g" \
+            -e "s/@@ERROR@@/${error}/g" \
+            -e "s/@@TEXT@@/${text}/g" \
+            "$LAZYGIT_TPL" > "$HOME/.cache/matugen/lazygit-config.yml.tmp" \
+            && mv "$HOME/.cache/matugen/lazygit-config.yml.tmp" "$HOME/.cache/matugen/lazygit-config.yml"
     fi
 fi
 

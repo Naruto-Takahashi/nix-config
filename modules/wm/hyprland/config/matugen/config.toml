@@ -55,9 +55,10 @@ output_path = '~/.config/wezterm/matugen-colors.lua'
 input_path = '~/.config/matugen/templates/colors.lua'
 output_path = '~/.cache/matugen/colors.lua'
 
-[templates.lazygit]
-input_path = '~/.config/matugen/templates/lazygit-config.yml'
-output_path = '~/.cache/matugen/lazygit-config.yml'
+# lazygit-config.yml は cherryPickedCommitFgColor に色相回転が必要な
+# complement を使うため、matugen単体のテンプレート機能では出力できない。
+# theme.toml と同様、wppicker.sh が colors.lua 生成後に後処理で書き出す
+# (テンプレート本体は modules/apps/lazygit/lazygit-config-template.yml)。
 
 [templates.fzf]
 input_path = '~/.config/matugen/templates/fzf-colors.sh'
