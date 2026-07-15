@@ -79,6 +79,11 @@
   # フルボーダーや matugen 連携のステータスバーなどの UI カスタマイズ (実 Lua ファイル)．
   xdg.configFile."yazi/init.lua".source = ./init.lua;
 
+  # 2色補間 (blend) は nvim (modules/apps/neovim) の lualine とロジックを
+  # 共有しているため modules/theming/lua-lib に集約し、ここに配置する。
+  # yazi の Lua ランタイムは require が使えないため dofile で読み込む。
+  xdg.configFile."yazi/blend.lua".source = ../../theming/lua-lib/blend.lua;
+
   # --- フレーバー設定 ---
   # フレーバーリポジトリの配置を行います．
   xdg.configFile."yazi/flavors/kanagawa-dragon.yazi".source = kanagawa-dragon-yazi;

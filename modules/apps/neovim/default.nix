@@ -33,6 +33,15 @@ let
       "systemverilog" # verilog ファイルタイプ用 (旧 verilog パーサーの後継)
     ]}
   '';
+
+  # --- nvim設定ディレクトリと共通Luaライブラリの合成 ---
+  # blend.lua (2色補間) は yazi (modules/apps/yazi) とも共有しているため
+  # modules/theming/lua-lib に置き、ここでは nvim の lua/ 配下にコピーする。
+  nvimConfigDir = pkgs.runCommand "nvim-config" {} ''
+    cp -r ${./nvim} $out
+    chmod -R u+w $out
+    cp ${../../theming/lua-lib/blend.lua} $out/lua/blend.lua
+  '';
 in
 {
   # --- Neovimパッケージ設定 ---
@@ -57,7 +66,7 @@ in
 
   # --- 設定ファイルおよびパーサーの配置 ---
   # Neovim設定ディレクトリの宣言的配置（ディレクトリ・ソース方式）を行います．
-  xdg.configFile."nvim".source = ./nvim;
+  xdg.configFile."nvim".source = nvimConfigDir;
 
   # ビルド済みのTreesitterパーサーをNeovimのランタイムパスにシンボリックリンクします．
   xdg.dataFile."nvim/site/parser".source = "${treesitter-parsers}/parser";

@@ -12,15 +12,8 @@ return {
       local complement = c.complement or c.muted
       local replace = c.error
 
-      -- 2色を t:0..1 で混ぜる (「薄め色」計算用)
-      local function blend(h1, h2, t)
-        local r1, g1, b1 = tonumber(h1:sub(2, 3), 16), tonumber(h1:sub(4, 5), 16), tonumber(h1:sub(6, 7), 16)
-        local r2, g2, b2 = tonumber(h2:sub(2, 3), 16), tonumber(h2:sub(4, 5), 16), tonumber(h2:sub(6, 7), 16)
-        return string.format("#%02x%02x%02x",
-          math.floor(r1 + (r2 - r1) * t + 0.5),
-          math.floor(g1 + (g2 - g1) * t + 0.5),
-          math.floor(b1 + (b2 - b1) * t + 0.5))
-      end
+      -- 2色を t:0..1 で混ぜる (「薄め色」計算用)。yazi (init.lua) と共有。
+      local blend = require("blend")
 
       -- Starship プロンプトと同じ文法: 明色セグメント → 暗色セグメント → 無地。
       -- 暗色セグメント (b) の文字色はモード色に追従させる

@@ -1,7 +1,7 @@
 ---@diagnostic disable: undefined-global
 
 -- matugen配色（kanagawa-dragon フォールバック付き）．
--- yaziのLuaランタイムではdofileが使えないため，io.open + パターンマッチで読み込みます．
+-- io.open + パターンマッチで読み込みます (動作実績のある既存実装のまま維持)．
 -- キャッシュファイルは1回だけ読み，以降は全箇所でこの pal を参照します．
 local pal = {
   accent = "#e6c384",
@@ -23,15 +23,8 @@ do
   end
 end
 
--- 2色を t:0..1 で混ぜる (「薄め色」計算用)
-local function blend(h1, h2, t)
-  local r1, g1, b1 = tonumber(h1:sub(2, 3), 16), tonumber(h1:sub(4, 5), 16), tonumber(h1:sub(6, 7), 16)
-  local r2, g2, b2 = tonumber(h2:sub(2, 3), 16), tonumber(h2:sub(4, 5), 16), tonumber(h2:sub(6, 7), 16)
-  return string.format("#%02x%02x%02x",
-    math.floor(r1 + (r2 - r1) * t + 0.5),
-    math.floor(g1 + (g2 - g1) * t + 0.5),
-    math.floor(b1 + (b2 - b1) * t + 0.5))
-end
+-- 2色を t:0..1 で混ぜる (「薄め色」計算用)。nvim (lualine.lua) と共有。
+local blend = dofile((os.getenv("HOME") or "") .. "/.config/yazi/blend.lua")
 
 -- yazi 26+ ではコンポーネントのrender差し替えが効かないため，
 -- テーマ（th.mgr.cwd）を直接上書きしてヘッダーのパス色を変更します．
