@@ -67,15 +67,20 @@
      1. matugen image <壁紙> -c ~/.config/yasb/matugen/config.toml
         → テンプレート palette.css から ~/.cache/matugen/yasb-palette.css を生成
           (matugen が作るのはこの CSS 1枚だけ)
-     2. matugen-apply が palette.css を読み、各アプリ向けに自前で展開する:
+     2. matugen-apply が palette.css から CSS 変数を抽出し、一時 colors.lua
+        (7キー: accent/tertiary/secondary/text/muted/surface/on_accent + error)
+        を組み立てて NixOS と共通の modules/theming/matugen/lib/ に渡す:
+        - derive-colors.py  : complement/triad/accent_pale を追記 (11キーに)
+        - render-template.sh: lazygit-config.yml と yazi theme.toml を生成
+     3. 残りは WSL/YASB 固有のまま展開する:
         - YASB styles.css   : MATUGEN マーカー間を差し替えて /mnt/c へ配置
         - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)
         - starship          : palettes.matugen ブロックを awk で差し替え
-                              (~/.cache 用と、os_logo を除去した Windows 用の2種)
-        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット
-                              (complement / triad はここで Python により色相回転で計算)
-        - lazygit / fzf     : 設定ファイルを丸ごと生成
-        - yazi theme.toml   : theme-template.toml の @@プレースホルダ@@ を sed で置換
+                              (~/.cache 用と、os_logo を除去した Windows 用の2種。
+                              starship.toml 自体の生成方式は NixOS と異なるため
+                              未統一、後述)
+        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット (完成形をコピー)
+        - fzf               : 設定ファイルを丸ごと生成
         - komorebi.json     : 枠色 (single/floating/monocle) を sed → reload
 ```
 
@@ -129,25 +134,47 @@ WM非依存のモジュール。`profiles/base.nix` から全ホスト共通で 
   `primary_container`) と wezterm パレットのキー数差 (WSL 11キー / NixOS
   7キー) は、この共通化で解消済み。両OSとも `accent_pale` は白ブレンド式、
   wezterm は colors.lua と同一の11キーになった。
-- **現状 NixOS 側 (`wppicker.sh`) のみがこの共通モジュールを呼んでいる。
-  WSL 側 (`matugen-apply.sh`) はまだ独自実装（複製元と同じ式）のまま**で、
-  この共通モジュールへの移行は未着手。新しいアプリを同様の「色相回転＋
-  テンプレート」で追従させたいときは、`modules/theming/matugen/templates/`
-  （または既存アプリのテンプレート）にプレースホルダ版を用意し、
-  `wppicker.sh` (と将来的には `matugen-apply.sh`) から
-  `render-template.sh` を1行呼べばよい。
+- **NixOS (`wppicker.sh`) と WSL (`matugen-apply.sh`) の両方がこの共通
+  モジュールを呼ぶ。** WSL はパレット抽出元 (`yasb-palette.css` の CSS変数)
+  が colors.lua と形式が違うため、抽出後に一時 colors.lua を組み立てて
+  `derive-colors.py` に渡す一手間がある (NixOS は matugen が直接 colors.lua
+  を生成するため不要)。lazygit/yazi の生成は両OSとも `render-template.sh`
+  経由で完全に同じ。starship は WSL 側だけ生成方式が違うため未統一のまま
+  残っている (次項)。
+- 新しいアプリを同様の「色相回転＋テンプレート」で追従させたいときは、
+  `modules/theming/matugen/templates/`（または既存アプリのテンプレート）
+  にプレースホルダ版を用意し、`wppicker.sh` と `matugen-apply.sh` の両方
+  から `render-template.sh` を1行呼べばよい。
+
+### 既知の残課題: starship.toml の二重管理
+
+`modules/shell/starship.toml`（全ホスト共通、kanagawa-dragon フォールバック値
+入り、`# MATUGEN:START`/`# MATUGEN:END` マーカー付き）と
+`modules/wm/hyprland/config/matugen/templates/starship.toml`（NixOS専用、
+`palettes.matugen` ブロックが `@@プレースホルダ@@` 版）は、末尾の
+`palettes.matugen` ブロック以外は完全に同一内容の重複ファイル。
+
+統合しなかった理由: 前者は「matugen 未対応環境でも壊れず動く静的フォールバック」
+の役割を兼ねており (`~/.cache/matugen/starship.toml` が無ければ zsh が
+これを直接使う。`modules/shell/zsh/functions.zsh` 参照)、後者は「壁紙変更の
+たびに上書きされる動的生成物」の入力テンプレート。`@@プレースホルダ@@` 化
+すると前者としての役割(フォールバック)が壊れるため、単純に1本化できない。
+WSL 側もこのフォールバック版 (`modules/shell/starship.toml`) 自体を
+awk でマーカー間だけ差し替えて動的生成物にしており、NixOS 側の
+`@@プレースホルダ@@` 版とは異なる方式のまま。
 
 ### 2経路の違いまとめ
 
 | | WSL | NixOS |
 | :--- | :--- | :--- |
 | matugen の役割 | palette.css を1枚生成するだけ | 全テンプレート生成 + post_hook |
-| 展開ロジック | matugen-apply.sh (bash) に集約 | matugen config.toml + 共通モジュール |
-| 色相回転・プレースホルダ後処理 | matugen-apply 内で独自実装 | `modules/theming/matugen/lib/` (共通) |
+| パレット抽出 | palette.css の CSS変数から | matugen が colors.lua を直接生成 |
+| 色相回転・プレースホルダ後処理 (yazi/lazygit) | `modules/theming/matugen/lib/` (共通) | `modules/theming/matugen/lib/` (共通) |
+| starship 生成方式 | awk でマーカー間を差し替え (独自) | render-template.sh (@@プレースホルダ@@) |
 | 反映先が Windows | あり (/mnt/c へ配置 + sed) | なし |
 
 新しいアプリを追従させたいときは、Material role の参照だけで足りるなら
 WSL は matugen-apply.sh に palette.css からの抽出を足し、NixOS は
 `config.toml` にネイティブ `[templates.x]` を足すだけでよい。色相回転が
-必要なら、NixOS は `modules/theming/matugen/` にテンプレートを足すだけで
-済む（WSL は今のところ手動で追従が必要）。
+必要なら、両OSとも `modules/theming/matugen/` にテンプレートを足し、
+それぞれのスクリプトから `render-template.sh` を呼べばよい。
