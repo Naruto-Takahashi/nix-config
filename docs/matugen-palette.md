@@ -67,6 +67,8 @@
      1. matugen image <壁紙> -c ~/.config/matugen-wsl/config.toml
         → テンプレート palette.css から ~/.cache/matugen/yasb-palette.css を生成
           (matugen が作るのはこの CSS 1枚だけ)
+        あわせて Windows のロック画面壁紙も同じ画像に設定する
+        (UWP UserProfile.LockScreen API を PowerShell -EncodedCommand で呼ぶ)
      2. matugen-apply が palette.css から CSS 変数を抽出し、一時 colors.lua
         (7キー: accent/tertiary/secondary/text/muted/surface/on_accent + error)
         を組み立てて NixOS と共通の modules/theming/matugen/lib/ に渡す:

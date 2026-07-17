@@ -49,6 +49,30 @@ if [[ -n "${img:-}" ]]; then
     matugen image "$img" -m dark --source-color-index 0 \
         -c "$HOME/.config/matugen-wsl/config.toml"
     printf '%s\n' "$img" > "$HOME/.cache/matugen/last-wallpaper"
+
+    # ロック画面の壁紙もデスクトップと同じ画像に追従させる。
+    # UWP の UserProfile.LockScreen API を PowerShell の WinRT 投影で呼ぶ
+    # (管理者権限不要。Settings アプリと同じ経路)。画像パスは WSLENV の
+    # /p フラグで Windows パスに自動変換して $env:LOCK_IMG として渡す。
+    # スクリプト本体は -EncodedCommand で渡す (WSL 越しの stdin -Command - は
+    # 実行されないため不可。AsTask はオーバーロード解決が効かないので
+    # IAsyncOperation/IAsyncAction ともリフレクションで取得する)。
+    ps_lockscreen='
+      $ErrorActionPreference = "Stop"
+      [Windows.System.UserProfile.LockScreen,Windows.System.UserProfile,ContentType=WindowsRuntime] | Out-Null
+      [Windows.Storage.StorageFile,Windows.Storage,ContentType=WindowsRuntime] | Out-Null
+      Add-Type -AssemblyName System.Runtime.WindowsRuntime
+      $methods = [System.WindowsRuntimeSystemExtensions].GetMethods() | Where-Object {
+          $_.Name -eq "AsTask" -and $_.GetParameters().Count -eq 1 }
+      $asTaskOp     = ($methods | Where-Object { $_.GetParameters()[0].ParameterType.Name -eq ("IAsyncOperation" + [char]0x60 + "1") })[0]
+      $asTaskAction = ($methods | Where-Object { $_.GetParameters()[0].ParameterType.Name -eq "IAsyncAction" })[0]
+      $op = [Windows.Storage.StorageFile]::GetFileFromPathAsync($env:LOCK_IMG)
+      $file = $asTaskOp.MakeGenericMethod([Windows.Storage.StorageFile]).Invoke($null, @($op)).GetAwaiter().GetResult()
+      $asTaskAction.Invoke($null, @([Windows.System.UserProfile.LockScreen]::SetImageFileAsync($file))).GetAwaiter().GetResult() | Out-Null'
+    WSLENV="LOCK_IMG/p:${WSLENV:-}" LOCK_IMG="$img" \
+        /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile \
+        -EncodedCommand "$(printf '%s' "$ps_lockscreen" | iconv -f UTF-8 -t UTF-16LE | base64 -w0)" \
+        >/dev/null 2>&1 || true
 fi
 
 # -------------------------------------------------------------------------
