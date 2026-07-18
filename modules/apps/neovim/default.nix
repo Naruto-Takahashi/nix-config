@@ -97,6 +97,12 @@ in
       pkgs.clang-tools
       # masonがzip形式のパッケージを展開する際に必要です．
       pkgs.unzip
+      # --- Nix供給の言語サーバー (masonのビルド済みバイナリはNixOSで動かないため) ---
+      pkgs.nil # Nix LSP
+      pkgs.nixfmt-rfc-style # nil が使うフォーマッタ
+      pkgs.bash-language-server # bash/zsh LSP
+      pkgs.shellcheck # bash-language-server が診断に使う
+      pkgs.shfmt # bash-language-server がフォーマットに使う
     ];
   };
 

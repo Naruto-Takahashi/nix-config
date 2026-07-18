@@ -33,6 +33,25 @@ return {
         vim.lsp.enable(server)
       end
 
+      -- nil (Nix LSP): Nix の extraPackages から供給。フォーマッタは nixfmt
+      vim.lsp.config["nil_ls"] = vim.tbl_deep_extend("force", vim.lsp.config["nil_ls"] or {}, {
+        capabilities = capabilities,
+        settings = {
+          ["nil"] = {
+            formatting = { command = { "nixfmt" } },
+          },
+        },
+      })
+      vim.lsp.enable("nil_ls")
+
+      -- bash-language-server: zsh ファイルにも適用する
+      -- (treesitter 同様 bash として扱う。診断は shellcheck が担う)
+      vim.lsp.config["bashls"] = vim.tbl_deep_extend("force", vim.lsp.config["bashls"] or {}, {
+        capabilities = capabilities,
+        filetypes = { "bash", "sh", "zsh" },
+      })
+      vim.lsp.enable("bashls")
+
       -- pylsp の設定 (Line too long 警告を無効化 または 制限を緩和)
       vim.lsp.config["pylsp"] = vim.tbl_deep_extend("force", vim.lsp.config["pylsp"] or {}, {
         capabilities = capabilities,
