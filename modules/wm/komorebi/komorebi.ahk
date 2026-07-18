@@ -43,6 +43,9 @@ HandleDisplayChange(wParam, lParam) {
 !f::Run, komorebic toggle-monocle, , Hide
 !m::Run, komorebic minimize, , Hide
 !t::Run, komorebic toggle-tiling, , Hide
+; BSP は新規ウィンドウをフォーカス中ウィンドウの長辺で分割するため上下配置に
+; なることがある。レイアウトを巡回して左右型 (VerticalStack/Columns) へ即切替
+!+t::Run, komorebic cycle-layout next, , Hide
 !b::Run, komorebic flip-layout horizontal-and-vertical, , Hide
 !r::Run, komorebic retile, , Hide
 ; モニタ再接続で表示が崩れたとき等に手動で復旧 (自動復旧と同じ処理)
