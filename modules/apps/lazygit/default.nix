@@ -24,7 +24,7 @@
       # 外観テーマ設定（kanagawa-dragon配色）
       gui = {
         theme = {
-          activeBorderColor = [ "#ffc20d" "bold" ];
+          activeBorderColor = [ "#e6c384" "bold" ]; # kanagawa carpYellow (nvim/YASBのフォールバックaccentと統一)
           inactiveBorderColor = [ "#a89984" ]; # kanagawa-dragon fg_gutter or slightly dimmed
           searchingActiveBorderColor = [ "#ff9e3b" ]; # kanagawa-dragon autumnYellow
           optionsTextColor = [ "#7e9cd8" ]; # kanagawa-dragon crystalBlue

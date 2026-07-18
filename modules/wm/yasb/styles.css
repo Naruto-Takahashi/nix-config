@@ -30,8 +30,8 @@
     --basetransparent: rgba(24, 22, 22, 0.6);
     --mantle: rgba(18, 18, 15, 1);
     --crust: rgba(13, 12, 12, 1);
-    --highlight: #ffc20d;
-    --highlight-hover: #e0ab00;
+    --highlight: #e6c384;
+    --highlight-hover: #c0a36e;
     --island: rgba(24, 22, 22, 0.4);
     --island-inner: rgba(13, 12, 12, 0.2);
     --accent-sub: #8ea4a2;
