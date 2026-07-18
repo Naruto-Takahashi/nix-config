@@ -39,6 +39,13 @@ return {
         settings = {
           ["nil"] = {
             formatting = { command = { "nixfmt" } },
+            nix = {
+              flake = {
+                -- flake inputs を自動で nix flake archive し、毎回の
+                -- 「Fetch / Ignore missing ones」プロンプトを出さない
+                autoArchive = true,
+              },
+            },
           },
         },
       })
