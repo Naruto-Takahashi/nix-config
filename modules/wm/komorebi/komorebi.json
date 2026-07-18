@@ -3,7 +3,7 @@
   "app_specific_configuration_path": "$Env:USERPROFILE/applications.json",
   "window_hiding_behaviour": "Cloak",
   "cross_monitor_move_behaviour": "Insert",
-  "transparency": true,
+  "transparency": false,
   "transparency_alpha": 252,
   "default_workspace_padding": 1,
   "resize_delta": 100,
