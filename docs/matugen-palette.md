@@ -77,12 +77,15 @@
                               yazi theme.toml を共通テンプレートから生成
      3. 残りは WSL/YASB 固有のまま展開する:
         - YASB styles.css   : MATUGEN マーカー間を差し替えて /mnt/c へ配置
-        - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)
+        - komorebi.json     : 枠色 (single/floating/monocle) を sed → 同期 reload
+        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット (完成形をコピー)
         - starship (Windows): 生成済み ~/.cache/matugen/starship.toml から
                               os_logo を除去した PowerShell 用変種を /mnt/c へ配置
-        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット (完成形をコピー)
         - fzf               : 設定ファイルを丸ごと生成
-        - komorebi.json     : 枠色 (single/floating/monocle) を sed → reload
+        - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)。
+                              この書き換えは YASB の全体リロードを誘発するため必ず最後。
+                              komorebi のリロードと重なると YASB→komorebi の pipe
+                              再購読が失敗しワークスペース表示が消えるため
 ```
 
 - 各アプリの反映タイミング: YASB はファイル監視 (watch_config/watch_stylesheet) で即時、

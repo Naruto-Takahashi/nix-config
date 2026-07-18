@@ -41,9 +41,29 @@ let
       "yaml"
       "json"
       "css"
+      "html"
+      "xml"
+      "ini"
+      "tsx"
+      "dockerfile"
+      "powershell" # komorebi/YASB まわりの .ps1 用
+      "hyprlang" # hyprland.conf 用
+      "rasi" # rofi 設定用
+      # --- git / ssh 系設定ファイル ---
       "diff"
       "git_rebase"
       "gitcommit"
+      "git_config"
+      "gitignore"
+      "gitattributes"
+      "ssh_config"
+      "editorconfig"
+      "desktop" # .desktop エントリ用
+      # --- 他言語への注入専用 (単体では使わない) ---
+      "regex" # 各言語内の正規表現リテラル
+      "comment" # コメント内の TODO/FIXME 等の構造化
+      "luadoc" # lua のアノテーションコメント
+      "luap" # lua の string.match パターン
     ]}
   '';
 

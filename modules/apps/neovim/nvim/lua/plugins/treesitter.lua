@@ -19,6 +19,10 @@ return {
             -- verilog ファイルタイプに systemverilog パーサーを対応付ける
             vim.treesitter.language.register("systemverilog", { "verilog" })
 
+            -- zsh には専用パーサーが無いため bash パーサーで代用する
+            -- (zsh 固有構文は一部取りこぼすが、正規表現 syntax より遥かに細かい)
+            vim.treesitter.language.register("bash", { "zsh" })
+
             -- パーサーが存在するバッファでハイライトとインデントを有効化
             vim.api.nvim_create_autocmd("FileType", {
                 group = vim.api.nvim_create_augroup("TreesitterStart", { clear = true }),
