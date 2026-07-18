@@ -80,22 +80,12 @@
   "ignore_rules": [
     {
       "kind": "Exe",
-      "id": "explorer.exe",
-      "matching_strategy": "Equals"
-    },
-    {
-      "kind": "Exe",
       "id": "ACShadows.exe",
       "matching_strategy": "Equals"
     },
     {
       "kind": "Exe",
       "id": "Overwatch.exe",
-      "matching_strategy": "Equals"
-    },
-    {
-      "kind": "Exe",
-      "id": "Photos.exe",
       "matching_strategy": "Equals"
     },
     {
