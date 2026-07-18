@@ -21,7 +21,7 @@
     "layered": [
       {
         "kind": "Exe",
-        "id": "Claude.exe",
+        "id": "claude.exe",
         "matching_strategy": "Equals"
       }
     ]
