@@ -31,6 +31,19 @@ let
       "markdown"
       "markdown_inline"
       "systemverilog" # verilog ファイルタイプ用 (旧 verilog パーサーの後継)
+      # --- 日常的に開く設定・スクリプト系 ---
+      # make は bash がないとレシピ行 (シェルコマンド) が injection されず
+      # ハイライトが粗いままになる。必ずセットで入れること。
+      "make"
+      "bash"
+      "nix"
+      "toml"
+      "yaml"
+      "json"
+      "css"
+      "diff"
+      "git_rebase"
+      "gitcommit"
     ]}
   '';
 
