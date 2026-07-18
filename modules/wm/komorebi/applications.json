@@ -17,6 +17,15 @@
       }
     ]
   },
+  "Claude Desktop": {
+    "layered": [
+      {
+        "kind": "Exe",
+        "id": "Claude.exe",
+        "matching_strategy": "Equals"
+      }
+    ]
+  },
   "Microsoft Word": {
     "layered": [
       {
