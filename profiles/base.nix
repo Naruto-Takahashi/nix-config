@@ -79,9 +79,14 @@
       invert = true;
       show_tabs = false; # Search/Inspector タブバーを隠してすっきりさせる
       show_help = false; # 最下部の "<esc>: exit ..." キーヘルプを隠す
-      show_preview = false; # 選択中コマンドのプレビュー行を隠す
-      # 経過時間 (◯m ago) を右端へ (command 列の後続列はパッチで右端に揃う)
-      ui.columns = [ "duration" "command" "time" ];
+      # プレビュー: リストは1エントリ=1行の制約があるため、複数行 (\ 継続)
+      # コマンドは選択時に下部プレビューで改行構造ごと表示する
+      show_preview = true;
+      preview.strategy = "auto"; # 1行コマンドは1行分、複数行なら行数に応じて拡大
+      max_preview_height = 10;
+      # 経過時間 (◯m ago) 列は非表示 (長いコマンドとの表示競合を避ける。
+      # 実行時刻などの詳細は Ctrl+O のインスペクタで確認できる)
+      ui.columns = [ "duration" "command" ];
       update_check = false;
       theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
     };

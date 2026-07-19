@@ -2,11 +2,11 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  1. 選択行のコマンド文字色を AlertError (失敗色と共有) から Base に変更
  2. vim-normal 限定の REVERSED 反転を廃止
  3. 選択行は行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く
- 4. command 列の描画後にカーソルを列幅まで進め、後続の列 (time 等) が
-    右端に揃うようにする (ui.columns = ["duration","command","time"] 用)
+ 4. command 列を割当幅で確実に打ち切り (境界判定も >= に修正)、
+    右余白や後続列へ漏れないようにする
  5. 右端の枠との間に 1 文字分の余白を確保する
---- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:31:28.338952332 +0900
-+++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:31:28.376932954 +0900
+--- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:51:31.286422518 +0900
++++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 14:03:09.176869980 +0900
 @@ -107,6 +107,18 @@
          };
  
@@ -39,20 +39,23 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,7 +235,11 @@
+@@ -222,7 +235,14 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
 -                UiColumnType::Command => self.command(h),
 +                UiColumnType::Command => {
 +                    let start_x = self.x;
++                    let saved_width = self.list_area.width;
++                    self.list_area.width = start_x + width;
 +                    self.command(h);
++                    self.list_area.width = saved_width;
 +                    self.x = start_x + width;
 +                }
              }
          }
      }
-@@ -290,7 +307,7 @@
+@@ -290,7 +310,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -61,7 +64,16 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -418,11 +435,6 @@
+@@ -308,7 +328,7 @@
+                 self.draw(" ", Style::from_crossterm(style));
+             }
+             for ch in section.chars() {
+-                if self.x > self.list_area.width {
++                if self.x >= self.list_area.width {
+                     // Avoid attempting to draw a command section beyond the width
+                     // of the list
+                     return;
+@@ -418,11 +438,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
