@@ -181,6 +181,9 @@ end
 config.disable_default_key_bindings = true
 config.keys = require("keybinds").keys
 config.key_tables = require("keybinds").key_tables
-config.leader = { key = "Space", mods = "CTRL", timeout_milliseconds = 2000 }
+-- CapsLock を Ctrl にしている都合上、Ctrl+Space は左手ホームポジションから
+-- 遠く、Ctrl+文字キー系は左手小指の同指干渉が起きやすい。Ctrl+; は
+-- 右手小指なので Ctrl (左手小指) と自然な両手コードになる
+config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 }
 
 return config
