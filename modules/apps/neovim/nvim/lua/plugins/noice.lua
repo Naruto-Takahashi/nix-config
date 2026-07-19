@@ -22,12 +22,13 @@ return {
       long_message_to_split = true,
       lsp_doc_border = true,
     },
-    -- starship のプロンプト記号 (❯) に統一
+    -- starship のプロンプト記号 (❯) に統一。検索は ❯ と同系統の山形記号を
+    -- 上下2つ重ねて方向を表す (/ = 下向き検索、? = 上向き検索)
     cmdline = {
       format = {
         cmdline = { icon = "❯" },
-        search_down = { icon = "❯" },
-        search_up = { icon = "❯" },
+        search_down = { icon = "⌄⌄" },
+        search_up = { icon = "⌃⌃" },
       },
     },
   },
