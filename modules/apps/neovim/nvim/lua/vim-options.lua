@@ -48,8 +48,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "StatusLineNC", no_bg)
         hl(0, "LineNr", { bg = "none" })
         hl(0, "CursorLineNr", { bg = "none", bold = true })
-        hl(0, "CursorLine", { bg = "#2a2a2a" })
-        hl(0, "CursorColumn", { bg = "#2a2a2a" })
+        hl(0, "CursorLine", { bg = "#303030" })
+        hl(0, "CursorColumn", { bg = "#303030" })
         -- hl(0, "CursorLine", { bg = "none", underline = true }) -- カーソル行の背景を表示するためにコメントアウト
 
         -- Telescope Transparency (Telescope の背景透過)
