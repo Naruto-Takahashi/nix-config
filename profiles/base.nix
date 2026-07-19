@@ -80,6 +80,8 @@
       show_tabs = false; # Search/Inspector タブバーを隠してすっきりさせる
       show_help = false; # 最下部の "<esc>: exit ..." キーヘルプを隠す
       show_preview = false; # 選択中コマンドのプレビュー行を隠す
+      # 経過時間 (◯m ago) を右端へ (command 列の後続列はパッチで右端に揃う)
+      ui.columns = [ "duration" "command" "time" ];
       update_check = false;
       theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
     };

@@ -1,12 +1,44 @@
-atuin v18 は選択行のコマンドを Meaning::AlertError (=失敗した実行時間と
-共有) の文字色だけで表現する。これを fzf の選択行 (bg+ = 256色の236,
-fg+ = ほぼ白の太字) と同じ見た目に変更する:
- 1. 選択行のコマンド文字色を AlertError から Base (テーマの text 色) に変更
- 2. 選択行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く
-    (従来 vim-normal モード限定だった REVERSED 反転は廃止し常時 bg 方式に)
---- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 12:45:19.793656894 +0900
-+++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 12:45:19.820596880 +0900
-@@ -290,7 +290,7 @@
+atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
+ 1. 選択行のコマンド文字色を AlertError (失敗色と共有) から Base に変更
+ 2. vim-normal 限定の REVERSED 反転を廃止
+ 3. 選択行は行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く
+ 4. command 列の描画後にカーソルを列幅まで進め、後続の列 (time 等) が
+    右端に揃うようにする (ui.columns = ["duration","command","time"] 用)
+--- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:16:40.278907613 +0900
++++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:16:40.326178369 +0900
+@@ -107,6 +107,18 @@
+         };
+ 
+         for item in self.history.iter().skip(state.offset).take(end - start) {
++            // fzf-style full-width background for the selected row
++            if s.y as usize + s.state.offset == s.state.selected {
++                let cy = if s.inverted {
++                    s.list_area.top() + s.y
++                } else {
++                    s.list_area.bottom() - s.y - 1
++                };
++                s.buf.set_style(
++                    Rect::new(s.list_area.left(), cy, s.list_area.width, 1),
++                    ratatui::style::Style::default().bg(ratatui::style::Color::Indexed(236)),
++                );
++            }
+             s.render_row(item);
+ 
+             // reset line
+@@ -222,7 +234,11 @@
+                 UiColumnType::Host => self.host(h, width),
+                 UiColumnType::User => self.user(h, width),
+                 UiColumnType::Exit => self.exit_code(h, width),
+-                UiColumnType::Command => self.command(h),
++                UiColumnType::Command => {
++                    let start_x = self.x;
++                    self.command(h);
++                    self.x = start_x + width;
++                }
+             }
+         }
+     }
+@@ -290,7 +306,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -15,15 +47,15 @@ fg+ = ほぼ白の太字) と同じ見た目に変更する:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -418,9 +418,8 @@
+@@ -418,11 +434,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
 -        if self.alternate_highlight && (self.y as usize + self.state.offset == self.state.selected)
 -        {
 -            style = style.add_modifier(Modifier::REVERSED);
-+        if self.y as usize + self.state.offset == self.state.selected {
-+            style = style.bg(ratatui::style::Color::Indexed(236));
-         }
- 
+-        }
+-
          let w = (self.list_area.width - self.x) as usize;
+         self.x += self.buf.set_stringn(cx, cy, s, w, style).0 - cx;
+     }
