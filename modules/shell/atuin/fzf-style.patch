@@ -20,9 +20,12 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
     によって "^J" という制御文字表記のまま見えてしまうのを、表示直前に
     改行を空白へ置き換えることで見た目だけ隠す (保存データやプレビューの
     複数行表示はそのまま)
- 10. 検索欄/結果リスト/プレビューの区切りを、ダッシュの罫線ではなく空白 1
-     行にする。また、プレビューが伸びても結果リストが潰れすぎないよう
-     最低高 (6行) を保障する
+ 10. 検索欄/結果リストの区切りを、ダッシュの罫線ではなく空白 1 行にする。
+     また、プレビューが伸びても結果リストが潰れすぎないよう最低高 (6行) を
+     保障する
+ 11. show_preview = false のとき、元実装は高さ1の空プレビュー枠を予約して
+     しまい罫線が正しく描画できず表示が崩れるため、プレビュー領域の高さを
+     確実に 0 にする
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
@@ -177,7 +180,19 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
 --- a/crates/atuin/src/command/client/search/interactive.rs
 +++ b/crates/atuin/src/command/client/search/interactive.rs
-@@ -865,7 +865,7 @@
+@@ -796,7 +796,10 @@
+             }) + border_size * 2
+         } else if settings.show_preview && settings.preview.strategy == PreviewStrategy::Fixed {
+             settings.max_preview_height + border_size * 2
+-        } else if !matches!(compactness, Compactness::Full) || tab_index == 1 {
++        } else if !settings.show_preview || !matches!(compactness, Compactness::Full) || tab_index == 1 {
++            // show_preview = false の場合、元実装は高さ1の空プレビュー枠を
++            // 予約してしまい、1行では罫線が正しく描画できず表示が崩れる。
++            // 完全に0にしてプレビュー領域自体を無くす
+             0
+         } else {
+             1
+@@ -865,7 +868,7 @@
                  if invert {
                      [
                          Constraint::Length(1 + border_size),               // input
@@ -186,7 +201,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                          Constraint::Length(preview_height),                // preview
                          Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
                          Constraint::Length(if show_help { 1 } else { 0 }), // header (sic)
-@@ -1053,6 +1053,7 @@
+@@ -1053,6 +1056,7 @@
                  preview_chunk,
                  preview,
                  std::cmp::max(prefix_width, min_prefix_width),
@@ -194,7 +209,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              );
          }
      }
-@@ -1067,8 +1068,9 @@
+@@ -1067,8 +1071,9 @@
          preview_chunk: Rect,
          preview: Paragraph,
          prefix_width: u16,
@@ -205,7 +220,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          f.render_widget(input, input_chunk);
  
          f.render_widget(preview, preview_chunk);
-@@ -1080,8 +1082,8 @@
+@@ -1080,8 +1085,8 @@
              _ => 0,
          };
          f.set_cursor_position((
@@ -216,7 +231,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              input_chunk.y + cursor_offset,
          ));
      }
-@@ -1175,6 +1177,10 @@
+@@ -1175,6 +1180,10 @@
              columns,
          );
  
@@ -227,7 +242,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          match style.compactness {
              Compactness::Full => {
                  if style.invert {
-@@ -1182,13 +1188,16 @@
+@@ -1182,13 +1191,16 @@
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
                              .border_type(BorderType::Rounded)
@@ -246,7 +261,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      )
                  }
              }
-@@ -1196,7 +1205,7 @@
+@@ -1196,7 +1208,7 @@
          }
      }
  
@@ -255,7 +270,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,21 +1213,42 @@
+@@ -1204,21 +1216,42 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -303,7 +318,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      input.block(
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
-@@ -1240,8 +1270,8 @@
+@@ -1240,8 +1273,8 @@
          theme: &Theme,
      ) -> Paragraph<'_> {
          let selected = self.results_state.selected();
@@ -314,7 +329,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          } else {
              let s = &results[selected].command;
              let mut lines = Vec::new();
-@@ -1263,16 +1293,24 @@
+@@ -1263,16 +1296,24 @@
                      lines.push(line[start..].to_owned());
                  }
              }

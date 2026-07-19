@@ -35,11 +35,10 @@
       # 数字ショートカット (Alt+1..9) は komorebi のワークスペース移動と衝突して
       # 使えず、Ctrl+数字も端末の制約で届かないため、番号表示ごと無効化する
       show_numeric_shortcuts = false;
-      # プレビュー: リストは1エントリ=1行の制約があるため、複数行 (\ 継続)
-      # コマンドは選択時に下部プレビューで改行構造ごと表示する
-      show_preview = true;
-      preview.strategy = "auto"; # 1行コマンドは1行分、複数行なら行数に応じて拡大
-      max_preview_height = 10;
+      # プレビューは無効化 (枠が崩れたり表示領域が正しく確保されない問題が
+      # あったため撤回。fzf-style.patch 側で show_preview=false のとき
+      # プレビュー領域の高さを確実に 0 にするよう修正済み)
+      show_preview = false;
       # 経過時間 (◯m ago) 列は非表示 (長いコマンドとの表示競合を避ける。
       # 実行時刻などの詳細は Ctrl+O のインスペクタで確認できる)
       ui.columns = [ "duration" "command" ];
