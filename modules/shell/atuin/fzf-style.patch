@@ -12,17 +12,16 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
     (256色パレット 236番) に揃える
  7. 検索/フィルタの状態表示を、角括弧のテキストとしてではなく外枠自体の
     タイトルとして埋め込む ("╭─ GLOBAL ─╮" のように罫線に溶け込む形)。
-    入力欄・結果リスト・プレビューの枠線はすべて fzf 実機の枠線色
-    (256色パレット 59番, #5f5f87) に固定する (メインハイライトは使わない)
+    入力欄・結果リストの枠線はすべて fzf 実機の枠線色 (256色パレット
+    59番, #5f5f87) に固定する (メインハイライトは使わない)。結果リストは
+    プレビュー無効化後の最後の区画になるため BOTTOM 罫線も付けて枠を閉じる
  8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
     色かつ太字でハイライトする
  9. 一覧の1行畳み表示で、複数行 (\ 継続) コマンドの改行が escape_control()
     によって "^J" という制御文字表記のまま見えてしまうのを、表示直前に
     改行を空白へ置き換えることで見た目だけ隠す (保存データやプレビューの
     複数行表示はそのまま)
- 10. 検索欄/結果リストの区切りを、ダッシュの罫線ではなく空白 1 行にする。
-     また、プレビューが伸びても結果リストが潰れすぎないよう最低高 (6行) を
-     保障する
+ 10. 検索欄/結果リストの区切りを、ダッシュの罫線ではなく空白 1 行にする
  11. show_preview = false のとき、元実装は高さ1の空プレビュー枠を予約して
      しまい罫線が正しく描画できず表示が崩れるため、プレビュー領域の高さを
      確実に 0 にする
@@ -231,7 +230,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              input_chunk.y + cursor_offset,
          ));
      }
-@@ -1175,6 +1180,10 @@
+@@ -1175,20 +1180,30 @@
              columns,
          );
  
@@ -242,9 +241,13 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          match style.compactness {
              Compactness::Full => {
                  if style.invert {
-@@ -1182,13 +1191,16 @@
+                     results_list.block(
                          Block::default()
-                             .borders(Borders::LEFT | Borders::RIGHT)
+-                            .borders(Borders::LEFT | Borders::RIGHT)
++                            // プレビューを無効化した (常に高さ0) ため、結果
++                            // リストが最後の区画になる。BOTTOM を付けて
++                            // 枠を閉じる ("コ" の字のまま開いてしまうのを防ぐ)
++                            .borders(Borders::LEFT | Borders::RIGHT | Borders::BOTTOM)
                              .border_type(BorderType::Rounded)
 -                            .title(format!("{:─>width$}", "", width = style.inner_width - 2)),
 +                            .border_style(border_style)
@@ -261,7 +264,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      )
                  }
              }
-@@ -1196,7 +1208,7 @@
+@@ -1196,7 +1211,7 @@
          }
      }
  
@@ -270,7 +273,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,21 +1216,42 @@
+@@ -1204,21 +1219,42 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -318,7 +321,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      input.block(
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
-@@ -1240,8 +1273,8 @@
+@@ -1240,8 +1276,8 @@
          theme: &Theme,
      ) -> Paragraph<'_> {
          let selected = self.results_state.selected();
@@ -329,7 +332,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          } else {
              let s = &results[selected].command;
              let mut lines = Vec::new();
-@@ -1263,16 +1296,24 @@
+@@ -1263,16 +1299,24 @@
                      lines.push(line[start..].to_owned());
                  }
              }
