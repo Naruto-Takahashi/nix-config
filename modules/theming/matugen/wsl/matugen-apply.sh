@@ -201,6 +201,15 @@ STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
 # 必要なため専用スクリプトで生成する。zsh が TEALDEER_CONFIG_DIR でこちらを優先。
 mkdir -p "$HOME/.cache/matugen/tealdeer"
 python3 "$LIB/tealdeer-config.py" "$lua_tmp" "$HOME/.cache/matugen/tealdeer/config.toml"
+
+# atuin / btop のテーマ (theme.name / color_theme = "matugen" 固定で、
+# このファイルの中身だけを差し替える。フォールバック版は home-manager の
+# activation が同パスへ配置している)
+mkdir -p "$HOME/.config/atuin/themes" "$HOME/.config/btop/themes"
+"$LIB/render-template.sh" "$TPL/atuin-theme.toml" \
+    "$HOME/.config/atuin/themes/matugen.toml" "$lua_tmp"
+"$LIB/render-template.sh" "$TPL/btop.theme" \
+    "$HOME/.config/btop/themes/matugen.theme" "$lua_tmp"
 rm -f "$lua_tmp"
 
 # Windows (PowerShell) 向け starship 変種: custom.os_logo は POSIX sh 依存で

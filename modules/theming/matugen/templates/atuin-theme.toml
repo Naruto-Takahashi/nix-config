@@ -1,0 +1,15 @@
+# atuin テーマ (matugen-apply が @@KEY@@ を実際の配色に置換して
+# ~/.config/atuin/themes/matugen.toml へ配置する)
+[theme]
+name = "matugen"
+
+[colors]
+Base = "@@TEXT@@"
+Title = "@@ACCENT@@"
+Important = "@@ACCENT_PALE@@"
+Annotation = "@@TERTIARY@@"
+Guidance = "@@MUTED@@"
+Muted = "@@MUTED@@"
+AlertInfo = "@@TRIAD@@"
+AlertWarn = "@@ACCENT@@"
+AlertError = "@@ERROR@@"

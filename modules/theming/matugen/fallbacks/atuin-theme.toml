@@ -1,0 +1,16 @@
+# atuin テーマ kanagawa-dragon フォールバック
+# (matugen 未適用の環境向け。matugen-apply が同パスを上書きする。
+#  配色キーの対応は templates/atuin-theme.toml と揃えること)
+[theme]
+name = "matugen"
+
+[colors]
+Base = "#c5c9c5"
+Title = "#e6c384"
+Important = "#f0dbb5"
+Annotation = "#7aa89f"
+Guidance = "#a6a69c"
+Muted = "#a6a69c"
+AlertInfo = "#8a9a7b"
+AlertWarn = "#e6c384"
+AlertError = "#c4746e"

@@ -3,7 +3,7 @@
 # =========================================================================
 # wsl / mac / ubuntu / nixos の全ホストが import する共通セット。
 # ホスト固有のモジュール (WM や OS 依存アプリ) は各 hosts/*/ 側で追加する。
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   # -----------------------------------------------------------------------
@@ -68,13 +68,38 @@
       inline_height = 20;
       style = "compact";
       update_check = false;
+      theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
     };
   };
+
+  # atuin / btop のテーマは「theme 名は matugen 固定・中身のファイルを
+  # 差し替える」方式。matugen 環境では matugen-apply が壁紙由来の配色で
+  # 上書きし、無い環境ではここで配置する kanagawa-dragon 版が使われ続ける。
+  # btop は終了時に btop.conf を自分で書き換えるため programs.btop
+  # (読み取り専用 symlink) は使わず、初回のみ設定をシードする。
+  home.activation.seedMatugenThemes = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    mkdir -p "$HOME/.config/atuin/themes" "$HOME/.config/btop/themes"
+    [ -f "$HOME/.config/atuin/themes/matugen.toml" ] || \
+      cp ${../modules/theming/matugen/fallbacks/atuin-theme.toml} \
+        "$HOME/.config/atuin/themes/matugen.toml"
+    [ -f "$HOME/.config/btop/themes/matugen.theme" ] || \
+      cp ${../modules/theming/matugen/fallbacks/btop.theme} \
+        "$HOME/.config/btop/themes/matugen.theme"
+    chmod u+w "$HOME/.config/atuin/themes/matugen.toml" \
+      "$HOME/.config/btop/themes/matugen.theme"
+    if [ ! -f "$HOME/.config/btop/btop.conf" ]; then
+      printf '%s\n' \
+        'color_theme = "matugen"' \
+        'theme_background = False' \
+        'vim_keys = True' \
+        > "$HOME/.config/btop/btop.conf"
+    fi
+  '';
 
   home.packages = [
     pkgs.smassh # MonkeyType 風の TUI タイピング練習
     pkgs.fd # find の現代版 (fzf バックエンドにも)
     pkgs.delta # git diff のシンタックスハイライト付きページャ (~/.gitconfig が参照)
-    pkgs.btop # システムモニタ TUI
+    pkgs.btop # システムモニタ TUI (テーマは上の activation / matugen-apply が配置)
   ];
 }
