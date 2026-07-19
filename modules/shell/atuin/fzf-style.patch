@@ -5,26 +5,48 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  4. command 列を割当幅で確実に打ち切り (境界判定も >= に修正)、
     右余白や後続列へ漏れないようにする
  5. 右端の枠との間に 1 文字分の余白を確保する
- 6. 左端のインジケータを fzf のスクロールバー風の塗りブロック (▌) に変更。
-    選択行は Title 色太字、非選択行は選択行の背景塗りと同じグレー
-    (256色パレット 236番) に揃える
- 7. [ GLOBAL ] などのステータス表示と "> " 入力欄を2行構成の1つの枠にまとめる。
-    invert 時は枠を LEFT|RIGHT|TOP のみにする (元の実装と同様。ALL(4辺)だと
-    罫線の下辺の分だけ高さが1行超過し、結果リストの区切り線と重なって
-    表示が崩れるため)
+ 6. 左端のインジケータを fzf の本物のスクロールバーと同様に、全体に対する
+    現在位置の割合で決まるサム範囲だけをブロック (▌) で塗る。選択行は
+    Title 色太字、サム範囲内の非選択行は選択行の背景塗りと同じグレー
+    (256色パレット 236番)、サム範囲外 (トラック) は罫線を描かない
+ 7. 検索/フィルタの状態表示を、角括弧のテキストとしてではなく外枠自体の
+    タイトルとして埋め込む ("╭─ GLOBAL ─╮" のように罫線に溶け込む形)。
+    枠の色はフィルタモード (global/host/session/directory/workspace) ごとに
+    matugen パレットの別の色 (accent/tertiary/secondary/complement/triad) を
+    割り当てる。nvim 側 (lualine.lua) がモードごとに色を変えているのに倣う
  8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
     色かつ太字でハイライトする
- 9. [ GLOBAL ] の角括弧表示を、WezTerm のタブと同じ平行四辺形バッジに変更。
-    幅は文字数ぴったりに絞り、accent 背景 + 固定ダーク文字色 (#181616) で
-    塗る
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
-@@ -104,9 +104,22 @@
+@@ -90,6 +90,21 @@
+         state.offset = start;
+         state.max_entries = end - start;
+ 
++        // fzf 風の本物のスクロールバー: 全体に対する現在位置の割合に応じた
++        // サム (thumb) の範囲だけを塗り、それ以外の行は罫線を描かない
++        let total = self.history.len();
++        let (scrollbar_thumb_start, scrollbar_thumb_size) = if total > list_height && list_height > 0
++        {
++            let size = (list_height * list_height / total).clamp(1, list_height);
++            let max_start = list_height - size;
++            let denom = total - list_height;
++            let pos = if denom == 0 { 0 } else { (max_start * start) / denom };
++            (pos, size)
++        } else {
++            // 全件が収まる場合はスクロール不要 = 全行がサム扱い
++            (0, list_height)
++        };
++
+         let mut s = DrawState {
+             buf,
+             list_area,
+@@ -104,9 +119,23 @@
              history_highlighter: self.history_highlighter,
              show_numeric_shortcuts: self.show_numeric_shortcuts,
              columns: self.columns,
-+            history_len: self.history.len(),
++            scrollbar_thumb_start,
++            scrollbar_thumb_size,
          };
  
          for item in self.history.iter().skip(state.offset).take(end - start) {
@@ -43,15 +65,16 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              s.render_row(item);
  
              // reset line
-@@ -177,6 +190,7 @@
+@@ -177,6 +206,8 @@
      history_highlighter: HistoryHighlighter<'a>,
      show_numeric_shortcuts: bool,
      columns: &'a [UiColumn],
-+    history_len: usize,
++    scrollbar_thumb_start: usize,
++    scrollbar_thumb_size: usize,
  }
  
  // these encode the slices of `" > "`, `" {n} "`, or `"   "` in a compact form.
-@@ -198,10 +212,11 @@
+@@ -198,10 +229,11 @@
              .filter(|c| !c.expand)
              .map(|c| c.width + 1)
              .sum();
@@ -64,7 +87,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,32 +237,37 @@
+@@ -222,32 +254,42 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -89,8 +112,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -            self.draw(prompt, Style::default());
 -            return;
 -        }
-+        let is_thumb = (self.y as usize + self.state.offset) == self.state.selected;
- 
+-
 -        // these encode the slices of `" > "`, `" {n} "`, or `"   "` in a compact form.
 -        // Yes, this is a hack, but it makes me feel happy
 -
@@ -99,20 +121,27 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -        let i = i.unwrap_or(10).min(10) * 2;
 -        let prompt: &str = if i == 0 {
 -            self.indicator
-+        // fzf のスクロールバーに寄せて、細い罫線ではなく塗りつぶしブロックにする。
-+        // 非選択行は選択行の背景塗り (Indexed 236) と同じグレーに揃える
-+        // (固定の青みがかったグレーだと選択行の背景と馴染まないため)
-+        let (prompt, style) = if is_thumb {
++        let is_selected = (self.y as usize + self.state.offset) == self.state.selected;
++        let in_thumb = (self.y as usize) >= self.scrollbar_thumb_start
++            && (self.y as usize) < self.scrollbar_thumb_start + self.scrollbar_thumb_size;
++
++        // fzf の本物のスクロールバーに寄せる: 選択行は Title 色太字のブロック、
++        // 現在のスクロール位置に対応するサム範囲は選択行の背景塗り
++        // (Indexed 236) と同じグレーのブロック、それ以外の行 (トラック) は
++        // 罫線を描かず空白のままにする
++        let (prompt, style) = if is_selected {
 +            let mut s = self.theme.as_style(Meaning::Title);
 +            s.attributes.set(style::Attribute::Bold);
 +            (" ▌ ", Style::from_crossterm(s))
-         } else {
--            &SLICES[i..i + 3]
++        } else if in_thumb {
 +            let row_bg_gray = style::ContentStyle {
 +                foreground_color: Some(style::Color::AnsiValue(236)),
 +                ..style::ContentStyle::default()
 +            };
 +            (" ▌ ", Style::from_crossterm(row_bg_gray))
+         } else {
+-            &SLICES[i..i + 3]
++            ("   ", Style::default())
          };
 -        self.draw(prompt, Style::default());
 +
@@ -120,7 +149,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
  
      fn duration(&mut self, h: &History, width: u16) {
-@@ -290,7 +310,7 @@
+@@ -290,7 +332,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -129,7 +158,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -308,18 +328,14 @@
+@@ -308,18 +350,14 @@
                  self.draw(" ", Style::from_crossterm(style));
              }
              for ch in section.chars() {
@@ -150,7 +179,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      style.attributes.set(style::Attribute::Bold);
                  }
                  let s = ch.to_string();
-@@ -418,11 +434,6 @@
+@@ -418,11 +456,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
@@ -164,24 +193,6 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
 --- a/crates/atuin/src/command/client/search/interactive.rs
 +++ b/crates/atuin/src/command/client/search/interactive.rs
-@@ -864,7 +864,7 @@
-             .constraints::<&[Constraint]>(
-                 if invert {
-                     [
--                        Constraint::Length(1 + border_size),               // input
-+                        Constraint::Length(2 + border_size),               // input
-                         Constraint::Min(1),                                // results list
-                         Constraint::Length(preview_height),                // preview
-                         Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
-@@ -883,7 +883,7 @@
-                             Constraint::Length(if show_help { 1 } else { 0 }), // header
-                             Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
-                             Constraint::Min(1),                                // results list
--                            Constraint::Length(1 + border_size),               // input
-+                            Constraint::Length(2 + border_size),               // input
-                             Constraint::Length(preview_height),                // preview
-                         ],
-                     }
 @@ -1053,6 +1053,7 @@
                  preview_chunk,
                  preview,
@@ -201,87 +212,95 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          f.render_widget(input, input_chunk);
  
          f.render_widget(preview, preview_chunk);
-@@ -1079,10 +1081,15 @@
-             Compactness::Full => 1,
+@@ -1080,8 +1082,8 @@
              _ => 0,
          };
-+        let cursor_y = if style.invert {
-+            input_chunk.y + 1 + cursor_offset
-+        } else {
-+            input_chunk.y + cursor_offset
-+        };
          f.set_cursor_position((
 -            // Put cursor past the end of the input text
 -            input_chunk.x + extra_width as u16 + prefix_width + cursor_offset,
--            input_chunk.y + cursor_offset,
 +            // Put cursor past the end of the input text: prefix is "> " (length 2)
 +            input_chunk.x + extra_width as u16 + 2 + cursor_offset,
-+            cursor_y,
+             input_chunk.y + cursor_offset,
          ));
      }
- 
-@@ -1196,7 +1203,7 @@
+@@ -1196,7 +1198,27 @@
          }
      }
  
 -    fn build_input(&self, style: StyleState, prefix_width: u16) -> Paragraph<'_> {
++    // フィルタモード (global/host/session/directory/workspace) ごとに
++    // matugen パレットの別の色を割り当てる。nvim 側の lualine.lua が
++    // モード (normal/insert/visual/...) ごとに accent/tertiary/complement/...
++    // を割り当てているのに倣う。Theme の Meaning は 9 種類の固定スロット
++    // しかなく自由に増やせないため、実際には使われていない
++    // (ui.columns/show_tabs/show_help 設定により render に来ない)
++    // Annotation/Important/Guidance/Muted を流用する。テーマファイル側で
++    // Annotation=tertiary, Important=secondary, Guidance=complement,
++    // Muted=triad を割り当てている (matugen-palette.md 参照)
++    fn filter_mode_style(theme: &Theme, filter_mode: FilterMode) -> ratatui::crossterm::style::ContentStyle {
++        let meaning = match filter_mode {
++            FilterMode::Global => Meaning::Title,
++            FilterMode::Host => Meaning::Annotation,
++            FilterMode::Session | FilterMode::SessionPreload => Meaning::Important,
++            FilterMode::Directory => Meaning::Guidance,
++            FilterMode::Workspace => Meaning::Muted,
++        };
++        theme.as_style(meaning)
++    }
++
 +    fn build_input(&self, style: StyleState, prefix_width: u16, theme: &Theme) -> Paragraph<'_> {
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,12 +1211,49 @@
+@@ -1204,21 +1226,46 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
 -        // 3: surrounding "[" "] "
--        let mode_width = usize::from(prefix_width) - pref.len() - 3;
+         let mode_width = usize::from(prefix_width) - pref.len() - 3;
 -        // sanity check to ensure we don't exceed the layout limits
--        debug_assert!(mode_width >= mode.len(), "mode name '{mode}' is too long!");
+         debug_assert!(mode_width >= mode.len(), "mode name '{mode}' is too long!");
 -        let input = format!("[{pref}{mode:^mode_width$}] {}", self.search.input.as_str());
 -        let input = Paragraph::new(input);
-+        // [ GLOBAL ] のような角括弧テキストではなく、accent 背景で塗った
-+        // ピル/バッジ風に。文字色は固定のダーク (kanagawa dragonBlack3) にして
-+        // どの matugen 配色でも視認性を確保する
-+        // WezTerm のタブと同じ手法 (平行四辺形の斜め終端グリフ + 塗り本体) で
-+        // フィルタ名バッジを描く。幅は文字数ぴったりに絞り、余計な余白を作らない
-+        let label = format!("{pref}{mode}");
-+        let accent = theme.as_style(Meaning::Title).foreground_color;
-+        let dark_fg = Some(ratatui::crossterm::style::Color::Rgb { r: 0x18, g: 0x16, b: 0x16 });
++        let _ = format!("[{pref}{mode:^mode_width$}]"); // 幅計算の意図を残すダミー参照
 +
-+        let cap_style = ratatui::crossterm::style::ContentStyle {
-+            foreground_color: accent,
-+            ..ratatui::crossterm::style::ContentStyle::default()
-+        };
-+        let mut body_style = ratatui::crossterm::style::ContentStyle {
-+            foreground_color: dark_fg,
-+            background_color: accent,
-+            ..ratatui::crossterm::style::ContentStyle::default()
-+        };
-+        body_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
-+
-+        let status_line = ratatui::text::Line::from(vec![
-+            // ple_lower_right_triangle (U+E0BA): 平行四辺形の左端の斜め終端
-+            ratatui::text::Span::styled("\u{e0ba}", Style::from_crossterm(cap_style)),
-+            ratatui::text::Span::styled(format!(" {label} "), Style::from_crossterm(body_style)),
-+            // ple_upper_left_triangle (U+E0BC): 平行四辺形の右端の斜め終端
-+            ratatui::text::Span::styled("\u{e0bc}", Style::from_crossterm(cap_style)),
-+        ]);
-+        
 +        let mut arrow_style = theme.as_style(Meaning::Title);
 +        arrow_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
-+        
++
 +        let input_line = ratatui::text::Line::from(vec![
 +            ratatui::text::Span::styled("> ", Style::from_crossterm(arrow_style)),
 +            ratatui::text::Span::raw(self.search.input.as_str()),
 +        ]);
-+        
-+        let lines = if style.invert {
-+            vec![status_line, input_line]
-+        } else {
-+            vec![input_line, status_line]
-+        };
-+        
-+        let input = Paragraph::new(ratatui::text::Text::from(lines));
++
++        let input = Paragraph::new(input_line);
++
++        // 外枠そのものにフィルタモードの色を乗せ、タイトルとしてラベルを埋め込む
++        // ("╭─ GLOBAL ─╮" のように、罫線に溶け込む形でモード名を表示する)
++        let mut border_style = Self::filter_mode_style(theme, self.search.filter_mode);
++        let border_color = border_style.foreground_color;
++        border_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
++
++        let title_text = format!(" {} ", self.search.filter_mode.as_str());
++        let title = Line::styled(title_text, Style::from_crossterm(border_style));
++
          match style.compactness {
              Compactness::Full => {
                  if style.invert {
+                     input.block(
+                         Block::default()
+                             .borders(Borders::LEFT | Borders::RIGHT | Borders::TOP)
+-                            .border_type(BorderType::Rounded),
++                            .border_type(BorderType::Rounded)
++                            .border_style(Style::default().fg(
++                                border_color.map(ratatui::style::Color::from_crossterm)
++                                    .unwrap_or_default(),
++                            ))
++                            .title(title)
++                            .title_alignment(Alignment::Center),
+                     )
+                 } else {
++                    // 非 invert (検索バーが下側) 構成はこの設定 (invert = true)
++                    // では使わないため、元実装のまま (擬似的な区切り線) にする
+                     input.block(
+                         Block::default()
+                             .borders(Borders::LEFT | Borders::RIGHT)

@@ -5,14 +5,19 @@ name = "matugen"
 
 [colors]
 Base = "@@TEXT@@"
+# Title = 検索ボックス枠のフィルタモード "GLOBAL" 用色。fzf-style.patch の
+# filter_mode_style() が Host/Session/Directory/Workspace には
+# Annotation/Important/Guidance/Muted を流用する (nvim lualine.lua の
+# モード別配色に倣う)
 Title = "@@ACCENT@@"
-# 選択行は modules/patches/atuin-separate-selection-color.patch により
-# fzf と同じ「背景 #303030 + Base 色の太字」で描画される (テーマ設定不要)
-Important = "@@ACCENT@@"
+# Session フィルタの枠色
+Important = "@@SECONDARY@@"
+# Host フィルタの枠色
 Annotation = "@@TERTIARY@@"
-# Guidance = 経過時間 (◯m ago) の列
-Guidance = "@@TERTIARY@@"
-Muted = "@@MUTED@@"
+# Directory フィルタの枠色
+Guidance = "@@COMPLEMENT@@"
+# Workspace フィルタの枠色 (通常の Muted 用途では未使用: fzf-style.patch 参照)
+Muted = "@@TRIAD@@"
 # AlertInfo/AlertError = 実行時間列の成功/失敗色。zsh の
 # syntax-highlighting (存在する/しないコマンド) と同じ固定値
 AlertInfo = "#98bb6c"
