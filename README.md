@@ -34,6 +34,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | **共通 (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 85%半透明適用，Matugen配色タブ，Leaderキー（`Ctrl+Space`）管理． |
 | **共通 (App)** | 📝 Neovim | [neovim.md](docs/neovim.md) | Lazy.nvimによる構成，高度なカスタムマクロとプラグイン群． |
 | **共通 (App)** | 📁 Yazi | [yazi.md](docs/yazi.md) | Matugen配色の透過ファイラー，シェル連携による移動同期． |
+| **共通 (CLI)** | 🧰 CLI小物 | [cli-tools.md](docs/cli-tools.md) | atuin履歴検索，tldr，fd，delta，btop，smasshの使い方集． |
 | **NixOS ⇄ Windows** | 🖥️ Remote Desktop | [remote-desktop.md](docs/remote-desktop.md) | Tailscale + Sunshine/Moonlight による大学VPN不要の無人リモート接続． |
 
 ![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
@@ -205,6 +206,7 @@ Declarative configurations for NixOS, Ubuntu (Desktop), WSL2, and macOS managed 
 | **Common (App)** | 💻 WezTerm | [wezterm.md](docs/wezterm.md) | 75% transparent window, dynamic tab parsing, Leader key. |
 | **Common (App)** | 📝 Neovim | [neovim.md](docs/neovim.md) | Custom config built with Lazy.nvim, optimized Vim macros. |
 | **Common (App)** | 📁 Yazi | [yazi.md](docs/yazi.md) | Cyberdream transparent file manager with shell sync hook. |
+| **Common (CLI)** | 🧰 CLI tools | [cli-tools.md](docs/cli-tools.md) | Usage cheatsheet for atuin, tldr, fd, delta, btop, smassh. |
 
 ## 📂 Repository Structure
 
