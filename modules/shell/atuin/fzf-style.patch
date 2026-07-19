@@ -6,16 +6,17 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
     右余白や後続列へ漏れないようにする
  5. 右端の枠との間に 1 文字分の余白を確保する
  6. 左端のインジケータを fzf のスクロールバー風の塗りブロック (▌) に変更。
-    選択行は Title 色太字、非選択行は fzf 実機の枠線色 (256色パレット
-    59番, #5f5f87) に固定 (テーマの Muted だと fzf より薄く見えるため)
+    選択行は Title 色太字、非選択行は選択行の背景塗りと同じグレー
+    (256色パレット 236番) に揃える
  7. [ GLOBAL ] などのステータス表示と "> " 入力欄を2行構成の1つの枠にまとめる。
     invert 時は枠を LEFT|RIGHT|TOP のみにする (元の実装と同様。ALL(4辺)だと
     罫線の下辺の分だけ高さが1行超過し、結果リストの区切り線と重なって
     表示が崩れるため)
  8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
     色かつ太字でハイライトする
- 9. [ GLOBAL ] の角括弧表示を、accent 背景で塗ったピル/バッジ風に変更。
-    文字色は固定のダーク (kanagawa dragonBlack3, #181616) で視認性を確保
+ 9. [ GLOBAL ] の角括弧表示を、WezTerm のタブと同じ平行四辺形バッジに変更。
+    幅は文字数ぴったりに絞り、accent 背景 + 固定ダーク文字色 (#181616) で
+    塗る
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
@@ -99,19 +100,19 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -        let prompt: &str = if i == 0 {
 -            self.indicator
 +        // fzf のスクロールバーに寄せて、細い罫線ではなく塗りつぶしブロックにする。
-+        // 非選択行は fzf 実機の枠線色 (256色パレット 59番, #5f5f87) に固定する
-+        // (テーマの Muted は薄すぎて fzf ほど締まった印象にならないため)
++        // 非選択行は選択行の背景塗り (Indexed 236) と同じグレーに揃える
++        // (固定の青みがかったグレーだと選択行の背景と馴染まないため)
 +        let (prompt, style) = if is_thumb {
 +            let mut s = self.theme.as_style(Meaning::Title);
 +            s.attributes.set(style::Attribute::Bold);
 +            (" ▌ ", Style::from_crossterm(s))
          } else {
 -            &SLICES[i..i + 3]
-+            let fzf_border_gray = style::ContentStyle {
-+                foreground_color: Some(style::Color::Rgb { r: 0x5f, g: 0x5f, b: 0x87 }),
++            let row_bg_gray = style::ContentStyle {
++                foreground_color: Some(style::Color::AnsiValue(236)),
 +                ..style::ContentStyle::default()
 +            };
-+            (" ▌ ", Style::from_crossterm(fzf_border_gray))
++            (" ▌ ", Style::from_crossterm(row_bg_gray))
          };
 -        self.draw(prompt, Style::default());
 +
@@ -228,7 +229,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,12 +1211,41 @@
+@@ -1204,12 +1211,49 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -241,22 +242,30 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 +        // [ GLOBAL ] のような角括弧テキストではなく、accent 背景で塗った
 +        // ピル/バッジ風に。文字色は固定のダーク (kanagawa dragonBlack3) にして
 +        // どの matugen 配色でも視認性を確保する
++        // WezTerm のタブと同じ手法 (平行四辺形の斜め終端グリフ + 塗り本体) で
++        // フィルタ名バッジを描く。幅は文字数ぴったりに絞り、余計な余白を作らない
 +        let label = format!("{pref}{mode}");
-+        let pill_width = usize::from(prefix_width);
-+        debug_assert!(label.len() <= pill_width, "filter label '{label}' is too long!");
-+        let pill_text = format!("{label:^pill_width$}");
++        let accent = theme.as_style(Meaning::Title).foreground_color;
++        let dark_fg = Some(ratatui::crossterm::style::Color::Rgb { r: 0x18, g: 0x16, b: 0x16 });
 +
-+        let mut pill_style = ratatui::crossterm::style::ContentStyle {
-+            foreground_color: Some(ratatui::crossterm::style::Color::Rgb { r: 0x18, g: 0x16, b: 0x16 }),
-+            background_color: theme.as_style(Meaning::Title).foreground_color,
++        let cap_style = ratatui::crossterm::style::ContentStyle {
++            foreground_color: accent,
 +            ..ratatui::crossterm::style::ContentStyle::default()
 +        };
-+        pill_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
++        let mut body_style = ratatui::crossterm::style::ContentStyle {
++            foreground_color: dark_fg,
++            background_color: accent,
++            ..ratatui::crossterm::style::ContentStyle::default()
++        };
++        body_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
 +
-+        let status_line = ratatui::text::Line::from(ratatui::text::Span::styled(
-+            pill_text,
-+            Style::from_crossterm(pill_style),
-+        ));
++        let status_line = ratatui::text::Line::from(vec![
++            // ple_lower_right_triangle (U+E0BA): 平行四辺形の左端の斜め終端
++            ratatui::text::Span::styled("\u{e0ba}", Style::from_crossterm(cap_style)),
++            ratatui::text::Span::styled(format!(" {label} "), Style::from_crossterm(body_style)),
++            // ple_upper_left_triangle (U+E0BC): 平行四辺形の右端の斜め終端
++            ratatui::text::Span::styled("\u{e0bc}", Style::from_crossterm(cap_style)),
++        ]);
 +        
 +        let mut arrow_style = theme.as_style(Meaning::Title);
 +        arrow_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
