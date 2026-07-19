@@ -15,6 +15,7 @@ vim.cmd("set cursorcolumn") -- カーソル列をハイライト
 vim.g.mapleader = " "       -- スペースキーをリーダーキーにする（Typecraft推奨）
 vim.opt.showmode = false    -- "-- INSERT --" 表示はステータスバーにあるため不要
 vim.opt.cmdheight = 0       -- コマンドライン行を隠して本文領域を1行広げる (入力時のみ出現)
+vim.o.winborder = "rounded" -- hover等、border未指定のfloatにも一括で枠を付ける (nvim 0.11+)
 
 -- matugen 配色 (フォールバック付き)
 local mc = require("matugen")
@@ -27,7 +28,8 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         local no_bg = { bg = "none" }
         hl(0, "Normal", no_bg)
         hl(0, "NormalFloat", no_bg)
-        hl(0, "FloatBorder", no_bg)
+        -- 枠線色を明示指定 (未指定だとkanagawaの既定色が背景に埋もれて見づらいことがある)
+        hl(0, "FloatBorder", { bg = "none", fg = mc.muted })
         hl(0, "FloatTitle", no_bg)
         hl(0, "FloatFooter", no_bg)
         hl(0, "NeoTreeFloatBorder", no_bg)
