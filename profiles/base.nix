@@ -74,7 +74,7 @@
       search_mode = "fuzzy";
       filter_mode = "global";
       inline_height = 20;
-      style = "compact";
+      style = "full"; # fzf の --border 風に検索窓・結果リストを枠線付きで表示
       # 検索バーを上・結果を下に (トップダウン)
       invert = true;
       show_tabs = false; # Search/Inspector タブバーを隠してすっきりさせる
