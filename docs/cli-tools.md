@@ -12,7 +12,7 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 | 操作 | 動作 |
 | :--- | :--- |
 | **`Ctrl+R`** | 履歴検索 UI を開く (fuzzy 検索。打つだけで絞り込み) |
-| **`↑` / `↓`** | 候補の移動 |
+| **`↑` / `↓`** | 候補の移動 (最上段で `↑` を押しても終了しない) |
 | **`Enter`** | 選択したコマンドを即実行 |
 | **`Tab`** | 実行せずプロンプトに挿入 (編集してから実行したいとき) |
 | **`Ctrl+R` (UI 内)** | フィルタ切替 (global → host → session → directory) |
@@ -23,8 +23,8 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 - フィルタの「directory」は「今のディレクトリで実行したものだけ」— 特定プロジェクトの履歴を掘るのに便利
 - `\` 継続の複数行コマンドは改行・インデントごと記録され、`Tab`/`Enter` での呼び出し時に縦に並んだ元の形で復元される。リスト内では1行に畳むが、選択すると下部プレビューに縦の形のまま表示される (`preview.strategy = "auto"`)
 - レイアウトは検索バー上・結果下 (`invert = true`)、fzf 風の枠線付き (`style = "full"`)。キーヘルプは非表示
-- フィルタモード名 (`GLOBAL`/`HOST`/`SESSION`/`DIRECTORY`/`WORKSPACE`) は外枠自体のタイトルとして埋め込まれ (`╭─ GLOBAL ─╮`)、枠の色はモードごとに matugen の別パレット (accent/tertiary/secondary/complement/triad) になる。nvim の lualine.lua がモード (normal/insert/visual/...) ごとに色を変えているのと同じ考え方
-- 左端は fzf と同じ本物のスクロールバー。全履歴に対する現在位置の割合でサム (選択行の背景と同じグレー) の位置・大きさが決まり、選択行だけ accent 太字、それ以外のトラック部分は罫線なしの空白
+- フィルタモード名 (`GLOBAL`/`HOST`/`SESSION`/`DIRECTORY`/`WORKSPACE`) は外枠自体のタイトルとして埋め込まれる (`╭─ GLOBAL ─╮`)。枠の色はモードに関わらず常にメインハイライト (accent) で固定
+- 左端のインジケータは fzf 風の塗りブロック (`▌`)。選択行は accent 太字、それ以外の行は選択行の背景と同じグレー
 - 配色は fzf (ghq 検索等) と同じ文法: 選択行 = fzf と同じ暗灰背景 (#303030) + 白太字、検索一致文字 = fzf の hl と同色 (matugen tertiary)
 - 実行時間列 (例: `20ms`) は成功=緑・失敗=赤 (zsh syntax-highlighting と同じ固定色)。経過時間列は非表示 (実行時刻は `Ctrl+O` のインスペクタで確認)
 - 注: 見た目の大部分は `modules/shell/atuin/fzf-style.patch` によるソースパッチで実現している (atuin はソースから再ビルドされる)。数字ショートカット (Alt+1..9) は komorebi のワークスペース移動と衝突するため番号表示ごと無効化
