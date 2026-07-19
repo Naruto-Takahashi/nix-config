@@ -58,9 +58,18 @@
     };
   };
 
+  # comma (`, <cmd>`) が使う nix-index DB。command-not-found 時の
+  # 「どのパッケージにあるか」提案も有効になる。DB は `nix-index` で生成/更新
+  programs.nix-index = {
+    enable = true;
+    enableZshIntegration = true;
+  };
+
   home.packages = [
     pkgs.smassh # MonkeyType 風の TUI タイピング練習
     pkgs.fd # find の現代版 (fzf バックエンドにも)
     pkgs.delta # git diff のシンタックスハイライト付きページャ (~/.gitconfig が参照)
+    pkgs.comma # `, <cmd>` で未インストールのコマンドをその場で一時実行
+    pkgs.just # コマンドランナー (justfile に定型タスクをまとめる)
   ];
 }
