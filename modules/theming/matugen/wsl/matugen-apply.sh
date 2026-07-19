@@ -196,6 +196,11 @@ STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
     "$HOME/.cache/matugen/lazygit-config.yml" "$lua_tmp"
 "$LIB/render-template.sh" "$HOME/.config/yazi/theme-template.toml" \
     "$HOME/.config/yazi/theme.toml" "$lua_tmp"
+
+# tealdeer (tldr) の配色: tealdeer は "#hex" を受け付けず rgb {r,g,b} 形式が
+# 必要なため専用スクリプトで生成する。zsh が TEALDEER_CONFIG_DIR でこちらを優先。
+mkdir -p "$HOME/.cache/matugen/tealdeer"
+python3 "$LIB/tealdeer-config.py" "$lua_tmp" "$HOME/.cache/matugen/tealdeer/config.toml"
 rm -f "$lua_tmp"
 
 # Windows (PowerShell) 向け starship 変種: custom.os_logo は POSIX sh 依存で

@@ -33,10 +33,26 @@
   # 全ホスト共通の小物 CLI ツール
   # -----------------------------------------------------------------------
   # tldr クライアント (コマンドの使用例を素早く確認する)
+  # 配色は kanagawa-dragon 準拠のフォールバック。matugen 環境 (WSL) では
+  # matugen-apply が ~/.cache/matugen/tealdeer/config.toml を生成し、
+  # zsh が TEALDEER_CONFIG_DIR でそちらを優先する。
   programs.tealdeer = {
     enable = true;
     settings = {
       updates.auto_update = true; # キャッシュが古いとき自動で `tldr --update` 相当を実行
+      style = {
+        description.foreground.rgb = { r = 197; g = 201; b = 197; };      # text #c5c9c5
+        command_name = {
+          foreground.rgb = { r = 230; g = 195; b = 132; };                # accent #e6c384
+          bold = true;
+        };
+        example_text.foreground.rgb = { r = 166; g = 166; b = 156; };     # muted #a6a69c
+        example_code.foreground.rgb = { r = 122; g = 168; b = 159; };     # tertiary #7aa89f
+        example_variable = {
+          foreground.rgb = { r = 162; g = 146; b = 163; };                # secondary #a292a3
+          italic = true;
+        };
+      };
     };
   };
 

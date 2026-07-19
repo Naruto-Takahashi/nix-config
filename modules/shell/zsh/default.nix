@@ -84,6 +84,9 @@
       cat     = "bat";
       grep    = "grep --color=auto";
 
+      # tldr を日本語ページで引く (tldr-pages のコミュニティ日本語訳を利用)
+      tldrj   = "LANG=ja_JP.UTF-8 LANGUAGE=ja tldr";
+
       # サブツール・ブログ執筆関連
       vimtutor1 = "nvim -c \"Tutor ja/vim-01-beginner\"";
       vimtutor2 = "nvim -c \"Tutor ja/vim-02-beginner\"";

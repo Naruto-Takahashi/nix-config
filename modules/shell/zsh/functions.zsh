@@ -75,6 +75,10 @@ bindkey -M menuselect 'l' vi-forward-char
 [[ -f ~/.cache/matugen/lazygit-config.yml ]] && \
   export LG_CONFIG_FILE="$HOME/.cache/matugen/lazygit-config.yml"
 
+# matugen生成のtealdeer(tldr)配色があればそちらを優先します．
+[[ -f ~/.cache/matugen/tealdeer/config.toml ]] && \
+  export TEALDEER_CONFIG_DIR="$HOME/.cache/matugen/tealdeer"
+
 # ===================================================================
 # カスタムシェル関数
 # ===================================================================
