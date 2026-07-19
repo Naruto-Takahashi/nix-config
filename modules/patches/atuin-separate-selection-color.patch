@@ -5,8 +5,10 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  4. command 列を割当幅で確実に打ち切り (境界判定も >= に修正)、
     右余白や後続列へ漏れないようにする
  5. 右端の枠との間に 1 文字分の余白を確保する
+ 6. 選択行ポインタ (>) を Title=accent 色の太字で描画 (fzf のポインタ相当)。
+    数字ショートカット表示時の番号は Muted 色
 --- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:51:31.286422518 +0900
-+++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 14:03:09.176869980 +0900
++++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 14:29:20.355525301 +0900
 @@ -107,6 +107,18 @@
          };
  
@@ -39,7 +41,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,7 +235,14 @@
+@@ -222,17 +235,35 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -55,7 +57,43 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              }
          }
      }
-@@ -290,7 +310,7 @@
+ 
+     fn index(&mut self) {
++        // fzf のポインタと同様に、選択行の指示子は Title (accent) 色の太字で描画
++        let selected_style = |theme: &Theme| {
++            let mut s = theme.as_style(Meaning::Title);
++            s.attributes.set(style::Attribute::Bold);
++            Style::from_crossterm(s)
++        };
+         if !self.show_numeric_shortcuts {
+             let i = self.y as usize + self.state.offset;
+             let is_selected = i == self.state.selected();
+             let prompt: &str = if is_selected { self.indicator } else { "   " };
+-            self.draw(prompt, Style::default());
++            let style = if is_selected {
++                selected_style(self.theme)
++            } else {
++                Style::default()
++            };
++            self.draw(prompt, style);
+             return;
+         }
+ 
+@@ -247,7 +278,12 @@
+         } else {
+             &SLICES[i..i + 3]
+         };
+-        self.draw(prompt, Style::default());
++        let style = if i == 0 {
++            selected_style(self.theme)
++        } else {
++            Style::from_crossterm(self.theme.as_style(Meaning::Muted))
++        };
++        self.draw(prompt, style);
+     }
+ 
+     fn duration(&mut self, h: &History, width: u16) {
+@@ -290,7 +326,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -64,7 +102,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -308,7 +328,7 @@
+@@ -308,7 +344,7 @@
                  self.draw(" ", Style::from_crossterm(style));
              }
              for ch in section.chars() {
@@ -73,7 +111,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      // Avoid attempting to draw a command section beyond the width
                      // of the list
                      return;
-@@ -418,11 +438,6 @@
+@@ -418,11 +454,6 @@
              self.list_area.bottom() - self.y - 1
          };
  

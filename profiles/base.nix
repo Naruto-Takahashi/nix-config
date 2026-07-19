@@ -79,6 +79,9 @@
       invert = true;
       show_tabs = false; # Search/Inspector タブバーを隠してすっきりさせる
       show_help = false; # 最下部の "<esc>: exit ..." キーヘルプを隠す
+      # 数字ショートカット (Alt+1..9) は komorebi のワークスペース移動と衝突して
+      # 使えず、Ctrl+数字も端末の制約で届かないため、番号表示ごと無効化する
+      show_numeric_shortcuts = false;
       # プレビュー: リストは1エントリ=1行の制約があるため、複数行 (\ 継続)
       # コマンドは選択時に下部プレビューで改行構造ごと表示する
       show_preview = true;

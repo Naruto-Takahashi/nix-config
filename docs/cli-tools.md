@@ -23,9 +23,9 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 - フィルタの「directory」は「今のディレクトリで実行したものだけ」— 特定プロジェクトの履歴を掘るのに便利
 - `\` 継続の複数行コマンドは改行・インデントごと記録され、`Tab`/`Enter` での呼び出し時に縦に並んだ元の形で復元される。リスト内では1行に畳むが、選択すると下部プレビューに縦の形のまま表示される (`preview.strategy = "auto"`)
 - レイアウトは検索バー上・結果下 (`invert = true`)、fzf 風の枠線付き (`style = "full"`)。キーヘルプは非表示
-- 配色は fzf (ghq 検索等) と同じ文法: 選択行 = fzf と同じ暗灰背景 (#303030) + 白太字、検索一致文字 = fzf の hl と同色 (matugen tertiary)
+- 配色は fzf (ghq 検索等) と同じ文法: 選択行 = fzf と同じ暗灰背景 (#303030) + 白太字、ポインタ `>` = accent 太字、検索一致文字 = fzf の hl と同色 (matugen tertiary)
 - 実行時間列 (例: `20ms`) は成功=緑・失敗=赤 (zsh syntax-highlighting と同じ固定色)。経過時間列は非表示 (実行時刻は `Ctrl+O` のインスペクタで確認)
-- 注: atuin v18 は本来「失敗した実行時間」と「選択行」が同じ色スロットを共有するため、`modules/patches/atuin-separate-selection-color.patch` で選択行を fzf 風 (暗灰背景 + Base 色太字) に変更して分離している (atuin はソースから再ビルドされる)
+- 注: 見た目の大部分は `modules/patches/atuin-separate-selection-color.patch` によるソースパッチで実現している (atuin はソースから再ビルドされる)。数字ショートカット (Alt+1..9) は komorebi のワークスペース移動と衝突するため番号表示ごと無効化 (atuin はソースから再ビルドされる)
 
 ## 📖 tealdeer (tldr) — コマンドの使用例を引く
 
