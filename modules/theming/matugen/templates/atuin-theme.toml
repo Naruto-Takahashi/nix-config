@@ -8,8 +8,11 @@ Base = "@@TEXT@@"
 Title = "@@ACCENT@@"
 Important = "@@ACCENT_PALE@@"
 Annotation = "@@TERTIARY@@"
-Guidance = "@@MUTED@@"
+# Guidance = 経過時間 (◯m ago) の列
+Guidance = "@@TERTIARY@@"
 Muted = "@@MUTED@@"
-AlertInfo = "@@TRIAD@@"
+# AlertInfo/AlertError = 実行時間列の成功/失敗色。zsh の
+# syntax-highlighting (存在する/しないコマンド) と同じ固定値に揃える
+AlertInfo = "#98bb6c"
 AlertWarn = "@@ACCENT@@"
-AlertError = "@@ERROR@@"
+AlertError = "#e46876"

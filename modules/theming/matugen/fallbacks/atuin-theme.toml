@@ -9,8 +9,11 @@ Base = "#c5c9c5"
 Title = "#e6c384"
 Important = "#f0dbb5"
 Annotation = "#7aa89f"
-Guidance = "#a6a69c"
+# Guidance = 経過時間 (◯m ago) の列 (tertiary)
+Guidance = "#7aa89f"
 Muted = "#a6a69c"
-AlertInfo = "#8a9a7b"
+# AlertInfo/AlertError = 実行時間列の成功/失敗色。zsh の
+# syntax-highlighting (存在する/しないコマンド) と同じ固定値
+AlertInfo = "#98bb6c"
 AlertWarn = "#e6c384"
-AlertError = "#c4746e"
+AlertError = "#e46876"
