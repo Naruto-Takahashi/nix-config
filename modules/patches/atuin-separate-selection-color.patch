@@ -1,0 +1,15 @@
+atuin v18 では「失敗した実行時間」(duration) と「選択行のコマンド」が
+同じ Meaning::AlertError を共有しており、テーマ側でどちらか一方の色だけを
+変えることができない。選択行を Meaning::Important に付け替えて分離する。
+(テーマ側: Important = 選択行 = accent / AlertError = 失敗 = 赤)
+--- a/crates/atuin/src/command/client/search/history_list.rs
++++ b/crates/atuin/src/command/client/search/history_list.rs
+@@ -288,7 +288,7 @@ impl DrawState<'_> {
+         {
+             row_highlighted = true;
+             // if not applying alternative highlighting to the whole row, color the command
+-            style = self.theme.as_style(Meaning::AlertError);
++            style = self.theme.as_style(Meaning::Important);
+             style.attributes.set(style::Attribute::Bold);
+         }
+

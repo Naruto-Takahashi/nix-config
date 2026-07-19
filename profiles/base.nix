@@ -60,6 +60,14 @@
   # ↑キーの挙動は通常の zsh 履歴のまま維持する (--disable-up-arrow)。
   programs.atuin = {
     enable = true;
+    # 「失敗した実行時間」と「選択行」の色が AlertError 1スロット共有なのを
+    # パッチで分離する (選択行 → Important)。ソースからの再ビルドが走る
+    package = pkgs.atuin.overrideAttrs (old: {
+      patches = (old.patches or [ ]) ++ [
+        ../modules/patches/atuin-separate-selection-color.patch
+      ];
+      doCheck = false; # テストをスキップしてビルド時間を短縮
+    });
     enableZshIntegration = true;
     flags = [ "--disable-up-arrow" ];
     settings = {

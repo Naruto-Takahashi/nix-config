@@ -23,8 +23,8 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 - フィルタの「directory」は「今のディレクトリで実行したものだけ」— 特定プロジェクトの履歴を掘るのに便利
 - レイアウトは検索バー上・結果下 (`invert = true`)。キーヘルプとプレビュー行は非表示
 - 配色は fzf (ghq 検索等) と同じ文法: 選択行 = accent 太字 (fzf のポインタ相当)、検索一致文字 = fzf の hl と同色 (matugen tertiary)
-- 実行時間列 (例: `20ms`) は緑なら成功 (zsh syntax-highlighting と同じ固定緑)。緑でなければ失敗。隣の `◯m ago` は「いつ実行したか」で matugen の tertiary 色
-- 注: atuin v18 は「失敗した実行時間」と「選択行」の色が1スロット共有のため、失敗色は赤ではなく accent になっている (選択行の見やすさを優先)
+- 実行時間列 (例: `20ms`) は成功=緑・失敗=赤 (zsh syntax-highlighting と同じ固定色)。隣の `◯m ago` は「いつ実行したか」で matugen の tertiary 色
+- 注: atuin v18 は本来「失敗した実行時間」と「選択行」が同じ色スロットを共有するため、`modules/patches/atuin-separate-selection-color.patch` で選択行を別スロット (Important) に分離している (atuin はソースから再ビルドされる)
 
 ## 📖 tealdeer (tldr) — コマンドの使用例を引く
 

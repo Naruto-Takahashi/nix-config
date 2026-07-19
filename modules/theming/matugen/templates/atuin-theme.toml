@@ -6,16 +6,17 @@ name = "matugen"
 [colors]
 Base = "@@TEXT@@"
 Title = "@@ACCENT@@"
-Important = "@@ACCENT_PALE@@"
+# Important = 選択行のコマンド (fzf のポインタ相当)。
+# 本来 atuin は選択行に AlertError を使うが、失敗色との共有を避けるため
+# modules/patches/atuin-separate-selection-color.patch で Important に分離済み
+Important = "@@ACCENT@@"
 Annotation = "@@TERTIARY@@"
 # Guidance = 経過時間 (◯m ago) の列
 Guidance = "@@TERTIARY@@"
 Muted = "@@MUTED@@"
-# AlertInfo = 実行時間列の成功色 (zsh syntax-highlighting の緑と同じ固定値)
+# AlertInfo/AlertError = 実行時間列の成功/失敗色。zsh の
+# syntax-highlighting (存在する/しないコマンド) と同じ固定値
 AlertInfo = "#98bb6c"
+AlertError = "#e46876"
 # AlertWarn = 選択行内の検索一致文字。fzf の hl (fzf-colors.sh) と同色
 AlertWarn = "@@TERTIARY@@"
-# AlertError = atuin v18 では「失敗した実行時間」と「選択行のコマンド」が
-# この1スロットを共有する。選択行の見やすさを優先して fzf のポインタと
-# 同系の accent にする (失敗の判別は「緑でない」ことで可能)
-AlertError = "@@ACCENT@@"
