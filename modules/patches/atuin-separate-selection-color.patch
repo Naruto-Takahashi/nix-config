@@ -1,15 +1,29 @@
-atuin v18 では「失敗した実行時間」(duration) と「選択行のコマンド」が
-同じ Meaning::AlertError を共有しており、テーマ側でどちらか一方の色だけを
-変えることができない。選択行を Meaning::Important に付け替えて分離する。
-(テーマ側: Important = 選択行 = accent / AlertError = 失敗 = 赤)
---- a/crates/atuin/src/command/client/search/history_list.rs
-+++ b/crates/atuin/src/command/client/search/history_list.rs
-@@ -288,7 +288,7 @@ impl DrawState<'_> {
+atuin v18 は選択行のコマンドを Meaning::AlertError (=失敗した実行時間と
+共有) の文字色だけで表現する。これを fzf の選択行 (bg+ = 256色の236,
+fg+ = ほぼ白の太字) と同じ見た目に変更する:
+ 1. 選択行のコマンド文字色を AlertError から Base (テーマの text 色) に変更
+ 2. 選択行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く
+    (従来 vim-normal モード限定だった REVERSED 反転は廃止し常時 bg 方式に)
+--- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 12:45:19.793656894 +0900
++++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 12:45:19.820596880 +0900
+@@ -290,7 +290,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
 -            style = self.theme.as_style(Meaning::AlertError);
-+            style = self.theme.as_style(Meaning::Important);
++            style = self.theme.as_style(Meaning::Base);
              style.attributes.set(style::Attribute::Bold);
          }
-
+ 
+@@ -418,9 +418,8 @@
+             self.list_area.bottom() - self.y - 1
+         };
+ 
+-        if self.alternate_highlight && (self.y as usize + self.state.offset == self.state.selected)
+-        {
+-            style = style.add_modifier(Modifier::REVERSED);
++        if self.y as usize + self.state.offset == self.state.selected {
++            style = style.bg(ratatui::style::Color::Indexed(236));
+         }
+ 
+         let w = (self.list_area.width - self.x) as usize;

@@ -7,8 +7,8 @@ name = "matugen"
 [colors]
 Base = "#c5c9c5"
 Title = "#e6c384"
-# Important = 選択行のコマンド (fzf のポインタ相当)。
-# atuin-separate-selection-color.patch で AlertError から分離済み
+# 選択行は atuin-separate-selection-color.patch により fzf と同じ
+# 「背景 #303030 + Base 色の太字」で描画される (テーマ設定不要)
 Important = "#e6c384"
 Annotation = "#7aa89f"
 # Guidance = 経過時間 (◯m ago) の列 (tertiary)

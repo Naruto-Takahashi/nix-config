@@ -6,9 +6,8 @@ name = "matugen"
 [colors]
 Base = "@@TEXT@@"
 Title = "@@ACCENT@@"
-# Important = 選択行のコマンド (fzf のポインタ相当)。
-# 本来 atuin は選択行に AlertError を使うが、失敗色との共有を避けるため
-# modules/patches/atuin-separate-selection-color.patch で Important に分離済み
+# 選択行は modules/patches/atuin-separate-selection-color.patch により
+# fzf と同じ「背景 #303030 + Base 色の太字」で描画される (テーマ設定不要)
 Important = "@@ACCENT@@"
 Annotation = "@@TERTIARY@@"
 # Guidance = 経過時間 (◯m ago) の列
