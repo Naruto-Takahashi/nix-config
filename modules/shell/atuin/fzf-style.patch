@@ -12,9 +12,18 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
     (256色パレット 236番) に揃える
  7. 検索/フィルタの状態表示を、角括弧のテキストとしてではなく外枠自体の
     タイトルとして埋め込む ("╭─ GLOBAL ─╮" のように罫線に溶け込む形)。
-    枠の色はフィルタモードに関わらず常にメインハイライト (Title/accent) で固定
+    枠の色はフィルタモードに関わらず常にメインハイライト (Title/accent) で固定。
+    結果リスト・プレビューの枠 (左右の罫線・区切り線のダッシュ) にも同じ色を
+    適用し、ポップアップ全体で枠の色が途切れないようにする
  8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
     色かつ太字でハイライトする
+ 9. 一覧の1行畳み表示で、複数行 (\ 継続) コマンドの改行が escape_control()
+    によって "^J" という制御文字表記のまま見えてしまうのを、表示直前に
+    改行を空白へ置き換えることで見た目だけ隠す (保存データやプレビューの
+    複数行表示はそのまま)
+ 10. プレビューと結果リストの区切り線に "PREVIEW" ラベルを埋め込む。
+     複数行コマンドのプレビューでは、行末の \ 継続記号だけアクセント色で
+     強調し、続いている構造を読み取りやすくする
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
@@ -107,7 +116,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
  
      fn duration(&mut self, h: &History, width: u16) {
-@@ -290,7 +309,7 @@
+@@ -290,12 +309,18 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -116,7 +125,25 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -308,18 +327,14 @@
++        // 一覧では複数行 (\ 継続) コマンドを1行に畳んで表示するが、改行を
++        // escape_control() に通すと "^J" という制御文字表記がそのまま
++        // 文字列として残ってしまう。見た目だけ潰すため、事前に空白へ
++        // 置き換えておく (保存されているコマンド自体やプレビュー表示は
++        // 元の改行のまま変更しない)
++        let display_command = h.command.replace('\n', " ");
+         let highlight_indices = self.history_highlighter.get_highlight_indices(
+-            h.command
++            display_command
+                 .escape_control()
+                 .split_ascii_whitespace()
+                 .join(" ")
+@@ -303,23 +328,19 @@
+         );
+ 
+         let mut pos = 0;
+-        for section in h.command.escape_control().split_ascii_whitespace() {
++        for section in display_command.escape_control().split_ascii_whitespace() {
+             if pos != 0 {
                  self.draw(" ", Style::from_crossterm(style));
              }
              for ch in section.chars() {
@@ -137,7 +164,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      style.attributes.set(style::Attribute::Bold);
                  }
                  let s = ch.to_string();
-@@ -418,11 +433,6 @@
+@@ -418,11 +439,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
@@ -181,7 +208,47 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              input_chunk.y + cursor_offset,
          ));
      }
-@@ -1196,7 +1198,7 @@
+@@ -1175,6 +1177,18 @@
+             columns,
+         );
+ 
++        // 入力欄の枠と同じ色 (メインハイライト) を、結果リストの左右の罫線と
++        // 区切り線 (ダッシュのタイトル) にも適用し、ポップアップ全体で枠の色が
++        // 途切れないようにする
++        let mut accent = theme.as_style(Meaning::Title);
++        let border_color = accent.foreground_color;
++        accent.attributes.set(ratatui::crossterm::style::Attribute::Bold);
++        let border_style = Style::default().fg(
++            border_color
++                .map(ratatui::style::Color::from_crossterm)
++                .unwrap_or_default(),
++        );
++
+         match style.compactness {
+             Compactness::Full => {
+                 if style.invert {
+@@ -1182,13 +1196,18 @@
+                         Block::default()
+                             .borders(Borders::LEFT | Borders::RIGHT)
+                             .border_type(BorderType::Rounded)
+-                            .title(format!("{:─>width$}", "", width = style.inner_width - 2)),
++                            .border_style(border_style)
++                            .title(Line::styled(
++                                format!("{:─>width$}", "", width = style.inner_width - 2),
++                                border_style,
++                            )),
+                     )
+                 } else {
+                     results_list.block(
+                         Block::default()
+                             .borders(Borders::TOP | Borders::LEFT | Borders::RIGHT)
+-                            .border_type(BorderType::Rounded),
++                            .border_type(BorderType::Rounded)
++                            .border_style(border_style),
+                     )
+                 }
+             }
+@@ -1196,7 +1215,7 @@
          }
      }
  
@@ -190,7 +257,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,21 +1206,47 @@
+@@ -1204,21 +1223,47 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -243,3 +310,72 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      input.block(
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
+@@ -1240,8 +1285,8 @@
+         theme: &Theme,
+     ) -> Paragraph<'_> {
+         let selected = self.results_state.selected();
+-        let command = if results.is_empty() {
+-            String::new()
++        let lines: Vec<String> = if results.is_empty() {
++            Vec::new()
+         } else {
+             let s = &results[selected].command;
+             let mut lines = Vec::new();
+@@ -1263,17 +1308,49 @@
+                     lines.push(line[start..].to_owned());
+                 }
+             }
+-            lines.join("\n")
++            lines
+         };
+ 
+         match compactness {
+-            Compactness::Full => Paragraph::new(command).block(
+-                Block::default()
+-                    .borders(Borders::BOTTOM | Borders::LEFT | Borders::RIGHT)
+-                    .border_type(BorderType::Rounded)
+-                    .title(format!("{:─>width$}", "", width = chunk_width - 2)),
+-            ),
+-            _ => Paragraph::new(command)
++            Compactness::Full => {
++                // 入力欄・結果リストの枠と同じ色 (メインハイライト) に揃える
++                let mut accent = theme.as_style(Meaning::Title);
++                let border_color = accent.foreground_color;
++                accent.attributes.set(ratatui::crossterm::style::Attribute::Bold);
++                let border_style = Style::default().fg(
++                    border_color
++                        .map(ratatui::style::Color::from_crossterm)
++                        .unwrap_or_default(),
++                );
++
++                // \ 継続行の末尾のバックスラッシュだけアクセント色で強調し、
++                // 複数行コマンドの「続いている」構造を読み取りやすくする
++                let styled_lines: Vec<Line> = lines
++                    .iter()
++                    .map(|line| {
++                        if let Some(rest) = line.strip_suffix('\\') {
++                            Line::from(vec![
++                                Span::raw(rest.to_owned()),
++                                Span::styled("\\", Style::from_crossterm(accent)),
++                            ])
++                        } else {
++                            Line::from(line.clone())
++                        }
++                    })
++                    .collect();
++
++                Paragraph::new(Text::from(styled_lines)).block(
++                    Block::default()
++                        .borders(Borders::BOTTOM | Borders::LEFT | Borders::RIGHT)
++                        .border_type(BorderType::Rounded)
++                        .border_style(border_style)
++                        // "PREVIEW" ラベルを区切り線に埋め込む (input 枠の
++                        // "GLOBAL" と同じ技法)。残りは罫線が自動で埋める
++                        .title(Line::styled(" PREVIEW ", border_style))
++                        .title_alignment(Alignment::Center),
++                )
++            }
++            _ => Paragraph::new(lines.join("\n"))
+                 .style(Style::from_crossterm(theme.as_style(Meaning::Annotation))),
+         }
+     }
