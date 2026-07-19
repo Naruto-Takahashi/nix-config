@@ -56,7 +56,25 @@
     };
   };
 
+  # シェル履歴の検索/記録強化。Ctrl+R を atuin の全文検索 UI に置き換える。
+  # ↑キーの挙動は通常の zsh 履歴のまま維持する (--disable-up-arrow)。
+  programs.atuin = {
+    enable = true;
+    enableZshIntegration = true;
+    flags = [ "--disable-up-arrow" ];
+    settings = {
+      search_mode = "fuzzy";
+      filter_mode = "global";
+      inline_height = 20;
+      style = "compact";
+      update_check = false;
+    };
+  };
+
   home.packages = [
     pkgs.smassh # MonkeyType 風の TUI タイピング練習
+    pkgs.fd # find の現代版 (fzf バックエンドにも)
+    pkgs.delta # git diff のシンタックスハイライト付きページャ (~/.gitconfig が参照)
+    pkgs.btop # システムモニタ TUI
   ];
 }
