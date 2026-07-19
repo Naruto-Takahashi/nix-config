@@ -81,10 +81,10 @@ EOF
     # Antigravity CLI（Gemini CLIの後継）をNixで宣言的に管理します．
     (pkgs.stdenv.mkDerivation {
       pname = "antigravity-cli";
-      version = "1.0.2";
+      version = "1.1.4";
       src = pkgs.fetchurl {
-        url = "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.0.2-6109799369277440/linux-x64/cli_linux_x64.tar.gz";
-        hash = "sha256-9sfKgNUJkzO/IpZ2RzvREeDapqDY23xTKt9lA7Dqrck=";
+        url = "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.1.4-6277569641840640/linux-x64/cli_linux_x64.tar.gz";
+        hash = "sha256-qqtC45XLTjv+WuiJlKNAhl2Un3qefwYE/6Kj8eiq2/o=";
       };
       sourceRoot = ".";
       installPhase = ''

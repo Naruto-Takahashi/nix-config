@@ -5,11 +5,23 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  4. command 列を割当幅で確実に打ち切り (境界判定も >= に修正)、
     右余白や後続列へ漏れないようにする
  5. 右端の枠との間に 1 文字分の余白を確保する
- 6. 選択行ポインタ (>) を Title=accent 色の太字で描画 (fzf のポインタ相当)。
-    数字ショートカット表示時の番号は Muted 色
---- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:51:31.286422518 +0900
-+++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 14:29:20.355525301 +0900
-@@ -107,6 +107,18 @@
+ 6. 左端のインジケータを fzf のスクロールバー風の塗りブロック (▌) に変更。
+    選択行は Title 色太字、それ以外は Muted 色
+ 7. [ GLOBAL ] などのステータス表示と "> " 入力欄を2行構成の1つの枠にまとめる。
+    invert 時は枠を上下左右ではなく LEFT|RIGHT|TOP のみにする (元の実装と同様)。
+    ALL (4辺) にすると罫線の下辺の分だけ高さが1行超過し、結果リストの
+    区切り線と重なって表示が崩れるため、境界線の構成は変えずに中身だけ
+    2行にする
+ 8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
+    色かつ太字でハイライトする
+
+--- a/crates/atuin/src/command/client/search/history_list.rs
++++ b/crates/atuin/src/command/client/search/history_list.rs
+@@ -104,9 +104,22 @@
+             history_highlighter: self.history_highlighter,
+             show_numeric_shortcuts: self.show_numeric_shortcuts,
+             columns: self.columns,
++            history_len: self.history.len(),
          };
  
          for item in self.history.iter().skip(state.offset).take(end - start) {
@@ -28,7 +40,15 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              s.render_row(item);
  
              // reset line
-@@ -198,10 +210,11 @@
+@@ -177,6 +190,7 @@
+     history_highlighter: HistoryHighlighter<'a>,
+     show_numeric_shortcuts: bool,
+     columns: &'a [UiColumn],
++    history_len: usize,
+ }
+ 
+ // these encode the slices of `" > "`, `" {n} "`, or `"   "` in a compact form.
+@@ -198,10 +212,11 @@
              .filter(|c| !c.expand)
              .map(|c| c.width + 1)
              .sum();
@@ -41,7 +61,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,17 +235,35 @@
+@@ -222,32 +237,31 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -59,41 +79,39 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
  
      fn index(&mut self) {
-+        // fzf のポインタと同様に、選択行の指示子は Title (accent) 色の太字で描画
-+        let selected_style = |theme: &Theme| {
-+            let mut s = theme.as_style(Meaning::Title);
-+            s.attributes.set(style::Attribute::Bold);
-+            Style::from_crossterm(s)
-+        };
-         if !self.show_numeric_shortcuts {
-             let i = self.y as usize + self.state.offset;
-             let is_selected = i == self.state.selected();
-             let prompt: &str = if is_selected { self.indicator } else { "   " };
+-        if !self.show_numeric_shortcuts {
+-            let i = self.y as usize + self.state.offset;
+-            let is_selected = i == self.state.selected();
+-            let prompt: &str = if is_selected { self.indicator } else { "   " };
 -            self.draw(prompt, Style::default());
-+            let style = if is_selected {
-+                selected_style(self.theme)
-+            } else {
-+                Style::default()
-+            };
-+            self.draw(prompt, style);
-             return;
-         }
+-            return;
+-        }
+-
+-        // these encode the slices of `" > "`, `" {n} "`, or `"   "` in a compact form.
+-        // Yes, this is a hack, but it makes me feel happy
++        let is_thumb = (self.y as usize + self.state.offset) == self.state.selected;
  
-@@ -247,7 +278,12 @@
+-        let i = self.y as usize + self.state.offset;
+-        let i = i.checked_sub(self.state.selected);
+-        let i = i.unwrap_or(10).min(10) * 2;
+-        let prompt: &str = if i == 0 {
+-            self.indicator
++        // fzf のスクロールバーに寄せて、細い罫線ではなく塗りつぶしブロックにする
++        let (prompt, style) = if is_thumb {
++            let mut s = self.theme.as_style(Meaning::Title);
++            s.attributes.set(style::Attribute::Bold);
++            (" ▌ ", Style::from_crossterm(s))
          } else {
-             &SLICES[i..i + 3]
+-            &SLICES[i..i + 3]
++            (" ▌ ", Style::from_crossterm(self.theme.as_style(Meaning::Muted)))
          };
 -        self.draw(prompt, Style::default());
-+        let style = if i == 0 {
-+            selected_style(self.theme)
-+        } else {
-+            Style::from_crossterm(self.theme.as_style(Meaning::Muted))
-+        };
++
 +        self.draw(prompt, style);
      }
  
      fn duration(&mut self, h: &History, width: u16) {
-@@ -290,7 +326,7 @@
+@@ -290,7 +304,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -102,7 +120,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -308,7 +344,7 @@
+@@ -308,18 +322,14 @@
                  self.draw(" ", Style::from_crossterm(style));
              }
              for ch in section.chars() {
@@ -111,7 +129,19 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      // Avoid attempting to draw a command section beyond the width
                      // of the list
                      return;
-@@ -418,11 +454,6 @@
+                 }
+                 let mut style = style;
+                 if highlight_indices.contains(&pos) {
+-                    if row_highlighted {
+-                        // if the row is highlighted bold is not enough as the whole row is bold
+-                        // change the color too
+-                        style = self.theme.as_style(Meaning::AlertWarn);
+-                    }
++                    style = self.theme.as_style(Meaning::AlertWarn);
+                     style.attributes.set(style::Attribute::Bold);
+                 }
+                 let s = ch.to_string();
+@@ -418,11 +428,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
@@ -123,3 +153,101 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let w = (self.list_area.width - self.x) as usize;
          self.x += self.buf.set_stringn(cx, cy, s, w, style).0 - cx;
      }
+--- a/crates/atuin/src/command/client/search/interactive.rs
++++ b/crates/atuin/src/command/client/search/interactive.rs
+@@ -864,7 +864,7 @@
+             .constraints::<&[Constraint]>(
+                 if invert {
+                     [
+-                        Constraint::Length(1 + border_size),               // input
++                        Constraint::Length(2 + border_size),               // input
+                         Constraint::Min(1),                                // results list
+                         Constraint::Length(preview_height),                // preview
+                         Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
+@@ -883,7 +883,7 @@
+                             Constraint::Length(if show_help { 1 } else { 0 }), // header
+                             Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
+                             Constraint::Min(1),                                // results list
+-                            Constraint::Length(1 + border_size),               // input
++                            Constraint::Length(2 + border_size),               // input
+                             Constraint::Length(preview_height),                // preview
+                         ],
+                     }
+@@ -1053,6 +1053,7 @@
+                 preview_chunk,
+                 preview,
+                 std::cmp::max(prefix_width, min_prefix_width),
++                theme,
+             );
+         }
+     }
+@@ -1067,8 +1068,9 @@
+         preview_chunk: Rect,
+         preview: Paragraph,
+         prefix_width: u16,
++        theme: &Theme,
+     ) {
+-        let input = self.build_input(style, prefix_width);
++        let input = self.build_input(style, prefix_width, theme);
+         f.render_widget(input, input_chunk);
+ 
+         f.render_widget(preview, preview_chunk);
+@@ -1079,10 +1081,15 @@
+             Compactness::Full => 1,
+             _ => 0,
+         };
++        let cursor_y = if style.invert {
++            input_chunk.y + 1 + cursor_offset
++        } else {
++            input_chunk.y + cursor_offset
++        };
+         f.set_cursor_position((
+-            // Put cursor past the end of the input text
+-            input_chunk.x + extra_width as u16 + prefix_width + cursor_offset,
+-            input_chunk.y + cursor_offset,
++            // Put cursor past the end of the input text: prefix is "> " (length 2)
++            input_chunk.x + extra_width as u16 + 2 + cursor_offset,
++            cursor_y,
+         ));
+     }
+ 
+@@ -1196,7 +1203,7 @@
+         }
+     }
+ 
+-    fn build_input(&self, style: StyleState, prefix_width: u16) -> Paragraph<'_> {
++    fn build_input(&self, style: StyleState, prefix_width: u16, theme: &Theme) -> Paragraph<'_> {
+         let (pref, mode) = if self.switched_search_mode {
+             (" SRCH:", self.search_mode.as_str())
+         } else if self.search.custom_context.is_some() {
+@@ -1204,12 +1211,26 @@
+         } else {
+             ("", self.search.filter_mode.as_str())
+         };
+-        // 3: surrounding "[" "] "
+         let mode_width = usize::from(prefix_width) - pref.len() - 3;
+-        // sanity check to ensure we don't exceed the layout limits
+         debug_assert!(mode_width >= mode.len(), "mode name '{mode}' is too long!");
+-        let input = format!("[{pref}{mode:^mode_width$}] {}", self.search.input.as_str());
+-        let input = Paragraph::new(input);
++        
++        let status_line = ratatui::text::Line::from(format!("[{pref}{mode:^mode_width$}]"));
++        
++        let mut arrow_style = theme.as_style(Meaning::Title);
++        arrow_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
++        
++        let input_line = ratatui::text::Line::from(vec![
++            ratatui::text::Span::styled("> ", Style::from_crossterm(arrow_style)),
++            ratatui::text::Span::raw(self.search.input.as_str()),
++        ]);
++        
++        let lines = if style.invert {
++            vec![status_line, input_line]
++        } else {
++            vec![input_line, status_line]
++        };
++        
++        let input = Paragraph::new(ratatui::text::Text::from(lines));
+         match style.compactness {
+             Compactness::Full => {
+                 if style.invert {

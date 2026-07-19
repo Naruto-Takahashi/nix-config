@@ -13,6 +13,7 @@
     ../../modules/wm/yasb
     ../../modules/services/obsidian-mcp.nix
     ../../modules/apps/vivaldi
+    ../../modules/desktop/packages.nix
   ];
 
   # -----------------------------------------------------------------------
