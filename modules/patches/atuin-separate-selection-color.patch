@@ -4,8 +4,9 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  3. 選択行は行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く
  4. command 列の描画後にカーソルを列幅まで進め、後続の列 (time 等) が
     右端に揃うようにする (ui.columns = ["duration","command","time"] 用)
---- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:16:40.278907613 +0900
-+++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:16:40.326178369 +0900
+ 5. 右端の枠との間に 1 文字分の余白を確保する
+--- a/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:31:28.338952332 +0900
++++ b/crates/atuin/src/command/client/search/history_list.rs	2026-07-19 13:31:28.376932954 +0900
 @@ -107,6 +107,18 @@
          };
  
@@ -25,7 +26,20 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              s.render_row(item);
  
              // reset line
-@@ -222,7 +234,11 @@
+@@ -198,10 +210,11 @@
+             .filter(|c| !c.expand)
+             .map(|c| c.width + 1)
+             .sum();
++        // 右端の枠との間に 1 文字分の余白を確保する
+         let expand_width = self
+             .list_area
+             .width
+-            .saturating_sub(indicator_width + fixed_width);
++            .saturating_sub(indicator_width + fixed_width + 1);
+ 
+         let style = self.theme.as_style(Meaning::Base);
+         // Render each configured column
+@@ -222,7 +235,11 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -38,7 +52,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              }
          }
      }
-@@ -290,7 +306,7 @@
+@@ -290,7 +307,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -47,7 +61,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -418,11 +434,6 @@
+@@ -418,11 +435,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
