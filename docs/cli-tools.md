@@ -21,6 +21,8 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 - 実行ディレクトリ・終了コード・所要時間も記録されます
 - `atuin stats` でよく使うコマンドの統計が見られます
 - フィルタの「directory」は「今のディレクトリで実行したものだけ」— 特定プロジェクトの履歴を掘るのに便利
+- レイアウトは検索バー上・結果下 (`invert = true`)。選択行は行全体の反転表示
+- 実行時間列 (例: `20ms`) は成功=緑・失敗=赤 (zsh syntax-highlighting と同じ固定色)。隣の `◯m ago` は「いつ実行したか」で matugen の tertiary 色
 
 ## 📖 tealdeer (tldr) — コマンドの使用例を引く
 

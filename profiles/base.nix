@@ -67,6 +67,11 @@
       filter_mode = "global";
       inline_height = 20;
       style = "compact";
+      # 検索バーを上・結果を下に (トップダウン)。同時に選択行の表示が
+      # 「コマンド文字を AlertError 色で塗る」方式から「行全体を反転」方式に
+      # 変わり、各列の色 (実行時間の成功/失敗色など) を保ったまま選択できる
+      invert = true;
+      show_tabs = false; # Search/Inspector タブバーを隠してすっきりさせる
       update_check = false;
       theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
     };
