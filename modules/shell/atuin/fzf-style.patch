@@ -1,56 +1,30 @@
 atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  1. 選択行のコマンド文字色を AlertError (失敗色と共有) から Base に変更
  2. vim-normal 限定の REVERSED 反転を廃止
- 3. 選択行は行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く
+ 3. 選択行は行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く。
+    ただしインジケータ列の先頭余白1文字はこの背景で塗らず、バー自体の
+    列より左へ背景がはみ出さないようにする
  4. command 列を割当幅で確実に打ち切り (境界判定も >= に修正)、
     右余白や後続列へ漏れないようにする
  5. 右端の枠との間に 1 文字分の余白を確保する
- 6. 左端のインジケータを fzf の本物のスクロールバーと同様に、全体に対する
-    現在位置の割合で決まるサム範囲だけをブロック (▌) で塗る。選択行は
-    Title 色太字、サム範囲内の非選択行は選択行の背景塗りと同じグレー
-    (256色パレット 236番)、サム範囲外 (トラック) は罫線を描かない
+ 6. 左端のインジケータを fzf のスクロールバー風の塗りブロック (▌) に変更。
+    選択行は Title 色太字、非選択行は選択行の背景塗りと同じグレー
+    (256色パレット 236番) に揃える
  7. 検索/フィルタの状態表示を、角括弧のテキストとしてではなく外枠自体の
     タイトルとして埋め込む ("╭─ GLOBAL ─╮" のように罫線に溶け込む形)。
-    枠の色はフィルタモード (global/host/session/directory/workspace) ごとに
-    matugen パレットの別の色 (accent/tertiary/secondary/complement/triad) を
-    割り当てる。nvim 側 (lualine.lua) がモードごとに色を変えているのに倣う
+    枠の色はフィルタモードに関わらず常にメインハイライト (Title/accent) で固定
  8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
     色かつ太字でハイライトする
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
-@@ -90,6 +90,21 @@
-         state.offset = start;
-         state.max_entries = end - start;
- 
-+        // fzf 風の本物のスクロールバー: 全体に対する現在位置の割合に応じた
-+        // サム (thumb) の範囲だけを塗り、それ以外の行は罫線を描かない
-+        let total = self.history.len();
-+        let (scrollbar_thumb_start, scrollbar_thumb_size) = if total > list_height && list_height > 0
-+        {
-+            let size = (list_height * list_height / total).clamp(1, list_height);
-+            let max_start = list_height - size;
-+            let denom = total - list_height;
-+            let pos = if denom == 0 { 0 } else { (max_start * start) / denom };
-+            (pos, size)
-+        } else {
-+            // 全件が収まる場合はスクロール不要 = 全行がサム扱い
-+            (0, list_height)
-+        };
-+
-         let mut s = DrawState {
-             buf,
-             list_area,
-@@ -104,9 +119,23 @@
-             history_highlighter: self.history_highlighter,
-             show_numeric_shortcuts: self.show_numeric_shortcuts,
-             columns: self.columns,
-+            scrollbar_thumb_start,
-+            scrollbar_thumb_size,
+@@ -107,6 +107,20 @@
          };
  
          for item in self.history.iter().skip(state.offset).take(end - start) {
-+            // fzf-style full-width background for the selected row
++            // fzf-style full-width background for the selected row.
++            // インジケータ列の先頭 (バー左側の余白1文字) は塗らず、バー自体の
++            // 列より左へ背景がはみ出さないようにする
 +            if s.y as usize + s.state.offset == s.state.selected {
 +                let cy = if s.inverted {
 +                    s.list_area.top() + s.y
@@ -58,23 +32,14 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 +                    s.list_area.bottom() - s.y - 1
 +                };
 +                s.buf.set_style(
-+                    Rect::new(s.list_area.left(), cy, s.list_area.width, 1),
++                    Rect::new(s.list_area.left() + 1, cy, s.list_area.width.saturating_sub(1), 1),
 +                    ratatui::style::Style::default().bg(ratatui::style::Color::Indexed(236)),
 +                );
 +            }
              s.render_row(item);
  
              // reset line
-@@ -177,6 +206,8 @@
-     history_highlighter: HistoryHighlighter<'a>,
-     show_numeric_shortcuts: bool,
-     columns: &'a [UiColumn],
-+    scrollbar_thumb_start: usize,
-+    scrollbar_thumb_size: usize,
- }
- 
- // these encode the slices of `" > "`, `" {n} "`, or `"   "` in a compact form.
-@@ -198,10 +229,11 @@
+@@ -198,10 +212,11 @@
              .filter(|c| !c.expand)
              .map(|c| c.width + 1)
              .sum();
@@ -87,7 +52,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,32 +254,42 @@
+@@ -222,32 +237,36 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -112,7 +77,8 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -            self.draw(prompt, Style::default());
 -            return;
 -        }
--
++        let is_selected = (self.y as usize + self.state.offset) == self.state.selected;
+ 
 -        // these encode the slices of `" > "`, `" {n} "`, or `"   "` in a compact form.
 -        // Yes, this is a hack, but it makes me feel happy
 -
@@ -121,27 +87,19 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -        let i = i.unwrap_or(10).min(10) * 2;
 -        let prompt: &str = if i == 0 {
 -            self.indicator
-+        let is_selected = (self.y as usize + self.state.offset) == self.state.selected;
-+        let in_thumb = (self.y as usize) >= self.scrollbar_thumb_start
-+            && (self.y as usize) < self.scrollbar_thumb_start + self.scrollbar_thumb_size;
-+
-+        // fzf の本物のスクロールバーに寄せる: 選択行は Title 色太字のブロック、
-+        // 現在のスクロール位置に対応するサム範囲は選択行の背景塗り
-+        // (Indexed 236) と同じグレーのブロック、それ以外の行 (トラック) は
-+        // 罫線を描かず空白のままにする
++        // fzf のスクロールバーに寄せて、細い罫線ではなく塗りつぶしブロックにする。
++        // 非選択行は選択行の背景塗り (Indexed 236) と同じグレーに揃える
 +        let (prompt, style) = if is_selected {
 +            let mut s = self.theme.as_style(Meaning::Title);
 +            s.attributes.set(style::Attribute::Bold);
 +            (" ▌ ", Style::from_crossterm(s))
-+        } else if in_thumb {
+         } else {
+-            &SLICES[i..i + 3]
 +            let row_bg_gray = style::ContentStyle {
 +                foreground_color: Some(style::Color::AnsiValue(236)),
 +                ..style::ContentStyle::default()
 +            };
 +            (" ▌ ", Style::from_crossterm(row_bg_gray))
-         } else {
--            &SLICES[i..i + 3]
-+            ("   ", Style::default())
          };
 -        self.draw(prompt, Style::default());
 +
@@ -149,7 +107,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
  
      fn duration(&mut self, h: &History, width: u16) {
-@@ -290,7 +332,7 @@
+@@ -290,7 +309,7 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -158,7 +116,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              style.attributes.set(style::Attribute::Bold);
          }
  
-@@ -308,18 +350,14 @@
+@@ -308,18 +327,14 @@
                  self.draw(" ", Style::from_crossterm(style));
              }
              for ch in section.chars() {
@@ -179,7 +137,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      style.attributes.set(style::Attribute::Bold);
                  }
                  let s = ch.to_string();
-@@ -418,11 +456,6 @@
+@@ -418,11 +433,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
@@ -223,36 +181,16 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              input_chunk.y + cursor_offset,
          ));
      }
-@@ -1196,7 +1198,27 @@
+@@ -1196,7 +1198,7 @@
          }
      }
  
 -    fn build_input(&self, style: StyleState, prefix_width: u16) -> Paragraph<'_> {
-+    // フィルタモード (global/host/session/directory/workspace) ごとに
-+    // matugen パレットの別の色を割り当てる。nvim 側の lualine.lua が
-+    // モード (normal/insert/visual/...) ごとに accent/tertiary/complement/...
-+    // を割り当てているのに倣う。Theme の Meaning は 9 種類の固定スロット
-+    // しかなく自由に増やせないため、実際には使われていない
-+    // (ui.columns/show_tabs/show_help 設定により render に来ない)
-+    // Annotation/Important/Guidance/Muted を流用する。テーマファイル側で
-+    // Annotation=tertiary, Important=secondary, Guidance=complement,
-+    // Muted=triad を割り当てている (matugen-palette.md 参照)
-+    fn filter_mode_style(theme: &Theme, filter_mode: FilterMode) -> ratatui::crossterm::style::ContentStyle {
-+        let meaning = match filter_mode {
-+            FilterMode::Global => Meaning::Title,
-+            FilterMode::Host => Meaning::Annotation,
-+            FilterMode::Session | FilterMode::SessionPreload => Meaning::Important,
-+            FilterMode::Directory => Meaning::Guidance,
-+            FilterMode::Workspace => Meaning::Muted,
-+        };
-+        theme.as_style(meaning)
-+    }
-+
 +    fn build_input(&self, style: StyleState, prefix_width: u16, theme: &Theme) -> Paragraph<'_> {
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,21 +1226,46 @@
+@@ -1204,21 +1206,47 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -276,7 +214,8 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 +
 +        // 外枠そのものにフィルタモードの色を乗せ、タイトルとしてラベルを埋め込む
 +        // ("╭─ GLOBAL ─╮" のように、罫線に溶け込む形でモード名を表示する)
-+        let mut border_style = Self::filter_mode_style(theme, self.search.filter_mode);
++        // 枠の色はモードに関わらずメインハイライト (Title/accent) で固定する
++        let mut border_style = theme.as_style(Meaning::Title);
 +        let border_color = border_style.foreground_color;
 +        border_style.attributes.set(ratatui::crossterm::style::Attribute::Bold);
 +

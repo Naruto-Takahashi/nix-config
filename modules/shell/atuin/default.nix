@@ -46,6 +46,10 @@
       # Enter = 選択したコマンドを即実行 / Tab = プロンプトに挿入して編集
       # (デフォルト false だと Enter も挿入になり Tab と区別がなくなる)
       enter_accept = true;
+      # invert=true だと ↑ (SelectPrevious) が index0 (最新側) へ向かう扱いになり、
+      # デフォルト (scroll_exits=true) では最上段で ↑ を押すと atuin ごと終了する。
+      # 単に選択が止まるだけにしたいので無効化する
+      keys.scroll_exits = false;
       update_check = false;
       theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
     };
