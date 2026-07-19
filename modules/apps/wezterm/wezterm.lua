@@ -24,6 +24,11 @@ end
 
 config.automatically_reload_config = true
 config.scrollback_lines = 3000
+-- サブモニターで3枚目のウィンドウを開くとモザイク状に描画が崩れる問題への対処．
+-- WebGpuに固定することで解消することを確認済み．
+-- front_endはホットリロードでは反映されないため、変更後はWezTermの
+-- プロセスを完全終了して再起動すること．
+config.front_end = "WebGpu"
 config.font = wezterm.font 'HackGen Console NF'
 config.adjust_window_size_when_changing_font_size = false
 
