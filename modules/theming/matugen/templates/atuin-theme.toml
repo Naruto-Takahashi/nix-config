@@ -1,4 +1,4 @@
-# atuin テーマ (matugen-apply が @@KEY@@ を実際の配色に置換して
+# atuin テーマ (matugen-apply が各プレースホルダを実際の配色に置換して
 # ~/.config/atuin/themes/matugen.toml へ配置する)
 [theme]
 name = "matugen"

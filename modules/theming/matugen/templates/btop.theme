@@ -1,4 +1,4 @@
-# btop テーマ (matugen-apply が @@KEY@@ を実際の配色に置換して
+# btop テーマ (matugen-apply が各プレースホルダを実際の配色に置換して
 # ~/.config/btop/themes/matugen.theme へ配置する)
 # 選択行は YASB/WezTerm のアクティブタブと同じ accent 背景 + on_accent 文字
 theme[main_bg]="@@SURFACE@@"
