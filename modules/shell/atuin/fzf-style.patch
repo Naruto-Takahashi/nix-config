@@ -12,15 +12,17 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
     (256色パレット 236番) に揃える
  7. 検索/フィルタの状態表示を、角括弧のテキストとしてではなく外枠自体の
     タイトルとして埋め込む ("╭─ GLOBAL ─╮" のように罫線に溶け込む形)。
-    入力欄・結果リスト・プレビューの枠線 (左右の罫線・区切り線含む) は
-    すべて fzf 実機の枠線色 (256色パレット 59番, #5f5f87) に固定する
-    (メインハイライトは使わない)
+    入力欄・結果リスト・プレビューの枠線はすべて fzf 実機の枠線色
+    (256色パレット 59番, #5f5f87) に固定する (メインハイライトは使わない)
  8. 選択行・非選択行に関わらず、検索クエリに一致した部分を常に AlertWarn
     色かつ太字でハイライトする
  9. 一覧の1行畳み表示で、複数行 (\ 継続) コマンドの改行が escape_control()
     によって "^J" という制御文字表記のまま見えてしまうのを、表示直前に
     改行を空白へ置き換えることで見た目だけ隠す (保存データやプレビューの
     複数行表示はそのまま)
+ 10. 検索欄/結果リスト/プレビューの区切りを、ダッシュの罫線ではなく空白 1
+     行にする。また、プレビューが伸びても結果リストが潰れすぎないよう
+     最低高 (6行) を保障する
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
@@ -175,6 +177,15 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
 --- a/crates/atuin/src/command/client/search/interactive.rs
 +++ b/crates/atuin/src/command/client/search/interactive.rs
+@@ -865,7 +865,7 @@
+                 if invert {
+                     [
+                         Constraint::Length(1 + border_size),               // input
+-                        Constraint::Min(1),                                // results list
++                        Constraint::Min(6),                                // results list (最低高を保障)
+                         Constraint::Length(preview_height),                // preview
+                         Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
+                         Constraint::Length(if show_help { 1 } else { 0 }), // header (sic)
 @@ -1053,6 +1053,7 @@
                  preview_chunk,
                  preview,
@@ -216,16 +227,14 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          match style.compactness {
              Compactness::Full => {
                  if style.invert {
-@@ -1182,13 +1188,18 @@
+@@ -1182,13 +1188,16 @@
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
                              .border_type(BorderType::Rounded)
 -                            .title(format!("{:─>width$}", "", width = style.inner_width - 2)),
 +                            .border_style(border_style)
-+                            .title(Line::styled(
-+                                format!("{:─>width$}", "", width = style.inner_width - 2),
-+                                border_style,
-+                            )),
++                            // ダッシュの罫線ではなく空白 1 行で区切る
++                            .title(" "),
                      )
                  } else {
                      results_list.block(
@@ -237,7 +246,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      )
                  }
              }
-@@ -1196,7 +1207,7 @@
+@@ -1196,7 +1205,7 @@
          }
      }
  
@@ -246,7 +255,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,21 +1215,42 @@
+@@ -1204,21 +1213,42 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -294,7 +303,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      input.block(
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
-@@ -1240,8 +1272,8 @@
+@@ -1240,8 +1270,8 @@
          theme: &Theme,
      ) -> Paragraph<'_> {
          let selected = self.results_state.selected();
@@ -305,7 +314,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          } else {
              let s = &results[selected].command;
              let mut lines = Vec::new();
-@@ -1263,16 +1295,26 @@
+@@ -1263,16 +1293,24 @@
                      lines.push(line[start..].to_owned());
                  }
              }
@@ -330,10 +339,8 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 +                        .borders(Borders::BOTTOM | Borders::LEFT | Borders::RIGHT)
 +                        .border_type(BorderType::Rounded)
 +                        .border_style(border_style)
-+                        .title(Line::styled(
-+                            format!("{:─>width$}", "", width = chunk_width - 2),
-+                            border_style,
-+                        )),
++                        // ダッシュの罫線ではなく空白 1 行で区切る
++                        .title(" "),
 +                )
 +            }
              _ => Paragraph::new(command)
