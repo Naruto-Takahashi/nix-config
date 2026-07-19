@@ -18,7 +18,8 @@ return {
       },
     },
     presets = {
-      command_palette = true, -- コマンドラインと検索を画面上部にまとめて表示
+      -- command_palette は画面上部固定になるため使わず、下の views で
+      -- 画面下部寄りに配置する
       long_message_to_split = true,
       lsp_doc_border = true,
     },
@@ -26,6 +27,12 @@ return {
     cmdline = {
       format = {
         cmdline = { icon = "❯" },
+      },
+    },
+    views = {
+      cmdline_popup = {
+        position = { row = "90%", col = "50%" },
+        size = { width = 60, height = "auto" },
       },
     },
   },
