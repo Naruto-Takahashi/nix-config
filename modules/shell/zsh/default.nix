@@ -70,6 +70,7 @@
       gp      = "git push";
       gs      = "git status";
       vim     = "nvim";
+      v       = "nvim";
       lg      = "lazygit";
 
       # GitHub Copilot（Manual Install - v1.0.63+）

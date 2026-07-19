@@ -22,10 +22,12 @@
     ../modules/shell/starship
     ../modules/shell/direnv
     ../modules/shell/fastfetch
+    ../modules/shell/atuin
     ../modules/apps/wezterm
     ../modules/apps/neovim
     ../modules/apps/yazi
     ../modules/apps/lazygit
+    ../modules/apps/btop
     ../modules/theming/matugen
   ];
 
@@ -56,73 +58,9 @@
     };
   };
 
-  # シェル履歴の検索/記録強化。Ctrl+R を atuin の全文検索 UI に置き換える。
-  # ↑キーの挙動は通常の zsh 履歴のまま維持する (--disable-up-arrow)。
-  programs.atuin = {
-    enable = true;
-    # 「失敗した実行時間」と「選択行」の色が AlertError 1スロット共有なのを
-    # パッチで分離する (選択行 → Important)。ソースからの再ビルドが走る
-    package = pkgs.atuin.overrideAttrs (old: {
-      patches = (old.patches or [ ]) ++ [
-        ../modules/patches/atuin-separate-selection-color.patch
-      ];
-      doCheck = false; # テストをスキップしてビルド時間を短縮
-    });
-    enableZshIntegration = true;
-    flags = [ "--disable-up-arrow" ];
-    settings = {
-      search_mode = "fuzzy";
-      filter_mode = "global";
-      inline_height = 20;
-      style = "full"; # fzf の --border 風に検索窓・結果リストを枠線付きで表示
-      # 検索バーを上・結果を下に (トップダウン)
-      invert = true;
-      show_tabs = false; # Search/Inspector タブバーを隠してすっきりさせる
-      show_help = false; # 最下部の "<esc>: exit ..." キーヘルプを隠す
-      # 数字ショートカット (Alt+1..9) は komorebi のワークスペース移動と衝突して
-      # 使えず、Ctrl+数字も端末の制約で届かないため、番号表示ごと無効化する
-      show_numeric_shortcuts = false;
-      # プレビュー: リストは1エントリ=1行の制約があるため、複数行 (\ 継続)
-      # コマンドは選択時に下部プレビューで改行構造ごと表示する
-      show_preview = true;
-      preview.strategy = "auto"; # 1行コマンドは1行分、複数行なら行数に応じて拡大
-      max_preview_height = 10;
-      # 経過時間 (◯m ago) 列は非表示 (長いコマンドとの表示競合を避ける。
-      # 実行時刻などの詳細は Ctrl+O のインスペクタで確認できる)
-      ui.columns = [ "duration" "command" ];
-      update_check = false;
-      theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
-    };
-  };
-
-  # atuin / btop のテーマは「theme 名は matugen 固定・中身のファイルを
-  # 差し替える」方式。matugen 環境では matugen-apply が壁紙由来の配色で
-  # 上書きし、無い環境ではここで配置する kanagawa-dragon 版が使われ続ける。
-  # btop は終了時に btop.conf を自分で書き換えるため programs.btop
-  # (読み取り専用 symlink) は使わず、初回のみ設定をシードする。
-  home.activation.seedMatugenThemes = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-    mkdir -p "$HOME/.config/atuin/themes" "$HOME/.config/btop/themes"
-    [ -f "$HOME/.config/atuin/themes/matugen.toml" ] || \
-      cp ${../modules/theming/matugen/fallbacks/atuin-theme.toml} \
-        "$HOME/.config/atuin/themes/matugen.toml"
-    [ -f "$HOME/.config/btop/themes/matugen.theme" ] || \
-      cp ${../modules/theming/matugen/fallbacks/btop.theme} \
-        "$HOME/.config/btop/themes/matugen.theme"
-    chmod u+w "$HOME/.config/atuin/themes/matugen.toml" \
-      "$HOME/.config/btop/themes/matugen.theme"
-    if [ ! -f "$HOME/.config/btop/btop.conf" ]; then
-      printf '%s\n' \
-        'color_theme = "matugen"' \
-        'theme_background = False' \
-        'vim_keys = True' \
-        > "$HOME/.config/btop/btop.conf"
-    fi
-  '';
-
   home.packages = [
     pkgs.smassh # MonkeyType 風の TUI タイピング練習
     pkgs.fd # find の現代版 (fzf バックエンドにも)
     pkgs.delta # git diff のシンタックスハイライト付きページャ (~/.gitconfig が参照)
-    pkgs.btop # システムモニタ TUI (テーマは上の activation / matugen-apply が配置)
   ];
 }
