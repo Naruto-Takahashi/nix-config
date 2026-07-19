@@ -11,6 +11,9 @@
   programs.fzf = {
     enable = true;
     enableZshIntegration = true;
+    # Ctrl+R は atuin が所有する (fzf 側の履歴ウィジェットを無効化して
+    # home-manager の二重バインド警告を解消)。Ctrl+T / Alt+C は fzf のまま
+    historyWidget.command = "";
   };
 
   # zoxide（スマートなcdコマンド）の有効化を設定します．
