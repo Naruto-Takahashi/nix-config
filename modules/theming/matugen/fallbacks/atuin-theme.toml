@@ -12,8 +12,10 @@ Annotation = "#7aa89f"
 # Guidance = 経過時間 (◯m ago) の列 (tertiary)
 Guidance = "#7aa89f"
 Muted = "#a6a69c"
-# AlertInfo/AlertError = 実行時間列の成功/失敗色。zsh の
-# syntax-highlighting (存在する/しないコマンド) と同じ固定値
+# AlertInfo = 実行時間列の成功色 (zsh syntax-highlighting の緑と同じ固定値)
 AlertInfo = "#98bb6c"
-AlertWarn = "#e6c384"
-AlertError = "#e46876"
+# AlertWarn = 選択行内の検索一致文字。フォールバック fzf の hl (#a292a3) と同色
+AlertWarn = "#a292a3"
+# AlertError = 「失敗した実行時間」と「選択行のコマンド」の共有スロット。
+# 選択行の見やすさを優先して fzf ポインタと同系の accent
+AlertError = "#e6c384"
