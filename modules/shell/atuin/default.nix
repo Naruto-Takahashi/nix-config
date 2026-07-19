@@ -43,10 +43,19 @@
       # 経過時間 (◯m ago) 列は非表示 (長いコマンドとの表示競合を避ける。
       # 実行時刻などの詳細は Ctrl+O のインスペクタで確認できる)
       ui.columns = [ "duration" "command" ];
+      # Enter = 選択したコマンドを即実行 / Tab = プロンプトに挿入して編集
+      # (デフォルト false だと Enter も挿入になり Tab と区別がなくなる)
+      enter_accept = true;
       update_check = false;
       theme.name = "matugen"; # 実体は下の activation / matugen-apply が配置
     };
   };
+
+  # atuin init は vicmd (viノーマルモード) に '/' しか割り当てず ^R を放置する
+  # ため、そのままだと古い fzf の履歴ウィジェットが顔を出す。明示的に上書きする
+  programs.zsh.initContent = lib.mkOrder 2000 ''
+    bindkey -M vicmd '^r' atuin-search-vicmd
+  '';
 
   # kanagawa-dragon フォールバックテーマのシード (存在しない場合のみ)
   home.activation.seedAtuinTheme = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
