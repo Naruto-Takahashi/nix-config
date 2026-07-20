@@ -30,13 +30,17 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NormalFloat", no_bg)
         -- 枠線色を明示指定 (未指定だとkanagawaの既定色が背景に埋もれて見づらいことがある)
         hl(0, "FloatBorder", { bg = "none", fg = mc.muted })
-        hl(0, "FloatTitle", no_bg)
-        hl(0, "FloatFooter", no_bg)
-        hl(0, "NeoTreeFloatBorder", no_bg)
-        hl(0, "NeoTreeFloatTitle", no_bg)
-        hl(0, "NeoTreeFloatNormal", no_bg)
-        hl(0, "NeoTreeTitleBar", no_bg)
-        hl(0, "NeoTreePreview", no_bg)
+        hl(0, "FloatTitle", { bg = "none", fg = mc.accent, bold = true })
+        hl(0, "FloatFooter", { bg = "none", fg = mc.muted })
+        -- nvim_set_hlは部分テーブルでも「置き換え」であり「マージ」ではないため、
+        -- bg=noneだけ指定すると元々リンクで得ていたfgまで消えて透明→文字が
+        -- 背景と同化して見えなくなる (neo-treeのファイル作成/詳細ポップアップ等)。
+        -- 必ずfgも明示する
+        hl(0, "NeoTreeFloatBorder", { bg = "none", fg = mc.muted })
+        hl(0, "NeoTreeFloatTitle", { bg = "none", fg = mc.accent, bold = true })
+        hl(0, "NeoTreeFloatNormal", { bg = "none", fg = mc.text })
+        hl(0, "NeoTreeTitleBar", { bg = "none", fg = mc.accent, bold = true })
+        hl(0, "NeoTreePreview", { bg = "none", fg = mc.text })
         -- フォルダのアイコンと名前は matugen の secondary (2番めの色)
         hl(0, "NeoTreeDirectoryIcon", { fg = mc.secondary })
         hl(0, "NeoTreeDirectoryName", { fg = mc.secondary })
