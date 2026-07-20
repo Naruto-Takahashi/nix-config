@@ -1,7 +1,10 @@
 atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  1. 選択行のコマンド文字色を AlertError (失敗色と共有) から Base に変更
  2. vim-normal 限定の REVERSED 反転を廃止
- 3. 選択行は行全体に fzf の bg+ と同じ背景 (Indexed 236 = #303030) を敷く。
+ 3. 選択行は行全体に fzf の bg+ と同じ背景を敷く。色は環境変数
+    ATUIN_SELECTION_BG (#rrggbb, matugen-apply.sh が壁紙から生成) を
+    実行時に読み、未設定/不正なら Indexed 236 (#303030相当) にフォール
+    バックする。ビルド無しで配色をmatugenに追従させるための仕組み。
     ただしインジケータ列の先頭余白1文字はこの背景で塗らず、バー自体の
     列より左へ背景がはみ出さないようにする
  4. command 列を割当幅で確実に打ち切り (境界判定も >= に修正)、
@@ -28,7 +31,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
-@@ -107,6 +107,20 @@
+@@ -107,6 +107,31 @@
          };
  
          for item in self.history.iter().skip(state.offset).take(end - start) {
@@ -43,7 +46,18 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 +                };
 +                s.buf.set_style(
 +                    Rect::new(s.list_area.left() + 1, cy, s.list_area.width.saturating_sub(1), 1),
-+                    ratatui::style::Style::default().bg(ratatui::style::Color::Indexed(236)),
++                    ratatui::style::Style::default().bg({
++                        let hex = std::env::var("ATUIN_SELECTION_BG").ok();
++                        hex.as_deref()
++                            .and_then(|h| h.strip_prefix('#'))
++                            .and_then(|h| u32::from_str_radix(h, 16).ok())
++                            .map(|v| ratatui::style::Color::Rgb(
++                                ((v >> 16) & 0xFF) as u8,
++                                ((v >> 8) & 0xFF) as u8,
++                                (v & 0xFF) as u8,
++                            ))
++                            .unwrap_or(ratatui::style::Color::Indexed(236))
++                    }),
 +                );
 +            }
              s.render_row(item);
@@ -62,7 +76,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,32 +237,36 @@
+@@ -222,32 +237,49 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -98,15 +112,28 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -        let prompt: &str = if i == 0 {
 -            self.indicator
 +        // fzf のスクロールバーに寄せて、細い罫線ではなく塗りつぶしブロックにする。
-+        // 非選択行は選択行の背景塗り (Indexed 236) と同じグレーに揃える
++        // 非選択行は選択行の背景塗りと同じグレー (環境変数ATUIN_SELECTION_BGを
++        // 実行時に読み、未設定/不正ならIndexed 236にフォールバック) に揃える
 +        let (prompt, style) = if is_selected {
 +            let mut s = self.theme.as_style(Meaning::Title);
 +            s.attributes.set(style::Attribute::Bold);
 +            (" ▌ ", Style::from_crossterm(s))
          } else {
 -            &SLICES[i..i + 3]
++            let row_bg_color = {
++                let hex = std::env::var("ATUIN_SELECTION_BG").ok();
++                hex.as_deref()
++                    .and_then(|h| h.strip_prefix('#'))
++                    .and_then(|h| u32::from_str_radix(h, 16).ok())
++                    .map(|v| style::Color::Rgb {
++                        r: ((v >> 16) & 0xFF) as u8,
++                        g: ((v >> 8) & 0xFF) as u8,
++                        b: (v & 0xFF) as u8,
++                    })
++                    .unwrap_or(style::Color::AnsiValue(236))
++            };
 +            let row_bg_gray = style::ContentStyle {
-+                foreground_color: Some(style::Color::AnsiValue(236)),
++                foreground_color: Some(row_bg_color),
 +                ..style::ContentStyle::default()
 +            };
 +            (" ▌ ", Style::from_crossterm(row_bg_gray))
