@@ -34,8 +34,10 @@ declare -A MAP=(
   [remove]="🔥"
   [security]="🔒️"
   [init]="🎉"
-  [debug]="💚"
+  [debug]="🔍️"
   [merge]="🔀"
+  [upgrade]="⬆️"
+  [downgrade]="⬇️"
 )
 DEFAULT_EMOJI="💬"
 
