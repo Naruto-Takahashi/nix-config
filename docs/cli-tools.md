@@ -25,7 +25,7 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 - レイアウトは検索バー上・結果下 (`invert = true`)、fzf 風の枠線付き (`style = "full"`)。検索欄と結果の間はダッシュの罫線ではなく空白1行で区切られる。キーヘルプは非表示
 - フィルタモード名 (`GLOBAL`/`HOST`/`SESSION`/`DIRECTORY`/`WORKSPACE`) は外枠自体のタイトルとして埋め込まれる (`╭─ GLOBAL ─╮`)。枠線は fzf 実機と同じ枠線色 (#5f5f87) で統一されている (matugen には追従しない固定色)
 - 左端のインジケータは fzf 風の塗りブロック (`▌`)。選択行は accent 太字、それ以外の行は選択行の背景と同じグレー
-- 配色は fzf (ghq 検索等) と同じ文法: 選択行 = fzf と同じ暗灰背景 (#303030) + 白太字、検索一致文字 = fzf の hl と同色 (matugen tertiary)
+- 配色は fzf (ghq 検索等) と同じ文法: 選択行の背景色は環境変数 `ATUIN_SELECTION_BG` (matugen の surface 色、starship の `git_branch` 背景と同じ値) を実行時に読む。ビルド不要で壁紙テーマに追従する (未設定/不正なら固定色にフォールバック)。検索一致文字 = fzf の hl と同色 (matugen tertiary)
 - 実行時間列 (例: `20ms`) は成功=緑・失敗=赤 (zsh syntax-highlighting と同じ固定色)。経過時間列は非表示 (実行時刻は `Ctrl+O` のインスペクタで確認)
 - 注: 見た目の大部分は `modules/shell/atuin/fzf-style.patch` によるソースパッチで実現している (atuin はソースから再ビルドされる)。数字ショートカット (Alt+1..9) は komorebi のワークスペース移動と衝突するため番号表示ごと無効化
 
@@ -52,12 +52,19 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 
 ## 🎨 delta — git diff の美しい表示
 
-インストールするだけで `git diff` / `git log -p` / `lazygit` の差分がシンタックスハイライト付きになります (`~/.gitconfig` の `core.pager` が delta を指定済み)。
+インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`~/.gitconfig` の `core.pager` が delta を指定済み)。lazygit内蔵の差分パネルも別途 `git.pagers` (`modules/apps/lazygit`) で delta を使うよう明示している。
 
 | 操作 | 動作 |
 | :--- | :--- |
 | **`n` / `N`** | (ページャ内) 次 / 前のファイルへジャンプ (`navigate` 有効) |
 | **`git diff --no-pager`** | 素の diff が欲しいとき |
+
+## 📂 eza — ls の置き換え
+
+`ls`/`ll`/`la`/`l`/`tree` エイリアスと `cd` 後の自動一覧表示 (`chpwd`) は全て eza を使う。ファイル種別ごとの色分けは yazi の `theme-template.toml` と同じ拡張子→役割 (tertiary/complement/triad/error/secondary) の対応で揃えており、アイコンの色もファイル名の文字色と一致させている (`modules/apps/eza/theme.yml`、matugen環境では `~/.cache/matugen/eza/theme.yml` を `EZA_CONFIG_DIR` 経由で優先)。
+
+- 拡張子/ファイル名それぞれに `filename.foreground` と `icon.style.foreground` の両方を同じ色で指定する必要がある (eza はアイコン色をファイル名の色から自動導出しないため)
+- 旧来の固定 `LS_COLORS` は eza のテーマ (特に `di`=ディレクトリ色) を上書きしてしまうため撤去済み
 
 ## 📊 btop — システムモニタ
 

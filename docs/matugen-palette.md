@@ -74,14 +74,21 @@
         を組み立てて NixOS と共通の modules/theming/matugen/lib/ に渡す:
         - derive-colors.py  : complement/triad/accent_pale を追記 (11キーに)
         - render-template.sh: starship.toml / lazygit-theme.yml /
-                              yazi theme.toml を共通テンプレートから生成
+                              yazi theme.toml / cz.toml / eza/theme.yml を
+                              共通テンプレートから生成 (cz.tomlのtype選択肢は
+                              modules/apps/git-hooks/cz.toml と手動で同じ
+                              内容を保つ運用。単一ソース化は複雑さに見合わず
+                              revert済み)
      3. 残りは WSL/YASB 固有のまま展開する:
         - YASB styles.css   : MATUGEN マーカー間を差し替えて /mnt/c へ配置
         - komorebi.json     : 枠色 (single/floating/monocle) を sed → 同期 reload
-        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット (完成形をコピー)
+        - colors.lua        : nvim / yazi / wezterm 共通の Lua パレット (完成形をコピー)。
+                              selection_bg (surface色、fzf/nvim/atuinの選択行背景
+                              に共通で使う) もここに含まれる
         - starship (Windows): 生成済み ~/.cache/matugen/starship.toml から
                               os_logo を除去した PowerShell 用変種を /mnt/c へ配置
-        - fzf               : 設定ファイルを丸ごと生成
+        - fzf               : 設定ファイルを丸ごと生成 (ATUIN_SELECTION_BGの
+                              exportも同じfzf-colors.shに含める)
         - cava              : config.yaml 内の色を sed (inode 保持で watch_config を維持)。
                               この書き換えは YASB の全体リロードを誘発するため必ず最後。
                               komorebi のリロードと重なると YASB→komorebi の pipe
