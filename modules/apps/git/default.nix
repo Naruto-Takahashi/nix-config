@@ -28,11 +28,11 @@
       };
       core.pager = "delta";
       interactive.diffFilter = "delta --color-only";
-      # 配色は modules/apps/bat で登録している "Kanagawa" テーマ (bat/delta共通)
+      # 配色は modules/apps/bat で登録している "Kanagawa Dragon" テーマ (bat/delta共通)
       delta = {
         navigate = true;
         light = false;
-        syntax-theme = "Kanagawa";
+        syntax-theme = "Kanagawa Dragon";
       };
       merge.conflictstyle = "diff3";
       diff.colorMoved = "default";
