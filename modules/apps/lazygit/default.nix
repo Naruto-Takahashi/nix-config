@@ -14,10 +14,12 @@
       # 使っており、~/.gitconfigのcore.pager=deltaとは無関係。ここでもdeltaを
       # 使うよう明示する (git diff/showと同じ見た目に揃える)。
       git = {
-        paging = {
-          colorArg = "always";
-          pager = "delta --dark --paging=never";
-        };
+        pagers = [
+          {
+            colorArg = "always";
+            pager = "delta --dark --paging=never";
+          }
+        ];
       };
 
       # Gemini APIを使用したコミットメッセージ自動生成コマンドの登録
