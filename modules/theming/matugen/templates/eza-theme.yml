@@ -6,87 +6,87 @@ filekinds:
 
 extensions:
   # ドキュメント・テキスト・インフラ系 (tertiary)
-  md:   { filename: { foreground: "@@TERTIARY@@" } }
-  pdf:  { filename: { foreground: "@@TERTIARY@@" } }
-  txt:  { filename: { foreground: "@@TERTIARY@@" } }
-  log:  { filename: { foreground: "@@TERTIARY@@" } }
-  csv:  { filename: { foreground: "@@TERTIARY@@" } }
-  docx: { filename: { foreground: "@@TERTIARY@@" } }
-  doc:  { filename: { foreground: "@@TERTIARY@@" } }
-  xlsx: { filename: { foreground: "@@TERTIARY@@" } }
-  xls:  { filename: { foreground: "@@TERTIARY@@" } }
-  pptx: { filename: { foreground: "@@TERTIARY@@" } }
-  ppt:  { filename: { foreground: "@@TERTIARY@@" } }
-  ini:  { filename: { foreground: "@@TERTIARY@@" } }
-  tex:  { filename: { foreground: "@@TERTIARY@@" } }
-  bib:  { filename: { foreground: "@@TERTIARY@@" } }
-  nix:  { filename: { foreground: "@@TERTIARY@@" } }
-  sql:  { filename: { foreground: "@@TERTIARY@@" } }
-  exe:  { filename: { foreground: "@@TERTIARY@@" } }
-  out:  { filename: { foreground: "@@TERTIARY@@" } }
+  md:   { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  pdf:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  txt:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  log:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  csv:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  docx: { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  doc:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  xlsx: { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  xls:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  pptx: { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  ppt:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  ini:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  tex:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  bib:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  nix:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  sql:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  exe:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  out:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
 
   # スクリプト・メディア系 (complement)
-  py:   { filename: { foreground: "@@COMPLEMENT@@" } }
-  sh:   { filename: { foreground: "@@COMPLEMENT@@" } }
-  lua:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  rb:   { filename: { foreground: "@@COMPLEMENT@@" } }
-  php:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  pl:   { filename: { foreground: "@@COMPLEMENT@@" } }
-  mp4:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  mkv:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  avi:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  mov:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  webm: { filename: { foreground: "@@COMPLEMENT@@" } }
-  mp3:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  wav:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  flac: { filename: { foreground: "@@COMPLEMENT@@" } }
-  m4a:  { filename: { foreground: "@@COMPLEMENT@@" } }
-  ogg:  { filename: { foreground: "@@COMPLEMENT@@" } }
+  py:   { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  sh:   { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  lua:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  rb:   { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  php:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  pl:   { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  mp4:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  mkv:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  avi:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  mov:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  webm: { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  mp3:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  wav:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  flac: { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  m4a:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
+  ogg:  { filename: { foreground: "@@COMPLEMENT@@" }, icon: { style: { foreground: "@@COMPLEMENT@@" } } }
 
   # Web・データ系 (triad)
-  js:    { filename: { foreground: "@@TRIAD@@" } }
-  ts:    { filename: { foreground: "@@TRIAD@@" } }
-  jsx:   { filename: { foreground: "@@TRIAD@@" } }
-  tsx:   { filename: { foreground: "@@TRIAD@@" } }
-  json:  { filename: { foreground: "@@TRIAD@@" } }
-  jsonc: { filename: { foreground: "@@TRIAD@@" } }
-  yaml:  { filename: { foreground: "@@TRIAD@@" } }
-  yml:   { filename: { foreground: "@@TRIAD@@" } }
-  toml:  { filename: { foreground: "@@TRIAD@@" } }
-  lock:  { filename: { foreground: "@@TRIAD@@" } }
-  html:  { filename: { foreground: "@@TRIAD@@" } }
-  htm:   { filename: { foreground: "@@TRIAD@@" } }
-  css:   { filename: { foreground: "@@TRIAD@@" } }
-  scss:  { filename: { foreground: "@@TRIAD@@" } }
-  png:   { filename: { foreground: "@@TRIAD@@" } }
-  jpg:   { filename: { foreground: "@@TRIAD@@" } }
-  jpeg:  { filename: { foreground: "@@TRIAD@@" } }
-  gif:   { filename: { foreground: "@@TRIAD@@" } }
-  webp:  { filename: { foreground: "@@TRIAD@@" } }
-  svg:   { filename: { foreground: "@@TRIAD@@" } }
+  js:    { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  ts:    { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  jsx:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  tsx:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  json:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  jsonc: { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  yaml:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  yml:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  toml:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  lock:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  html:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  htm:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  css:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  scss:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  png:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  jpg:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  jpeg:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  gif:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  webp:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  svg:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
 
   # コンパイル言語・アーカイブ (error)
-  rs:    { filename: { foreground: "@@ERROR@@" } }
-  cpp:   { filename: { foreground: "@@ERROR@@" } }
-  c:     { filename: { foreground: "@@ERROR@@" } }
-  h:     { filename: { foreground: "@@ERROR@@" } }
-  hpp:   { filename: { foreground: "@@ERROR@@" } }
-  go:    { filename: { foreground: "@@ERROR@@" } }
-  java:  { filename: { foreground: "@@ERROR@@" } }
-  kt:    { filename: { foreground: "@@ERROR@@" } }
-  cs:    { filename: { foreground: "@@ERROR@@" } }
-  swift: { filename: { foreground: "@@ERROR@@" } }
-  zip:   { filename: { foreground: "@@ERROR@@" } }
-  tar:   { filename: { foreground: "@@ERROR@@" } }
-  gz:    { filename: { foreground: "@@ERROR@@" } }
-  7z:    { filename: { foreground: "@@ERROR@@" } }
-  rar:   { filename: { foreground: "@@ERROR@@" } }
-  xz:    { filename: { foreground: "@@ERROR@@" } }
+  rs:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  cpp:   { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  c:     { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  h:     { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  hpp:   { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  go:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  java:  { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  kt:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  cs:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  swift: { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  zip:   { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  tar:   { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  gz:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  7z:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  rar:   { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  xz:    { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
 
 filenames:
-  Cargo.toml:  { filename: { foreground: "@@ERROR@@" } }
-  config.toml: { filename: { foreground: "@@TRIAD@@" } }
-  theme.toml:  { filename: { foreground: "@@TRIAD@@" } }
-  yazi.toml:   { filename: { foreground: "@@TRIAD@@" } }
-  desktop.ini: { filename: { foreground: "@@TERTIARY@@" } }
-  Dockerfile:  { filename: { foreground: "@@TERTIARY@@" } }
+  Cargo.toml:  { filename: { foreground: "@@ERROR@@" }, icon: { style: { foreground: "@@ERROR@@" } } }
+  config.toml: { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  theme.toml:  { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  yazi.toml:   { filename: { foreground: "@@TRIAD@@" }, icon: { style: { foreground: "@@TRIAD@@" } } }
+  desktop.ini: { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }
+  Dockerfile:  { filename: { foreground: "@@TERTIARY@@" }, icon: { style: { foreground: "@@TERTIARY@@" } } }

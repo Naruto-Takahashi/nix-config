@@ -39,7 +39,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NeoTreeFloatBorder", { bg = "none", fg = mc.muted })
         hl(0, "NeoTreeFloatTitle", { bg = "none", fg = mc.accent, bold = true })
         hl(0, "NeoTreeFloatNormal", { bg = "none", fg = mc.text })
-        hl(0, "NeoTreeTitleBar", { bg = "none", fg = mc.accent, bold = true })
+        -- NeoTreeTitleBarはポップアップ上辺の罫線ではなく、空白を背景色で
+        -- 塗りつぶして帯状に見せる仕組み (popup_border_style = "NC")。
+        -- bg=noneにすると帯そのものが消えて上辺が丸ごと無くなるため、
+        -- ここだけは不透明な背景を与える
+        hl(0, "NeoTreeTitleBar", { bg = mc.surface, fg = mc.accent, bold = true })
         hl(0, "NeoTreePreview", { bg = "none", fg = mc.text })
         -- フォルダのアイコンと名前は matugen の secondary (2番めの色)
         hl(0, "NeoTreeDirectoryIcon", { fg = mc.secondary })
