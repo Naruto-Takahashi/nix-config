@@ -27,6 +27,8 @@ schema_pattern = ".+"
 type = "list"
 name = "change_type"
 message = "Select the type of change:"
+# modules/apps/git-hooks/cz.toml と modules/apps/git-hooks/hooks/prepare-commit-msg
+# の MAP を手動で同じ内容に保つこと (typeを追加/変更したら3箇所とも直す)。
 choices = [
   { value = "✨ feat", name = "✨ feat" },
   { value = "🐛 fix", name = "🐛 fix" },

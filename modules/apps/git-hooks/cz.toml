@@ -30,6 +30,9 @@ schema_pattern = ".+"
 type = "list"
 name = "change_type"
 message = "Select the type of change:"
+# modules/apps/git-hooks/hooks/prepare-commit-msg の MAP と手動で同じ内容を
+# 保つこと (typeを追加/変更したら両方直す)。matugen版テンプレート
+# (modules/theming/matugen/templates/cz.toml) にも同じ選択肢を複製している。
 choices = [
   { value = "✨ feat", name = "✨ feat" },
   { value = "🐛 fix", name = "🐛 fix" },

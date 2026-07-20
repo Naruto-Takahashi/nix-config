@@ -18,6 +18,8 @@ esac
 
 FIRST_LINE="$(head -n1 "$MSG_FILE")"
 
+# type→絵文字の対応表。modules/apps/git-hooks/cz.toml の choices と
+# 手動で同じ内容を保つこと (typeを追加/変更したら両方直す)。
 declare -A MAP=(
   [feat]="✨"
   [fix]="🐛"
