@@ -4,7 +4,10 @@
 name = "matugen"
 
 [colors]
-Base = "@@TEXT@@"
+# fg/bgのtable形式が使えることを確認済み。bgはsurfaceを白と12%混ぜた
+# 「背景に馴染む弱い色」(fzfのbg+と同じ考え方、matugen-apply.shの
+# blend_lighten参照)。選択行の背景に反映されるかは実機で要確認。
+Base = { fg = "@@TEXT@@", bg = "@@SELECTION_BG@@" }
 # Title = 検索ボックス枠のタイトル ("GLOBAL" 等のフィルタ名) と枠線の色。
 # フィルタモードに関わらず常にこのメインハイライト (accent) で固定する
 Title = "@@ACCENT@@"
