@@ -61,31 +61,33 @@ fix(deps): downgrade broken package
 ## 対話的に選びたい場合: commitizen (cz)
 
 自動推定に任せず、type/scope/subjectを対話的に選んでコミットしたい場合は
-[commitizen](https://commitizen-tools.github.io/commitizen/) (`pkgs.commitizen`) を使う。
+`cz commit` を使う。
 
 ```
 cz commit
 ```
 
-質問内容(type一覧+絵文字、scope一覧、subject)はリポジトリ直下の `.cz.toml`
-(`cz_customize`アダプタ)で定義している。typeは絵文字付きでリストから選べ、
-scopeは `modules/apps/*` `modules/shell/*` などこのリポジトリのモジュール名の
-一覧から選べる(`deps`/`deps-dev`も含む)。回答を組み立てると
-`✨ feat(nvim): subject` のような形で先頭に絵文字が付いた状態でコミットされるため、
-後段の`prepare-commit-msg`フックは「既に絵文字がある」と判定してスキップし、
-二重付与にはならない。
+`cz`は`modules/apps/git-hooks`が提供するラッパーコマンドで、実体は
+[commitizen](https://commitizen-tools.github.io/commitizen/)を
+`~/.config/commitizen/cz.toml` (`cz_customize`アダプタ、ソースは
+`modules/apps/git-hooks/cz.toml`) で常に起動する。**リポジトリごとに
+`.cz.toml`を用意する必要はなく、どのリポジトリでも同じ体験になる。**
+
+- type: 絵文字付きでリストから選択(feat/fix/docs/...)
+- scope: 自由入力(空でもよい)。リポジトリごとに意味が違うため固定リストにしていない
+- subject: 自由入力
+
+回答を組み立てると`✨ feat(nvim): subject`のような形で先頭に絵文字が付いた
+状態でコミットされるため、後段の`prepare-commit-msg`フックは「既に絵文字が
+ある」と判定してスキップし、二重付与にはならない。
 
 lazygit内では `E` (Emojiの連想) に `cz commit` を割り当て済み
 (stage済みの変更がある状態、Filesパネルで使う)。
 (`<c-e>` はdiffingMenu-alt、`x`はconfirmDiscardと衝突するため使わない)
 
-`.cz.toml`はこのリポジトリ固有のscope一覧を前提にしているため、
-他の個人リポジトリでは自前で `.cz.toml` を用意しない限り
-デフォルトのConventional Commits形式(絵文字なし)で聞かれる点に注意。
-
 使い分けの目安:
 - 型を意識せず素早くコミットしたい / AIエージェント経由 → 何もせず通常通りコミット(自動推定)
-- type/scopeをきちんと選びたい → `cz commit`
+- type/subjectをきちんと選びたい → `cz commit`
 
 ## エスケープハッチ
 

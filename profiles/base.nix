@@ -72,6 +72,6 @@
     pkgs.delta # git diff のシンタックスハイライト付きページャ (~/.gitconfig が参照)
     pkgs.comma # `, <cmd>` で未インストールのコマンドをその場で一時実行
     pkgs.just # コマンドランナー (justfile に定型タスクをまとめる)
-    pkgs.commitizen # `cz commit` で type/scope/subjectを対話選択してコミット (docs/gitmoji.md, .cz.toml参照)
+    # `cz commit` (対話コミット) は modules/apps/git-hooks で `cz` ラッパーとして提供
   ];
 }

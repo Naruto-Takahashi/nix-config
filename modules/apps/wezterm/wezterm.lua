@@ -24,6 +24,22 @@ end
 
 config.automatically_reload_config = true
 config.scrollback_lines = 3000
+-- ANSI 16色パレット。既定だと黄色が濁ったオレンジ寄りで、questionary(cz commit等)の
+-- 選択カーソル表示などが見づらい。Matugenの役割色から個別に組むと破綻しやすいので、
+-- WezTerm組み込みのkanagawa系スキーム(存在すれば)をそのまま採用する。
+-- 見つからない場合は何もしない(デフォルトのまま)ので設定が壊れることはない。
+do
+  local ok_schemes, schemes = pcall(function() return wezterm.color.get_builtin_schemes() end)
+  if ok_schemes and schemes then
+    local candidates = { "Kanagawa Dragon (Gogh)", "Kanagawa (Gogh)", "kanagawabones" }
+    for _, name in ipairs(candidates) do
+      if schemes[name] then
+        config.color_scheme = name
+        break
+      end
+    end
+  end
+end
 -- サブモニターで3枚目のウィンドウを開くとモザイク状に描画が崩れる問題への対処．
 -- WebGpuに固定することで解消することを確認済み．
 -- front_endはホットリロードでは反映されないため、変更後はWezTermの

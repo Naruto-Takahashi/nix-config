@@ -27,4 +27,21 @@
     [core]
       hooksPath = ${config.home.homeDirectory}/.config/git/hooks
   '';
+
+  # --- 対話コミット (commitizen) ---
+  # cz.tomlをリポジトリごとに用意するのは面倒なので、~/.config/commitizen/cz.toml
+  # に1箇所だけ置き、`cz`コマンド自体をラップして常にそれを参照させる。
+  # これでどのリポジトリでも `cz commit` が同じ絵文字付きtype選択UIになる。
+  home.file.".config/commitizen/cz.toml".source = ./cz.toml;
+
+  home.packages = [
+    (pkgs.writeShellScriptBin "cz" ''
+      exec ${
+        (pkgs.commitizen.overrideAttrs (_: {
+          doCheck = false;
+          doInstallCheck = false;
+        }))
+      }/bin/cz --config ${config.home.homeDirectory}/.config/commitizen/cz.toml "$@"
+    '')
+  ];
 }

@@ -2,7 +2,7 @@
 name = "cz_customize"
 
 [tool.commitizen.customize]
-message_template = "{{change_type}}{{scope}}: {{subject}}"
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{subject}}"
 example = "✨ feat(nvim): add gitmoji plugin"
 schema = "<gitmoji> <type>(<scope>): <subject>"
 schema_pattern = ".+"
@@ -28,32 +28,12 @@ choices = [
   { value = "🔍️ debug", name = "🔍️ debug" },
 ]
 
+# scopeはリポジトリごとに意味が変わるため自由入力にする
+# (どのリポジトリでも同じ設定を使い回せるように、固定リストにしない)
 [[tool.commitizen.customize.questions]]
-type = "list"
+type = "input"
 name = "scope"
-message = "スコープを選択してください(任意):"
-choices = [
-  { value = "", name = "(なし)" },
-  { value = "(nvim)", name = "nvim" },
-  { value = "(wezterm)", name = "wezterm" },
-  { value = "(lazygit)", name = "lazygit" },
-  { value = "(git-hooks)", name = "git-hooks" },
-  { value = "(aerospace)", name = "aerospace" },
-  { value = "(btop)", name = "btop" },
-  { value = "(vivaldi)", name = "vivaldi" },
-  { value = "(yazi)", name = "yazi" },
-  { value = "(zsh)", name = "zsh" },
-  { value = "(atuin)", name = "atuin" },
-  { value = "(direnv)", name = "direnv" },
-  { value = "(fastfetch)", name = "fastfetch" },
-  { value = "(starship)", name = "starship" },
-  { value = "(matugen)", name = "matugen" },
-  { value = "(hyprland)", name = "hyprland" },
-  { value = "(komorebi)", name = "komorebi" },
-  { value = "(yasb)", name = "yasb" },
-  { value = "(deps)", name = "deps" },
-  { value = "(deps-dev)", name = "deps-dev" },
-]
+message = "スコープ(任意、空でもOK):"
 
 [[tool.commitizen.customize.questions]]
 type = "input"
