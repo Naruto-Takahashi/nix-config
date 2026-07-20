@@ -100,6 +100,31 @@ config.colors = {
   cursor_bg = colors.tertiary,
   cursor_fg = colors.surface,
   cursor_border = colors.tertiary,
+  -- ANSI 16色パレット。commitizen(questionary)やls/git/fzfなど
+  -- ターミナル標準色を使うアプリ全般がMatugenテーマに揃うようにする。
+  -- Material You由来のcolorsには赤/緑/黄/青/マゼンタ/シアンの区別が無いため、
+  -- 役割で近い色を割り当てる (accent=黄, complement=青, tertiary=シアン,
+  -- secondary=マゼンタ, triad=緑, error=赤)。
+  ansi = {
+    colors.surface,    -- black
+    colors.error,      -- red
+    colors.triad,      -- green
+    colors.accent,      -- yellow
+    colors.complement, -- blue
+    colors.secondary,  -- magenta
+    colors.tertiary,   -- cyan
+    colors.text,       -- white
+  },
+  brights = {
+    colors.muted,       -- bright black
+    colors.error,       -- bright red
+    colors.triad,       -- bright green
+    colors.accent_pale, -- bright yellow
+    colors.complement,  -- bright blue
+    colors.secondary,   -- bright magenta
+    colors.tertiary,    -- bright cyan
+    colors.text,        -- bright white
+  },
 }
 
 -- タブの形状: 平行四辺形 (左下三角 + 本体 + 右上三角)．
