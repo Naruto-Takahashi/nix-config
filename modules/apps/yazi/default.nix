@@ -12,6 +12,11 @@
     # stateVersion < 26.05 の従来デフォルト "yy" を明示 (デフォルト変更警告の抑止)
     shellWrapperName = "yy";
 
+    # markdownをそのままレンダリングして表示するプレビュープラグイン
+    plugins = {
+      glow = pkgs.yaziPlugins.glow;
+    };
+
     settings = {
       mgr = {
         ratio = [
@@ -25,6 +30,12 @@
 
       preview = {
         wrap = "yes";
+      };
+
+      plugin = {
+        prepend_previewers = [
+          { mime = "text/markdown"; run = "glow"; }
+        ];
       };
 
       opener = {
@@ -76,6 +87,9 @@
       ];
     };
   };
+
+  # glowプレビュープラグインが実行時に呼ぶ実体 (PATHに必要)
+  home.packages = [ pkgs.glow ];
 
   # --- UIロジック設定 (init.lua) ---
   # フルボーダーや matugen 連携のステータスバーなどの UI カスタマイズ (実 Lua ファイル)．
