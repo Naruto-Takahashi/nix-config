@@ -16,7 +16,7 @@ local M = {
   on_accent = "#000000",
   error = "#c4746e",      -- autumnRed
   accent_pale = "#f0dbb5", -- accent を白側に40%寄せた装飾色
-  selection_bg = "#303030", -- surfaceを白と12%混ぜた「背景に馴染む弱い色」(fzf/atuinと共通の考え方)
+  selection_bg = "#181616", -- surfaceと同色 (starshipのgit_branch背景と同じ考え方)
 }
 
 local f = (os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua"

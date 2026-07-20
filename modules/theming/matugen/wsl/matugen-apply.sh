@@ -138,7 +138,9 @@ EOF
         [[ -n "$triad" ]] || triad="#c8e69a"
         [[ -n "$error" ]] || error="#e46876"
         [[ -n "$outline" ]] || outline="#4f4f4f"
-        selection_bg="$(blend_lighten "$surface" 0.12)"
+        # starshipのgit_branch表示と同じ色 (palettes.matugen の dark = 生のsurface)
+        # の方が好まれたため、明るく混ぜずにsurfaceをそのまま使う。
+        selection_bg="$surface"
     fi
 fi
 
