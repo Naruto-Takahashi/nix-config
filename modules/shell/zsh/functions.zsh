@@ -52,6 +52,12 @@ zstyle ':completion:*' menu select
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --highlight-line --color=pointer:#e6c384,marker:#e6c384,prompt:#e6c384,info:#a292a3,hl:#a292a3,hl+:#a292a3,bg+:#303030'
 # matugen生成のfzf配色があれば上書きします（matugen-applyが生成します）．
 [[ -f ~/.cache/matugen/fzf-colors.sh ]] && source ~/.cache/matugen/fzf-colors.sh
+# zoxide (cdi等) が内部で起動するfzfは既定だと見た目が微妙に異なる
+# (高さ・枠線・配色がFZF_DEFAULT_OPTS通りにならない)。ghq-fzf (Ctrl+G) と
+# 同じ見た目に揃えるため、_ZO_FZF_OPTSにも同じ値を渡す
+# --with-nth=2..でスコア列を隠す案は試したが検索(絞り込み)が効かなくなる
+# 副作用があったため不採用。スコア表示は残す
+export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS"
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview,tab:down,btab:up'"
 
