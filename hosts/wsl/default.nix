@@ -29,6 +29,11 @@
   # 非自由ライセンス（Vivaldi等プロプライエタリなソフトウェア）のインストールを許可
   nixpkgs.config.allowUnfree = true;
 
+  # WSLではWindows側のGit for Windows (wincred) の資格情報ストアを使う
+  # (modules/apps/git の共通設定に対するホスト固有の追加)
+  programs.git.settings.credential.helper =
+    "/mnt/c/Program Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe";
+
   # -----------------------------------------------------------------------
   # インストールするパッケージの定義
   # -----------------------------------------------------------------------
