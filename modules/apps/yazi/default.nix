@@ -12,24 +12,8 @@
     # stateVersion < 26.05 の従来デフォルト "yy" を明示 (デフォルト変更警告の抑止)
     shellWrapperName = "yy";
 
-    # markdownをそのままレンダリングして表示するプレビュープラグイン。
-    # csv/json/ipynb/rst は rich-preview (rich-cli) に任せる (md は
-    # glowの方が見やすいため、md自体はrich-previewの担当から外す)
+    # markdown/csv/json/ipynb/rst のレンダリングプレビュー (rich-cli)
     plugins = {
-      # nixpkgs収録のglow.yaziは更新が古く、yazi 26.5.6で廃止された
-      # 複数形API (Command:args(), ya.preview_widgets()) をまだ使っており、
-      # そのままだと "attempt to call a nil value" で必ず失敗する。
-      # 現行の単数形API (:arg(), ya.preview_widget()) に置換するパッチを当てる
-      # (ouch.yazi/rich-preview.yazi 等、更新されているプラグインでの実際の
-      # 呼び出し方から現行APIを確認した)
-      glow = pkgs.yaziPlugins.glow.overrideAttrs (_: {
-        postInstall = ''
-          substituteInPlace "$out/main.lua" \
-            --replace-fail ':args(' ':arg(' \
-            --replace-fail 'ya.preview_widgets(' 'ya.preview_widget(' \
-            --replace-fail 'ya.mgr_emit(' 'ya.emit('
-        '';
-      });
       rich-preview = pkgs.yaziPlugins.rich-preview;
       # アーカイブ操作: 圧縮はcompress (多機能・パスワード対応)、
       # 展開はouch (openerに登録、compressの圧縮キーマップと役割が
@@ -57,9 +41,6 @@
         prepend_previewers = [
           # yaziの実際のmime判定は.mdをtext/plainとして返すため、
           # mime指定だけでは一度もマッチしない。拡張子(url)で直接マッチさせる
-          # glowの見た目が気に入らなかったため、一旦rich-preview (richの
-          # markdownレンダリング) を試す。比べてglowの方が良ければ、
-          # このurl="*.md"行を `run = "glow"` に戻す
           { url = "*.md"; run = "rich-preview"; }
           { url = "*.csv"; run = "rich-preview"; }
           { url = "*.rst"; run = "rich-preview"; }
@@ -147,7 +128,7 @@
 
   # プレビュー・アーカイブプラグインが実行時に呼ぶ実体 (PATHに必要)。
   # zipはcompress.yaziの既定フォーマット用
-  home.packages = [ pkgs.glow pkgs.rich-cli pkgs.ouch pkgs.zip pkgs.unzip ];
+  home.packages = [ pkgs.rich-cli pkgs.ouch pkgs.zip pkgs.unzip ];
 
   # --- UIロジック設定 (init.lua) ---
   # フルボーダーや matugen 連携のステータスバーなどの UI カスタマイズ (実 Lua ファイル)．
