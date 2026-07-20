@@ -22,8 +22,9 @@
         {
           # gitmoji-cli で対話的に type/scope/subject を選んでコミット
           # (docs/gitmoji.md 参照)。stageされた変更がある前提。
-          # <c-e> はlazygit標準の diffingMenu-alt と衝突するため <c-x> を使う。
-          key = "<c-x>";
+          # E = Emoji の連想。<c-e>はdiffingMenu-alt、xはconfirmDiscardと衝突するため
+          # 単独の大文字Eを使う(files/universalどちらでも未使用)。
+          key = "E";
           description = "Commit interactively via gitmoji-cli";
           context = "files";
           command = "gitmoji -c";

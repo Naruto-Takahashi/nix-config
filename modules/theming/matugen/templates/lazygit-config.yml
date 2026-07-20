@@ -5,7 +5,7 @@ customCommands:
     context: "global"
     command: "/home/nalt/.local/bin/lazygit-gemini-commit"
     output: "terminal"
-  - key: "<c-x>"
+  - key: "E"
     description: "Commit interactively via gitmoji-cli"
     context: "files"
     command: "gitmoji -c"

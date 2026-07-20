@@ -71,8 +71,9 @@ gitmoji -c
 gitmoji-cliが先に絵文字を付けるので、後段の`prepare-commit-msg`フックは
 「既に絵文字がある」と判定してスキップし、二重付与にはならない。
 
-lazygit内では `<c-x>` に `gitmoji -c` を割り当て済み(stage済みの変更がある状態で使う)。
-(`<c-e>` はlazygit標準の diffingMenu-alt と衝突するため使わない)
+lazygit内では `E` (Emojiの連想) に `gitmoji -c` を割り当て済み
+(stage済みの変更がある状態、Filesパネルで使う)。
+(`<c-e>` はdiffingMenu-alt、`x`はconfirmDiscardと衝突するため使わない)
 
 使い分けの目安:
 - 型を意識せず素早くコミットしたい / AIエージェント経由 → 何もせず通常通りコミット(自動推定)
