@@ -6,9 +6,9 @@ customCommands:
     command: "/home/nalt/.local/bin/lazygit-gemini-commit"
     output: "terminal"
   - key: "E"
-    description: "Commit interactively via gitmoji-cli"
+    description: "Commit interactively via commitizen (cz)"
     context: "files"
-    command: "gitmoji -c"
+    command: "cz commit"
     output: "terminal"
 gui:
   theme:

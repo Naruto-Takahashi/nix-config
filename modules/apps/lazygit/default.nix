@@ -20,14 +20,14 @@
           output = "terminal";
         }
         {
-          # gitmoji-cli で対話的に type/scope/subject を選んでコミット
-          # (docs/gitmoji.md 参照)。stageされた変更がある前提。
+          # commitizen (cz) で type/scope/subject を対話選択してコミット
+          # (docs/gitmoji.md, .cz.toml 参照)。stageされた変更がある前提。
           # E = Emoji の連想。<c-e>はdiffingMenu-alt、xはconfirmDiscardと衝突するため
           # 単独の大文字Eを使う(files/universalどちらでも未使用)。
           key = "E";
-          description = "Commit interactively via gitmoji-cli";
+          description = "Commit interactively via commitizen (cz)";
           context = "files";
-          command = "gitmoji -c";
+          command = "cz commit";
           output = "terminal";
         }
       ];

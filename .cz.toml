@@ -1,0 +1,61 @@
+[tool.commitizen]
+name = "cz_customize"
+
+[tool.commitizen.customize]
+message_template = "{{change_type}}{{scope}}: {{subject}}"
+example = "✨ feat(nvim): add gitmoji plugin"
+schema = "<gitmoji> <type>(<scope>): <subject>"
+schema_pattern = ".+"
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "change_type"
+message = "変更の種類を選択してください:"
+choices = [
+  { value = "✨ feat", name = "✨ feat: 新機能" },
+  { value = "🐛 fix", name = "🐛 fix: バグ修正" },
+  { value = "📝 docs", name = "📝 docs: ドキュメント" },
+  { value = "🎨 style", name = "🎨 style: 構造/フォーマット改善" },
+  { value = "♻️ refactor", name = "♻️ refactor: リファクタリング" },
+  { value = "⚡️ perf", name = "⚡️ perf: パフォーマンス改善" },
+  { value = "✅ test", name = "✅ test: テスト追加/更新" },
+  { value = "🔧 chore", name = "🔧 chore: 設定/雑務" },
+  { value = "👷 ci", name = "👷 ci: CI" },
+  { value = "⏪️ revert", name = "⏪️ revert: リバート" },
+  { value = "🚧 wip", name = "🚧 wip: 作業中" },
+  { value = "🔥 remove", name = "🔥 remove: コード/ファイル削除" },
+  { value = "🔒️ security", name = "🔒️ security: セキュリティ修正" },
+  { value = "🔍️ debug", name = "🔍️ debug: ログ調査/デバッグ" },
+]
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "scope"
+message = "スコープを選択してください(任意):"
+choices = [
+  { value = "", name = "(なし)" },
+  { value = "(nvim)", name = "nvim" },
+  { value = "(wezterm)", name = "wezterm" },
+  { value = "(lazygit)", name = "lazygit" },
+  { value = "(git-hooks)", name = "git-hooks" },
+  { value = "(aerospace)", name = "aerospace" },
+  { value = "(btop)", name = "btop" },
+  { value = "(vivaldi)", name = "vivaldi" },
+  { value = "(yazi)", name = "yazi" },
+  { value = "(zsh)", name = "zsh" },
+  { value = "(atuin)", name = "atuin" },
+  { value = "(direnv)", name = "direnv" },
+  { value = "(fastfetch)", name = "fastfetch" },
+  { value = "(starship)", name = "starship" },
+  { value = "(matugen)", name = "matugen (テーマ)" },
+  { value = "(hyprland)", name = "hyprland" },
+  { value = "(komorebi)", name = "komorebi" },
+  { value = "(yasb)", name = "yasb" },
+  { value = "(deps)", name = "deps (依存関係更新)" },
+  { value = "(deps-dev)", name = "deps-dev" },
+]
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "subject"
+message = "コミットの概要を入力してください:"
