@@ -15,7 +15,10 @@ style = [
 ]
 
 [tool.commitizen.customize]
-message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{subject}}"
+# scope が deps/deps-dev のときは prepare-commit-msg フックと同じ規約で
+# ⬆️/⬇️ に上書きする (Renovate/Dependabot慣例、cz commit経由でも
+# 手書きコミットと同じ挙動にするため)。
+message_template = "{% if scope in ['deps', 'deps-dev'] %}{% if 'downgrade' in subject.lower() %}⬇️{% else %}⬆️{% endif %} {{change_type.split(' ', 1)[1]}}{% else %}{{change_type}}{% endif %}{% if scope %}({{scope}}){% endif %}: {{subject}}"
 example = "✨ feat(nvim): add gitmoji plugin"
 schema = "<gitmoji> <type>(<scope>): <subject>"
 schema_pattern = ".+"
@@ -23,7 +26,7 @@ schema_pattern = ".+"
 [[tool.commitizen.customize.questions]]
 type = "list"
 name = "change_type"
-message = "変更の種類を選択してください:"
+message = "Select the type of change:"
 choices = [
   { value = "✨ feat", name = "✨ feat" },
   { value = "🐛 fix", name = "🐛 fix" },
@@ -49,9 +52,9 @@ choices = [
 [[tool.commitizen.customize.questions]]
 type = "input"
 name = "scope"
-message = "スコープ(任意、空でもOK):"
+message = "Scope (optional, e.g. nvim / deps):"
 
 [[tool.commitizen.customize.questions]]
 type = "input"
 name = "subject"
-message = "コミットの概要を入力してください:"
+message = "Subject:"
