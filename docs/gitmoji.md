@@ -73,7 +73,8 @@ cz commit
 `modules/apps/git-hooks/cz.toml`) で常に起動する。**リポジトリごとに
 `.cz.toml`を用意する必要はなく、どのリポジトリでも同じ体験になる。**
 
-- type: 絵文字付きでリストから選択(feat/fix/docs/...)
+- type: 絵文字付きでリストから選択(feat/fix/docs/style/refactor/perf/test/
+  chore/build/ci/revert/wip/remove/security/init/debug/merge)
 - scope: 自由入力(空でもよい)。リポジトリごとに意味が違うため固定リストにしていない
 - subject: 自由入力
 
@@ -81,19 +82,24 @@ cz commit
 状態でコミットされるため、後段の`prepare-commit-msg`フックは「既に絵文字が
 ある」と判定してスキップし、二重付与にはならない。
 
-lazygit内では `E` (Emojiの連想) に `cz commit` を割り当て済み
-(stage済みの変更がある状態、Filesパネルで使う)。
-(`<c-e>` はdiffingMenu-alt、`x`はconfirmDiscardと衝突するため使わない)
+lazygit内では **`c`** (通常のcommitChangesを上書き) に `cz commit` を
+割り当て済み(stage済みの変更がある状態、Filesパネルで使う)。
+素のメッセージ入力に戻したい場合は `C`(commitChangesWithEditor)、
+フックごとスキップしたい場合は `w`(commitChangesWithoutHook)を使う。
 
 使い分けの目安:
 - 型を意識せず素早くコミットしたい / AIエージェント経由 → 何もせず通常通りコミット(自動推定)
-- type/subjectをきちんと選びたい → `cz commit`
+- type/subjectをきちんと選びたい → `cz commit` (lazygitなら `c`)
 
 ## エスケープハッチ
 
 - 絵文字や `:shortcode:` を自分で先頭に書けば自動付与はスキップされる
-- `git commit --no-verify` でフック自体をスキップできる(rebase途中など特殊なケース向け)
-- `commit-msg` フックは絵文字が無くても警告のみでコミットは通す(拒否しない)
+- **絵文字を付けたくない1回だけのコミット**は、フックそのものをスキップすればよい:
+  - lazygit: `c`ではなく **`w`**(commitChangesWithoutHook)を押す
+  - CLI: `git commit --no-verify -m "..."`
+- `commit-msg` フックは絵文字が無くても警告のみでコミットは通す(拒否しない、
+  上記の`--no-verify`/`w`を使わなくても`prepare-commit-msg`が💬を付けるので
+  実際には常に絵文字が付く)
 
 ## 適用範囲
 

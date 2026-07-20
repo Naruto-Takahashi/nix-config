@@ -10,6 +10,16 @@
     enable = true;
     
     settings = {
+      # lazygit内蔵の差分パネルはデフォルトでは自前のシンタックスハイライトを
+      # 使っており、~/.gitconfigのcore.pager=deltaとは無関係。ここでもdeltaを
+      # 使うよう明示する (git diff/showと同じ見た目に揃える)。
+      git = {
+        paging = {
+          colorArg = "always";
+          pager = "delta --dark --paging=never";
+        };
+      };
+
       # Gemini APIを使用したコミットメッセージ自動生成コマンドの登録
       customCommands = [
         {
@@ -22,9 +32,12 @@
         {
           # commitizen (cz) で type/scope/subject を対話選択してコミット
           # (docs/gitmoji.md, .cz.toml 参照)。stageされた変更がある前提。
-          # E = Emoji の連想。<c-e>はdiffingMenu-alt、xはconfirmDiscardと衝突するため
-          # 単独の大文字Eを使う(files/universalどちらでも未使用)。
-          key = "E";
+          # 既定のcommitChanges(通常コミット)を使わなくなったため、
+          # 一等地の c キーをcustomCommandsで上書きする
+          # (lazygitはcustomCommandsを既定キーバインドより優先する)。
+          # 素のコミットメッセージ入力に戻したい場合は C (commitChangesWithEditor)
+          # または w (commitChangesWithoutHook, フック無視) を使う。
+          key = "c";
           description = "Commit interactively via commitizen (cz)";
           context = "files";
           command = "cz commit";

@@ -33,12 +33,15 @@ choices = [
   { value = "⚡️ perf", name = "⚡️ perf" },
   { value = "✅ test", name = "✅ test" },
   { value = "🔧 chore", name = "🔧 chore" },
+  { value = "📦️ build", name = "📦️ build" },
   { value = "👷 ci", name = "👷 ci" },
   { value = "⏪️ revert", name = "⏪️ revert" },
   { value = "🚧 wip", name = "🚧 wip" },
   { value = "🔥 remove", name = "🔥 remove" },
   { value = "🔒️ security", name = "🔒️ security" },
+  { value = "🎉 init", name = "🎉 init" },
   { value = "🔍️ debug", name = "🔍️ debug" },
+  { value = "🔀 merge", name = "🔀 merge" },
 ]
 
 # scopeはリポジトリごとに意味が変わるため自由入力にする
