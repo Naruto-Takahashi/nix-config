@@ -12,9 +12,17 @@
     # stateVersion < 26.05 の従来デフォルト "yy" を明示 (デフォルト変更警告の抑止)
     shellWrapperName = "yy";
 
-    # markdownをそのままレンダリングして表示するプレビュープラグイン
+    # markdownをそのままレンダリングして表示するプレビュープラグイン。
+    # csv/json/ipynb/rst は rich-preview (rich-cli) に任せる (md は
+    # glowの方が見やすいため、md自体はrich-previewの担当から外す)
     plugins = {
       glow = pkgs.yaziPlugins.glow;
+      rich-preview = pkgs.yaziPlugins.rich-preview;
+      # アーカイブ操作: 圧縮はcompress (多機能・パスワード対応)、
+      # 展開はouch (openerに登録、compressの圧縮キーマップと役割が
+      # 被らないようouch側のCキーマップは使わない)
+      compress = pkgs.yaziPlugins.compress;
+      ouch = pkgs.yaziPlugins.ouch;
     };
 
     settings = {
@@ -34,7 +42,13 @@
 
       plugin = {
         prepend_previewers = [
-          { mime = "text/markdown"; run = "glow"; }
+          # yaziの実際のmime判定は.mdをtext/plainとして返すため、
+          # mime指定だけでは一度もマッチしない。拡張子で直接マッチさせる
+          { name = "*.md"; run = "glow"; }
+          { url = "*.csv"; run = "rich-preview"; }
+          { url = "*.rst"; run = "rich-preview"; }
+          { url = "*.ipynb"; run = "rich-preview"; }
+          { url = "*.json"; run = "rich-preview"; }
         ];
       };
 
@@ -52,10 +66,26 @@
             desc = "Open";
           }
         ];
+        # ouchでその場に展開 (ouch.yazi READMEの推奨設定通り)
+        extract = [
+          { run = ''ouch d -y "$@"''; desc = "Extract here with ouch"; }
+        ];
       };
       open = {
         rules = [
           { mime = "text/*"; use = "edit"; }
+          {
+            mime = [
+              "application/zip"
+              "application/x-tar"
+              "application/x-bzip2"
+              "application/x-7z-compressed"
+              "application/x-rar"
+              "application/gzip"
+              "application/x-xz"
+            ];
+            use = "extract";
+          }
           { mime = "*"; use = "open"; }
         ];
       };
@@ -84,12 +114,29 @@
           run = "seek 1";
           desc = "Seek down 1 unit in the preview";
         }
+        # 選択中のファイル/フォルダをアーカイブ化 (compress.yazi)
+        {
+          on = [ "c" "a" "a" ];
+          run = "plugin compress";
+          desc = "Archive selected files";
+        }
+        {
+          on = [ "c" "a" "p" ];
+          run = "plugin compress -p";
+          desc = "Archive selected files (password)";
+        }
+        {
+          on = [ "c" "a" "l" ];
+          run = "plugin compress -l";
+          desc = "Archive selected files (compression level)";
+        }
       ];
     };
   };
 
-  # glowプレビュープラグインが実行時に呼ぶ実体 (PATHに必要)
-  home.packages = [ pkgs.glow ];
+  # プレビュー・アーカイブプラグインが実行時に呼ぶ実体 (PATHに必要)。
+  # zipはcompress.yaziの既定フォーマット用
+  home.packages = [ pkgs.glow pkgs.rich-cli pkgs.ouch pkgs.zip pkgs.unzip ];
 
   # --- UIロジック設定 (init.lua) ---
   # フルボーダーや matugen 連携のステータスバーなどの UI カスタマイズ (実 Lua ファイル)．
