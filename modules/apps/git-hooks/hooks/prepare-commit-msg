@@ -36,8 +36,6 @@ declare -A MAP=(
   [init]="🎉"
   [debug]="🔍️"
   [merge]="🔀"
-  [upgrade]="⬆️"
-  [downgrade]="⬇️"
 )
 DEFAULT_EMOJI="💬"
 
@@ -57,16 +55,29 @@ for emoji in "${GITMOJIS[@]}"; do
   fi
 done
 
-# "feat(scope): subject" / "feat: subject" の接頭辞を抽出
+# "feat(scope): subject" / "feat: subject" の接頭辞とscopeを抽出
 TYPE=""
-if [[ "$FIRST_LINE" =~ ^([a-zA-Z]+)(\([^\)]*\))?!?:[[:space:]] ]]; then
-  TYPE="${BASH_REMATCH[1]}"
-  TYPE="${TYPE,,}"
+SCOPE=""
+if [[ "$FIRST_LINE" =~ ^([a-zA-Z]+)\(([^\)]*)\)?!?:[[:space:]] ]]; then
+  TYPE="${BASH_REMATCH[1],,}"
+  SCOPE="${BASH_REMATCH[2],,}"
+elif [[ "$FIRST_LINE" =~ ^([a-zA-Z]+)!?:[[:space:]] ]]; then
+  TYPE="${BASH_REMATCH[1],,}"
 fi
 
 EMOJI="$DEFAULT_EMOJI"
 if [[ -n "$TYPE" && -n "${MAP[$TYPE]+set}" ]]; then
   EMOJI="${MAP[$TYPE]}"
+fi
+
+# scope(deps) / scope(deps-dev) は依存関係更新として扱う
+# (Renovate/Dependabot慣例の "chore(deps): bump X" 等に合わせる)
+if [[ "$SCOPE" == "deps" || "$SCOPE" == "deps-dev" ]]; then
+  if [[ "$FIRST_LINE" =~ [Dd]owngrade ]]; then
+    EMOJI="⬇️"
+  else
+    EMOJI="⬆️"
+  fi
 fi
 
 sed -i "1s/^/${EMOJI} /" "$MSG_FILE"

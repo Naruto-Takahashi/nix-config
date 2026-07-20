@@ -38,12 +38,25 @@ feat: add sample file
 | `init` | 🎉 | プロジェクト開始 |
 | `debug` | 🔍️ | ログ調査/デバッグ |
 | `merge` | 🔀 | ブランチマージ |
-| `upgrade` | ⬆️ | 依存関係アップグレード (flake.lock更新など) |
-| `downgrade` | ⬇️ | 依存関係ダウングレード |
 | (該当なし) | 💬 | デフォルト |
 
 一覧は [gitmoji.dev](https://gitmoji.dev) 準拠。実装は
 `modules/apps/git-hooks/hooks/prepare-commit-msg` の `MAP` 連想配列。
+
+### 依存関係更新 (scopeベース)
+
+独自typeは作らず、Renovate/Dependabot慣例に合わせて `scope` が
+`deps` / `deps-dev` のときに絵文字を上書きする。
+
+```
+chore(deps): bump nixpkgs to 24.11
+→ ⬆️ chore(deps): bump nixpkgs to 24.11
+
+fix(deps): downgrade broken package
+→ ⬇️ fix(deps): downgrade broken package
+```
+
+メッセージに `downgrade` の文字列が含まれる場合のみ⬇️、それ以外は⬆️になる。
 
 ## エスケープハッチ
 
