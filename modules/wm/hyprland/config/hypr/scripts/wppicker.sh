@@ -28,8 +28,8 @@ if [[ -f "$COLORS_LUA" ]]; then
     python3 "$LIB/derive-colors.py" "$COLORS_LUA"
     "$LIB/render-template.sh" "$HOME/.config/yazi/theme-template.toml" \
         "$HOME/.config/yazi/theme.toml" "$COLORS_LUA"
-    "$LIB/render-template.sh" "$TPL/lazygit-config.yml" \
-        "$HOME/.cache/matugen/lazygit-config.yml" "$COLORS_LUA"
+    "$LIB/render-template.sh" "$TPL/lazygit-theme.yml" \
+        "$HOME/.cache/matugen/lazygit-theme.yml" "$COLORS_LUA"
     "$LIB/render-template.sh" "$TPL/starship.toml" \
         "$HOME/.cache/matugen/starship.toml" "$COLORS_LUA"
     # wezterm は colors.lua と同一内容 (11キー) をそのまま使う

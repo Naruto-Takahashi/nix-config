@@ -71,9 +71,14 @@ bindkey -M menuselect 'l' vi-forward-char
 # matugen生成のstarship配色があればそちらを優先します．
 [[ -f ~/.cache/matugen/starship.toml ]] && export STARSHIP_CONFIG=~/.cache/matugen/starship.toml
 
-# matugen生成のlazygit完全設定があれば単一ファイルで渡します（マージ問題回避のため）．
-[[ -f ~/.cache/matugen/lazygit-config.yml ]] && \
-  export LG_CONFIG_FILE="$HOME/.cache/matugen/lazygit-config.yml"
+# lazygitはLG_CONFIG_FILEにカンマ区切りで複数ファイルを渡すと後勝ちでマージする。
+# ベース設定(customCommands等、Nix管理の~/.config/lazygit/config.yml)に対し、
+# matugenが生成する配色だけのテーマパッチ(gui.themeのみ)を重ねる。
+# これによりcustomCommandsをNix側1箇所に書くだけで済み、
+# matugenテンプレート側と二重管理にならない。
+if [[ -f ~/.cache/matugen/lazygit-theme.yml ]]; then
+  export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml,$HOME/.cache/matugen/lazygit-theme.yml"
+fi
 
 # matugen生成のtealdeer(tldr)配色があればそちらを優先します．
 [[ -f ~/.cache/matugen/tealdeer/config.toml ]] && \

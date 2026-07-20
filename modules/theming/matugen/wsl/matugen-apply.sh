@@ -192,8 +192,8 @@ command cp -f "$lua_tmp" "$HOME/.cache/matugen/colors.lua"
 TPL="$HOME/.config/matugen-common/templates"
 STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
 "$LIB/render-template.sh" "$TPL/starship.toml" "$STARSHIP_OUT" "$lua_tmp"
-"$LIB/render-template.sh" "$TPL/lazygit-config.yml" \
-    "$HOME/.cache/matugen/lazygit-config.yml" "$lua_tmp"
+"$LIB/render-template.sh" "$TPL/lazygit-theme.yml" \
+    "$HOME/.cache/matugen/lazygit-theme.yml" "$lua_tmp"
 "$LIB/render-template.sh" "$TPL/cz.toml" \
     "$HOME/.cache/matugen/cz.toml" "$lua_tmp"
 "$LIB/render-template.sh" "$HOME/.config/yazi/theme-template.toml" \

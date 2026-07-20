@@ -56,7 +56,10 @@ output_path = '~/.cache/matugen/colors.lua'
 #     (palettes.matugen ブロックのみ @@プレースホルダ@@、他は静的)
 #   - wezterm は colors.lua をそのまま ~/.config/wezterm/matugen-colors.lua
 #     へコピーするだけ (別テンプレート不要)
-#   - modules/theming/matugen/templates/lazygit-config.yml
+#   - modules/theming/matugen/templates/lazygit-theme.yml
+#     (gui.themeの配色のみ。customCommands等は modules/apps/lazygit/default.nix
+#     の ~/.config/lazygit/config.yml が単一ソースで、LG_CONFIG_FILEの
+#     カンマ区切りマージで重ねる)
 #   - modules/apps/yazi/theme-template.toml
 
 [templates.fzf]
