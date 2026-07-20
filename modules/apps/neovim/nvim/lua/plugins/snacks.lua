@@ -29,6 +29,9 @@ return {
       enabled = true,
       theme = {
         [ "activeBorderColor" ] = { fg = "LazygitActiveBorder", bold = true },
+        -- 既定は選択行の背景をVisualハイライト(青系)から取るが、fzf/atuinの
+        -- 選択背景(グレー)と揃えたいのでCursorLineの背景色を使う
+        [ "selectedLineBgColor" ] = { bg = "CursorLine" },
       },
     },
   },
