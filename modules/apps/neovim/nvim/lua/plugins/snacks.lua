@@ -20,7 +20,10 @@ return {
     scroll = { enabled = true },
     statuscolumn = { enabled = true },
     words = { enabled = true },
-    terminal = { enabled = true },
+    -- 既定だと分割表示のターミナルに "1: term://..." というwinbar
+    -- (bufnr: term_title) が出て starship プロンプトの上に薄い青文字で
+    -- 表示されるため、非表示にする
+    terminal = { enabled = true, win = { wo = { winbar = "" } } },
     gitbrowse = { enabled = true },
     lazygit = {
       enabled = true,
