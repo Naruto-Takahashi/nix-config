@@ -36,12 +36,19 @@
 
   home.packages = [
     (pkgs.writeShellScriptBin "cz" ''
+      # matugen環境ではテーマ由来の色が入った生成版を優先する
+      # (matugen-apply.sh が ~/.cache/matugen/cz.toml を書き出す)。
+      # 無ければNix管理の静的フォールバックを使う。
+      cz_config="${config.home.homeDirectory}/.cache/matugen/cz.toml"
+      if [ ! -f "$cz_config" ]; then
+        cz_config="${config.home.homeDirectory}/.config/commitizen/cz.toml"
+      fi
       exec ${
         (pkgs.commitizen.overrideAttrs (_: {
           doCheck = false;
           doInstallCheck = false;
         }))
-      }/bin/cz --config ${config.home.homeDirectory}/.config/commitizen/cz.toml "$@"
+      }/bin/cz --config "$cz_config" "$@"
     '')
   ];
 }
