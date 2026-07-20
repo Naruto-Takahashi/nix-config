@@ -24,10 +24,15 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
     によって "^J" という制御文字表記のまま見えてしまうのを、表示直前に
     改行を空白へ置き換えることで見た目だけ隠す (保存データやプレビューの
     複数行表示はそのまま)
- 10. 検索欄/結果リストの区切りを、ダッシュの罫線ではなく空白 1 行にする
- 11. show_preview = false のとき、元実装は高さ1の空プレビュー枠を予約して
+ 10. show_preview = false のとき、元実装は高さ1の空プレビュー枠を予約して
      しまい罫線が正しく描画できず表示が崩れるため、プレビュー領域の高さを
      確実に 0 にする
+ 11. 検索欄と結果リストの区切りに、fzf と同じ「一致件数/全件数 ────」を
+     表示する。件数は fzf の info 色 (#a292a3 相当) の固定色、ダッシュは
+     枠線と同じ色 (256色パレット 59番)。全件数は history_count (DB全体の
+     件数) を流用しており、fzf の「検索対象プールの総数」とは厳密には
+     意味が異なる (atuinはクエリ毎にDB再検索する設計のため、fzf同様の
+     「絞り込み前プール」は保持していない) が、見た目上の役割は同じ
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
@@ -63,7 +68,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              s.render_row(item);
  
              // reset line
-@@ -198,10 +212,11 @@
+@@ -198,10 +223,11 @@
              .filter(|c| !c.expand)
              .map(|c| c.width + 1)
              .sum();
@@ -76,7 +81,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
  
          let style = self.theme.as_style(Meaning::Base);
          // Render each configured column
-@@ -222,32 +237,49 @@
+@@ -222,32 +248,49 @@
                  UiColumnType::Host => self.host(h, width),
                  UiColumnType::User => self.user(h, width),
                  UiColumnType::Exit => self.exit_code(h, width),
@@ -144,7 +149,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      }
  
      fn duration(&mut self, h: &History, width: u16) {
-@@ -290,12 +309,18 @@
+@@ -290,12 +333,18 @@
          {
              row_highlighted = true;
              // if not applying alternative highlighting to the whole row, color the command
@@ -165,7 +170,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                  .escape_control()
                  .split_ascii_whitespace()
                  .join(" ")
-@@ -303,23 +328,19 @@
+@@ -303,23 +352,19 @@
          );
  
          let mut pos = 0;
@@ -192,7 +197,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      style.attributes.set(style::Attribute::Bold);
                  }
                  let s = ch.to_string();
-@@ -418,11 +439,6 @@
+@@ -418,11 +463,6 @@
              self.list_area.bottom() - self.y - 1
          };
  
@@ -227,7 +232,15 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                          Constraint::Length(preview_height),                // preview
                          Constraint::Length(if show_tabs { 1 } else { 0 }), // tabs
                          Constraint::Length(if show_help { 1 } else { 0 }), // header (sic)
-@@ -1053,6 +1056,7 @@
+@@ -975,6 +978,7 @@
+                     history_highlighter,
+                     settings.show_numeric_shortcuts,
+                     &settings.ui.columns,
++                    self.history_count,
+                 );
+                 f.render_stateful_widget(results_list, results_list_chunk, &mut self.results_state);
+             }
+@@ -1053,6 +1057,7 @@
                  preview_chunk,
                  preview,
                  std::cmp::max(prefix_width, min_prefix_width),
@@ -235,7 +248,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              );
          }
      }
-@@ -1067,8 +1071,9 @@
+@@ -1067,8 +1072,9 @@
          preview_chunk: Rect,
          preview: Paragraph,
          prefix_width: u16,
@@ -246,7 +259,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          f.render_widget(input, input_chunk);
  
          f.render_widget(preview, preview_chunk);
-@@ -1080,8 +1085,8 @@
+@@ -1080,8 +1086,8 @@
              _ => 0,
          };
          f.set_cursor_position((
@@ -257,7 +270,15 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
              input_chunk.y + cursor_offset,
          ));
      }
-@@ -1175,20 +1180,30 @@
+@@ -1162,6 +1168,7 @@
+         history_highlighter: HistoryHighlighter<'a>,
+         show_numeric_shortcuts: bool,
+         columns: &'a [UiColumn],
++        history_count: i64,
+     ) -> HistoryList<'a> {
+         let results_list = HistoryList::new(
+             results,
+@@ -1175,20 +1182,46 @@
              columns,
          );
  
@@ -278,8 +299,24 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                              .border_type(BorderType::Rounded)
 -                            .title(format!("{:─>width$}", "", width = style.inner_width - 2)),
 +                            .border_style(border_style)
-+                            // ダッシュの罫線ではなく空白 1 行で区切る
-+                            .title(" "),
++                            // fzf風に「一致件数/全件数 ────」を区切りに表示する。
++                            // 件数は fzf の info 色 (#a292a3 相当) に近い固定色
++                            .title({
++                                let count_style = Style::default()
++                                    .fg(ratatui::style::Color::Rgb(0xa2, 0x92, 0xa3));
++                                let count_text =
++                                    format!(" {}/{} ", results.len(), history_count);
++                                let dash_width = (style.inner_width as usize)
++                                    .saturating_sub(2)
++                                    .saturating_sub(count_text.chars().count());
++                                ratatui::text::Line::from(vec![
++                                    ratatui::text::Span::styled(count_text, count_style),
++                                    ratatui::text::Span::styled(
++                                        "─".repeat(dash_width),
++                                        border_style,
++                                    ),
++                                ])
++                            }),
                      )
                  } else {
                      results_list.block(
@@ -291,7 +328,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      )
                  }
              }
-@@ -1196,7 +1211,7 @@
+@@ -1196,7 +1229,7 @@
          }
      }
  
@@ -300,7 +337,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          let (pref, mode) = if self.switched_search_mode {
              (" SRCH:", self.search_mode.as_str())
          } else if self.search.custom_context.is_some() {
-@@ -1204,21 +1219,42 @@
+@@ -1204,21 +1237,42 @@
          } else {
              ("", self.search.filter_mode.as_str())
          };
@@ -348,7 +385,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
                      input.block(
                          Block::default()
                              .borders(Borders::LEFT | Borders::RIGHT)
-@@ -1240,8 +1276,8 @@
+@@ -1240,8 +1294,8 @@
          theme: &Theme,
      ) -> Paragraph<'_> {
          let selected = self.results_state.selected();
@@ -359,7 +396,7 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
          } else {
              let s = &results[selected].command;
              let mut lines = Vec::new();
-@@ -1263,16 +1299,24 @@
+@@ -1263,16 +1317,24 @@
                      lines.push(line[start..].to_owned());
                  }
              }
