@@ -20,6 +20,9 @@
       # 被らないようouch側のCキーマップは使わない)
       compress = pkgs.yaziPlugins.compress;
       ouch = pkgs.yaziPlugins.ouch;
+      # zoxideの利用履歴からディレクトリを選んでジャンプする自作プラグイン
+      # (nixpkgsに既製のyaziPluginsが無いため自前で用意、./plugins/zoxide.yazi)
+      zoxide = ./plugins/zoxide.yazi;
     };
 
     settings = {
@@ -121,6 +124,12 @@
           on = [ "c" "a" "l" ];
           run = "plugin compress -l";
           desc = "Archive selected files (compression level)";
+        }
+        # zoxideの履歴からディレクトリ名で検索してジャンプ
+        {
+          on = [ "c" "d" ];
+          run = "plugin zoxide";
+          desc = "Jump to directory via zoxide";
         }
       ];
     };
