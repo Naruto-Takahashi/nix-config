@@ -27,11 +27,24 @@ schema_pattern = ".+"
 type = "list"
 name = "change_type"
 message = "Select the type of change:"
-# 選択肢は modules/apps/git-hooks/gitmoji-types.txt (単一ソース) を
-# matugen-apply.sh が読み込んで生成する。prepare-commit-msgのMAPと
-# 同じファイルなので、追加/変更はgitmoji-types.txtを直すだけでよい。
 choices = [
-@@GITMOJI_CZ_CHOICES@@
+  { value = "✨ feat", name = "✨ feat" },
+  { value = "🐛 fix", name = "🐛 fix" },
+  { value = "📝 docs", name = "📝 docs" },
+  { value = "🎨 style", name = "🎨 style" },
+  { value = "♻️ refactor", name = "♻️ refactor" },
+  { value = "⚡️ perf", name = "⚡️ perf" },
+  { value = "✅ test", name = "✅ test" },
+  { value = "🔧 chore", name = "🔧 chore" },
+  { value = "📦️ build", name = "📦️ build" },
+  { value = "👷 ci", name = "👷 ci" },
+  { value = "⏪️ revert", name = "⏪️ revert" },
+  { value = "🚧 wip", name = "🚧 wip" },
+  { value = "🔥 remove", name = "🔥 remove" },
+  { value = "🔒️ security", name = "🔒️ security" },
+  { value = "🎉 init", name = "🎉 init" },
+  { value = "🔍️ debug", name = "🔍️ debug" },
+  { value = "🔀 merge", name = "🔀 merge" },
 ]
 
 # scopeはリポジトリごとに意味が変わるため自由入力にする

@@ -40,15 +40,8 @@ feat: add sample file
 | `merge` | 🔀 | ブランチマージ |
 | (該当なし) | 💬 | デフォルト |
 
-一覧は [gitmoji.dev](https://gitmoji.dev) 準拠。type→絵文字の対応は
-`modules/apps/git-hooks/gitmoji-types.txt` が単一ソースで、以下の3箇所は
-全てここから生成/参照する(新しいtypeを足す時はこのファイルだけ直せばよい)。
-
-- `prepare-commit-msg`フックの`MAP`(実行時にこのファイルを読んで構築)
-- `cz commit`の静的フォールバック(`~/.config/commitizen/cz.toml`、
-  Nixがビルド時に`cz.toml.tmpl`の`@@GITMOJI_CZ_CHOICES@@`に埋め込む)
-- `cz commit`のmatugenテーマ版(`~/.cache/matugen/cz.toml`、
-  `matugen-apply.sh`が`render-gitmoji-choices.sh`で埋め込む)
+一覧は [gitmoji.dev](https://gitmoji.dev) 準拠。実装は
+`modules/apps/git-hooks/hooks/prepare-commit-msg` の `MAP` 連想配列。
 
 ### 依存関係更新 (scopeベース)
 

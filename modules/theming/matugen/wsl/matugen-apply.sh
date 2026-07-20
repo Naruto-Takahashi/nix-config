@@ -194,16 +194,8 @@ STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
 "$LIB/render-template.sh" "$TPL/starship.toml" "$STARSHIP_OUT" "$lua_tmp"
 "$LIB/render-template.sh" "$TPL/lazygit-theme.yml" \
     "$HOME/.cache/matugen/lazygit-theme.yml" "$lua_tmp"
-# render-template.shは@@GITMOJI_CZ_CHOICES@@を解決できず
-# "unresolved placeholders"警告を出すが、次のrender-gitmoji-choices.shで
-# 埋めるので想定内 (無視してよい)。
 "$LIB/render-template.sh" "$TPL/cz.toml" \
     "$HOME/.cache/matugen/cz.toml" "$lua_tmp"
-# cz.tomlのtype選択肢は gitmoji-types.txt (単一ソース、prepare-commit-msgの
-# MAPと共通) から生成する。git-hooksモジュールが ~/.config/git/gitmoji-types.txt
-# に配置している。
-"$LIB/render-gitmoji-choices.sh" "$HOME/.config/git/gitmoji-types.txt" \
-    "$HOME/.cache/matugen/cz.toml"
 "$LIB/render-template.sh" "$HOME/.config/yazi/theme-template.toml" \
     "$HOME/.config/yazi/theme.toml" "$lua_tmp"
 
