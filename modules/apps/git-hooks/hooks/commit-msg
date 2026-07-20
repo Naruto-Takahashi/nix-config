@@ -2,8 +2,8 @@
 # =========================================================================
 # gitmoji 強制バリデーション (commit-msg)
 # =========================================================================
-# prepare-commit-msgで自動付与しきれなかった場合の最終防波堤。
-# 先頭がgitmoji (絵文字 or :shortcode:) でなければコミットを拒否する。
+# prepare-commit-msgが常にデフォルト絵文字(💬)を付けるため通常は素通りするが、
+# 手動編集などで絵文字が消えた場合に警告だけ出す(コミット自体は拒否しない)。
 # git CLI直接実行、lazygit(nvim内/外)、Claude CodeなどのAIエージェント
 # 経由のコミットも、最終的にgit commitを呼ぶ限りこのフックを通る。
 #
@@ -36,7 +36,7 @@ for emoji in "${GITMOJIS[@]}"; do
   fi
 done
 
-echo "✗ commit message must start with a gitmoji (e.g. ✨ feat: ...)" >&2
+echo "⚠ commit message has no gitmoji (e.g. ✨ feat: ...) — proceeding anyway" >&2
 echo "  see: https://gitmoji.dev" >&2
 echo "  got: ${FIRST_LINE}" >&2
-exit 1
+exit 0

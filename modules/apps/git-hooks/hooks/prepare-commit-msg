@@ -3,8 +3,9 @@
 # gitmoji 自動付与フック (prepare-commit-msg)
 # =========================================================================
 # Conventional Commits 風の接頭辞 (feat:, fix: など) からgitmojiを推定し、
-# メッセージ先頭に自動で付与する。すでにgitmojiが付いている場合や
-# merge/squash/amendの一部ケースはスキップする。
+# メッセージ先頭に自動で付与する。推定できない場合もデフォルト絵文字を
+# 付けるため、commit-msg側のチェックに引っかかることはほぼ無い。
+# 既にgitmojiが付いている場合や merge/squash はスキップする。
 set -euo pipefail
 
 MSG_FILE="$1"
@@ -16,11 +17,6 @@ case "$SOURCE" in
 esac
 
 FIRST_LINE="$(head -n1 "$MSG_FILE")"
-
-# 既にgitmoji (絵文字 or :shortcode:) が付いていれば何もしない
-if [[ "$FIRST_LINE" =~ ^[[:space:]]*: || "$FIRST_LINE" =~ ^[🎨🐛✨📝♻️⚡️✅🔧📦️👷⏪️🚧🔥🔒️➕➖⬆️⬇️🎉💚🔀💄] ]]; then
-  exit 0
-fi
 
 declare -A MAP=(
   [feat]="✨"
@@ -41,6 +37,23 @@ declare -A MAP=(
   [debug]="💚"
   [merge]="🔀"
 )
+DEFAULT_EMOJI="💬"
+
+GITMOJIS=(
+  🎨 🐛 ✨ 📝 ♻️ ⚡️ ✅ 🔧 📦️ 👷 ⏪️ 🚧 🔥 🔒️ ➕ ➖ ⬆️ ⬇️ 🎉 💚 🔀 💄
+  🍎 🐧 🪟 📱 🚀 🔖 🚨 🚑️ 👥 🔊 🔇 🙈 📸 ⚗️ 🔍️ ♿️ 💡 🍻 💬 🗃️ 🚸 🏗️
+  🤡 🥚 🌐 💫 🗑️ 🛂 🩹 🧐 ⚰️ 🧪 👔 🩺 🧱 🧑‍💻
+)
+
+# 既にgitmoji (絵文字 or :shortcode:) が付いていれば何もしない
+if [[ "$FIRST_LINE" =~ ^[[:space:]]*:[a-z_]+: ]]; then
+  exit 0
+fi
+for emoji in "${GITMOJIS[@]}"; do
+  if [[ "$FIRST_LINE" == "$emoji"* ]]; then
+    exit 0
+  fi
+done
 
 # "feat(scope): subject" / "feat: subject" の接頭辞を抽出
 TYPE=""
@@ -49,12 +62,11 @@ if [[ "$FIRST_LINE" =~ ^([a-zA-Z]+)(\([^\)]*\))?!?:[[:space:]] ]]; then
   TYPE="${TYPE,,}"
 fi
 
-EMOJI=""
+EMOJI="$DEFAULT_EMOJI"
 if [[ -n "$TYPE" && -n "${MAP[$TYPE]+set}" ]]; then
   EMOJI="${MAP[$TYPE]}"
 fi
-if [[ -n "$EMOJI" ]]; then
-  sed -i "1s/^/${EMOJI} /" "$MSG_FILE"
-fi
+
+sed -i "1s/^/${EMOJI} /" "$MSG_FILE"
 
 exit 0
