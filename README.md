@@ -51,7 +51,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 │   └── mac/                   # macOS用 nix-darwin + Home Manager 統合設定
 ├── modules/                   # 再利用可能な共通設定モジュール群
 │   ├── wm/                    # ウィンドウマネージャー設定 (hyprland, komorebi, yasb)
-│   ├── apps/                  # アプリケーション個別設定 (wezterm, neovim, yazi, lazygit)
+│   ├── apps/                  # アプリケーション個別設定 (wezterm, neovim, yazi, lazygit, git, bat)
 │   ├── services/              # ユーザーサービス (obsidian-mcp)
 │   ├── shell/                 # シェル・端末環境 (zsh, starship, fastfetch, direnv)
 │   ├── input/                 # 入力系 (kanata キーリマップ, fcitx5 日本語入力)
