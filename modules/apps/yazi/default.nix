@@ -57,7 +57,10 @@
         prepend_previewers = [
           # yaziの実際のmime判定は.mdをtext/plainとして返すため、
           # mime指定だけでは一度もマッチしない。拡張子(url)で直接マッチさせる
-          { url = "*.md"; run = "glow"; }
+          # glowの見た目が気に入らなかったため、一旦rich-preview (richの
+          # markdownレンダリング) を試す。比べてglowの方が良ければ、
+          # このurl="*.md"行を `run = "glow"` に戻す
+          { url = "*.md"; run = "rich-preview"; }
           { url = "*.csv"; run = "rich-preview"; }
           { url = "*.rst"; run = "rich-preview"; }
           { url = "*.ipynb"; run = "rich-preview"; }
@@ -101,7 +104,7 @@
 
     # キーマップ設定
     keymap = {
-      manager.prepend_keymap = [
+      mgr.prepend_keymap = [
         {
           on = [ "K" ];
           run = "seek -5";
