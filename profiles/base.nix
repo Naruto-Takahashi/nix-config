@@ -27,6 +27,7 @@
     ../modules/apps/neovim
     ../modules/apps/yazi
     ../modules/apps/lazygit
+    ../modules/apps/git-hooks
     ../modules/apps/btop
     ../modules/theming/matugen
   ];
