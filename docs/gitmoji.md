@@ -77,8 +77,8 @@ cz commit
 `cz`は`modules/apps/git-hooks`が提供するラッパーコマンドで、実体は
 [commitizen](https://commitizen-tools.github.io/commitizen/)を
 `~/.config/commitizen/cz.toml` (`cz_customize`アダプタ、ソースは
-`modules/apps/git-hooks/cz.toml`) で常に起動する。**リポジトリごとに
-`.cz.toml`を用意する必要はなく、どのリポジトリでも同じ体験になる。**
+`modules/apps/git-hooks/cz.toml.tmpl` + `gitmoji-types.txt`) で常に起動する。
+**リポジトリごとに`.cz.toml`を用意する必要はなく、どのリポジトリでも同じ体験になる。**
 
 - type: 絵文字付きでリストから選択(feat/fix/docs/style/refactor/perf/test/
   chore/build/ci/revert/wip/remove/security/init/debug/merge)
