@@ -70,6 +70,10 @@ fi
 EMOJI="$DEFAULT_EMOJI"
 if [[ -n "$TYPE" && -n "${MAP[$TYPE]+set}" ]]; then
   EMOJI="${MAP[$TYPE]}"
+elif [[ "$FIRST_LINE" =~ ^Revert\  ]]; then
+  # `git revert` が生成する既定メッセージ (Revert "元のコミット件名") は
+  # Conventional Commits形式に一致しないため、専用に判定する
+  EMOJI="${MAP[revert]}"
 fi
 
 # scope(deps) / scope(deps-dev) は依存関係更新として扱う
