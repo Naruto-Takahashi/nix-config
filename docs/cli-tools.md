@@ -22,7 +22,7 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 - `atuin stats` でよく使うコマンドの統計が見られます
 - フィルタの「directory」は「今のディレクトリで実行したものだけ」— 特定プロジェクトの履歴を掘るのに便利
 - `\` 継続の複数行コマンドは改行・インデントごと記録され、`Tab`/`Enter` での呼び出し時に縦に並んだ元の形で復元される。リスト内では1行に畳んで表示 (改行は見た目だけ空白に変換し `^J` 表記が出ないようにしている)。プレビュー欄は表示崩れがあったため無効化済み
-- レイアウトは検索バー上・結果下 (`invert = true`)、fzf 風の枠線付き (`style = "full"`)。検索欄と結果の間はダッシュの罫線ではなく空白1行で区切られる。キーヘルプは非表示
+- レイアウトは検索バー上・結果下 (`invert = true`)、fzf 風の枠線付き (`style = "full"`)。検索欄と結果の間は fzf と同じ「一致件数/全件数 ────」の区切りが表示される (件数は検索一致ハイライトと同じ AlertWarn 色。全件数は DB 全体の件数を流用しており、fzf の「絞り込み前プール」とは厳密には意味が異なる)。キーヘルプは非表示
 - フィルタモード名 (`GLOBAL`/`HOST`/`SESSION`/`DIRECTORY`/`WORKSPACE`) は外枠自体のタイトルとして埋め込まれる (`╭─ GLOBAL ─╮`)。枠線は fzf 実機と同じ枠線色 (#5f5f87) で統一されている (matugen には追従しない固定色)
 - 左端のインジケータは fzf 風の塗りブロック (`▌`)。選択行は accent 太字、それ以外の行は選択行の背景と同じグレー
 - 配色は fzf (ghq 検索等) と同じ文法: 選択行の背景色は環境変数 `ATUIN_SELECTION_BG` (matugen の surface 色、starship の `git_branch` 背景と同じ値) を実行時に読む。ビルド不要で壁紙テーマに追従する (未設定/不正なら固定色にフォールバック)。検索一致文字 = fzf の hl と同色 (matugen tertiary)
@@ -52,12 +52,15 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 
 ## 🎨 delta — git diff の美しい表示
 
-インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`~/.gitconfig` の `core.pager` が delta を指定済み)。lazygit内蔵の差分パネルも別途 `git.pagers` (`modules/apps/lazygit`) で delta を使うよう明示している。
+インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`programs.git.settings.core.pager`、`modules/apps/git` で管理)。lazygit内蔵の差分パネルも別途 `git.pagers` (`modules/apps/lazygit`) で delta を使うよう明示している。
 
 | 操作 | 動作 |
 | :--- | :--- |
 | **`n` / `N`** | (ページャ内) 次 / 前のファイルへジャンプ (`navigate` 有効) |
 | **`git diff --no-pager`** | 素の diff が欲しいとき |
+
+- シンタックス配色 (`delta.syntax-theme`) は `modules/apps/bat` が登録している `Kanagawa Dragon` テーマ。既定の `Monokai Extended` は他ツールと配色が馴染まないため、kanagawa.nvim本家のtmTheme (無印wave配色) を `lua/kanagawa/themes.lua` の dragon 色定義に合わせて手動で色置換したものを使っている (upstreamにdragon版tmThemeは存在しないため自前で用意、`modules/apps/bat/kanagawa-dragon.tmTheme`)
+- bat自体もこの `Kanagawa Dragon` テーマが既定 (`bat <file>` の表示にも反映される)
 
 ## 📂 eza — ls の置き換え
 
