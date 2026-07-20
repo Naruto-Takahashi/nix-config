@@ -1,0 +1,93 @@
+# eza テーマ (フォールバック値、kanagawa-dragon系)。
+# matugen環境では ~/.cache/matugen/eza-theme.yml (生成版) が
+# EZA_CONFIG_DIRで優先される。拡張子→色の割り当てはyaziのtheme-template.toml
+# と揃えている (同じ役割の色は同じ拡張子グループに使う)。
+filekinds:
+  directory: { foreground: "#a292a3" } # secondary
+
+extensions:
+  # ドキュメント・テキスト・インフラ系 (tertiary)
+  md:   { filename: { foreground: "#7aa89f" } }
+  pdf:  { filename: { foreground: "#7aa89f" } }
+  txt:  { filename: { foreground: "#7aa89f" } }
+  log:  { filename: { foreground: "#7aa89f" } }
+  csv:  { filename: { foreground: "#7aa89f" } }
+  docx: { filename: { foreground: "#7aa89f" } }
+  doc:  { filename: { foreground: "#7aa89f" } }
+  xlsx: { filename: { foreground: "#7aa89f" } }
+  xls:  { filename: { foreground: "#7aa89f" } }
+  pptx: { filename: { foreground: "#7aa89f" } }
+  ppt:  { filename: { foreground: "#7aa89f" } }
+  ini:  { filename: { foreground: "#7aa89f" } }
+  tex:  { filename: { foreground: "#7aa89f" } }
+  bib:  { filename: { foreground: "#7aa89f" } }
+  nix:  { filename: { foreground: "#7aa89f" } }
+  sql:  { filename: { foreground: "#7aa89f" } }
+  exe:  { filename: { foreground: "#7aa89f" } }
+  out:  { filename: { foreground: "#7aa89f" } }
+
+  # スクリプト・メディア系 (complement)
+  py:   { filename: { foreground: "#7fb4ca" } }
+  sh:   { filename: { foreground: "#7fb4ca" } }
+  lua:  { filename: { foreground: "#7fb4ca" } }
+  rb:   { filename: { foreground: "#7fb4ca" } }
+  php:  { filename: { foreground: "#7fb4ca" } }
+  pl:   { filename: { foreground: "#7fb4ca" } }
+  mp4:  { filename: { foreground: "#7fb4ca" } }
+  mkv:  { filename: { foreground: "#7fb4ca" } }
+  avi:  { filename: { foreground: "#7fb4ca" } }
+  mov:  { filename: { foreground: "#7fb4ca" } }
+  webm: { filename: { foreground: "#7fb4ca" } }
+  mp3:  { filename: { foreground: "#7fb4ca" } }
+  wav:  { filename: { foreground: "#7fb4ca" } }
+  flac: { filename: { foreground: "#7fb4ca" } }
+  m4a:  { filename: { foreground: "#7fb4ca" } }
+  ogg:  { filename: { foreground: "#7fb4ca" } }
+
+  # Web・データ系 (triad)
+  js:    { filename: { foreground: "#8a9a7b" } }
+  ts:    { filename: { foreground: "#8a9a7b" } }
+  jsx:   { filename: { foreground: "#8a9a7b" } }
+  tsx:   { filename: { foreground: "#8a9a7b" } }
+  json:  { filename: { foreground: "#8a9a7b" } }
+  jsonc: { filename: { foreground: "#8a9a7b" } }
+  yaml:  { filename: { foreground: "#8a9a7b" } }
+  yml:   { filename: { foreground: "#8a9a7b" } }
+  toml:  { filename: { foreground: "#8a9a7b" } }
+  lock:  { filename: { foreground: "#8a9a7b" } }
+  html:  { filename: { foreground: "#8a9a7b" } }
+  htm:   { filename: { foreground: "#8a9a7b" } }
+  css:   { filename: { foreground: "#8a9a7b" } }
+  scss:  { filename: { foreground: "#8a9a7b" } }
+  png:   { filename: { foreground: "#8a9a7b" } }
+  jpg:   { filename: { foreground: "#8a9a7b" } }
+  jpeg:  { filename: { foreground: "#8a9a7b" } }
+  gif:   { filename: { foreground: "#8a9a7b" } }
+  webp:  { filename: { foreground: "#8a9a7b" } }
+  svg:   { filename: { foreground: "#8a9a7b" } }
+
+  # コンパイル言語・アーカイブ (error)
+  rs:    { filename: { foreground: "#c4746e" } }
+  cpp:   { filename: { foreground: "#c4746e" } }
+  c:     { filename: { foreground: "#c4746e" } }
+  h:     { filename: { foreground: "#c4746e" } }
+  hpp:   { filename: { foreground: "#c4746e" } }
+  go:    { filename: { foreground: "#c4746e" } }
+  java:  { filename: { foreground: "#c4746e" } }
+  kt:    { filename: { foreground: "#c4746e" } }
+  cs:    { filename: { foreground: "#c4746e" } }
+  swift: { filename: { foreground: "#c4746e" } }
+  zip:   { filename: { foreground: "#c4746e" } }
+  tar:   { filename: { foreground: "#c4746e" } }
+  gz:    { filename: { foreground: "#c4746e" } }
+  7z:    { filename: { foreground: "#c4746e" } }
+  rar:   { filename: { foreground: "#c4746e" } }
+  xz:    { filename: { foreground: "#c4746e" } }
+
+filenames:
+  Cargo.toml:  { filename: { foreground: "#c4746e" } }
+  config.toml: { filename: { foreground: "#8a9a7b" } }
+  theme.toml:  { filename: { foreground: "#8a9a7b" } }
+  yazi.toml:   { filename: { foreground: "#8a9a7b" } }
+  desktop.ini: { filename: { foreground: "#7aa89f" } }
+  Dockerfile:  { filename: { foreground: "#7aa89f" } }

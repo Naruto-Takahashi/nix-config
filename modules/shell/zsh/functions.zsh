@@ -15,8 +15,12 @@ export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/home/nalt/lib/ac-library-master
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
 
-# LS_COLORSのカラーパレット定義です．
-export LS_COLORS="di=1;38;5;110:ex=1;38;5;109:ln=1;38;5;139:*.tar=1;38;5;203:*.tgz=1;38;5;203:*.zip=1;38;5;203:*.z=1;38;5;203:*.gz=1;38;5;203:*.bz2=1;38;5;203:*.deb=1;38;5;203:*.rpm=1;38;5;203:*.jar=1;38;5;203:*.rar=1;38;5;203:*.7z=1;38;5;203:*.xz=1;38;5;203:*.rs=1;38;5;151:*.js=1;38;5;151:*.ts=1;38;5;151:*.c=1;38;5;151:*.cpp=1;38;5;151:*.go=1;38;5;151:*.py=1;38;5;151:*.java=1;38;5;151:*.lua=1;38;5;151:*.html=1;38;5;151:*.css=1;38;5;151:*.md=1;38;5;151:*.json=1;38;5;151:*.toml=1;38;5;151:*.yaml=1;38;5;151:*.yml=1;38;5;151"
+# LS_COLORSは撤去した (旧: 固定256色のファイル種別配色)。
+# `ls`は実質常にeza (エイリアス+chpwd) を使うようになっており、
+# eza自体の理論値(~/.config/eza/theme.yml、matugen環境では
+# ~/.cache/matugen/eza/theme.yml、yaziと同じ配色)が優先されるべきところ、
+# LS_COLORSが設定されているとdi(ディレクトリ)等の一部項目がそちらに
+# 引っ張られてしまうため。
 
 # --- シェルオプション設定 ---
 # ディレクトリ移動（cdなしでの移動を許可）を有効化します．
@@ -80,6 +84,9 @@ if [[ -f ~/.cache/matugen/lazygit-theme.yml ]]; then
   export LG_CONFIG_FILE="$HOME/.config/lazygit/config.yml,$HOME/.cache/matugen/lazygit-theme.yml"
 fi
 
+# matugen生成のeza配色があればそちらを優先します (ファイル名は theme.yml 固定)．
+[[ -f ~/.cache/matugen/eza/theme.yml ]] && export EZA_CONFIG_DIR=~/.cache/matugen/eza
+
 # matugen生成のtealdeer(tldr)配色があればそちらを優先します．
 [[ -f ~/.cache/matugen/tealdeer/config.toml ]] && \
   export TEALDEER_CONFIG_DIR="$HOME/.cache/matugen/tealdeer"
@@ -95,8 +102,11 @@ mkcd() {
 }
 
 # 2. ディレクトリ移動 (cd) 後に自動的に eza (ls) を実行します．
+# 注意: `ls`エイリアスはhome-managerの生成順序上この関数より後に定義されるため、
+# ここで`ls`と書くと関数パース時点でエイリアス展開されず、
+# 素の/実行ファイルのlsが実行されてしまう。直接ezaコマンドを書く。
 function chpwd() {
-    ls
+    eza --icons
 }
 
 # 3. 競技プログラミング用C++のコンパイル＆実行を行います．

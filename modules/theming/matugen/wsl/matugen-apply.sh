@@ -198,6 +198,12 @@ STARSHIP_OUT="$HOME/.cache/matugen/starship.toml"
     "$HOME/.cache/matugen/cz.toml" "$lua_tmp"
 "$LIB/render-template.sh" "$HOME/.config/yazi/theme-template.toml" \
     "$HOME/.config/yazi/theme.toml" "$lua_tmp"
+# eza (ls) のファイル種別配色。ファイル名は theme.yml 固定でないと
+# eza に認識されないため専用ディレクトリに置く (EZA_CONFIG_DIR で参照、
+# modules/shell/zsh/functions.zsh 参照)。
+mkdir -p "$HOME/.cache/matugen/eza"
+"$LIB/render-template.sh" "$TPL/eza-theme.yml" \
+    "$HOME/.cache/matugen/eza/theme.yml" "$lua_tmp"
 
 # tealdeer (tldr) の配色: tealdeer は "#hex" を受け付けず rgb {r,g,b} 形式が
 # 必要なため専用スクリプトで生成する。zsh が TEALDEER_CONFIG_DIR でこちらを優先。
