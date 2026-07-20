@@ -28,11 +28,11 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
      しまい罫線が正しく描画できず表示が崩れるため、プレビュー領域の高さを
      確実に 0 にする
  11. 検索欄と結果リストの区切りに、fzf と同じ「一致件数/全件数 ────」を
-     表示する。件数は fzf の info 色 (#a292a3 相当) の固定色、ダッシュは
-     枠線と同じ色 (256色パレット 59番)。全件数は history_count (DB全体の
-     件数) を流用しており、fzf の「検索対象プールの総数」とは厳密には
-     意味が異なる (atuinはクエリ毎にDB再検索する設計のため、fzf同様の
-     「絞り込み前プール」は保持していない) が、見た目上の役割は同じ
+     表示する。件数は検索一致ハイライト (8.) と同じ AlertWarn 色、
+     ダッシュは枠線と同じ色 (256色パレット 59番)。全件数は history_count
+     (DB全体の件数) を流用しており、fzf の「検索対象プールの総数」とは
+     厳密には意味が異なる (atuinはクエリ毎にDB再検索する設計のため、fzf
+     同様の「絞り込み前プール」は保持していない) が、見た目上の役割は同じ
 
 --- a/crates/atuin/src/command/client/search/history_list.rs
 +++ b/crates/atuin/src/command/client/search/history_list.rs
@@ -300,10 +300,10 @@ atuin v18 の履歴リストを fzf の見た目に寄せるパッチ:
 -                            .title(format!("{:─>width$}", "", width = style.inner_width - 2)),
 +                            .border_style(border_style)
 +                            // fzf風に「一致件数/全件数 ────」を区切りに表示する。
-+                            // 件数は fzf の info 色 (#a292a3 相当) に近い固定色
++                            // 件数は検索一致ハイライトと同じ色 (AlertWarn) にする
 +                            .title({
-+                                let count_style = Style::default()
-+                                    .fg(ratatui::style::Color::Rgb(0xa2, 0x92, 0xa3));
++                                let count_style = theme.as_style(Meaning::AlertWarn);
++                                let count_style = Style::from_crossterm(count_style);
 +                                let count_text =
 +                                    format!(" {}/{} ", results.len(), history_count);
 +                                let dash_width = (style.inner_width as usize)
