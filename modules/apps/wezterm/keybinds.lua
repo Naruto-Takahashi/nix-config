@@ -100,8 +100,8 @@ return {
     { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
     { key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
 
-    -- コピーモード（Leader + [）．
-    { key = "[", mods = "LEADER", action = act.ActivateCopyMode },
+    -- コピーモード（Leader + c）．
+    { key = "c", mods = "LEADER", action = act.ActivateCopyMode },
 
     -- コマンドパレット（Ctrl + Shift + P）．
     { key = "p", mods = "CTRL|SHIFT", action = act.ActivateCommandPalette },
