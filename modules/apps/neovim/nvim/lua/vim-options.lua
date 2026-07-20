@@ -158,6 +158,23 @@ vim.keymap.set("i", "jk", "<Esc>", { desc = "Exit Insert Mode" })
 -- 検索ハイライトの消去
 vim.keymap.set("n", "<Esc>", ":nohlsearch<CR>", { desc = "Clear Highlight" })
 
+-- スクロール/ジャンプ後にカーソルを画面中央へ (毎回zzを打たなくて済むようにする)
+vim.keymap.set("n", "<C-d>", "<C-d>zz", { desc = "Half Page Down (Centered)" })
+vim.keymap.set("n", "<C-u>", "<C-u>zz", { desc = "Half Page Up (Centered)" })
+-- 検索ジャンプ後も同様に中央へ (zvで折り畳みも開く)
+vim.keymap.set("n", "n", "nzzzv", { desc = "Next Search Result (Centered)" })
+vim.keymap.set("n", "N", "Nzzzv", { desc = "Prev Search Result (Centered)" })
+-- ジャンプリスト移動後も中央へ
+vim.keymap.set("n", "<C-o>", "<C-o>zz", { desc = "Jump Back (Centered)" })
+vim.keymap.set("n", "<C-i>", "<C-i>zz", { desc = "Jump Forward (Centered)" })
+
+-- J (行結合) でカーソル位置が動かないようにする (結合後も同じ場所を見続けられる)
+vim.keymap.set("n", "J", "mzJ`z", { desc = "Join Lines (Keep Cursor Position)" })
+
+-- ビジュアルモードでのペーストで、貼り付けた内容でレジスタを上書きしない
+-- (直前にヤンクした内容を連続でペーストできる)
+vim.keymap.set("v", "p", '"_dP', { desc = "Paste Without Overwriting Register" })
+
 -- GitHub 上の KEYBINDINGS.md を開く
 vim.keymap.set("n", "<leader>m", function()
     local url = "https://github.com/Naruto-Takahashi/dotfiles/blob/main/nvim/KEYBINDINGS.md"
