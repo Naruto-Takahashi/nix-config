@@ -19,6 +19,15 @@
           command = "/home/nalt/.local/bin/lazygit-gemini-commit";
           output = "terminal";
         }
+        {
+          # gitmoji-cli で対話的に type/scope/subject を選んでコミット
+          # (docs/gitmoji.md 参照)。stageされた変更がある前提。
+          key = "<c-e>";
+          description = "Commit interactively via gitmoji-cli";
+          context = "files";
+          command = "gitmoji -c";
+          output = "terminal";
+        }
       ];
 
       # 外観テーマ設定（kanagawa-dragon配色）

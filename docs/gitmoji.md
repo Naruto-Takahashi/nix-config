@@ -58,6 +58,25 @@ fix(deps): downgrade broken package
 
 メッセージに `downgrade` の文字列が含まれる場合のみ⬇️、それ以外は⬆️になる。
 
+## 対話的に選びたい場合: gitmoji-cli
+
+自動推定に任せず、type/scope/subjectを対話的に選んでコミットしたい場合は
+[gitmoji-cli](https://github.com/carloscuesta/gitmoji-cli) (`pkgs.gitmoji-cli`) を使う。
+
+```
+gitmoji -c
+```
+
+公式gitmoji一覧(60種類以上)から選べるため、自作の`MAP`連想配列より網羅的。
+gitmoji-cliが先に絵文字を付けるので、後段の`prepare-commit-msg`フックは
+「既に絵文字がある」と判定してスキップし、二重付与にはならない。
+
+lazygit内では `<c-e>` に `gitmoji -c` を割り当て済み(stage済みの変更がある状態で使う)。
+
+使い分けの目安:
+- 型を意識せず素早くコミットしたい / AIエージェント経由 → 何もせず通常通りコミット(自動推定)
+- じっくり選びたい / 公式一覧から細かい絵文字(🚑️緊急修正など)を使いたい → `gitmoji -c`
+
 ## エスケープハッチ
 
 - 絵文字や `:shortcode:` を自分で先頭に書けば自動付与はスキップされる
