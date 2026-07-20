@@ -43,8 +43,8 @@
       plugin = {
         prepend_previewers = [
           # yaziの実際のmime判定は.mdをtext/plainとして返すため、
-          # mime指定だけでは一度もマッチしない。拡張子で直接マッチさせる
-          { name = "*.md"; run = "glow"; }
+          # mime指定だけでは一度もマッチしない。拡張子(url)で直接マッチさせる
+          { url = "*.md"; run = "glow"; }
           { url = "*.csv"; run = "rich-preview"; }
           { url = "*.rst"; run = "rich-preview"; }
           { url = "*.ipynb"; run = "rich-preview"; }
@@ -74,18 +74,13 @@
       open = {
         rules = [
           { mime = "text/*"; use = "edit"; }
-          {
-            mime = [
-              "application/zip"
-              "application/x-tar"
-              "application/x-bzip2"
-              "application/x-7z-compressed"
-              "application/x-rar"
-              "application/gzip"
-              "application/x-xz"
-            ];
-            use = "extract";
-          }
+          { mime = "application/zip"; use = "extract"; }
+          { mime = "application/x-tar"; use = "extract"; }
+          { mime = "application/x-bzip2"; use = "extract"; }
+          { mime = "application/x-7z-compressed"; use = "extract"; }
+          { mime = "application/x-rar"; use = "extract"; }
+          { mime = "application/gzip"; use = "extract"; }
+          { mime = "application/x-xz"; use = "extract"; }
           { mime = "*"; use = "open"; }
         ];
       };
