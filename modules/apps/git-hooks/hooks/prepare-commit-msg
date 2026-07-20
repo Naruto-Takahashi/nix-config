@@ -18,25 +18,17 @@ esac
 
 FIRST_LINE="$(head -n1 "$MSG_FILE")"
 
-declare -A MAP=(
-  [feat]="✨"
-  [fix]="🐛"
-  [docs]="📝"
-  [style]="🎨"
-  [refactor]="♻️"
-  [perf]="⚡️"
-  [test]="✅"
-  [chore]="🔧"
-  [build]="📦️"
-  [ci]="👷"
-  [revert]="⏪️"
-  [wip]="🚧"
-  [remove]="🔥"
-  [security]="🔒️"
-  [init]="🎉"
-  [debug]="🔍️"
-  [merge]="🔀"
-)
+# type→絵文字の対応表は gitmoji-types.txt (単一ソース) から読み込む。
+# 同じファイルを .cz.toml (cz commit の選択肢) の生成にも使っており、
+# 追加/変更はそちらの1ファイルを直すだけで両方に反映される。
+declare -A MAP=()
+TYPES_FILE="$(dirname "$0")/../gitmoji-types.txt"
+if [[ -f "$TYPES_FILE" ]]; then
+  while read -r gm_type gm_emoji; do
+    [[ -z "$gm_type" ]] && continue
+    MAP[$gm_type]="$gm_emoji"
+  done < "$TYPES_FILE"
+fi
 DEFAULT_EMOJI="💬"
 
 GITMOJIS=(

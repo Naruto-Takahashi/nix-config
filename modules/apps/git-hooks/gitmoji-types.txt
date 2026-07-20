@@ -1,0 +1,17 @@
+feat ✨
+fix 🐛
+docs 📝
+style 🎨
+refactor ♻️
+perf ⚡️
+test ✅
+chore 🔧
+build 📦️
+ci 👷
+revert ⏪️
+wip 🚧
+remove 🔥
+security 🔒️
+init 🎉
+debug 🔍️
+merge 🔀

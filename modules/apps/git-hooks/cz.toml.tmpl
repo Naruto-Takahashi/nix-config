@@ -30,24 +30,11 @@ schema_pattern = ".+"
 type = "list"
 name = "change_type"
 message = "Select the type of change:"
+# 選択肢は gitmoji-types.txt (単一ソース) から生成される。
+# prepare-commit-msgのMAPと同じファイルを見ているので、
+# 追加/変更はgitmoji-types.txtを直すだけで両方に反映される。
 choices = [
-  { value = "✨ feat", name = "✨ feat" },
-  { value = "🐛 fix", name = "🐛 fix" },
-  { value = "📝 docs", name = "📝 docs" },
-  { value = "🎨 style", name = "🎨 style" },
-  { value = "♻️ refactor", name = "♻️ refactor" },
-  { value = "⚡️ perf", name = "⚡️ perf" },
-  { value = "✅ test", name = "✅ test" },
-  { value = "🔧 chore", name = "🔧 chore" },
-  { value = "📦️ build", name = "📦️ build" },
-  { value = "👷 ci", name = "👷 ci" },
-  { value = "⏪️ revert", name = "⏪️ revert" },
-  { value = "🚧 wip", name = "🚧 wip" },
-  { value = "🔥 remove", name = "🔥 remove" },
-  { value = "🔒️ security", name = "🔒️ security" },
-  { value = "🎉 init", name = "🎉 init" },
-  { value = "🔍️ debug", name = "🔍️ debug" },
-  { value = "🔀 merge", name = "🔀 merge" },
+@@GITMOJI_CZ_CHOICES@@
 ]
 
 # scopeはリポジトリごとに意味が変わるため自由入力にする

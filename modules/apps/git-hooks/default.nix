@@ -12,8 +12,25 @@
 #     path = ~/.config/git/gitmoji.conf
 # 個人リポジトリ配下のみに条件付き適用することで、共同開発リポジトリ
 # (他人のOSSや会社リポジトリなど)に無断でgitmojiが混ざるのを防ぐ。
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  # type→絵文字の単一ソース。prepare-commit-msgのMAP、.cz.toml(静的/matugen
+  # どちらも)の選択肢は、全てこのファイル1つから生成/参照する。
+  # 新しいtypeを追加したい時はここだけ直せばよい。
+  gitmojiTypesRaw = builtins.readFile ./gitmoji-types.txt;
+  gitmojiPairs = builtins.filter (p: p != null) (map
+    (line:
+      let parts = builtins.filter (s: s != "") (lib.splitString " " line);
+      in if builtins.length parts == 2 then {
+        type = builtins.elemAt parts 0;
+        emoji = builtins.elemAt parts 1;
+      } else null)
+    (lib.splitString "\n" gitmojiTypesRaw));
+  czChoicesToml = lib.concatMapStringsSep "\n"
+    (p: "  { value = \"${p.emoji} ${p.type}\", name = \"${p.emoji} ${p.type}\" },")
+    gitmojiPairs;
+in
 {
   home.file.".config/git/hooks/prepare-commit-msg" = {
     source = ./hooks/prepare-commit-msg;
@@ -23,6 +40,7 @@
     source = ./hooks/commit-msg;
     executable = true;
   };
+  home.file.".config/git/gitmoji-types.txt".source = ./gitmoji-types.txt;
   home.file.".config/git/gitmoji.conf".text = ''
     [core]
       hooksPath = ${config.home.homeDirectory}/.config/git/hooks
@@ -32,7 +50,10 @@
   # cz.tomlをリポジトリごとに用意するのは面倒なので、~/.config/commitizen/cz.toml
   # に1箇所だけ置き、`cz`コマンド自体をラップして常にそれを参照させる。
   # これでどのリポジトリでも `cz commit` が同じ絵文字付きtype選択UIになる。
-  home.file.".config/commitizen/cz.toml".source = ./cz.toml;
+  # choicesはgitmoji-types.txtから生成し、cz.toml.tmplの@@GITMOJI_CZ_CHOICES@@に埋め込む。
+  home.file.".config/commitizen/cz.toml".text =
+    builtins.replaceStrings [ "@@GITMOJI_CZ_CHOICES@@" ] [ czChoicesToml ]
+    (builtins.readFile ./cz.toml.tmpl);
 
   home.packages = [
     (pkgs.writeShellScriptBin "cz" ''
