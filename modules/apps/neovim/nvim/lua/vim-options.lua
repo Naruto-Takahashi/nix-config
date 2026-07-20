@@ -41,6 +41,14 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "NeoTreeDirectoryIcon", { fg = mc.secondary })
         hl(0, "NeoTreeDirectoryName", { fg = mc.secondary })
         hl(0, "NeoTreeRootName", { fg = mc.secondary, bold = true })
+        -- snacks.nvim の input (vim.ui.inputを担う。neo-treeのファイル作成/
+        -- 詳細プロンプト等もこれ経由) は独自ハイライト群を持ち、上記の
+        -- NormalFloat/FloatTitle 等ではカバーされない。fgを明示しないと
+        -- 既定色が背景と同化して読めなくなるため個別に設定する
+        hl(0, "SnacksInputNormal", { bg = "none", fg = mc.text })
+        hl(0, "SnacksInputBorder", { bg = "none", fg = mc.muted })
+        hl(0, "SnacksInputTitle", { bg = "none", fg = mc.accent, bold = true })
+        hl(0, "SnacksInputIcon", { bg = "none", fg = mc.accent })
         hl(0, "NormalNC", no_bg)
         hl(0, "SignColumn", no_bg)
         -- lualine の透過セクションは StatusLine にフォールバックするため、ここも透過必須
