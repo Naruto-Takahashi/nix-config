@@ -154,8 +154,10 @@ yazi <path>   # 指定ディレクトリで起動
 |------|------|
 | `c` `d` | zoxideの利用履歴からディレクトリ名で検索してジャンプ (内部でfzf使用) |
 
-自作プラグイン (`modules/apps/yazi/plugins/zoxide.yazi`)。zshの`cd`と同じ
-zoxide履歴を共有するので、シェルでよく行く場所はyazi側でも同じ候補で出てくる。
+yazi組み込みのzoxideプラグイン (既定は`Z`キーのみだが`c,d`にも割り当て)。
+zshの`cd`と同じzoxide履歴を共有するので、シェルでよく行く場所はyazi側でも
+同じ候補で出てくる。配色は`_ZO_FZF_OPTS`ではなく`YAZI_ZOXIDE_OPTS`環境変数で
+決まる (`modules/shell/zsh/functions.zsh`)。
 
 ### その他
 

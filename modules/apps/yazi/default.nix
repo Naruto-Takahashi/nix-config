@@ -20,9 +20,6 @@
       # 被らないようouch側のCキーマップは使わない)
       compress = pkgs.yaziPlugins.compress;
       ouch = pkgs.yaziPlugins.ouch;
-      # zoxideの利用履歴からディレクトリを選んでジャンプする自作プラグイン
-      # (nixpkgsに既製のyaziPluginsが無いため自前で用意、./plugins/zoxide.yazi)
-      zoxide = ./plugins/zoxide.yazi;
     };
 
     settings = {
@@ -125,7 +122,9 @@
           run = "plugin compress -l";
           desc = "Archive selected files (compression level)";
         }
-        # zoxideの履歴からディレクトリ名で検索してジャンプ
+        # zoxideの履歴からディレクトリ名で検索してジャンプ (yazi組み込みのzoxideプラグイン。
+        # 既定は"Z"キーのみなので、cdi/Ctrl+Gと押しやすさを揃えるため"c","d"にも割り当てる。
+        # 配色はYAZI_ZOXIDE_OPTS環境変数で調整 (modules/shell/zsh/functions.zsh)
         {
           on = [ "c" "d" ];
           run = "plugin zoxide";

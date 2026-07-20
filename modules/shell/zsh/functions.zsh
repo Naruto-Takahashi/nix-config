@@ -58,6 +58,9 @@ export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --highlight-line
 # --with-nth=2..でスコア列を隠す案は試したが検索(絞り込み)が効かなくなる
 # 副作用があったため不採用。スコア表示は残す
 export _ZO_FZF_OPTS="$FZF_DEFAULT_OPTS"
+# yaziの組み込みzoxideプラグイン(cdiとは別実装、Z/c,dキー)は_ZO_FZF_OPTSではなく
+# YAZI_ZOXIDE_OPTSを読むため、同じ配色に揃えるにはこちらも必要
+export YAZI_ZOXIDE_OPTS="$FZF_DEFAULT_OPTS"
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview,tab:down,btab:up'"
 
