@@ -17,12 +17,17 @@
     # glowの方が見やすいため、md自体はrich-previewの担当から外す)
     plugins = {
       # nixpkgs収録のglow.yaziは更新が古く、yazi 26.5.6で廃止された
-      # Command:args() (複数形API) をまだ使っており、そのままだと
-      # "attempt to call a nil value (method 'args')" で必ず失敗する。
-      # 現行API (単数形の :arg()、テーブルも渡せる) に置換するパッチを当てる
+      # 複数形API (Command:args(), ya.preview_widgets()) をまだ使っており、
+      # そのままだと "attempt to call a nil value" で必ず失敗する。
+      # 現行の単数形API (:arg(), ya.preview_widget()) に置換するパッチを当てる
+      # (ouch.yazi/rich-preview.yazi 等、更新されているプラグインでの実際の
+      # 呼び出し方から現行APIを確認した)
       glow = pkgs.yaziPlugins.glow.overrideAttrs (_: {
         postInstall = ''
-          substituteInPlace "$out/main.lua" --replace-fail ':args(' ':arg('
+          substituteInPlace "$out/main.lua" \
+            --replace-fail ':args(' ':arg(' \
+            --replace-fail 'ya.preview_widgets(' 'ya.preview_widget(' \
+            --replace-fail 'ya.mgr_emit(' 'ya.emit('
         '';
       });
       rich-preview = pkgs.yaziPlugins.rich-preview;
