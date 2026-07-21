@@ -61,8 +61,12 @@ output_path = '~/.cache/matugen/colors.lua'
 #     の ~/.config/lazygit/config.yml が単一ソースで、LG_CONFIG_FILEの
 #     カンマ区切りマージで重ねる)
 #   - modules/apps/yazi/theme-template.toml
-
-[templates.fzf]
-input_path = '~/.config/matugen/templates/fzf-colors.sh'
-output_path = '~/.cache/matugen/fzf-colors.sh'
+#   - modules/theming/matugen/templates/fzf-colors.sh (selection_bg が
+#     必要なため matugen ネイティブテンプレートから移行)
+#   - modules/theming/matugen/templates/cz.toml
+#   - modules/theming/matugen/templates/eza-theme.yml
+#   - modules/theming/matugen/templates/atuin-theme.toml
+#   - modules/theming/matugen/templates/btop.theme
+#   - tealdeer は "#hex" を受け付けないため lib/tealdeer-config.py で
+#     専用生成 (render-template.sh は使わない)
 

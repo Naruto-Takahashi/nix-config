@@ -45,6 +45,12 @@ def main() -> int:
         additions.append(f'  triad = "{rotate_hue(accent, 0.3333333)}",')
     if not re.search(r"^\s*accent_pale\s*=", text, re.MULTILINE):
         additions.append(f'  accent_pale = "{blend_white(accent, 0.4)}",')
+    if not re.search(r"^\s*selection_bg\s*=", text, re.MULTILINE):
+        # fzf/atuin の選択行背景。surface をそのまま使う
+        # (starship の git_branch 表示と同じ色に揃えるため)。
+        sm = re.search(r'^\s*surface\s*=\s*"(#[0-9a-fA-F]{6})"', text, re.MULTILINE)
+        if sm:
+            additions.append(f'  selection_bg = "{sm.group(1)}",')
 
     if not additions:
         return 0
