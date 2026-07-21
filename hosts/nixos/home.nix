@@ -12,6 +12,7 @@
     ../../modules/desktop/packages.nix
     ../../modules/input/kanata
     ../../modules/wm/hyprland
+    ../../modules/apps/vivaldi
   ];
 
   # ユーザーメタデータ
