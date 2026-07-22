@@ -26,6 +26,8 @@
   NixOS (wppicker.sh) と WSL (matugen-apply.sh) の両方がこれを呼ぶ。
 - 各設定にはファイルが無い環境用のフォールバック値がハードコードされている
   (`nvim/lua/matugen.lua`, `modules/apps/wezterm/wezterm.lua` の colors テーブルなど)。
+  壁紙を変えたら `modules/theming/matugen/bake-fallbacks.sh` でこれらを
+  今の壁紙色に一括更新できる (詳細は後述の「フォールバックの一括更新」)。
 
 ## 用途の割り当て
 
@@ -47,7 +49,7 @@
 - Insert/Visual などモード変化時、lualine / yazi の左端ブロックは
   「モード色を白へ 40% 寄せたパステル版」になる (Normal の secondary と同じ関係)。
 - 赤系 (Replace モード、yazi のコンパイル言語/アーカイブ、lazygit の未ステージ、Quit) は
-  matugen の `error` 色 (colors.lua にも出力) または固定 `#c4746e` を使用。
+  matugen の `error` 色 (colors.lua にも出力) を使用。
 - komorebi の unfocused 枠は matugen の outline トーン、yazi のフルボーダーは
   muted と surface の中間色 (実行時合成)、nvim のメニュー文字は text。
 
@@ -163,9 +165,9 @@ WM非依存のモジュール。`profiles/base.nix` から全ホスト共通で 
 starship には役割の異なる2ファイルがある:
 
 - `modules/shell/starship/starship.toml` — 全ホスト共通の**静的フォールバック**。
-  kanagawa-dragon のフォールバック値入りで、matugen 未実行環境でも壊れず動く
-  (`~/.cache/matugen/starship.toml` が無ければ zsh がこれを直接使う。
-  `modules/shell/zsh/functions.zsh` 参照)。
+  最後に `bake-fallbacks.sh` を実行した時点の壁紙色が入っており、matugen 未実行
+  環境でも壊れず動く (`~/.cache/matugen/starship.toml` が無ければ zsh がこれを
+  直接使う。`modules/shell/zsh/functions.zsh` 参照)。
 - `modules/theming/matugen/templates/starship.toml` — 両OS共通の**生成テンプレート**。
   `palettes.matugen` ブロックだけが `@@プレースホルダ@@` で、壁紙変更のたびに
   `render-template.sh` が `~/.cache/matugen/starship.toml` を生成する
@@ -174,6 +176,46 @@ starship には役割の異なる2ファイルがある:
 `@@プレースホルダ@@` 化するとフォールバックとして壊れるため、この2ファイルは
 統合できない。プロンプト構成 (`format` やセグメント定義) を変えるときは
 **両方を同じ内容に保つ**こと (差分は `palettes.matugen` ブロックのみ)。
+
+### フォールバックの一括更新 (`bake-fallbacks.sh`)
+
+各アプリのフォールバック値 (matugenキャッシュが無い環境で使われる、リポジトリに
+commit された配色) は、壁紙を変えるたびに手動で1ファイルずつ書き換えていると
+漏れが出やすい。`modules/theming/matugen/bake-fallbacks.sh` は
+`~/.cache/matugen/colors.lua` (+ WSLでは `yasb-palette.css`) を読み、
+既知の全フォールバック箇所へ一括反映する。
+
+```
+# 1. 普段通り壁紙を変更する (matugen-apply が実行され、キャッシュが更新される)
+# 2. リポジトリルートで実行:
+./modules/theming/matugen/bake-fallbacks.sh
+# 3. git diff で見た目を確認して commit
+```
+
+対象ファイル (2026-07時点):
+
+- `modules/apps/neovim/nvim/lua/matugen.lua` / `modules/apps/wezterm/wezterm.lua` /
+  `modules/apps/yazi/init.lua` — 12キー共通パレット
+- `modules/shell/starship/starship.toml` (`palettes.matugen` ブロック)
+- `modules/theming/matugen/fallbacks/{atuin-theme.toml,btop.theme}`
+- `modules/apps/eza/theme.yml` / `modules/apps/lazygit/default.nix` /
+  `modules/apps/git-hooks/cz.toml`
+- `modules/wm/komorebi/komorebi.json` (枠色) / `modules/wm/yasb/{styles.css,config.yaml}`
+  (YASBパネル全体 + cavaグラデーション)
+- `modules/shell/zsh/functions.zsh` (`FZF_DEFAULT_OPTS`) /
+  `profiles/base.nix` (tealdeerのRGB値)
+- `modules/theming/matugen/wsl/matugen-apply.sh` (色相回転計算が失敗した
+  ときのセーフティネット値)
+
+新しいアプリのフォールバックを追加したときは、対応する `bake_*` 関数も
+このスクリプトに追加すること (role→変数名の対応は `matugen-apply.sh` の
+各セクションと揃える)。なお `modules/apps/yazi/theme-template.toml` は
+フォールバックではなく**レンダリング元テンプレート**そのものなので対象外
+(生の色コードが混入していないかだけ `bake_yazi_template` が検査する)。
+
+Hyprland側 (`modules/wm/hyprland/`) のwaybar/hyprlockフォールバックは、
+このスクリプトの対象に**まだ入っていない** (WSLとは別ホスト・別壁紙のため、
+そのホスト上で実行して確認する必要がある)。
 
 ### 2経路の違いまとめ
 
