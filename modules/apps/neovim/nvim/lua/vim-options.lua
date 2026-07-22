@@ -122,6 +122,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "TelescopeResultsBorder", no_bg)
         hl(0, "TelescopePreviewNormal", no_bg)
         hl(0, "TelescopePreviewBorder", no_bg)
+        -- 以下3つはkanagawaの生色(Identifier/TelescopeTitle/Special)に
+        -- リンクされたままでmatugenパレットを追従していなかったため明示する
+        hl(0, "TelescopePromptPrefix", { fg = mc.accent })
+        hl(0, "TelescopeTitle", { fg = mc.muted, bold = true })
+        hl(0, "TelescopeMatching", { fg = mc.accent, bold = true })
 
         -- Diagnostic Colors (エラーを赤，警告・情報・ヒントをゴールド化)
         hl(0, "DiagnosticError", { fg = mc.error })

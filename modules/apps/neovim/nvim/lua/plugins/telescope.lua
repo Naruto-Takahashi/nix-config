@@ -1,6 +1,10 @@
 return {
     {
-        'nvim-telescope/telescope.nvim', tag = '0.1.8',
+        -- tag = '0.1.8' で固定していたが，nvim-treesitter(main)がparsers.ft_to_lang等の
+        -- 旧APIを削除しており，そのバージョンのtelescopeプレビュー(treesitterハイライト)が
+        -- "attempt to call field 'ft_to_lang' (a nil value)" でエラーになるため，
+        -- 追従済みのmasterを使う
+        'nvim-telescope/telescope.nvim',
       dependencies = { 
           'nvim-lua/plenary.nvim',
           'nvim-telescope/telescope-ghq.nvim',
@@ -12,6 +16,15 @@ return {
         
         -- 拡張機能の設定
         telescope.setup({
+          defaults = {
+            -- fzf/fzf-tabと同じ感覚にするため，入力欄を上，結果一覧を下
+            -- (先頭=最良マッチ) に並べる (既定は入力欄が下で結果が上に積み上がる)
+            sorting_strategy = "ascending",
+            layout_config = {
+              horizontal = { prompt_position = "top" },
+              vertical = { prompt_position = "top" },
+            },
+          },
           pickers = {
             find_files = {
               hidden = true,
