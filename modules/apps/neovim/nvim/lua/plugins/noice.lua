@@ -34,6 +34,12 @@ return {
         position = { row = "90%", col = "50%" },
         size = { width = 60, height = "auto" },
       },
+      -- cmdline_popupと同じzindex(200)だと再描画のたびにcmdline側が上に
+      -- 来てTAB補完のポップアップメニューを隠してしまうことがあるため，
+      -- 補完メニューを確実に手前に表示する
+      cmdline_popupmenu = {
+        zindex = 300,
+      },
     },
   },
 }

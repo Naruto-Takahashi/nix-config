@@ -26,8 +26,11 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = function()
         local hl = vim.api.nvim_set_hl
         local no_bg = { bg = "none" }
-        hl(0, "Normal", no_bg)
-        hl(0, "NormalFloat", no_bg)
+        -- Normal/NormalFloatも{bg="none"}のみだとfgまで消えて透明になり，
+        -- Normalのfgを参照する他プラグイン(snacks.nvimのgh連携など)が
+        -- 色取得に失敗してエラーになるため，fgを明示する
+        hl(0, "Normal", { bg = "none", fg = mc.text })
+        hl(0, "NormalFloat", { bg = "none", fg = mc.text })
         -- 枠線色を明示指定 (未指定だとkanagawaの既定色が背景に埋もれて見づらいことがある)
         hl(0, "FloatBorder", { bg = "none", fg = mc.muted })
         hl(0, "FloatTitle", { bg = "none", fg = mc.accent, bold = true })
@@ -59,6 +62,25 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "SnacksInputIcon", { bg = "none", fg = mc.accent })
         hl(0, "NormalNC", no_bg)
         hl(0, "SignColumn", no_bg)
+
+        -- コマンドラインTAB補完(wildmenu)や補完ポップアップは既定でkanagawaの
+        -- 青みがかった配色のままになっており，他を透過・matugen配色に揃えた
+        -- 中で浮いて見えるため，surface/accentに揃える
+        hl(0, "Pmenu", { bg = mc.surface, fg = mc.text })
+        hl(0, "PmenuSel", { bg = mc.accent, fg = mc.on_accent, bold = true })
+        hl(0, "PmenuSbar", { bg = mc.surface })
+        hl(0, "PmenuThumb", { bg = mc.muted })
+        hl(0, "PmenuBorder", { bg = mc.surface, fg = mc.muted })
+        hl(0, "WildMenu", { bg = mc.accent, fg = mc.on_accent, bold = true })
+
+        -- コマンドライン入力はtreesitterの vim パーサーでリアルタイムハイライト
+        -- されており，コマンド名(command_name)は @function.macro → Macro →
+        -- PreProc にリンクしている。dragon_overrides で PreProc(operator/
+        -- preproc/regex)を赤系にしているため，コード中のプリプロセッサ的な
+        -- 用途では意図通りでも，コマンドライン入力まで赤くなってしまう。
+        -- vim言語専用キャプチャだけ個別に配色し直す (他言語のMacroには影響しない)
+        hl(0, "@function.macro.vim", { fg = mc.accent, bold = true })
+        hl(0, "@keyword.vim", { fg = mc.tertiary })
         -- lualine の透過セクションは StatusLine にフォールバックするため、ここも透過必須
         hl(0, "StatusLine", no_bg)
         hl(0, "StatusLineNC", no_bg)
