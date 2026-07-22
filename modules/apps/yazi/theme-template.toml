@@ -93,7 +93,7 @@ rules = [
   { url = "**.exe", fg = "@@TERTIARY@@" },
   { url = "**.out", fg = "@@TERTIARY@@" },
   { url = "**/", fg = "@@SECONDARY@@" }, # ディレクトリ (matugen secondary)
-  { url = "*", fg = "#c5c9c5" }   # その他
+  { url = "*", fg = "@@TEXT@@" }   # その他
 ]
 
 [flavor]
@@ -206,5 +206,5 @@ prepend_globs = [
 ]
 prepend_conds = [
   { if = "dir", text = "󰉋", fg = "@@SECONDARY@@" },
-  { if = "link", text = "", fg = "#7fb4ca" }
+  { if = "link", text = "", fg = "@@COMPLEMENT@@" }
 ]

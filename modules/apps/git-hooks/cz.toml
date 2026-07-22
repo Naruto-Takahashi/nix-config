@@ -3,18 +3,18 @@ name = "cz_customize"
 # questionary(対話UI)の配色。ANSIパレットとは独立にRGB直書きで効く。
 # matugen環境ではこのファイルの代わりに~/.cache/matugen/cz.toml
 # (テーマ由来の色) が使われる (modules/theming/matugen/templates/cz.toml)。
-# ここはmatugenが無い環境向けのフォールバック値 (kanagawa-dragon系)。
+# ここはmatugenが無い環境向けのフォールバック値 (このファイルを更新した時点の実際の壁紙色)。
 style = [
-  ["qmark", "fg:#e6c384 bold"],
+  ["qmark", "fg:#86d1e9 bold"],
   ["question", "bold"],
-  ["answer", "fg:#e6c384 bold"],
-  ["pointer", "fg:#e6c384 bold"],
-  ["highlighted", "fg:#e6c384 bold"],
-  ["selected", "fg:#7aa89f"],
-  ["separator", "fg:#a292a3"],
+  ["answer", "fg:#86d1e9 bold"],
+  ["pointer", "fg:#86d1e9 bold"],
+  ["highlighted", "fg:#86d1e9 bold"],
+  ["selected", "fg:#c1c4eb"],
+  ["separator", "fg:#b2cad3"],
   ["instruction", ""],
   ["text", ""],
-  ["disabled", "fg:#a6a69c italic"],
+  ["disabled", "fg:#bfc8cc italic"],
 ]
 
 [tool.commitizen.customize]

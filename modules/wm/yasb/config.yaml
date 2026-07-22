@@ -270,10 +270,10 @@ widgets:
       gradient: 1
       reverse: 0
       sensitivity: 100
-      foreground: "#8ea4a2"
-      gradient_color_1: '#c4b28a'
-      gradient_color_2: '#b6927b'
-      gradient_color_3: '#c4746e'
+      foreground: "#c1c4eb"
+      gradient_color_1: '#c1c4eb'
+      gradient_color_2: '#c1c4eb'
+      gradient_color_3: '#86d1e9'
       bars_number: 8
       bar_spacing: 2
       bar_width: 4

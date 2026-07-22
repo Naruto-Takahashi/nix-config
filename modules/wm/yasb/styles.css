@@ -1,40 +1,40 @@
 /* ===== 変数と基本設定 ===== */
-/* Kanagawa Dragon palette (fallback; matugen-apply が壁紙から生成した色で差し替える) */
+/* フォールバック (このファイルを更新した時点の実際の壁紙色を焼き込み；matugen-apply が壁紙から生成した色で差し替える) */
 /* MATUGEN:START */
 :root {
-    --rosewater: #c8c093;
-    --flamingo: #b6927b;
-    --pink: #a292a3;
-    --mauve: #957fb8;
-    --red: #c4746e;
-    --maroon: #c4746e;
-    --secondary: #b6927b;
-    --yellow: #c4b28a;
-    --green: #8a9a7b;
-    --teal: #8ea4a2;
-    --sky: #8ba4b0;
-    --sapphire: #8ba4b0;
-    --blue: #8ba4b0;
-    --lavender: #c5c9c5;
-    --text: #c5c9c5;
-    --subtext1: #a6a69c;
-    --subtext0: #737c73;
-    --overlay2: #7a8382;
-    --overlay1: #737c73;
-    --overlay0: #625e5a;
-    --surface2: #282727;
-    --surface1: #181616;
-    --base: #181616;
-    --winbutton: #c5c9c5;
-    --icon: #c4b28a;
-    --basetransparent: rgba(24, 22, 22, 0.6);
-    --mantle: rgba(18, 18, 15, 1);
-    --crust: rgba(13, 12, 12, 1);
-    --highlight: #e6c384;
-    --highlight-hover: #c0a36e;
-    --island: rgba(24, 22, 22, 0.4);
-    --island-inner: rgba(13, 12, 12, 0.2);
-    --accent-sub: #8ea4a2;
+    --rosewater: #c1c4eb;
+    --flamingo: #c1c4eb;
+    --pink: #c1c4eb;
+    --mauve: #c1c4eb;
+    --red: #ffb4ab;
+    --maroon: #ffb4ab;
+    --secondary: #b2cad3;
+    --yellow: #86d1e9;
+    --green: #b2cad3;
+    --teal: #c1c4eb;
+    --sky: #86d1e9;
+    --sapphire: #b2cad3;
+    --blue: #86d1e9;
+    --lavender: #dee3e6;
+    --text: #dee3e6;
+    --subtext1: #bfc8cc;
+    --subtext0: #899296;
+    --overlay2: #899296;
+    --overlay1: #899296;
+    --overlay0: #40484b;
+    --surface2: #252b2d;
+    --surface1: #1b2022;
+    --base: #0f1416;
+    --winbutton: #dee3e6;
+    --icon: #86d1e9;
+    --basetransparent: #0f1416;
+    --mantle: #171c1e;
+    --crust: #090f11;
+    --highlight: #86d1e9;
+    --highlight-hover: #004e5e;
+    --island: rgba(15, 20, 22, 0.4);
+    --island-inner: rgba(9, 15, 17, 0.2);
+    --accent-sub: #c1c4eb;
 }
 /* MATUGEN:END */
 *{
@@ -301,14 +301,14 @@
 }
 /* ===== 壁紙ギャラリー ===== */
 .wallpapers-gallery-window {
-    background-color: #181616;
+    background-color: #1b2022;
     border: 0;
     margin: 0;
 }
 .wallpapers-gallery-buttons {
     font-size: 12px;
     font-family: 'Bahnschrift';
-    background-color:#282727;
+    background-color:#252b2d;
     color: white;
     border: none;
     font-size: 14px;

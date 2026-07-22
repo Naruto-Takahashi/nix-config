@@ -133,11 +133,11 @@ EOF
         triad="$(pal_lua triad)"
         accent_pale="$(pal_lua accent_pale)"
         rm -f "$base_lua"
-        [[ -n "$accent_pale" ]] || accent_pale="#f0dbb5"
-        [[ -n "$complement" ]] || complement="#7fb4ca"
-        [[ -n "$triad" ]] || triad="#c8e69a"
-        [[ -n "$error" ]] || error="#e46876"
-        [[ -n "$outline" ]] || outline="#4f4f4f"
+        [[ -n "$accent_pale" ]] || accent_pale="#b6e3f2"
+        [[ -n "$complement" ]] || complement="#dda492"
+        [[ -n "$triad" ]] || triad="#dd92cb"
+        [[ -n "$error" ]] || error="#ffb4ab"
+        [[ -n "$outline" ]] || outline="#899296"
         # starshipのgit_branch表示と同じ色 (palettes.matugen の dark = 生のsurface)
         # の方が好まれたため、明るく混ぜずにsurfaceをそのまま使う。
         selection_bg="$surface"

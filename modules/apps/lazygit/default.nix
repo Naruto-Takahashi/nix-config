@@ -50,15 +50,18 @@
       # 外観テーマ設定（kanagawa-dragon配色）
       gui = {
         theme = {
-          activeBorderColor = [ "#e6c384" "bold" ]; # kanagawa carpYellow (nvim/YASBのフォールバックaccentと統一)
-          inactiveBorderColor = [ "#a89984" ]; # kanagawa-dragon fg_gutter or slightly dimmed
-          searchingActiveBorderColor = [ "#ff9e3b" ]; # kanagawa-dragon autumnYellow
-          optionsTextColor = [ "#7e9cd8" ]; # kanagawa-dragon crystalBlue
-          selectedLineBgColor = [ "#2d4f67" ]; # kanagawa-dragon waveBlue2
-          cherryPickedCommitBgColor = [ "#2d4f67" ];
-          cherryPickedCommitFgColor = [ "#7e9cd8" ];
-          unstagedChangesColor = [ "#c4746e" ]; # kanagawa-dragon autumnRed
-          defaultFgColor = [ "#c5c9c5" ]; # kanagawa-dragon fimi
+          # フォールバック値 (matugen適用時は ~/.cache/matugen/lazygit-theme.yml が
+          # LG_CONFIG_FILE経由で色だけ上書きする。role対応は
+          # modules/theming/matugen/templates/lazygit-theme.yml と揃えること)
+          activeBorderColor = [ "#86d1e9" "bold" ]; # accent
+          inactiveBorderColor = [ "#bfc8cc" ]; # muted
+          searchingActiveBorderColor = [ "#c1c4eb" ]; # tertiary
+          optionsTextColor = [ "#c1c4eb" ]; # tertiary
+          selectedLineBgColor = [ "#252b2d" ]; # surface
+          cherryPickedCommitBgColor = [ "#252b2d" ]; # surface
+          cherryPickedCommitFgColor = [ "#dda492" ]; # complement
+          unstagedChangesColor = [ "#ffb4ab" ]; # error
+          defaultFgColor = [ "#dee3e6" ]; # text
         };
       };
     };

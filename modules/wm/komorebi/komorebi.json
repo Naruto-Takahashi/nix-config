@@ -22,10 +22,10 @@
     }
   },
   "border_colours": {
-    "single": "#e6c384",
-    "unfocused": "#625e5a",
-    "floating": "#e6c384",
-    "monocle": "#7aa89f"
+    "single": "#86d1e9",
+    "unfocused": "#899296",
+    "floating": "#86d1e9",
+    "monocle": "#c1c4eb"
   },
   "display_index_preferences": {
     "0": "150995873",
