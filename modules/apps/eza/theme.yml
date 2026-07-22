@@ -3,68 +3,68 @@
 # EZA_CONFIG_DIRで優先される。拡張子→色の割り当てはyaziのtheme-template.toml
 # と揃えている (同じ役割の色は同じ拡張子グループに使う)。
 filekinds:
-  directory: { foreground: "#b2cad3" } # secondary
+  directory: { foreground: "#bbc7db" } # secondary
 
 extensions:
   # ドキュメント・テキスト・インフラ系 (tertiary)
-  md:   { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  pdf:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  txt:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  log:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  csv:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  docx: { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  doc:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  xlsx: { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  xls:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  pptx: { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  ppt:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  ini:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  tex:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  bib:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  nix:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  sql:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  exe:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  out:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
+  md:   { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  pdf:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  txt:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  log:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  csv:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  docx: { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  doc:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  xlsx: { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  xls:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  pptx: { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  ppt:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  ini:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  tex:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  bib:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  nix:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  sql:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  exe:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  out:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
 
   # スクリプト・メディア系 (complement)
-  py:   { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  sh:   { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  lua:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  rb:   { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  php:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  pl:   { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  mp4:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  mkv:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  avi:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  mov:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  webm: { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  mp3:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  wav:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  flac: { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  m4a:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
-  ogg:  { filename: { foreground: "#dda492" }, icon: { style: { foreground: "#dda492" } } }
+  py:   { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  sh:   { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  lua:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  rb:   { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  php:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  pl:   { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  mp4:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  mkv:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  avi:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  mov:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  webm: { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  mp3:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  wav:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  flac: { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  m4a:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
+  ogg:  { filename: { foreground: "#f2d4ad" }, icon: { style: { foreground: "#f2d4ad" } } }
 
   # Web・データ系 (triad)
-  js:    { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  ts:    { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  jsx:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  tsx:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  json:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  jsonc: { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  yaml:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  yml:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  toml:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  lock:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  html:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  htm:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  css:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  scss:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  png:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  jpg:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  jpeg:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  gif:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  webp:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  svg:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
+  js:    { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  ts:    { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  jsx:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  tsx:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  json:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  jsonc: { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  yaml:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  yml:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  toml:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  lock:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  html:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  htm:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  css:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  scss:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  png:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  jpg:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  jpeg:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  gif:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  webp:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  svg:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
 
   # コンパイル言語・アーカイブ (error)
   rs:    { filename: { foreground: "#ffb4ab" }, icon: { style: { foreground: "#ffb4ab" } } }
@@ -86,8 +86,8 @@ extensions:
 
 filenames:
   Cargo.toml:  { filename: { foreground: "#ffb4ab" }, icon: { style: { foreground: "#ffb4ab" } } }
-  config.toml: { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  theme.toml:  { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  yazi.toml:   { filename: { foreground: "#dd92cb" }, icon: { style: { foreground: "#dd92cb" } } }
-  desktop.ini: { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
-  Dockerfile:  { filename: { foreground: "#c1c4eb" }, icon: { style: { foreground: "#c1c4eb" } } }
+  config.toml: { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  theme.toml:  { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  yazi.toml:   { filename: { foreground: "#f2adcb" }, icon: { style: { foreground: "#f2adcb" } } }
+  desktop.ini: { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }
+  Dockerfile:  { filename: { foreground: "#d7bde4" }, icon: { style: { foreground: "#d7bde4" } } }

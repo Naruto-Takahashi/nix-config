@@ -109,11 +109,11 @@ vicmd_symbol = "[❯](bold #8e8e8e)"
 # TOML の制約上、テーブル定義はトップレベルキーより後 (ファイル末尾) に置くこと
 # MATUGEN:START
 [palettes.matugen]
-accent = "#86d1e9"
-accent_pale = "#b6e3f2" # accent を白側に40%寄せた控えめな装飾色
-tertiary = "#c1c4eb"
-secondary = "#b2cad3"
-muted = "#bfc8cc"
-dark = "#252b2d"
-on_accent = "#0f1416"
+accent = "#a2c9fd"
+accent_pale = "#c7dffe" # accent を白側に40%寄せた控えめな装飾色
+tertiary = "#d7bde4"
+secondary = "#bbc7db"
+muted = "#c3c6cf"
+dark = "#272a2f"
+on_accent = "#111418"
 # MATUGEN:END

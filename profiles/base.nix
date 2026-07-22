@@ -47,15 +47,15 @@
     settings = {
       updates.auto_update = true; # キャッシュが古いとき自動で `tldr --update` 相当を実行
       style = {
-        description.foreground.rgb = { r = 222; g = 227; b = 230; };      # text #dee3e6
+        description.foreground.rgb = { r = 225; g = 226; b = 232; };      # text #e1e2e8
         command_name = {
-          foreground.rgb = { r = 134; g = 209; b = 233; };                # accent #86d1e9
+          foreground.rgb = { r = 162; g = 201; b = 253; };                # accent #a2c9fd
           bold = true;
         };
-        example_text.foreground.rgb = { r = 191; g = 200; b = 204; };     # muted #bfc8cc
-        example_code.foreground.rgb = { r = 193; g = 196; b = 235; };     # tertiary #c1c4eb
+        example_text.foreground.rgb = { r = 195; g = 198; b = 207; };     # muted #c3c6cf
+        example_code.foreground.rgb = { r = 215; g = 189; b = 228; };     # tertiary #d7bde4
         example_variable = {
-          foreground.rgb = { r = 178; g = 202; b = 211; };                # secondary #b2cad3
+          foreground.rgb = { r = 187; g = 199; b = 219; };                # secondary #bbc7db
           italic = true;
         };
       };

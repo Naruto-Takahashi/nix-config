@@ -5,16 +5,16 @@ name = "cz_customize"
 # (テーマ由来の色) が使われる (modules/theming/matugen/templates/cz.toml)。
 # ここはmatugenが無い環境向けのフォールバック値 (このファイルを更新した時点の実際の壁紙色)。
 style = [
-  ["qmark", "fg:#86d1e9 bold"],
+  ["qmark", "fg:#a2c9fd bold"],
   ["question", "bold"],
-  ["answer", "fg:#86d1e9 bold"],
-  ["pointer", "fg:#86d1e9 bold"],
-  ["highlighted", "fg:#86d1e9 bold"],
-  ["selected", "fg:#c1c4eb"],
-  ["separator", "fg:#b2cad3"],
+  ["answer", "fg:#a2c9fd bold"],
+  ["pointer", "fg:#a2c9fd bold"],
+  ["highlighted", "fg:#a2c9fd bold"],
+  ["selected", "fg:#d7bde4"],
+  ["separator", "fg:#bbc7db"],
   ["instruction", ""],
   ["text", ""],
-  ["disabled", "fg:#bfc8cc italic"],
+  ["disabled", "fg:#c3c6cf italic"],
 ]
 
 [tool.commitizen.customize]

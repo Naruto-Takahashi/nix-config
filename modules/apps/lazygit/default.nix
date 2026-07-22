@@ -53,15 +53,15 @@
           # フォールバック値 (matugen適用時は ~/.cache/matugen/lazygit-theme.yml が
           # LG_CONFIG_FILE経由で色だけ上書きする。role対応は
           # modules/theming/matugen/templates/lazygit-theme.yml と揃えること)
-          activeBorderColor = [ "#86d1e9" "bold" ]; # accent
-          inactiveBorderColor = [ "#bfc8cc" ]; # muted
-          searchingActiveBorderColor = [ "#c1c4eb" ]; # tertiary
-          optionsTextColor = [ "#c1c4eb" ]; # tertiary
-          selectedLineBgColor = [ "#252b2d" ]; # surface
-          cherryPickedCommitBgColor = [ "#252b2d" ]; # surface
-          cherryPickedCommitFgColor = [ "#dda492" ]; # complement
+          activeBorderColor = [ "#a2c9fd" "bold" ]; # accent
+          inactiveBorderColor = [ "#c3c6cf" ]; # muted
+          searchingActiveBorderColor = [ "#d7bde4" ]; # tertiary
+          optionsTextColor = [ "#d7bde4" ]; # tertiary
+          selectedLineBgColor = [ "#272a2f" ]; # surface
+          cherryPickedCommitBgColor = [ "#272a2f" ]; # surface
+          cherryPickedCommitFgColor = [ "#f2d4ad" ]; # complement
           unstagedChangesColor = [ "#ffb4ab" ]; # error
-          defaultFgColor = [ "#dee3e6" ]; # text
+          defaultFgColor = [ "#e1e2e8" ]; # text
         };
       };
     };

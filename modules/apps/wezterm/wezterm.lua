@@ -6,17 +6,17 @@ local config = wezterm.config_builder()
 -- このファイルを更新した時点の実際の壁紙色を焼き込んだもの
 -- (nvim の lua/matugen.lua フォールバックと同じ値)
 local colors = {
-  accent = "#86d1e9",
-  tertiary = "#c1c4eb",
-  secondary = "#b2cad3",
-  complement = "#dda492",
-  triad = "#dd92cb",
-  text = "#dee3e6",
-  muted = "#bfc8cc",
-  surface = "#252b2d",
-  on_accent = "#0f1416",
+  accent = "#a2c9fd",
+  tertiary = "#d7bde4",
+  secondary = "#bbc7db",
+  complement = "#f2d4ad",
+  triad = "#f2adcb",
+  text = "#e1e2e8",
+  muted = "#c3c6cf",
+  surface = "#272a2f",
+  on_accent = "#111418",
   error = "#ffb4ab",
-  accent_pale = "#b6e3f2",
+  accent_pale = "#c7dffe",
 }
 local ok, m = pcall(require, "matugen-colors")
 if ok and type(m) == "table" then

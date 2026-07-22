@@ -4,17 +4,17 @@
 -- io.open + パターンマッチで読み込みます (動作実績のある既存実装のまま維持)．
 -- キャッシュファイルは1回だけ読み，以降は全箇所でこの pal を参照します．
 local pal = {
-  accent = "#86d1e9",
-  tertiary = "#c1c4eb",
-  secondary = "#b2cad3",
-  complement = "#dda492",
-  triad = "#dd92cb",
-  text = "#dee3e6",
-  muted = "#bfc8cc",
-  surface = "#252b2d",
-  on_accent = "#0f1416",
+  accent = "#a2c9fd",
+  tertiary = "#d7bde4",
+  secondary = "#bbc7db",
+  complement = "#f2d4ad",
+  triad = "#f2adcb",
+  text = "#e1e2e8",
+  muted = "#c3c6cf",
+  surface = "#272a2f",
+  on_accent = "#111418",
   error = "#ffb4ab",
-  accent_pale = "#b6e3f2",
+  accent_pale = "#c7dffe",
 }
 do
   local fh = io.open((os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua", "r")

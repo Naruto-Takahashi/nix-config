@@ -49,7 +49,7 @@ zstyle ':completion:*' menu select
 
 # --- fzf設定 ---
 # fzfオプションおよびCtrl+T，Ctrl+Rのプレビュー表示を設定します．
-export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --highlight-line --color=pointer:#86d1e9,marker:#86d1e9,prompt:#86d1e9,info:#b2cad3,hl:#b2cad3,hl+:#b2cad3,bg+:#303030'
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --highlight-line --color=pointer:#a2c9fd,marker:#a2c9fd,prompt:#a2c9fd,info:#bbc7db,hl:#bbc7db,hl+:#bbc7db,bg+:#303030'
 # matugen生成のfzf配色があれば上書きします（matugen-applyが生成します）．
 [[ -f ~/.cache/matugen/fzf-colors.sh ]] && source ~/.cache/matugen/fzf-colors.sh
 # zoxide (cdi等) が内部で起動するfzfは既定だと見た目が微妙に異なる
