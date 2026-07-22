@@ -110,6 +110,16 @@
 
     # プラグイン設定（Nixによる絶対パスでの自動配置）
     plugins = [
+      # Tab補完をfzf経由の選択UIにする。公式READMEの注意書き通り、
+      # ウィジェットをラップするzsh-autosuggestions/zsh-syntax-highlighting
+      # より前に読み込む必要があるため先頭に置く (compinitはhome-manager側で
+      # 既にこれより前に実行済み)。既定ではFZF_DEFAULT_OPTSを読まない仕様
+      # なので、functions.zshのzstyle use-fzf-default-optsで明示的に
+      # 有効化している (配色・枠線をビルド無しで他のfzf系ツールと揃えるため)
+      {
+        name = "fzf-tab";
+        src  = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+      }
       {
         name = "zsh-autosuggestions";
         src  = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";

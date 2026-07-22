@@ -64,6 +64,10 @@ export YAZI_ZOXIDE_OPTS="$FZF_DEFAULT_OPTS"
 export FZF_CTRL_T_OPTS="--preview 'bat --style=numbers --color=always --line-range :500 {}'"
 export FZF_CTRL_R_OPTS="--preview 'echo {}' --preview-window down:3:hidden:wrap --bind '?:toggle-preview,tab:down,btab:up'"
 
+# fzf-tab (Tab補完) は既定でFZF_DEFAULT_OPTSを読まない仕様のため明示的に有効化する。
+# これでmatugen配色・枠線もビルド無しで他のfzf系ツールと揃う
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
+
 # --- キーマップ・Vimモード設定 ---
 # Vi Mode（Vim風キーマップ）の有効化とインサート時のバックスペース調整を行います．
 bindkey -v
