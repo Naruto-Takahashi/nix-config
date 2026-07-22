@@ -229,7 +229,7 @@ widgets:
     type: "yasb.wallpapers.WallpapersWidget"
     options:
       label: "<span>󰸉</span>"
-      image_path: "C:\\Users\\tnaru\\OneDrive\\画像\\wallpapers"
+      image_path: "C:\\Users\\tnaru\\Pictures\\wallpapers"
       change_automatically: false
       update_interval: 60
       gallery:

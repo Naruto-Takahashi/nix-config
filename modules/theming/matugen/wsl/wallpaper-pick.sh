@@ -9,7 +9,7 @@ export PATH="$HOME/.nix-profile/bin:$PATH"
 WIN_HOME="$(wslpath "$(cd /mnt/c && /mnt/c/Windows/System32/cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\r')" 2>/dev/null || true)"
 [[ -d "$WIN_HOME" ]] || WIN_HOME="/mnt/c/Users/tnaru"
 
-WSL_DIR="${WIN_HOME}/OneDrive/画像/wallpapers"
+WSL_DIR="${WIN_HOME}/Pictures/wallpapers"
 WIN_DIR="$(wslpath -w "$WSL_DIR")"
 
 sel="$(find "$WSL_DIR" -maxdepth 1 -type f \
