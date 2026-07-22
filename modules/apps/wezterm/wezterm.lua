@@ -207,4 +207,10 @@ config.key_tables = require("keybinds").key_tables
 -- 右手小指なので Ctrl (左手小指) と自然な両手コードになる
 config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 }
 
+-- モニタをまたぐ起動位置指定 (Alt+Enter等でカーソルのあるモニタに開く) は
+-- komorebi.ahk側で `wezterm-gui start --position screen:X,Y` のCLI引数として
+-- 直接渡している (modules/wm/komorebi/komorebi.ahk 参照)。gui-startupイベント
+-- 経由でspawn_windowにpositionを渡す方式も試したが実機で効果がなかったため、
+-- こちらのCLI引数方式を採用している
+
 return config

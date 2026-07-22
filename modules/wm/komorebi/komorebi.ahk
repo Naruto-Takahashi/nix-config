@@ -96,16 +96,36 @@ HandleDisplayChange(wParam, lParam) {
 
 ; --- アプリ起動 ---
 ; ALT+Y: WezTerm で yazi
-!y::Run, wezterm-gui start -- wsl.exe --cd ~ -e zsh -ic yazi
-; ALT+V: Vivaldi
-!v::Run, C:\Users\tnaru\AppData\Local\Vivaldi\Application\vivaldi.exe
+!y::LaunchWeztermOnCursorMonitor(" -- wsl.exe --cd ~ -e zsh -ic yazi")
+; ALT+V: Vivaldi (Chromium系は --window-position=X,Y でカーソルのあるモニタに開く)
+!v::
+    CoordMode, Mouse, Screen
+    MouseGetPos, CursorX, CursorY
+    fullCmd := "C:\Users\tnaru\AppData\Local\Vivaldi\Application\vivaldi.exe --new-window --window-position=" . CursorX . "," . CursorY
+    Run, %fullCmd%
+Return
 
 ; --- Alt+Enter で WezTerm (Excel では無効) ---
 #IfWinNotActive ahk_exe EXCEL.EXE
-!Enter::
-    Run, wezterm-gui
-Return
+!Enter::LaunchWeztermOnCursorMonitor("")
 #IfWinNotActive
+
+; カーソル座標を `wezterm-gui start --position screen:X,Y` へ直接渡して
+; 起動する。komorebiは新規ウィンドウが生成された瞬間の物理位置でタイル先
+; モニタを決めるため (focus-monitor-at-cursorで事前にkomorebi側のフォーカス
+; モニタを切り替えても、生成後にset_positionで動かしても、wezterm.lua の
+; gui-startupイベントでspawn_window生成と同時にpositionを渡しても、
+; いずれも実機で効果が無いことを確認済み)。--position はwezterm-gui start
+; 自体のCLI引数として使えるため、これを直接使う
+LaunchWeztermOnCursorMonitor(extraArgs) {
+    CoordMode, Mouse, Screen
+    MouseGetPos, CursorX, CursorY
+    ; Run,コマンドはカンマを自身の引数区切りとして解釈するため、
+    ; screen:X,Y のカンマをそのまま埋め込むと途中で切れてしまう。
+    ; 変数に組み立ててから渡すことでカンマをコマンド文字列の一部として扱う
+    fullCmd := "wezterm-gui start --always-new-process --position screen:" . CursorX . "," . CursorY . extraArgs
+    Run, %fullCmd%
+}
 
 ; --- モニタ抜き差し時の自動復旧処理本体 ---
 ReapplyDisplayConfig:
