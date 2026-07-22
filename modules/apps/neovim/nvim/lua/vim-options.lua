@@ -72,6 +72,29 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "PmenuThumb", { bg = mc.muted })
         hl(0, "PmenuBorder", { bg = mc.surface, fg = mc.muted })
         hl(0, "WildMenu", { bg = mc.accent, fg = mc.on_accent, bold = true })
+        -- 補完メニュー内でマッチした文字列部分 (nvim-cmp)
+        hl(0, "CmpItemAbbrMatch", { fg = mc.accent, bold = true })
+        hl(0, "CmpItemAbbrMatchFuzzy", { fg = mc.accent, bold = true })
+
+        -- Visual選択・検索ハイライトもkanagawaの生の青/オレンジ配色のままだった
+        -- ため，matugenパレットに揃える (Pmenuと同じ理由)
+        hl(0, "Visual", { bg = mc.selection_bg })
+        hl(0, "Search", { bg = mc.tertiary, fg = mc.on_accent })
+        hl(0, "CurSearch", { bg = mc.accent, fg = mc.on_accent, bold = true })
+        hl(0, "IncSearch", { bg = mc.accent, fg = mc.on_accent, bold = true })
+        hl(0, "Substitute", { bg = mc.error, fg = mc.on_accent })
+
+        -- ウィンドウ分割線がkanagawaの生の黒(#0d0c0c)のままで，透過背景の上で
+        -- 不自然な黒帯になっていたため，他の枠線色 (FloatBorder等) と揃える
+        hl(0, "WinSeparator", { fg = mc.muted, bg = "none" })
+
+        -- "-- More --"/確認プロンプト(y/n)がkanagawaの生の青のままだった
+        hl(0, "MoreMsg", { fg = mc.accent, bold = true })
+        hl(0, "Question", { fg = mc.accent, bold = true })
+
+        -- netrw等のディレクトリ表示，:h や diff 見出し等の汎用タイトル
+        hl(0, "Directory", { fg = mc.secondary })
+        hl(0, "Title", { fg = mc.accent, bold = true })
 
         -- コマンドライン入力はtreesitterの vim パーサーでリアルタイムハイライト
         -- されており，コマンド名(command_name)は @function.macro → Macro →
