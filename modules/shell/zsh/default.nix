@@ -116,9 +116,20 @@
       # 既にこれより前に実行済み)。既定ではFZF_DEFAULT_OPTSを読まない仕様
       # なので、functions.zshのzstyle use-fzf-default-optsで明示的に
       # 有効化している (配色・枠線をビルド無しで他のfzf系ツールと揃えるため)
+      #
+      # nixpkgs版にはネイティブ高速化モジュール(aloxaf/fzftab, modules/Src
+      # 以下)が同梱されているが、WSL(Ubuntu)側システムのglibcとNix側の
+      # glibcのABIが食い違いzmodloadに失敗し、起動のたびに再ビルド確認の
+      # 対話プロンプトが出てしまう。このモジュールは無くても純zsh実装の
+      # ls-colors.zshに自動フォールバックするだけなので、modulesディレクトリ
+      # ごと取り除いて確実にフォールバックさせる
       {
         name = "fzf-tab";
-        src  = "${pkgs.zsh-fzf-tab}/share/fzf-tab";
+        src  = pkgs.runCommand "fzf-tab-no-native-module" { } ''
+          cp -r ${pkgs.zsh-fzf-tab}/share/fzf-tab $out
+          chmod -R u+w $out
+          rm -rf $out/modules
+        '';
       }
       {
         name = "zsh-autosuggestions";
