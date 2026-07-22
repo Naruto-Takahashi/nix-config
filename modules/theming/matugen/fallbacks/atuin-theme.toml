@@ -1,22 +1,22 @@
-# atuin テーマ kanagawa-dragon フォールバック
+# atuin テーマ フォールバック (このファイルを更新した時点の実際の壁紙色を焼き込み)
 # (matugen 未適用の環境向け。matugen-apply が同パスを上書きする。
 #  配色キーの対応は templates/atuin-theme.toml と揃えること)
 [theme]
 name = "matugen"
 
 [colors]
-Base = "#c5c9c5"
+Base = "#dee3e6"
 # Title = 検索ボックス枠のタイトル ("GLOBAL" 等のフィルタ名) と枠線の色。
 # フィルタモードに関わらず常にこのメインハイライト (accent) で固定する
-Title = "#e6c384"
-Important = "#e6c384"
-Annotation = "#7aa89f"
+Title = "#86d1e9"
+Important = "#86d1e9"
+Annotation = "#c1c4eb"
 # Guidance = 経過時間 (◯m ago) の列 (tertiary)
-Guidance = "#7aa89f"
-Muted = "#a6a69c"
+Guidance = "#c1c4eb"
+Muted = "#bfc8cc"
 # AlertInfo/AlertError = 実行時間列の成功/失敗色。zsh の
 # syntax-highlighting (存在する/しないコマンド) と同じ固定値
 AlertInfo = "#98bb6c"
 AlertError = "#e46876"
-# AlertWarn = 選択行内の検索一致文字。フォールバック fzf の hl (#a292a3) と同色
-AlertWarn = "#a292a3"
+# AlertWarn = 選択行内の検索一致文字。フォールバック secondary と同色
+AlertWarn = "#b2cad3"

@@ -3,19 +3,20 @@ local config = wezterm.config_builder()
 
 -- 配色：フォールバック値．matugen-colors.luaがあれば上書きします（matugen-applyが生成します）．
 -- 他環境（Linuxデスクトップ/mac）ではファイルがなく，フォールバックがそのまま使われます．
--- kanagawa-dragon に馴染む値 (nvim の lua/matugen.lua フォールバックと同系統)
+-- このファイルを更新した時点の実際の壁紙色を焼き込んだもの
+-- (nvim の lua/matugen.lua フォールバックと同じ値)
 local colors = {
-  accent = "#e6c384",
-  tertiary = "#7aa89f",
-  secondary = "#a292a3",
-  complement = "#7fb4ca",
-  triad = "#8a9a7b",
-  text = "#c5c9c5",
-  muted = "#a6a69c",
-  surface = "#282727",
-  on_accent = "#181616",
-  error = "#c4746e",
-  accent_pale = "#f0dbb5",
+  accent = "#86d1e9",
+  tertiary = "#c1c4eb",
+  secondary = "#b2cad3",
+  complement = "#dda492",
+  triad = "#dd92cb",
+  text = "#dee3e6",
+  muted = "#bfc8cc",
+  surface = "#252b2d",
+  on_accent = "#0f1416",
+  error = "#ffb4ab",
+  accent_pale = "#b6e3f2",
 }
 local ok, m = pcall(require, "matugen-colors")
 if ok and type(m) == "table" then

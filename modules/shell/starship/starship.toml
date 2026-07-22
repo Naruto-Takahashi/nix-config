@@ -105,15 +105,15 @@ success_symbol = "[❯](bold secondary)"
 error_symbol = "[❯](bold secondary)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
-# フォールバック配色 (matugen-apply が壁紙から生成した色で差し替える)
+# フォールバック配色 (このファイルを更新した時点の実際の壁紙色を焼き込み)
 # TOML の制約上、テーブル定義はトップレベルキーより後 (ファイル末尾) に置くこと
 # MATUGEN:START
 [palettes.matugen]
-accent = "#e6c384"      # carpYellow (kanagawa-dragon)
-accent_pale = "#f0dbb5" # accent を白側に40%寄せた控えめな装飾色
-tertiary = "#7aa89f"    # waveAqua2
-secondary = "#a292a3"   # oniViolet
-muted = "#a6a69c"       # fujiGray
-dark = "#181616"        # sumiInk3
-on_accent = "#000000"
+accent = "#86d1e9"
+accent_pale = "#b6e3f2" # accent を白側に40%寄せた控えめな装飾色
+tertiary = "#c1c4eb"
+secondary = "#b2cad3"
+muted = "#bfc8cc"
+dark = "#252b2d"
+on_accent = "#0f1416"
 # MATUGEN:END

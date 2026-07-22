@@ -3,20 +3,23 @@
 --  matugen-apply (WSL) が壁紙から生成する ~/.cache/matugen/colors.lua を読み込む。
 --  ファイルが無い環境 (Linuxデスクトップ/mac 等) ではフォールバック値を使う。
 -- ==========================================================================
--- フォールバック配色は kanagawa-dragon (rebelot/kanagawa.nvim) パレットに準拠．
+-- フォールバック配色は，このファイルを更新した時点の実際の壁紙
+-- (matugen-apply が生成した ~/.cache/matugen/colors.lua) をそのまま焼き込んだもの。
+-- 壁紙をまた変えても，matugenキャッシュがある環境では常にキャッシュ側が
+-- 優先されるためフォールバックの古さは実害が無い。
 local M = {
-  accent = "#e6c384",     -- carpYellow
-  tertiary = "#7aa89f",   -- waveAqua2
-  secondary = "#a292a3",  -- oniViolet
-  complement = "#7fb4ca", -- oldWhite
-  triad = "#8a9a7b",      -- springGreen
-  text = "#c5c9c5",       -- fujiWhite
-  muted = "#a6a69c",      -- fujiGray
-  surface = "#181616",    -- sumiInk3
-  on_accent = "#000000",
-  error = "#c4746e",      -- autumnRed
-  accent_pale = "#f0dbb5", -- accent を白側に40%寄せた装飾色
-  selection_bg = "#181616", -- surfaceと同色 (starshipのgit_branch背景と同じ考え方)
+  accent = "#86d1e9",
+  tertiary = "#c1c4eb",
+  secondary = "#b2cad3",
+  complement = "#dda492",
+  triad = "#dd92cb",
+  text = "#dee3e6",
+  muted = "#bfc8cc",
+  surface = "#252b2d",
+  on_accent = "#0f1416",
+  accent_pale = "#b6e3f2",
+  error = "#ffb4ab",
+  selection_bg = "#252b2d",
 }
 
 local f = (os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua"

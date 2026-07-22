@@ -1,20 +1,20 @@
 ---@diagnostic disable: undefined-global
 
--- matugen配色（kanagawa-dragon フォールバック付き）．
+-- matugen配色（このファイルを更新した時点の実際の壁紙色をフォールバックとして焼き込み）．
 -- io.open + パターンマッチで読み込みます (動作実績のある既存実装のまま維持)．
 -- キャッシュファイルは1回だけ読み，以降は全箇所でこの pal を参照します．
 local pal = {
-  accent = "#e6c384",
-  tertiary = "#7aa89f",
-  secondary = "#a292a3",
-  complement = "#7fb4ca",
-  triad = "#8a9a7b",
-  text = "#c5c9c5",
-  muted = "#a6a69c",
-  surface = "#181616",
-  on_accent = "#000000",
-  error = "#c4746e",
-  accent_pale = "#f0dbb5",
+  accent = "#86d1e9",
+  tertiary = "#c1c4eb",
+  secondary = "#b2cad3",
+  complement = "#dda492",
+  triad = "#dd92cb",
+  text = "#dee3e6",
+  muted = "#bfc8cc",
+  surface = "#252b2d",
+  on_accent = "#0f1416",
+  error = "#ffb4ab",
+  accent_pale = "#b6e3f2",
 }
 do
   local fh = io.open((os.getenv("HOME") or "") .. "/.cache/matugen/colors.lua", "r")

@@ -22,7 +22,7 @@ return {
         },
       })
 
-      -- 提案テキストの色をアクセント色 (matugen由来, fallback #e6c384) に設定
+      -- 提案テキストの色をアクセント色 (matugen由来, fallback #86d1e9) に設定
       vim.api.nvim_set_hl(0, "CopilotSuggestion", { fg = mc.accent })
 
       -- カラースキーマの再読み込み時にも色を維持
