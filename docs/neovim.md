@@ -216,3 +216,30 @@
 - ステータスラインは画面全体で1本 (globalstatus)．Neo-tree などにフォーカスしても最下部に固定
 - タブを「開く」操作は通常のファイルオープンそのもの (`:e <file>`，Telescope の `<Leader>ff`，Neo-tree からの選択など)．開いたファイルが自動でタブに並びます．
 - これはバッファ単位の表示です．表示部品は `plugins/heirline-tabline.lua` で完全自作しているため，形・色は自由に変更できます．
+
+---
+
+### 10. ステータスバー モード別配色 (lualine.nvim)
+
+ステータスバー左端の装飾ブロック ([plugins/lualine.lua](../modules/apps/neovim/nvim/lua/plugins/lualine.lua) の `lead_color()`) は，現在のVimモード (`vim.fn.mode()`) に応じて色を切り替えます．Vim内部のモード表現はかなり細分化されているため，代表的なモードと入り方を以下にまとめます．
+
+| `mode()`戻り値 | モード名 | 使う場面 | 入り方 | 配色対応 |
+| :---: | :--- | :--- | :--- | :---: |
+| `n` | **Normal** | 通常の移動・コマンド入力 | `<Esc>` で戻る既定モード | ✅ (secondary，フォールバック先) |
+| `no` | Operator-pending | `d`/`y`/`c` 等の後，移動先入力待ち | `d` を押した直後の一瞬 | Normal色で代用 |
+| `i` / `ic` / `ix` | **Insert** (通常/補完中) | テキスト入力 | `i`，`a`，`o` 等 | ✅ tertiary |
+| `R` / `Rv` 等 | **Replace** | 上書き入力 | `R` (通常置換)，`gR` (仮想置換) | ✅ error色 |
+| `v` | **Visual** (文字単位) | 文字単位のテキスト選択 | `v` | ✅ complement |
+| `V` | **Visual Line** (行単位) | 行単位のテキスト選択 | `V` (Shift+v) | ✅ complement |
+| `\22` (Ctrl-V) | **Visual Block** (矩形) | 矩形範囲のテキスト選択 (列編集等) | `Ctrl-v` | ✅ complement |
+| `s` | **Select** (文字単位) | 選択後そのまま文字を打つと置き換わる (Word系アプリのドラッグ選択に近い挙動) | Visual中に `Ctrl-g`，またはスニペット補完のプレースホルダ選択時に自動で入る | ✅ complement |
+| `S` | **Select Line** (行単位) | 同上の行単位版 | Visual Line中に `Ctrl-g` | ✅ complement |
+| `\19` (Ctrl-S) | **Select Block** (矩形) | 同上の矩形版 (V-BLOCKに対応するS-BLOCK) | Visual Block中に `Ctrl-g` | ✅ complement (今回追加) |
+| `c` / `cv` | **Command-line** | `:`，`/`，`?` によるコマンド・検索入力 | `:`，`/`，`?` | ❌ 未対応 (Normal色にフォールバック。ただし`cmdheight=0`+noiceのフローティングポップアップ表示のため，この装飾ブロック自体はほぼ視界に入らない) |
+| `t` / `nt` | **Terminal** | `Snacks.terminal` 等のターミナルバッファでシェルに直接入力 | ターミナルバッファで `i` (またはクリック) | ❌ 未対応 (Normal色にフォールバック) |
+| `r` / `rm` / `r?` | Hit-enter/確認プロンプト待ち | `-- More --` やY/N確認 | 長い出力やメッセージ表示時に自動で入る | ❌ 未対応 (稀にしか発生しない) |
+| `!` | シェルコマンド実行中 | `:!cmd` 実行中の一瞬 | `:!` | ❌ 未対応 (一瞬しか存在しない) |
+
+補足:
+- Select系 (`s`/`S`/`\19`) は Visual系 (`v`/`V`/`\22`) と対になっており，Visualモード中に `Ctrl-g` を押すとトグルできる．見た目はVisualとほぼ同じだが，直接文字を打つと選択範囲がそのまま置き換わる点が違う (LSPのスニペット補完でプレースホルダーを埋める際などにNeovimが自動で使うモード)．
+- Command-line・Terminal・確認プロンプト待ちは対応表からは未対応のままにしている (Command-lineは実質見えない，Terminalは低頻度，残り2つは一瞬しか存在しないため優先度が低いと判断)．必要になれば `mode_colors` テーブルにキーを追加するだけで対応できる．

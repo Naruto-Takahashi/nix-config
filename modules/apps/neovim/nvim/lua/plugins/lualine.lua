@@ -46,7 +46,8 @@ return {
       local mode_colors = {
         i = c.tertiary,
         v = complement, V = complement, ["\22"] = complement,
-        s = complement, S = complement,
+        -- Select系: s=文字, S=行, "\19"(Ctrl-S)=矩形 (V-BLOCKに対応するS-BLOCK)
+        s = complement, S = complement, ["\19"] = complement,
         R = replace,
       }
       local function lead_color()
