@@ -170,8 +170,7 @@ function sync-win() {
     echo "Syncing WezTerm config..."
     cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
     mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-    # main.ahkがエントリポイントで、komorebi.ahkはそこから#Includeされる
-    # (~/.config/ahk配下、存在する場合だけ同期します)．
+    # ~/.config/ahkは現在未使用（AHKはkomorebi.ahkのみ）．存在する場合だけ同期します．
     if [ -d ~/.config/ahk ]; then
         echo "Syncing AutoHotkey scripts..."
         cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
@@ -179,6 +178,7 @@ function sync-win() {
     echo "Syncing Komorebi config..."
     mkdir -p /mnt/c/Users/tnaru/.config/komorebi
     cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
+    cp -L ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
     cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
     # 読み込みの確実性を高めるため，ホーム直下にも配置します．
     cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
