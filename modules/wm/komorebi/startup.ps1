@@ -1,8 +1,7 @@
 # Start critical background tools at logon as fast as possible
 
-# 1. AutoHotkey
+# 1. AutoHotkey (main.ahkがエントリポイント。komorebi.ahkはそこから#Includeされる)
 Start-Process "C:\Users\tnaru\Tools\Customization\main.ahk"
-Start-Process "C:\Users\tnaru\.config\komorebi\komorebi.ahk"
 
 # 2. Komorebi
 $env:PATH += ";C:\Program Files\masir\bin"
