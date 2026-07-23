@@ -24,7 +24,10 @@ disabled = true
 [custom.ssh_host]
 command = """
 if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
-  hostname -s 2>/dev/null || hostname
+  # directoryブロック等と同じ余白感に揃える。starshipのcustomモジュールは
+  # 出力の前後の空白文字(スペース含む)をトリムしてしまうため、
+  # 空白扱いされないbraille blank(⠀)でパディングする
+  printf '⠀%s⠀' "$(hostname -s 2>/dev/null || hostname)"
 else
   # アイコン無し: 幅2のブロック (以前のちょうど良い幅)
   echo "⠀"
