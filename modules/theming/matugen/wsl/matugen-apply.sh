@@ -238,16 +238,16 @@ mkdir -p "$HOME/.config/atuin/themes" "$HOME/.config/btop/themes"
     "$HOME/.config/btop/themes/matugen.theme" "$lua_tmp"
 rm -f "$lua_tmp"
 
-# Windows (PowerShell) 向け starship 変種: custom.os_logo は POSIX sh 依存で
+# Windows (PowerShell) 向け starship 変種: custom.ssh_host は POSIX sh 依存で
 # Windows では動かない (プロンプト遅延の原因) ため、静的な PS
 # セグメントに置き換えて配置する
 WIN_STARSHIP="${WIN_HOME}/.config/starship.toml"
 awk '
-    /^\$\{custom\.os_logo\}\\$/ {
+    /^\$\{custom\.ssh_host\}\\$/ {
         print "[ PS ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
         next
     }
-    /^\[custom\.os_logo\]/ { skip=1 }
+    /^\[custom\.ssh_host\]/ { skip=1 }
     skip && /^\[username\]/ { skip=0 }
     !skip
 ' "$STARSHIP_OUT" > "${WIN_STARSHIP}.tmp" 2>/dev/null \
