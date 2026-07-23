@@ -26,12 +26,13 @@ command = """
 if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
   hostname -s 2>/dev/null || hostname
 else
-  echo ""
+  # アイコン無し: 幅2のブロック (以前のちょうど良い幅)
+  echo "⠀"
 fi
 """
 when = "true"
 style = "fg:on_accent bg:secondary bold"
-format = "[ $output ]($style)[](fg:secondary bg:accent)"
+format = "[$output]($style)[](fg:secondary bg:accent)"
 
 [username]
 disabled = true
