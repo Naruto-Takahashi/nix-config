@@ -25,6 +25,10 @@ end
 
 config.automatically_reload_config = true
 config.scrollback_lines = 3000
+-- SSH切断時にbroken pipeで書き込みが繰り返し失敗すると、既定の
+-- audible_bellがBEL文字を律儀に毎回鳴らし続けてしまう。無効化しておく
+-- (根本対策は ~/.ssh/config の ServerAliveInterval/ServerAliveCountMax)
+config.audible_bell = "Disabled"
 -- ANSI 16色パレット。既定だと黄色が濁ったオレンジ寄りで、questionary(cz commit等)の
 -- 選択カーソル表示などが見づらい。Matugenの役割色から個別に組むと破綻しやすいので、
 -- WezTerm組み込みのkanagawa系スキーム(存在すれば)をそのまま採用する。
