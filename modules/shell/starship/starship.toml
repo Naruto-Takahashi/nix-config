@@ -74,6 +74,10 @@ format = '[[ $symbol $branch ](fg:accent bg:dark)]($style)'
 [git_status]
 style = "bg:dark"
 format = '[[($all_status$ahead_behind )](fg:accent bg:dark)]($style)'
+# deleted の既定 ✘ (U+2718 HEAVY BALLOT X) はフォントによって隣のシンボルと
+# 重なって見えることがあったため、ASCII文字のハイフンに変更
+# (diffの削除行と同じ記号で直感的、幅計算のブレによる崩れも起きない)
+deleted = "-"
 
 [cmd_duration]
 min_time = 1

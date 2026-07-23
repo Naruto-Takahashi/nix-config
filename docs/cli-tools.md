@@ -5,6 +5,28 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 
 ---
 
+## 🚀 starship — プロンプトの Git ステータス記号
+
+プロンプトの `git_branch` セグメントの右側 (`git_status`) に、作業ツリーの状態が記号で並びます。複数の状態が同時に立つ場合は隙間なく連結して表示されます (例: `- » ! + ?`)。
+
+| 記号 | 意味 |
+| :---: | :--- |
+| `=` | **conflicted** — マージコンフリクト中のファイルがある |
+| `⇡` | **ahead** — ローカルがリモートより進んでいる (push 前のコミットあり) |
+| `⇣` | **behind** — リモートの方が進んでいる (pull が必要) |
+| `⇕` | **diverged** — ローカルとリモートが分岐している |
+| `?` | **untracked** — Git管理外の新規ファイルがある |
+| `$` | **stashed** — `git stash` した変更がある |
+| `!` | **modified** — 変更したが未ステージのファイルがある |
+| `+` | **staged** — `git add` 済みの変更がある |
+| `»` | **renamed** — ファイル名が変更された |
+| `-` | **deleted** — 削除されたファイルがある |
+
+- `deleted` だけ既定の `✘` (U+2718 HEAVY BALLOT X) から `-` (ハイフン) に変更している。`✘`/軽量版の `✗` (U+2717) も試したが、フォントによって隣の記号 (特に `renamed` の `»` 等) と重なって崩れて見えることがあったため、幅計算がブレないASCII文字に変更した (`modules/shell/starship/starship.toml` と `modules/theming/matugen/templates/starship.toml` の `[git_status]` セクション参照。2ファイルは内容を揃える規約、[matugen-palette.md](matugen-palette.md) 参照)
+- 他の記号は starship の既定のまま (フォントの表示崩れが確認されていないため)
+
+---
+
 ## 🔍 atuin — シェル履歴の検索・記録
 
 `Ctrl+R` が atuin の全文検索 UI に置き換わっています。**↑キーは従来の zsh 履歴のまま**です。
