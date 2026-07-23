@@ -2,7 +2,8 @@
 
 Windows環境のタイル型ウィンドウマネージャ **komorebi** の操作チートシートです．
 キーバインドは AutoHotkey (`modules/wm/komorebi/komorebi.ahk`) で定義され，`sync-win` で Windows 側 (`C:\Users\tnaru\.config\komorebi\`) に同期されます．
-**AHK スクリプトの変更はタスクトレイの AutoHotkey アイコン → Reload This Script で再読み込みが必要です．**
+起動するAHKプロセスは `modules/input/ahk/main.ahk` (IME制御等，[kanata.md](kanata.md) 参照) 1つに集約されており，`komorebi.ahk` はそこから絶対パスで `#Include` されます．
+**AHK スクリプトの変更はタスクトレイの AutoHotkey アイコン → Reload This Script で再読み込みが必要です (main.ahkとkomorebi.ahkどちらを直しても，リロードするのはmain.ahk側のプロセスです)．**
 
 配色 (枠線色など) は Matugen 連携で壁紙から自動生成されます ([matugen-palette.md](matugen-palette.md) 参照)．
 

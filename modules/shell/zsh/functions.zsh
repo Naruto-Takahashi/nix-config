@@ -170,7 +170,8 @@ function sync-win() {
     echo "Syncing WezTerm config..."
     cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
     mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-    # ~/.config/ahkは現在未使用（AHKはkomorebi.ahkのみ）．存在する場合だけ同期します．
+    # main.ahk (modules/input/ahk) がエントリポイントで、komorebi.ahkは
+    # そこから絶対パスで#Includeされる。存在する場合だけ同期します．
     if [ -d ~/.config/ahk ]; then
         echo "Syncing AutoHotkey scripts..."
         cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/

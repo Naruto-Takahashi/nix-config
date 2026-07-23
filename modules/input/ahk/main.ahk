@@ -1,7 +1,10 @@
 /*
     =============================================================================
     メイン AutoHotkey スクリプト (Main AutoHotkey Script)
-    説明: キーのリマッピング，Vimライクなカーソル移動，およびIME制御の統合
+    説明: キーのリマッピング，Vimライクなカーソル移動，およびIME制御の統合。
+          起動するAHKプロセスをこの1つに集約するため，komorebi/YASB用の
+          キーバインドスクリプト(komorebi.ahk、modules/wm/komorebi/管理)も
+          ここから読み込む。
     =============================================================================
 */
 
@@ -14,6 +17,12 @@ SetWorkingDir %A_ScriptDir%
 
 ; 外部ライブラリの読み込み (IME制御関数群)
 #Include %A_ScriptDir%\lib\ime_functions.ahk
+
+; komorebi/YASB操作用キーバインド。役割としては別モジュール
+; (modules/wm/komorebi/komorebi.ahk) が持つため配置場所を分けているが、
+; 起動するAHKプロセスは1つに集約するためここから#Includeする
+; (相対パスでは届かない配置のため絶対パス)。
+#Include C:\Users\tnaru\.config\komorebi\komorebi.ahk
 
 ; =============================================================================
 ; キー・リマッピング設定 (Key Remappings)
@@ -118,13 +127,8 @@ Return
 ; =============================================================================
 ; アプリケーション個別ショートカット (Application Shortcuts)
 ; =============================================================================
-
-; --- Alt + Enter で WezTerm を起動する設定（Excelでのセル内改行を邪魔しないよう除外） ---
-#IfWinNotActive ahk_exe EXCEL.EXE
-!Enter::
-    Run, wezterm-gui
-Return
-#IfWinNotActive
+; Alt+Enter (WezTerm起動、Excel除外・カーソルのあるモニタに開く) は
+; komorebi.ahk 側で定義済み (LaunchWeztermOnCursorMonitor)。
 
 ; =============================================================================
 ; エクスプローラー統合 (Everything検索連携)
