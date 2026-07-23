@@ -33,6 +33,9 @@ config.audible_bell = "Disabled"
 -- 選択カーソル表示などが見づらい。Matugenの役割色から個別に組むと破綻しやすいので、
 -- WezTerm組み込みのkanagawa系スキーム(存在すれば)をそのまま採用する。
 -- 見つからない場合は何もしない(デフォルトのまま)ので設定が壊れることはない。
+-- 実際に選ばれた配色スキームの背景色 (タブバーのBAR_BG計算で使う)。
+-- スキームが見つからない場合のフォールバックは黒 (従来どおり)。
+local scheme_background = "#000000"
 do
   local ok_schemes, schemes = pcall(function() return wezterm.color.get_builtin_schemes() end)
   if ok_schemes and schemes then
@@ -40,6 +43,7 @@ do
     for _, name in ipairs(candidates) do
       if schemes[name] then
         config.color_scheme = name
+        scheme_background = schemes[name].background or scheme_background
         break
       end
     end
@@ -102,10 +106,16 @@ config.tab_max_width = 24
 config.use_fancy_tab_bar = false
 
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
---   本体 = デフォルト黒背景 × window_background_opacity 0.85
---   バー地も同じ「黒 0.85」で塗ると境目なく馴染みます．
---   ("none" 指定は素通し=完全透過になるため使いません)
-local BAR_BG = "rgba(0, 0, 0, 0.85)"
+--   本体 = 選択中スキームの背景色 × window_background_opacity 0.85
+--   バー地も同じ色×0.85で塗ると境目なく馴染みます．
+--   (黒決め打ちだとスキームの実際の背景(純黒ではない)とズレて帯が見えてしまう。
+--    "none" 指定は素通し=完全透過になるため使いません)
+local function hex_to_rgb(hex)
+  hex = hex:gsub("#", "")
+  return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
+end
+local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
+local BAR_BG = string.format("rgba(%d, %d, %d, 0.85)", bg_r, bg_g, bg_b)
 
 config.colors = {
   tab_bar = {
@@ -207,10 +217,11 @@ end
 config.disable_default_key_bindings = true
 config.keys = require("keybinds").keys
 config.key_tables = require("keybinds").key_tables
+-- Leaderキーはconfig.leader(1つしか設定できない)ではなく、Ctrl+;/Ctrl+Space
+-- 両方から入れる自作key_table (keybinds.luaのleader_mode) として実装している。
 -- CapsLock を Ctrl にしている都合上、Ctrl+Space は左手ホームポジションから
--- 遠く、Ctrl+文字キー系は左手小指の同指干渉が起きやすい。Ctrl+; は
--- 右手小指なので Ctrl (左手小指) と自然な両手コードになる
-config.leader = { key = ";", mods = "CTRL", timeout_milliseconds = 2000 }
+-- 遠く同指干渉も起きやすいため、右手小指で押せる Ctrl+; をメインに使い、
+-- Ctrl+Space はサブとして併用できるようにしている
 
 -- モニタをまたぐ起動位置指定 (Alt+Enter等でカーソルのあるモニタに開く) は
 -- komorebi.ahk側で `wezterm-gui start --position screen:X,Y` のCLI引数として

@@ -37,47 +37,13 @@ end)
 return {
   keys = {
     -- ============================================================
-    -- Leader Key (Ctrl+Space) -> Tab操作
+    -- Leader Key (Ctrl+; / Ctrl+Space) -> Tab操作
     -- ============================================================
-
-    -- Leader + t で新しいタブを作成（Tab）．
-    { key = "t", mods = "LEADER", action = act({ SpawnTab = "CurrentPaneDomain" }) },
-
-    -- Leader + T (Shift+t) でPowerShellを新しいタブで開きます．
-    { key = "T", mods = "LEADER|SHIFT", action = act.SpawnCommandInNewTab { args = { "pwsh.exe", "-NoLogo" } } },
-
-    -- Leader + w でタブを閉じます（確認ダイアログなし）．
-    { key = "w", mods = "LEADER", action = act.CloseCurrentTab { confirm = false } },
-
-    -- ============================================================
-    -- ワークスペース関連（W に変更）
-    -- ============================================================
-
-    -- Leader + Shift + w（大文字W）でワークスペース選択を行います．
-    { key = "W", mods = "LEADER|SHIFT", action = act.ShowLauncherArgs({ flags = "WORKSPACES", title = "Select workspace" }), },
-
-    -- ワークスペース名の変更を行います．
-    {
-      key = "$", mods = "LEADER",
-      action = act.PromptInputLine({
-        description = "(wezterm) Set workspace title:",
-        action = wezterm.action_callback(function(win, pane, line)
-          if line then wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line) end
-        end),
-      }),
-    },
-
-    -- ============================================================
-    -- その他の便利なショートカット
-    -- ============================================================
-
-    -- タブの移動（Leader + n / p）next/previous
-    { key = "n", mods = "LEADER", action = act.ActivateTabRelative(1) },
-    { key = "p", mods = "LEADER", action = act.ActivateTabRelative(-1) },
-
-    -- タブの入れ替えを行います．
-    { key = "{", mods = "LEADER|SHIFT", action = act({ MoveTabRelative = -1 }) },
-    { key = "}", mods = "LEADER|SHIFT", action = act({ MoveTabRelative = 1 }) },
+    -- WezTerm標準のconfig.leaderはキー1つしか設定できないため、Leader相当の
+    -- 動作を自作key_table (leader_mode、下のkey_tables参照) として実装し、
+    -- Ctrl+; と Ctrl+Space の両方からそこへ入れるようにしている。
+    { key = ";", mods = "CTRL", action = act.ActivateKeyTable({ name = "leader_mode", one_shot = true, timeout_milliseconds = 2000 }) },
+    { key = "Space", mods = "CTRL", action = act.ActivateKeyTable({ name = "leader_mode", one_shot = true, timeout_milliseconds = 2000 }) },
 
     -- 数字キーでの移動（Alt + 数字）．
     { key = "1", mods = "ALT", action = act.ActivateTab(0) },
@@ -89,19 +55,6 @@ return {
     { key = "7", mods = "ALT", action = act.ActivateTab(6) },
     { key = "8", mods = "ALT", action = act.ActivateTab(7) },
     { key = "9", mods = "ALT", action = act.ActivateTab(-1) },
-
-    -- ペイン操作（分割・移動）．
-    { key = "d", mods = "LEADER", action = split_pane("Down") },
-    { key = "r", mods = "LEADER", action = split_pane("Right") },
-    { key = "x", mods = "LEADER", action = act.CloseCurrentPane { confirm = false } },
-    { key = "h", mods = "LEADER", action = act.ActivatePaneDirection("Left") },
-    { key = "l", mods = "LEADER", action = act.ActivatePaneDirection("Right") },
-    { key = "k", mods = "LEADER", action = act.ActivatePaneDirection("Up") },
-    { key = "j", mods = "LEADER", action = act.ActivatePaneDirection("Down") },
-    { key = "z", mods = "LEADER", action = act.TogglePaneZoomState },
-
-    -- コピーモード（Leader + c）．
-    { key = "c", mods = "LEADER", action = act.ActivateCopyMode },
 
     -- コマンドパレット（Ctrl + Shift + P）．
     { key = "p", mods = "CTRL|SHIFT", action = act.ActivateCommandPalette },
@@ -130,21 +83,56 @@ return {
 
     -- 設定のリロードを行います．
     { key = "r", mods = "CTRL|SHIFT", action = act.ReloadConfiguration },
-
-    -- キーテーブルの設定を行います．
-    { key = "s", mods = "LEADER", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
-    { key = "a", mods = "LEADER", action = act.ActivateKeyTable({ name = "activate_pane", timeout_milliseconds = 1000 }) },
-
-    -- キーバインド一覧を表示します．
-    {
-      key = "m",
-      mods = "LEADER",
-      action = act.OpenUri("https://github.com/Naruto-Takahashi/dotfiles/blob/main/wezterm/KEYBINDINGS.md"),
-    },
   },
 
   -- キーテーブルの詳細設定を行います．
   key_tables = {
+    -- Leaderキー(Ctrl+; / Ctrl+Space)を押した後に有効になるテーブル。
+    -- 旧 mods = "LEADER" のバインドはすべてここに移した (one_shot = true なので
+    -- 1回キーを押すと自動で抜ける。resize_pane/activate_pane 等は明示的に
+    -- 別テーブルへ ActivateKeyTable するため引き続きLEADER配下から呼べる)。
+    leader_mode = {
+      -- タブ操作
+      { key = "t", action = act({ SpawnTab = "CurrentPaneDomain" }) },
+      { key = "T", mods = "SHIFT", action = act.SpawnCommandInNewTab { args = { "pwsh.exe", "-NoLogo" } } },
+      { key = "w", action = act.CloseCurrentTab { confirm = false } },
+      { key = "n", action = act.ActivateTabRelative(1) },
+      { key = "p", action = act.ActivateTabRelative(-1) },
+      { key = "{", mods = "SHIFT", action = act({ MoveTabRelative = -1 }) },
+      { key = "}", mods = "SHIFT", action = act({ MoveTabRelative = 1 }) },
+
+      -- ワークスペース関連
+      { key = "W", mods = "SHIFT", action = act.ShowLauncherArgs({ flags = "WORKSPACES", title = "Select workspace" }), },
+      {
+        key = "$",
+        action = act.PromptInputLine({
+          description = "(wezterm) Set workspace title:",
+          action = wezterm.action_callback(function(win, pane, line)
+            if line then wezterm.mux.rename_workspace(wezterm.mux.get_active_workspace(), line) end
+          end),
+        }),
+      },
+
+      -- ペイン操作（分割・移動）
+      { key = "d", action = split_pane("Down") },
+      { key = "r", action = split_pane("Right") },
+      { key = "x", action = act.CloseCurrentPane { confirm = false } },
+      { key = "h", action = act.ActivatePaneDirection("Left") },
+      { key = "l", action = act.ActivatePaneDirection("Right") },
+      { key = "k", action = act.ActivatePaneDirection("Up") },
+      { key = "j", action = act.ActivatePaneDirection("Down") },
+      { key = "z", action = act.TogglePaneZoomState },
+
+      -- コピーモード
+      { key = "c", action = act.ActivateCopyMode },
+
+      -- 他のキーテーブルへの遷移
+      { key = "s", action = act.ActivateKeyTable({ name = "resize_pane", one_shot = false }) },
+      { key = "a", action = act.ActivateKeyTable({ name = "activate_pane", timeout_milliseconds = 1000 }) },
+
+      -- キーバインド一覧を表示
+      { key = "m", action = act.OpenUri("https://github.com/Naruto-Takahashi/dotfiles/blob/main/wezterm/KEYBINDINGS.md") },
+    },
     resize_pane = {
       { key = "h", action = act.AdjustPaneSize({ "Left", 1 }) },
       { key = "l", action = act.AdjustPaneSize({ "Right", 1 }) },

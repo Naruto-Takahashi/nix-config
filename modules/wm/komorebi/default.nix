@@ -35,4 +35,16 @@
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/setup-windows.ps1";
     force = true;
   };
+
+  # --- AutoHotkey (IME制御・SandS・キーリマップ) ---
+  # sync-win が ~/.config/ahk 配下をまるごと Windows の
+  # Tools/Customization へコピーする (modules/shell/zsh/functions.zsh 参照)。
+  xdg.configFile."ahk/main.ahk" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/ahk/main.ahk";
+    force = true;
+  };
+  xdg.configFile."ahk/lib/ime_functions.ahk" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/ahk/lib/ime_functions.ahk";
+    force = true;
+  };
 }
