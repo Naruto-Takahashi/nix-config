@@ -123,8 +123,13 @@ Return
 ; =============================================================================
 ; アプリケーション個別ショートカット (Application Shortcuts)
 ; =============================================================================
-; Alt+Enter (WezTerm起動、Excel除外・カーソルのあるモニタに開く) は
-; komorebi.ahk 側で定義済み (LaunchWeztermOnCursorMonitor)。
+
+; --- Alt + Enter で WezTerm を起動する設定（Excelでのセル内改行を邪魔しないよう除外） ---
+#IfWinNotActive ahk_exe EXCEL.EXE
+!Enter::
+    Run, wezterm-gui
+Return
+#IfWinNotActive
 
 ; =============================================================================
 ; エクスプローラー統合 (Everything検索連携)
