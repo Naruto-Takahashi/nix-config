@@ -37,6 +37,7 @@ surface="$(lua_val surface)"
 on_accent="$(lua_val on_accent)"
 accent_pale="$(lua_val accent_pale)"
 error="$(lua_val error)"
+# shellcheck disable=SC2034  # sub_kv() 内で ${!var} 間接参照により使われる
 selection_bg="$(lua_val selection_bg)"
 
 for v in accent tertiary secondary complement triad text muted surface on_accent accent_pale error selection_bg; do
