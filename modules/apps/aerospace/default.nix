@@ -17,8 +17,11 @@
     default-root-container-orientation = 'auto'
 
     # AeroSpace起動完了時にJankyBorders（アクティブウィンドウ枠線表示ツール）をバックグラウンド実行します．
+    # 色はWSL/NixOS側のMatugenフォールバックパレット（青ベース）に合わせています．
+    # active_color = accent (#a2c9fd), inactive_color = muted (#c3c6cf)
+    # 参考: modules/wm/komorebi/komorebi.json の border_colours (single/unfocused)
     after-startup-command = [
-      'exec-and-forget /opt/homebrew/bin/borders active_color=0xffffc20d inactive_color=0x00000000 width=6.0'
+      'exec-and-forget /opt/homebrew/bin/borders active_color=0xffa2c9fd inactive_color=0xffc3c6cf width=6.0'
     ]
 
     # ギャップ設定（Gaps）
