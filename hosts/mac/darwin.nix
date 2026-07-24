@@ -28,7 +28,6 @@
       "FelixKratz/formulae"
     ];
     casks = [
-      "karabiner-elements" # キーマップリマッパー
       "aerospace"          # タイリングウィンドウマネージャ
       "vivaldi"            # Vivaldiブラウザ
       "raycast"            # クイックランチャー / Spotlight代替
@@ -64,13 +63,32 @@
 
 
 
+  # Karabiner-DriverKit-VirtualHIDDevice デーモンの起動サービス設定．
+  # Karabiner-Elements本体（グラバー/メニュー等）はmacOSのBackground Task
+  # Managementで管理されており launchctl disable が定着しないため，
+  # Karabiner-Elements本体は導入せず，このドライバ（Kanataの仮想キー出力に
+  # 必須）だけを nix-darwin 管理の LaunchDaemon で直接起動する．
+  # ドライバ本体（システム拡張）は事前に手動インストール・承認が必要．
+  launchd.daemons.karabiner-vhid-daemon = {
+    serviceConfig = {
+      ProgramArguments = [
+        "/Library/Application Support/org.pqrs/Karabiner-DriverKit-VirtualHIDDevice/Applications/Karabiner-VirtualHIDDevice-Daemon.app/Contents/MacOS/Karabiner-VirtualHIDDevice-Daemon"
+      ];
+      KeepAlive = true;
+      RunAtLoad = true;
+      StandardOutPath = "/Library/Logs/karabiner-vhid-daemon.out.log";
+      StandardErrorPath = "/Library/Logs/karabiner-vhid-daemon.err.log";
+    };
+  };
+
   # macOS向け Kanata バックグラウンド起動サービスの設定 (System Daemon として実行し、root権限を付与)
+  # 仮想キーボードへの書き込み先である上記 VirtualHIDDevice デーモンの起動を待ってから起動する．
   launchd.daemons.kanata = {
     serviceConfig = {
       ProgramArguments = [
         "/bin/sh"
         "-c"
-        "until [ -f /run/current-system/sw/bin/kanata ]; do sleep 1; done && sleep 5 && exec /run/current-system/sw/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
+        "until pgrep -f Karabiner-VirtualHIDDevice-Daemon >/dev/null; do sleep 1; done && until [ -f /run/current-system/sw/bin/kanata ]; do sleep 1; done && sleep 5 && exec /run/current-system/sw/bin/kanata --cfg /Users/nalt/.config/kanata/config.kbd"
       ];
       KeepAlive = true;
       RunAtLoad = true;
@@ -78,30 +96,4 @@
       StandardErrorPath = "/Library/Logs/kanata.err.log";
     };
   };
-
-  # Karabiner-Elementsのデーモン/エージェントが自動起動してKanataの仮想キーボード書込を妨げるのを防ぐための無効化スクリプト
-  system.activationScripts.postActivation.text = ''
-    echo "Disabling Karabiner-Elements background services to prevent virtual keyboard locking..."
-    
-    # 1. Karabiner システムデーモンの停止と無効化
-    launchctl bootout system/org.pqrs.service.daemon.Karabiner-Core-Service 2>/dev/null || true
-    launchctl disable system/org.pqrs.service.daemon.Karabiner-Core-Service 2>/dev/null || true
-
-    # 2. ユーザーエージェント (nalt) の停止と無効化
-    UID_NALT=$(id -u nalt 2>/dev/null || echo "501")
-    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_console_user_server 2>/dev/null || true
-    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_console_user_server 2>/dev/null || true
-
-    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_session_monitor 2>/dev/null || true
-    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.karabiner_session_monitor 2>/dev/null || true
-
-    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Core-Service-rev2 2>/dev/null || true
-    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Core-Service-rev2 2>/dev/null || true
-
-    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Menu 2>/dev/null || true
-    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-Menu 2>/dev/null || true
-
-    sudo -u nalt launchctl bootout gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-NotificationWindow 2>/dev/null || true
-    sudo -u nalt launchctl disable gui/"$UID_NALT"/org.pqrs.service.agent.Karabiner-NotificationWindow 2>/dev/null || true
-  '';
 }

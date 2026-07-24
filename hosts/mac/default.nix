@@ -46,86 +46,9 @@
   fonts.fontconfig.enable = true;
 
 
-  # Karabiner-Elements の設定を宣言的に配置
-  xdg.configFile."karabiner/karabiner.json" = {
-    force = true;
-    text = ''
-      {
-        "profiles": [
-          {
-            "name": "Default",
-            "selected": true,
-            "simple_modifications": [],
-            "virtual_hid_keyboard": {
-              "keyboard_type_v2": "ansi"
-            },
-            "complex_modifications": {
-              "rules": [
-                {
-                  "description": "左右のOption (Alt) キーの単押しで英数・かなに切り替える",
-                  "manipulators": [
-                    {
-                      "type": "basic",
-                      "from": {
-                        "key_code": "left_option",
-                        "modifiers": {
-                          "optional": [
-                            "any"
-                          ]
-                        }
-                      },
-                      "to": [
-                        {
-                          "key_code": "left_option"
-                        }
-                      ],
-                      "to_if_alone": [
-                        {
-                          "key_code": "japanese_eisuu"
-                        }
-                      ]
-                    },
-                    {
-                      "type": "basic",
-                      "from": {
-                        "key_code": "right_option",
-                        "modifiers": {
-                          "optional": [
-                            "any"
-                          ]
-                        }
-                      },
-                      "to": [
-                        {
-                          "key_code": "right_option"
-                        }
-                      ],
-                      "to_if_alone": [
-                        {
-                          "key_code": "japanese_kana"
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            "devices": [
-              {
-                "identifiers": {
-                  "vendor_id": 1149,
-                  "product_id": 32982
-                },
-                "ignore": true
-              }
-            ]
-          }
-        ]
-      }
-    '';
-  };
-
   # Mac向け Kanata 設定ファイルの動的生成（Linux/他環境との互換性を維持する置換）
+  # 英数/かな切り替え・WM操作ともKanata側（config.kbd）で完結させるため，
+  # Karabiner-Elements本体（karabiner.json）は導入しない．
   xdg.configFile."kanata/config.kbd".text =
     let
       original = builtins.readFile ../../modules/input/kanata/config.kbd;
