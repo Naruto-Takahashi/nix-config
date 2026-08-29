@@ -91,6 +91,7 @@
     pkgs.imagemagick # 画像処理 (matugenの色抽出補助スクリプトが使用)
     pkgs.comma # `, <cmd>` で未インストールのコマンドをその場で一時実行
     pkgs.just # コマンドランナー (justfile に定型タスクをまとめる)
+    pkgs.uv # Python パッケージ/プロジェクトマネージャ (pip+venv+poetry相当)。プロジェクト個別ではなく全ホスト共通で保証する
     # `cz commit` (対話コミット) は modules/apps/git-hooks で `cz` ラッパーとして提供
 
     # AI連携ツール。ghq同様、以前はdesktop系ホストのみ
