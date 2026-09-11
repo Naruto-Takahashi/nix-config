@@ -21,3 +21,9 @@ result-*
 __pycache__/
 *.pyc
 
+# ALT+Wの壁紙ピッカーが選択のたびに書き換えるローカルな色オーバーライド。
+# 実体は mkOutOfStoreSymlink 経由の直接参照のためgit追跡は不要で、
+# 頻繁な自動更新でコミット履歴を汚さないよう追跡対象から外す。
+# (削除はしない。初回のみ `git add -f` で明示的に追跡させれば良い)
+modules/theming/matugen/wsl/color-overrides.conf
+
