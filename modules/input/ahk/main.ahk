@@ -76,12 +76,20 @@ Return
 ; 同時に発火してSpaceキーが常に二重入力される不具合の原因になっていた
 ; (実機でAHK単体停止により再現・解消を確認済み)。
 
+; WezTermアクティブ時はCtrl+Space/Ctrl+;を透過してLeaderキーとして機能させつつ，IMEをOFFにする。
+; Ctrl+Spaceの方はkanataのspc-nav (tap-hold-press) がSpaceキー自体を遅延処理する
+; ため、kanata稼働中に有効化すると二重処理で衝突する (Space系と同じ理由)ので、
+; 引き続きkanata非稼働時のみに限定する
 #If !KanataActive() && WinActive("ahk_exe wezterm-gui.exe")
-; WezTermアクティブ時はCtrl+Space/Ctrl+;を透過してLeaderキーとして機能させつつ，IMEをOFFにする
 ~^Space::
     Sleep 10
     IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
 Return
+
+; kanataのdefsrcにセミコロン(scln)は含まれておらず物理キーを一切remapしない
+; ため、kanataの稼働有無に関わらずこのホットキーだけは安全に併存できる。
+; KanataActive()の判定からは外し常時有効にする
+#If WinActive("ahk_exe wezterm-gui.exe")
 ~^`;::
     Sleep 10
     IME_SET(0) ; 英語入力（IME OFF）へ強制切り替え
