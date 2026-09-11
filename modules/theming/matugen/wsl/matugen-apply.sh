@@ -257,13 +257,22 @@ rm -f "$lua_tmp"
 
 # Windows (PowerShell) 向け starship 変種: custom.ssh_host は POSIX sh 依存で
 # Windows では動かない (プロンプト遅延の原因) ため、静的な PS
-# セグメントに置き換えて配置する
+# セグメントに置き換えて配置する。
+# custom.nixcli_badge (本来distrobox等のコンテナ内だけ表示する意図) は、
+# Windows PowerShellではshellを明示しない限りStarshipがcmd.exe経由で
+# whenを評価してしまい、cmdは"$container"のようなbash風変数展開をしない
+# ためリテラル文字列を非空判定して常にtrue扱いになる不具合があった
+# (実機で確認済み: Windowsでも常時「nixcli in <hostname>」が表示されて
+# いた)。Windowsでコンテナ内に入ることはそもそも無いため、ssh_hostと
+# 同様に丸ごと取り除く
 WIN_STARSHIP="${WIN_HOME}/.config/starship.toml"
 awk '
+    /^\$\{custom\.nixcli_badge\}\\$/ { next }
     /^\$\{custom\.ssh_host\}\\$/ {
         print "[ PS ](fg:on_accent bg:secondary bold)[\xee\x82\xb0](fg:secondary bg:accent)\\"
         next
     }
+    /^\[custom\.nixcli_badge\]/ { skip=1 }
     /^\[custom\.ssh_host\]/ { skip=1 }
     skip && /^\[username\]/ { skip=0 }
     !skip

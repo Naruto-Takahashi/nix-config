@@ -26,9 +26,21 @@ disabled = true
 command = '''
 printf '⠀nixcli in %s⠀' "$(hostname -s 2>/dev/null || hostname)"
 '''
+# whenはcmd/pwshではなくPOSIX shで評価する。Starshipのカスタムモジュールは
+# shellを明示しない場合Windowsではデフォルトでcmd.exe経由になり、
+# cmdは "$container" のようなbash風変数展開を行わないためリテラル文字列
+# "$container" をそのまま非空判定してしまい、実際の$containerの有無に
+# 関わらずwhenが常にtrueになる不具合があった (実機で確認済み: Windows
+# PowerShellでも常時 "nixcli in <hostname>" が表示されてしまっていた)。
+# shellをsh固定にすることで、Windows (git for windowsのsh.exe経由)でも
+# Linux/distrobox側でも実際の$container環境変数で正しく判定できる
+shell = ["sh", "--noprofile", "--norc"]
 when = '[ -n "$container" ]'
 style = "fg:on_accent bg:tertiary bold"
-format = "[$output]($style)[](fg:tertiary bg:accent)"
+# 直後に続くssh_hostブロックの背景はsecondaryなので、区切り三角形も
+# secondaryに合わせる (以前はaccentのままでssh_host/PSブロックの色と
+# 食い違い、三角形だけ浮いて見える不具合があった)
+format = "[$output]($style)[](fg:tertiary bg:secondary)"
 
 [custom.ssh_host]
 command = '''
@@ -42,6 +54,8 @@ else
   echo "⠀"
 fi
 '''
+# nixcli_badgeと同じ理由でshellをsh固定にする
+shell = ["sh", "--noprofile", "--norc"]
 when = '[ -z "$container" ]'
 style = "fg:on_accent bg:secondary bold"
 format = "[$output]($style)[](fg:secondary bg:accent)"
