@@ -269,6 +269,7 @@ function sync-win() {
     cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
     cp -L ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
     cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
+    cp -L ~/.config/komorebi/workspace-watcher.ps1 /mnt/c/Users/tnaru/.config/komorebi/
     # 読み込みの確実性を高めるため，ホーム直下にも配置します．
     cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
     cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/

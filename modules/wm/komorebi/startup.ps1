@@ -40,6 +40,9 @@ if ($state -and $state.monitors.elements.Count -gt 1) {
 # 3. YASB
 Start-Process "C:\Program Files\YASB\yasb.exe"
 
+# 3.1 ワークスペース切り替え時にauto_hide中のYASBバーを一時表示する常駐スクリプト
+Start-Process "powershell.exe" -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\Users\tnaru\.config\komorebi\workspace-watcher.ps1" -WindowStyle Hidden
+
 # 4. PowerToys
 Start-Process -FilePath "C:\Users\tnaru\AppData\Local\PowerToys\PowerToys.exe"
 

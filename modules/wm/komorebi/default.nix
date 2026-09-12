@@ -35,4 +35,10 @@
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/setup-windows.ps1";
     force = true;
   };
+
+  # ワークスペース切り替え時にauto_hide中のYASBバーを一時表示する常駐スクリプト．
+  xdg.configFile."komorebi/workspace-watcher.ps1" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/workspace-watcher.ps1";
+    force = true;
+  };
 }
