@@ -1,6 +1,6 @@
 <div align="center">
 
-![header](https://capsule-render.vercel.app/api?type=waving&height=210&color=0:181616,35:2d4f67,65:7aa89f,100:e6c384&text=nix-config&fontColor=c5c9c5&fontSize=64&fontAlignY=36&desc=Declarative%20environments%20for%20NixOS%20%C2%B7%20WSL2%20%C2%B7%20macOS&descColor=c5c9c5&descSize=16&descAlignY=58)
+![header](https://capsule-render.vercel.app/api?type=waving&height=210&color=0:171717,35:484848,65:999999,100:c6c6c6&text=nix-config&fontColor=c7c7c7&fontSize=64&fontAlignY=36&desc=Declarative%20environments%20for%20NixOS%20%C2%B7%20WSL2%20%C2%B7%20macOS&descColor=c7c7c7&descSize=16&descAlignY=58)
 
 [![CI](https://img.shields.io/github/actions/workflow/status/Naruto-Takahashi/nix-config/check.yml?branch=main&style=flat-square&logo=github-actions&logoColor=white&label=CI&labelColor=181616)](https://github.com/Naruto-Takahashi/nix-config/actions/workflows/check.yml)
 [![NixOS](https://img.shields.io/badge/NixOS-unstable-5277C3?style=flat-square&logo=nixos&logoColor=white&labelColor=181616)](https://nixos.org)
@@ -19,7 +19,7 @@
 
 OSレベルのシステム定義から，シェル環境，ウィンドウマネージャー，開発ツールまでを一元管理し，キーボード駆動の快適な開発環境を構築します．すべての CLI/GUI が **Matugen** により壁紙から生成された配色で統一されます．
 
-![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
 
 ## どれがどのOSで動くか (対応表)
 
@@ -48,7 +48,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 ※1 WSLからはWindows側の物理キーボードを直接掴めないため，Kanataではなく [`modules/input/ahk/main.ahk`](modules/input/ahk/main.ahk) が同等の機能を別実装しています．
 ※2 macOSはWM操作の変換先が`Ctrl+Cmd`（NixOSは`Super`単体）になるなど，キー配線が一部異なります．詳細は[kanata.md](docs/kanata.md)の「対象OS・実装方式の違い」を参照．
 
-![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
 
 ## ディレクトリ構造
 
@@ -73,7 +73,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 └── docs/                      # 各種仕様・キーマップ解説ドキュメント ([索引](docs/README.md))
 ```
 
-![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
 
 ## セットアップとインストール手順 (移行ガイド)
 
@@ -95,7 +95,7 @@ OSごとの詳しい手順は個別ページに分けています．上の対応
 | **macOS** | [docs/setup-mac.md](docs/setup-mac.md) | 手順が最も多い。TCC/SIPの都合で数点だけ手動のGUI操作が残る |
 | **sudo無し共有Linux (rootless podman)** | [docs/setup-distrobox.md](docs/setup-distrobox.md) | CLIツールのみのアドオン的プロファイル。distroboxコンテナ内に`/nix`を作る |
 
-![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:e6c384,50:7aa89f,100:a292a3)
+![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
 
 <details>
 <summary><b>English Translation (Click to expand)</b></summary>
@@ -165,6 +165,6 @@ The short version:
 
 <div align="center">
 
-![footer](https://capsule-render.vercel.app/api?type=waving&height=110&color=0:e6c384,35:7aa89f,65:2d4f67,100:181616&section=footer)
+![footer](https://capsule-render.vercel.app/api?type=waving&height=110&color=0:c6c6c6,35:999999,65:484848,100:171717&section=footer)
 
 </div>
