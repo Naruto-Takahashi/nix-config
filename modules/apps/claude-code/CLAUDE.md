@@ -17,6 +17,11 @@
    新規ファイルや変更を `git add` する前に `nix flake check` / `home-manager switch`
    すると古い内容のまま反映されない。
 
-4. **commitメッセージは gitmoji + `type(scope): 説明` 形式**
-   例: `✨ feat(nix): ...` / `🐛 fix(hosts): ...`。個人リポジトリでは
-   `modules/apps/git-hooks` のフックが自動付与するため、手動でも同形式に揃える。
+4. **commitメッセージは `type(scope): 説明` 形式。絵文字は自分で付けない**
+   例: `feat(nix): ...` / `fix(hosts): ...`。`modules/apps/git-hooks` の
+   `prepare-commit-msg` フックが type から gitmoji を自動推定して先頭に
+   付与する (対応表は `modules/apps/git-hooks/hooks/prepare-commit-msg` の
+   `MAP` 参照)。そのフックは「メッセージ先頭に既に絵文字が付いていたら
+   何もしない」仕様なので、Claudeが先に絵文字を付けるとそのまま残ってしまい
+   ルールから外れる。Claudeはprefix (`type(scope):`) だけを書き、絵文字は
+   フックに任せること。
