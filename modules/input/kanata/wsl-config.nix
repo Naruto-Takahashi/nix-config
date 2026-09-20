@@ -40,6 +40,17 @@ let
       # として誤発火してしまう (実機で確認済み)。汎用の "wmmodifier-" 置換
       # より前に置いて先にマッチさせる
       "wmmodifier-S-w   ;; Alt + q"
+      # Alt長押しレイヤー (alt-eng/alt-jp) のhold動作を素の layer-toggle から
+      # (multi 実キー (layer-while-held ...)) に変更する。kanata公式ドキュメント
+      # (config.adoc の `multi` action解説) が明示する「レイヤー越しにOS標準の
+      # Alt+Tab連続切り替えを機能させる」ための唯一の方法がこれで、単純な
+      # layer-toggleではAlt+Tabキーが押されるたびにAlt自体もpress+releaseされて
+      # しまい、Windows側のAlt-Tabスイッチャー(押しっぱなしでTabを連打して
+      # 選ぶUI)が機能しなくなる (kanata移行後にAlt+Tabでのウィンドウ切り替え
+      # が使えなくなったと報告あり。要実機確認)。より具体的なパターンを汎用の
+      # "eisu"/"kana" 単語置換より前に置いて先にマッチさせる
+      "eisu (layer-toggle alt-layer))"
+      "kana (layer-toggle alt-layer))"
       "cap-ctrl-action"
       "wmmodifier-"
       "eisu"
@@ -57,6 +68,11 @@ let
       # macOS向け (hosts/mac/default.nix) と同じく、この1箇所だけ
       # 素のAlt+Spaceパススルーに直接上書きする
       "@hyp-d "
+      # alt-layer中のtab位置 (@hyp-tab = Super+Tab相当) も同様の理由で
+      # 素のAlt+Tabパススルーに上書きする。上のmulti化で実キーのAlt
+      # (lalt/ralt) が物理的に押されっぱなしになるため、tab位置は
+      # 何もせず透過(_)にするだけでOS標準のAlt+Tabとして機能する
+      "@hyp-tab "
     ]
     [
       "C-A-h"
@@ -64,6 +80,8 @@ let
       "C-A-k"
       "C-A-l"
       "A-S-q   ;; Alt + q"
+      "@ime-off (multi lalt (layer-while-held alt-layer)))"
+      "@ime-on (multi ralt (layer-while-held alt-layer)))"
       "lctl"
       "A-"
       "@ime-off"
@@ -71,6 +89,7 @@ let
       "process-unmapped-keys yes\n  danger-enable-cmd yes"
       "f13   lalt"
       "A-spc "
+      "_ "
     ]
     base;
 
