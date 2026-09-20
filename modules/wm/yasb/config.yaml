@@ -68,7 +68,7 @@ widgets:
   home:
     type: yasb.home.HomeWidget
     options:
-      label: "<span>家</span>"
+      label: "<span></span>"
       menu_list:
       - title: User Home
         path: '~'
@@ -138,7 +138,7 @@ widgets:
   notifications:
     type: yasb.notifications.NotificationsWidget
     options:
-      label: "<span>\udb80\udc9e</span>"
+      label: "<span>󰂞</span>"
       label_alt: '{count} notifications'
       hide_empty: true
       tooltip: false
@@ -149,7 +149,7 @@ widgets:
   power_menu:
     type: yasb.power_menu.PowerMenuWidget
     options:
-      label: "<span>\udb80\udc09</span>"
+      label: "<span>󰀉</span>"
       uptime: true
       show_user: true
       menu_style: popup
@@ -163,22 +163,22 @@ widgets:
       profile_image_size: 64
       buttons:
         lock:
-        - "\uDB80\uDF41"
+        - "󰍁"
         - Lock
         signout:
-        - "\uDB80\uDF43"
+        - "󰍃"
         - Sign out
         sleep:
-        - "\uDB82\uDD04"
+        - "󰤄"
         - Sleep
         hibernate:
-        - "\uDB82\uDD01"
+        - "󰤁"
         - Hibernate
         restart:
-        - "\uDB81\uDC53"
+        - "󰑓"
         - Restart
         shutdown:
-        - "\uDB82\uDD06"
+        - "󰤆"
         - Shut Down
         cancel:
         - ''
@@ -214,9 +214,9 @@ widgets:
     type: "komorebi.workspaces.WorkspaceWidget"
     options:
       label_offline: "Komorebi Offline"
-      label_workspace_btn: "{index}"
-      label_workspace_active_btn: "{index}"
-      label_workspace_populated_btn: "{index}"
+      label_workspace_btn: "{name}"
+      label_workspace_active_btn: "{name}"
+      label_workspace_populated_btn: "{name}"
       label_default_name: ""
       label_zero_index: false
       hide_empty_workspaces: true
@@ -243,7 +243,7 @@ widgets:
         bsp: "\uebeb"
         columns: "\uebf7"
         rows: "\uec01"
-        grid: "\udb81\udf58"
+        grid: "󰝘"
         scrolling: "\uebf7"
         vertical_stack: "\uebee"
         horizontal_stack: "\uebf0"
@@ -252,8 +252,8 @@ widgets:
         monocle: "\uf06f"
         maximized: "\uf06f"
         floating: "\uf2d2"
-        paused: "\udb83\udf89"
-        tiling: "\udb81\ude40"
+        paused: "󰾉"
+        tiling: "󰙀"
       callbacks:
         on_left: 'toggle_layout_menu'
         on_middle: 'next_layout'
@@ -300,7 +300,7 @@ widgets:
   wallpapers:
     type: "yasb.wallpapers.WallpapersWidget"
     options:
-      label: "<span>\udb83\udc8d</span>"
+      label: "<span>󰲍</span>"
       change_automatically: false
     # 壁紙フォルダ (matugen-wsl側のwallpaper-pickと同じ場所)
       image_path: "C:\\Users\\tnaru\\Pictures\\wallpapers"
@@ -367,8 +367,8 @@ widgets:
       media_menu_icons:
         play: "\uf04b"
         pause: "\uf04c"
-        prev_track: "\udb81\udcae"
-        next_track: "\udb81\udcad"
+        prev_track: "󰒮"
+        next_track: "󰒭"
       scrolling_label:
         enabled: false
         update_interval_ms: 33
@@ -403,7 +403,7 @@ widgets:
         offset_top: 6
         offset_left: 0
         show_layout_icon: true
-        layout_icon: "\udb80\udf0c"
+        layout_icon: "󰌌"
   quick_launch:
     type: "yasb.quick_launch.QuickLaunchWidget"
     options:
