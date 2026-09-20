@@ -283,7 +283,7 @@ widgets:
       show_in_popup: 1
       show_volume: false
       show_network: false
-      use_hook: true # 新しいsystrayフック。legacy(systray monitor)は検出漏れが多いため使用
+      use_hook: false # 新hookはポップアップが空表示(黒い丸)になる不具合を確認したため一旦legacyへ戻す
       icons_per_row: 3
       hide_icons: [] # Optional, list of process names to hide (e.g. ["discord"])
       popup:
