@@ -403,7 +403,7 @@
 
 /* Home Menu */
 .home-widget .icon {
-    font-family: var(--system-font);
+    font-family: var(--icons-font);
     font-size: var(--fontSize);
     font-weight: bold;
     color: var(--text);
@@ -672,6 +672,7 @@
 }
 
 .power-menu-widget .icon {
+    font-family: var(--icons-font);
     color: var(--text);
 }
 
@@ -730,6 +731,7 @@
 }
 
 .power-menu-compact .button .icon {
+    font-family: var(--icons-font);
     font-size: var(--iconSize);
     font-weight: var(--fontWeight);
     color: var(--text);
@@ -797,6 +799,8 @@
 
 /* Toggle button for application volumes (if is enabled) */
 .audio-menu .toggle-apps {
+    font-family: var(--icons-font);
+    color: var(--text);
     background-color: transparent;
     border: none;
     padding: 0;
@@ -906,6 +910,7 @@
     margin: 2px 2px;
 }
 .komorebi-layout-menu .menu-item-icon {
+    font-family: var(--icons-font);
     color: var(--text);
     font-size: var(--iconSize);
 }
@@ -1207,6 +1212,7 @@ Example: "Windows Media" becomes "windows-media" */
     text-transform: uppercase;
 }
 .language-menu .language-item .icon {
+    font-family: var(--icons-font);
     font-size: var(--iconSize);
     margin-right: 8px;
     color: var(--text);
