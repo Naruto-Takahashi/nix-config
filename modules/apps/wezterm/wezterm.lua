@@ -116,9 +116,11 @@ config.tab_max_width = 24
 config.use_fancy_tab_bar = false
 
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
---   本体 = 選択中スキームの背景色 × window_background_opacity 0.90
---   バー地も同じ不透明度(0.90)で塗ることで、メイン表示部分との
---   色の差(帯として見えてしまう問題)を無くします．
+--   window_background_opacity (0.90) はウィンドウ全体に対して一律に
+--   かかる乗算なので、ここで塗る色自体は不透明(alpha=1.0)にしないと
+--   0.90×0.90 = 0.81相当になって本体より薄く見えてしまう
+--   (実機で確認済み)。本体側のターミナル面もalpha=1.0で描画されて
+--   おり、window_background_opacityだけで透過度が揃う仕組みのため。
 --   (黒決め打ちだとスキームの実際の背景(純黒ではない)とズレて帯が見えてしまう。
 --    "none" 指定は素通し=完全透過になるため使いません)
 local function hex_to_rgb(hex)
@@ -126,7 +128,7 @@ local function hex_to_rgb(hex)
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
 local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
-local BAR_BG = string.format("rgba(%d, %d, %d, %f)", bg_r, bg_g, bg_b, config.window_background_opacity)
+local BAR_BG = string.format("rgba(%d, %d, %d, 1.0)", bg_r, bg_g, bg_b)
 
 config.colors = {
   ansi = scheme_ansi,
