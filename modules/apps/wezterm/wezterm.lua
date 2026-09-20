@@ -116,13 +116,11 @@ config.tab_max_width = 24
 config.use_fancy_tab_bar = false
 
 -- レトロタブバーはウィンドウ上端に常に張り付く仕様のため、window_padding
--- (本文用) では余白を作れない。window_frameのborder_top_heightで
--- ウィンドウ全体に薄い枠を足し、タブバーを上端から少し浮かせてみる
--- (公式ドキュメント上はWayland向けの機能と明記されており、Windowsでも
--- 効くかは未確認。効果がなければ別の方法を検討する)
-config.window_frame = {
-  border_top_height = "2px",
-}
+-- (本文用) では余白を作れない。window_frame.border_top_height を試したが
+-- Windowsでは効果なし (公式ドキュメント通りWayland向けの機能だった。
+-- 実機で確認済み)。RESIZEのみのdecorationsでは上端に余白を作る手段が
+-- WezTermに用意されておらず、タイトルバーを復活させる(見た目が変わる)
+-- か、透過に難のあるfancyタブバーへ切り替える以外に方法が無い
 
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
 --   alpha=1.0だと本体より明らかに濃い帯になり、逆にalpha=0.85でも
