@@ -183,6 +183,10 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
     table.insert(elements, { Background = { Color = BAR_BG } })
     table.insert(elements, { Foreground = { Color = colors.muted } })
     table.insert(elements, { Text = "│" })
+  else
+    -- 左端のウィンドウ角丸に文字がビタづけしないよう、先頭タブだけ余白を足す
+    table.insert(elements, { Background = { Color = BAR_BG } })
+    table.insert(elements, { Text = "  " })
   end
   table.insert(elements, { Background = { Color = BAR_BG } })
   table.insert(elements, { Foreground = { Color = fg } })
