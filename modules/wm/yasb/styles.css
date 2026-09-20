@@ -287,6 +287,36 @@
 .audio-container .device:hover {
     background-color: rgba(255, 255, 255, 0.06);
 }
+/* アプリ別音量 (トグルで展開) */
+.audio-menu .toggle-apps {
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    min-height: 24px;
+    min-width: 24px;
+    border-radius: 4px;
+}
+.audio-menu .toggle-apps:hover {
+    background-color: var(--surface2);
+}
+.audio-menu .apps-container {
+    padding: 8px;
+    margin-top: 10px;
+    border-radius: 8px;
+    background-color: var(--island-inner);
+}
+.audio-menu .apps-container .app-volume .app-icon-container {
+    min-width: 40px;
+    min-height: 40px;
+    max-width: 40px;
+    max-height: 40px;
+    border-radius: 12px;
+    margin-right: 8px;
+}
+.audio-menu .apps-container .app-volume .app-icon-container:hover {
+    background-color: var(--surface2);
+}
 
 /* ===== メディア (再生中の曲) ===== */
 .media-widget .label {
@@ -300,17 +330,73 @@
 .media-widget .icon{
     padding: 0 6px;
 }
+/* ===== メディアポップアップ ===== */
+.media-menu {
+    min-width: 440px;
+    max-width: 440px;
+    background-color: var(--island);
+    border: 1px solid var(--overlay0);
+    border-radius: 14px;
+}
+.media-menu .title,
+.media-menu .artist,
+.media-menu .source {
+    font-size: 14px;
+    margin-left: 10px;
+    font-family: 'Segoe UI';
+    color: var(--text);
+}
+.media-menu .artist {
+    font-size: 13px;
+    color: var(--subtext1);
+    margin-top: 0px;
+}
+.media-menu .source {
+    font-size: 11px;
+    color: var(--base);
+    border-radius: 3px;
+    background-color: var(--accent-sub);
+    padding: 2px 4px;
+    font-family: 'Segoe UI';
+    margin-top: 10px;
+}
+.media-menu .btn {
+    font-size: 14px;
+    margin: 10px 2px 0px 2px;
+    min-width: 40px;
+    max-width: 40px;
+    min-height: 40px;
+    max-height: 40px;
+    border-radius: 20px;
+    color: var(--base);
+    background-color: var(--highlight);
+}
+.media-menu .btn.prev {
+    margin-left: 10px;
+}
+.media-menu .btn:hover {
+    color: var(--base);
+    background-color: var(--highlight-hover);
+}
+.media-menu .btn.play {
+    font-size: 20px;
+}
+.media-menu .btn.disabled {
+    background-color: var(--surface2);
+    color: var(--text);
+}
 /* ===== 壁紙ギャラリー ===== */
 .wallpapers-gallery-window {
-    background-color: #272a2f;
-    border: 0;
-    margin: 0;
+    background-color: var(--island);
+    border: 1px solid var(--overlay0);
+    border-radius: 14px;
+    margin: 16px;
 }
 .wallpapers-gallery-buttons {
     font-size: 12px;
     font-family: 'Bahnschrift';
-    background-color:#252b2d;
-    color: white;
+    background-color: var(--surface1);
+    color: var(--text);
     border: none;
     font-size: 14px;
     padding: 8px 0;
@@ -319,17 +405,51 @@
     width: 600px;
 }
 .wallpapers-gallery-buttons:hover {
-    background-color:#393836;
+    background-color: var(--surface2);
 }
 .wallpapers-gallery-image {
-    border: 4px solid transparent;
+    border: 2px solid var(--overlay0);
     border-radius: 10px;
 }
 .wallpapers-gallery-image:hover {
-    border: 4px solid rgb(98, 94, 90);
+    border: 2px solid var(--accent-sub);
 }
 .wallpapers-gallery-image.focused {
-    border: 4px solid var(--highlight);
+    border: 2px solid var(--highlight);
+}
+/* ===== システムトレイ (常駐アプリアイコン) ===== */
+.systray {
+    background-color: var(--island);
+    border-radius: 12px;
+    margin: 2px 4px;
+    padding: 0 6px;
+}
+.systray .pinned-container.drop-target {
+    background-color: var(--island);
+}
+.systray .unpinned-visibility-btn {
+    border-radius: 4px;
+    height: 20px;
+    width: 16px;
+    border: none;
+    outline: none;
+    color: var(--icon);
+}
+.systray-popup {
+    background-color: var(--island);
+    padding: 4px;
+    border-radius: 12px;
+    border: 1px solid var(--overlay0);
+}
+.systray-popup .button {
+    padding: 10px;
+    margin: 0;
+    border: 0;
+    border-radius: 6px;
+}
+.systray-popup .button:hover {
+    background-color: var(--surface2);
+    border-radius: 10px;
 }
 /* ===== 電源ボタン ===== */
 .power-menu-widget .label {

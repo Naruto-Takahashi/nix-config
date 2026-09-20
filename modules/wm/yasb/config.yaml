@@ -23,7 +23,7 @@ bars:
       always_on_top: true
       windows_app_bar: false
       hide_on_fullscreen: true
-      auto_hide: true
+      auto_hide: false
       animation:
         enabled: true
         duration: 200
@@ -53,6 +53,7 @@ bars:
           "memory",
           "wifi",
           "battery",
+          "systray",
           "wallpapers",
           "power_menu"
         ]
@@ -76,7 +77,7 @@ bars:
       always_on_top: true
       windows_app_bar: false
       hide_on_fullscreen: true
-      auto_hide: true
+      auto_hide: false
       animation:
         enabled: true
         duration: 200
@@ -106,6 +107,7 @@ bars:
           "memory",
           "wifi",
           "battery",
+          "systray",
           "wallpapers",
           "power_menu"
         ]
@@ -147,6 +149,23 @@ widgets:
           next_track: ""
           play: "<span></span>"
           pause: "<span></span>"
+        callbacks:
+          on_left: "toggle_media_menu"
+          on_middle: "do_nothing"
+          on_right: "do_nothing"
+        media_menu:
+          blur: false
+          round_corners: true
+          round_corners_type: "normal"
+          border_color: System
+          alignment: "center"
+          direction: "down"
+          offset_top: 6
+          thumbnail_corner_radius: 8
+          thumbnail_size: 120
+          max_title_size: 60
+          max_artist_size: 50
+          show_source: true
   taskbar:
     type: "yasb.taskbar.TaskbarWidget"
     options:
@@ -187,6 +206,17 @@ widgets:
         on_left: "toggle_mute"
         on_middle: "toggle_volume_menu"
         on_right: "exec cmd.exe /c start ms-settings:sound"
+      audio_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: None
+        alignment: "right"
+        direction: "down"
+        show_apps: true
+        show_app_labels: true
+        show_app_icons: true
+        show_apps_expanded: false
   clock:
     type: "yasb.clock.ClockWidget"
     options:
@@ -263,6 +293,33 @@ widgets:
       run_after:
         # 壁紙変更をトリガーに WSL 側の matugen で配色を再生成する
         - "wsl.exe -e /home/nalt/.local/bin/matugen-apply \"{image}\""
+  systray:
+    type: "yasb.systray.SystrayWidget"
+    options:
+      class_name: "systray"
+      label_collapsed: ""
+      label_expanded: ""
+      label_position: "left"
+      icon_size: 14
+      pin_click_modifier: "alt"
+      show_unpinned: false
+      show_unpinned_button: true
+      show_battery: false
+      show_in_popup: 1
+      show_volume: false
+      show_network: false
+      use_hook: false
+      icons_per_row: 3
+      hide_icons: []
+      popup:
+        blur: false
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: None
+        alignment: "center"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
   power_menu:
       type: "yasb.power_menu.PowerMenuWidget"
       options:
