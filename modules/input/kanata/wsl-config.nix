@@ -33,6 +33,13 @@ let
       "wmmodifier-A-j"
       "wmmodifier-A-k"
       "wmmodifier-A-l"
+      # hyp-q (wmmodifier-S-w) はmacOSのCmd+Shift+Q (ログアウト) 衝突回避
+      # のためにqではなくwへずらしたもの。Windowsにその衝突は存在せず、
+      # 素直にA-S-q (Alt+Shift+Q) にすると既存のkomorebi.ahk `!+q::` (閉じる)
+      # と一致する。ずらしたままだと物理Alt+Shift+Qが `!+w::` (壁紙ピッカー)
+      # として誤発火してしまう (実機で確認済み)。汎用の "wmmodifier-" 置換
+      # より前に置いて先にマッチさせる
+      "wmmodifier-S-w   ;; Alt + q"
       "cap-ctrl-action"
       "wmmodifier-"
       "eisu"
@@ -56,6 +63,7 @@ let
       "C-A-j"
       "C-A-k"
       "C-A-l"
+      "A-S-q   ;; Alt + q"
       "lctl"
       "A-"
       "@ime-off"

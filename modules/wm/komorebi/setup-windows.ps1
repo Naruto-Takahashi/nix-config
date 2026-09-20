@@ -7,9 +7,7 @@ Write-Host "Starting Windows customization setup..." -ForegroundColor Green
 $apps = @(
     "LGUG2Z.komorebi",
     "LGUG2Z.masir",
-    "karlstav.cava",
-    "DEVCOM.JetBrainsMonoNerdFont",
-    "Microsoft.PowerToys"
+    "DEVCOM.JetBrainsMonoNerdFont"
 )
 
 Write-Host "Installing/Updating applications..." -ForegroundColor Cyan
