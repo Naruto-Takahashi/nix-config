@@ -87,7 +87,7 @@ config.skip_close_confirmation_for_processes_named = {
   "wsl.exe", "wslhost.exe", "conhost.exe",
   "powershell.exe", "pwsh.exe", "cmd.exe"
 }
-config.window_background_opacity = 0.90
+config.window_background_opacity = 0.95
 config.macos_window_background_blur = 20
 -- 本文の上下に控えめな余白 (タブバー自体は仕様上、常に上端に張り付く)
 config.window_padding = { left = "1cell", right = "1cell", top = 6, bottom = 6 }
@@ -133,7 +133,7 @@ local function hex_to_rgb(hex)
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
 local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
-local BAR_BG = string.format("rgba(%d, %d, %d, 0.90)", bg_r, bg_g, bg_b)
+local BAR_BG = string.format("rgba(%d, %d, %d, 0.95)", bg_r, bg_g, bg_b)
 
 config.colors = {
   ansi = scheme_ansi,
