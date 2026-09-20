@@ -133,7 +133,7 @@ config.colors = {
   tab_bar = {
     background = BAR_BG,
     -- 実際のタブ描画は下の format-tab-title が行うため，ここは保険の既定値
-    active_tab = { bg_color = colors.accent, fg_color = colors.on_accent },
+    active_tab = { bg_color = BAR_BG, fg_color = colors.accent },
     inactive_tab = { bg_color = BAR_BG, fg_color = colors.muted },
     inactive_tab_hover = { bg_color = BAR_BG, fg_color = colors.text },
     new_tab = { bg_color = BAR_BG, fg_color = colors.text },
@@ -150,11 +150,8 @@ config.colors = {
   selection_fg = colors.surface,
 }
 
--- タブの形状: 平行四辺形 (左下三角 + 本体 + 右上三角)．
---   アクティブ = accent、非アクティブ = surface のグレーブロック
-local LEFT_TRI = wezterm.nerdfonts.ple_lower_right_triangle
-local RIGHT_TRI = wezterm.nerdfonts.ple_upper_left_triangle
-
+-- タブの形状: フラット・縦線区切り (YASBバーの "|" セパレータ意匠に統一)．
+--   背景ブロックは塗らず、アクティブ = accentの文字色+太字で区別する
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   -- プロセス名からタブ名を決めます．
   local title_text = tab.active_pane.title
@@ -174,31 +171,26 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
   local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
-  local bg = colors.surface
   local fg = hover and colors.text or colors.muted
   local bold = "Normal"
   if tab.is_active then
-    bg = colors.accent
-    fg = colors.on_accent
+    fg = colors.accent
     bold = "Bold"
   end
 
-  return {
-    -- 左下三角
-    { Background = { Color = BAR_BG } },
-    { Foreground = { Color = bg } },
-    { Text = LEFT_TRI },
-    -- 本体
-    { Background = { Color = bg } },
-    { Foreground = { Color = fg } },
-    { Attribute = { Intensity = bold } },
-    { Text = title },
-    { Attribute = { Intensity = "Normal" } },
-    -- 右上三角
-    { Background = { Color = BAR_BG } },
-    { Foreground = { Color = bg } },
-    { Text = RIGHT_TRI },
-  }
+  local elements = {}
+  if tab.tab_index > 0 then
+    table.insert(elements, { Background = { Color = BAR_BG } })
+    table.insert(elements, { Foreground = { Color = colors.muted } })
+    table.insert(elements, { Text = "│" })
+  end
+  table.insert(elements, { Background = { Color = BAR_BG } })
+  table.insert(elements, { Foreground = { Color = fg } })
+  table.insert(elements, { Attribute = { Intensity = bold } })
+  table.insert(elements, { Text = title })
+  table.insert(elements, { Attribute = { Intensity = "Normal" } })
+
+  return elements
 end)
 
 ----------------------------------------------------
