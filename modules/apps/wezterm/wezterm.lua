@@ -117,7 +117,8 @@ config.use_fancy_tab_bar = false
 
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
 --   本体 = 選択中スキームの背景色 × window_background_opacity 0.90
---   バー地も同じ色×0.85で塗ると境目なく馴染みます．
+--   バー地も同じ不透明度(0.90)で塗ることで、メイン表示部分との
+--   色の差(帯として見えてしまう問題)を無くします．
 --   (黒決め打ちだとスキームの実際の背景(純黒ではない)とズレて帯が見えてしまう。
 --    "none" 指定は素通し=完全透過になるため使いません)
 local function hex_to_rgb(hex)
@@ -125,7 +126,7 @@ local function hex_to_rgb(hex)
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
 local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
-local BAR_BG = string.format("rgba(%d, %d, %d, 0.85)", bg_r, bg_g, bg_b)
+local BAR_BG = string.format("rgba(%d, %d, %d, %f)", bg_r, bg_g, bg_b, config.window_background_opacity)
 
 config.colors = {
   ansi = scheme_ansi,
