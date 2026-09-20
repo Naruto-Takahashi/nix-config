@@ -282,11 +282,9 @@ widgets:
       show_battery: false
       show_in_popup: 1
       show_volume: false
-      show_network: true
-      use_hook: true
-      icons_per_row: 3
       show_network: false
-      use_hook: false # Whether to use the new systray hook instead of the legacy systray monitor
+      use_hook: true # 新しいsystrayフック。legacy(systray monitor)は検出漏れが多いため使用
+      icons_per_row: 3
       hide_icons: [] # Optional, list of process names to hide (e.g. ["discord"])
       popup:
         blur: false
