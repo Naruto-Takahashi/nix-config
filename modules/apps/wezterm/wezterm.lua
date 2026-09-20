@@ -74,7 +74,7 @@ local is_windows = wezterm.target_triple:find("windows") ~= nil
 -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくします．
 local display = os.getenv("DISPLAY") or ""
 local is_remote = display:match(":[1-9]%d") ~= nil
-config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 12.0)
+config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 11.0)
 
 config.initial_cols = is_darwin and 140 or 120
 config.initial_rows = is_darwin and 40 or 35
@@ -115,12 +115,21 @@ config.tab_max_width = 24
 -- 本体と同じ透過にできるレトロタブバー（ターミナル面と同レイヤー）を使います．
 config.use_fancy_tab_bar = false
 
+-- レトロタブバーはウィンドウ上端に常に張り付く仕様のため、window_padding
+-- (本文用) では余白を作れない。window_frameのborder_top_heightで
+-- ウィンドウ全体に薄い枠を足し、タブバーを上端から少し浮かせてみる
+-- (公式ドキュメント上はWayland向けの機能と明記されており、Windowsでも
+-- 効くかは未確認。効果がなければ別の方法を検討する)
+config.window_frame = {
+  border_top_height = "2px",
+}
+
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
---   alpha=1.0にすると本体より明らかに濃い帯になり、逆にalphaを
---   window_background_opacityへ合わせても微妙な差が残る (実機で
---   確認済み・原因未特定。タブバーの背景色描画がwindow_background_
---   opacityの合成パスと同じ扱いを受けていない可能性がある)。
---   ひとまず元のalpha=0.85 (最も差が小さかった値) に戻す。
+--   alpha=1.0だと本体より明らかに濃い帯になり、逆にalpha=0.85でも
+--   微妙な差が残る (実機で確認済み・原因未特定。タブバーの背景色
+--   描画がwindow_background_opacityの合成パスと同じ扱いを受けて
+--   いない可能性がある)。ひとまずwindow_background_opacityと同じ
+--   0.90で妥協する。
 --   (黒決め打ちだとスキームの実際の背景(純黒ではない)とズレて帯が見えてしまう。
 --    "none" 指定は素通し=完全透過になるため使いません)
 local function hex_to_rgb(hex)
@@ -128,7 +137,7 @@ local function hex_to_rgb(hex)
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
 local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
-local BAR_BG = string.format("rgba(%d, %d, %d, 0.85)", bg_r, bg_g, bg_b)
+local BAR_BG = string.format("rgba(%d, %d, %d, 0.90)", bg_r, bg_g, bg_b)
 
 config.colors = {
   ansi = scheme_ansi,
