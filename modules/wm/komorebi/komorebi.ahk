@@ -192,15 +192,17 @@ LaunchWeztermOnCursorMonitor(extraArgs) {
             if (focusedMonitor != "" && focusedWorkspace != "") {
                 Sleep, 500
                 RunWait, %ComSpec% /c komorebic move-to-monitor-workspace %focusedMonitor% %focusedWorkspace%, , Hide
-                ; move-to-monitor-workspace自体もkomorebiの再タイル処理
-                ; (SetWindowPos) を誘発し、上のWinActivateが再び上書きされて
-                ; フォーカスが外れる可能性がある(「毎回フォーカスが外れる」
-                ; 不具合の原因候補)。念のためここでも再度アクティブ化する。
-                ; 元はRunによる非同期実行だったが、komorebi側の処理完了を
-                ; 待たずに次に進んでいた可能性もあるためRunWaitに変更した
+            }
+            ; ワークスペースが空の状態(1枚目のウィンドウ)から埋まる場合に
+            ; 特にフォーカスが外れやすいと報告あり。単発のWinActivateでは
+            ; 遅れて発生する後続のフォーカス奪取に対応できないと考えられる
+            ; ため、move-to-monitor-workspace後も最大1秒ほど100ms間隔で
+            ; アクティブ状態を確認し、外れていたら奪い返すループにする
+            Loop, 10 {
                 Sleep, 100
+                IfWinActive, ahk_id %newHwnd%
+                    Break
                 WinActivate, ahk_id %newHwnd%
-                WinWaitActive, ahk_id %newHwnd%, , 1
             }
             Break
         }
