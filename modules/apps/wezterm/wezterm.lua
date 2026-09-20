@@ -74,7 +74,7 @@ local is_windows = wezterm.target_triple:find("windows") ~= nil
 -- リモート接続時（DISPLAY番号が10以上）はフォントを小さくします．
 local display = os.getenv("DISPLAY") or ""
 local is_remote = display:match(":[1-9]%d") ~= nil
-config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 12.0)
+config.font_size = is_remote and 10.0 or (is_darwin and 20.0 or 11.0)
 
 config.initial_cols = is_darwin and 140 or 120
 config.initial_rows = is_darwin and 40 or 35
@@ -87,7 +87,7 @@ config.skip_close_confirmation_for_processes_named = {
   "wsl.exe", "wslhost.exe", "conhost.exe",
   "powershell.exe", "pwsh.exe", "cmd.exe"
 }
-config.window_background_opacity = 0.90
+config.window_background_opacity = 0.95
 config.macos_window_background_blur = 20
 -- 本文の上下に控えめな余白 (タブバー自体は仕様上、常に上端に張り付く)
 config.window_padding = { left = "1cell", right = "1cell", top = 6, bottom = 6 }
@@ -111,13 +111,21 @@ config.hide_tab_bar_if_only_one_tab = true
 config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
 config.tab_max_width = 24
--- fancy タブバーはウィンドウ透過の外側で描画されアルファが黒に潰れるため，
--- 本体と同じ透過にできるレトロタブバー（ターミナル面と同レイヤー）を使います．
+-- fancyタブバーを試したが、タブ形状(角丸/影)が固定でconfigから
+-- 調整できず、縦線セパレータとも噛み合わなかったためレトロに戻す。
+-- レトロタブバーはウィンドウ上端に常に張り付く仕様で、window_padding
+-- (本文用) では余白を作れない。window_frame.border_top_height を試したが
+-- Windowsでは効果なし (公式ドキュメント通りWayland向けの機能だった。
+-- 実機で確認済み)。RESIZEのみのdecorationsでは上端に余白を作る手段が
+-- WezTermに用意されていないため、この張り付きは受け入れる
 config.use_fancy_tab_bar = false
 
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
---   本体 = 選択中スキームの背景色 × window_background_opacity 0.90
---   バー地も同じ色×0.85で塗ると境目なく馴染みます．
+--   alpha=1.0だと本体より明らかに濃い帯になり、逆にalpha=0.85でも
+--   微妙な差が残る (実機で確認済み・原因未特定。タブバーの背景色
+--   描画がwindow_background_opacityの合成パスと同じ扱いを受けて
+--   いない可能性がある)。ひとまずwindow_background_opacityと同じ
+--   0.90で妥協する。
 --   (黒決め打ちだとスキームの実際の背景(純黒ではない)とズレて帯が見えてしまう。
 --    "none" 指定は素通し=完全透過になるため使いません)
 local function hex_to_rgb(hex)
@@ -125,7 +133,7 @@ local function hex_to_rgb(hex)
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
 local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
-local BAR_BG = string.format("rgba(%d, %d, %d, 0.85)", bg_r, bg_g, bg_b)
+local BAR_BG = string.format("rgba(%d, %d, %d, 0.95)", bg_r, bg_g, bg_b)
 
 config.colors = {
   ansi = scheme_ansi,
@@ -133,7 +141,7 @@ config.colors = {
   tab_bar = {
     background = BAR_BG,
     -- 実際のタブ描画は下の format-tab-title が行うため，ここは保険の既定値
-    active_tab = { bg_color = colors.accent, fg_color = colors.on_accent },
+    active_tab = { bg_color = BAR_BG, fg_color = colors.accent },
     inactive_tab = { bg_color = BAR_BG, fg_color = colors.muted },
     inactive_tab_hover = { bg_color = BAR_BG, fg_color = colors.text },
     new_tab = { bg_color = BAR_BG, fg_color = colors.text },
@@ -150,11 +158,8 @@ config.colors = {
   selection_fg = colors.surface,
 }
 
--- タブの形状: 平行四辺形 (左下三角 + 本体 + 右上三角)．
---   アクティブ = accent、非アクティブ = surface のグレーブロック
-local LEFT_TRI = wezterm.nerdfonts.ple_lower_right_triangle
-local RIGHT_TRI = wezterm.nerdfonts.ple_upper_left_triangle
-
+-- タブの形状: フラット・縦線区切り (YASBバーの "|" セパレータ意匠に統一)．
+--   背景ブロックは塗らず、アクティブ = accentの文字色+太字で区別する
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   -- プロセス名からタブ名を決めます．
   local title_text = tab.active_pane.title
@@ -174,31 +179,30 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
 
   local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
 
-  local bg = colors.surface
   local fg = hover and colors.text or colors.muted
   local bold = "Normal"
   if tab.is_active then
-    bg = colors.accent
-    fg = colors.on_accent
+    fg = colors.accent
     bold = "Bold"
   end
 
-  return {
-    -- 左下三角
-    { Background = { Color = BAR_BG } },
-    { Foreground = { Color = bg } },
-    { Text = LEFT_TRI },
-    -- 本体
-    { Background = { Color = bg } },
-    { Foreground = { Color = fg } },
-    { Attribute = { Intensity = bold } },
-    { Text = title },
-    { Attribute = { Intensity = "Normal" } },
-    -- 右上三角
-    { Background = { Color = BAR_BG } },
-    { Foreground = { Color = bg } },
-    { Text = RIGHT_TRI },
-  }
+  local elements = {}
+  if tab.tab_index > 0 then
+    table.insert(elements, { Background = { Color = BAR_BG } })
+    table.insert(elements, { Foreground = { Color = colors.muted } })
+    table.insert(elements, { Text = "│" })
+  else
+    -- 左端のウィンドウ角丸に文字がビタづけしないよう、先頭タブだけ余白を足す
+    table.insert(elements, { Background = { Color = BAR_BG } })
+    table.insert(elements, { Text = "  " })
+  end
+  table.insert(elements, { Background = { Color = BAR_BG } })
+  table.insert(elements, { Foreground = { Color = fg } })
+  table.insert(elements, { Attribute = { Intensity = bold } })
+  table.insert(elements, { Text = title })
+  table.insert(elements, { Attribute = { Intensity = "Normal" } })
+
+  return elements
 end)
 
 ----------------------------------------------------

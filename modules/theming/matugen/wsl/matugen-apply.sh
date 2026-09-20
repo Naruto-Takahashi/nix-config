@@ -184,9 +184,6 @@ if [[ "$HAS_PALETTE" == 1 ]]; then
 
 # -------------------------------------------------------------------------
 # 4. komorebi の枠色 (single/floating = accent, monocle = tertiary, unfocused = outline)
-#    リロードは同期で済ませる。後段の cava (config.yaml 書き換え) が YASB の
-#    全体リロードを誘発するため、komorebi のリロードと重なると YASB→komorebi
-#    の named pipe 再購読が失敗し、ワークスペース表示が消える (競合の実績あり)。
 # -------------------------------------------------------------------------
 for f in "${WIN_HOME}/.config/komorebi/komorebi.json" "${WIN_HOME}/komorebi.json"; do
     [[ -f "$f" ]] && sed -i -E \
@@ -290,27 +287,5 @@ cat > "$HOME/.cache/matugen/fzf-colors.sh.tmp" <<SH
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border --highlight-line --color=pointer:${accent},marker:${accent},prompt:${accent},info:${tertiary},hl:${tertiary},hl+:${tertiary},bg+:${selection_bg},spinner:${tertiary}'
 SH
 mv "$HOME/.cache/matugen/fzf-colors.sh.tmp" "$HOME/.cache/matugen/fzf-colors.sh"
-
-# -------------------------------------------------------------------------
-# 10. cava (YASB config.yaml 内の波形色): tertiary 基調 + accent へのグラデーション
-#     config.yaml の書き換えは YASB の watch_config が全体リロードを誘発する
-#     ため、必ず最後に実行する (セクション4のコメント参照)
-# -------------------------------------------------------------------------
-cfg="${WIN_HOME}/.config/yasb/config.yaml"
-if [[ -f "$cfg" ]]; then
-    # 先に旧 cava を殺しておく (sed 後の自動リロードが新色で再起動する。
-    # sed 後に kill すると再起動済みの新 cava を殺してしまう)
-    "/mnt/c/Windows/System32/taskkill.exe" /IM cava.exe /F >/dev/null 2>&1 || true
-    # sed -i は rename 置換で inode が変わり YASB の watch_config が
-    # 外れるため、tmp に生成して同一 inode へ上書きする (truncate+write)
-    cfg_tmp="$(mktemp)"
-    sed -E \
-        -e "s/(foreground: \")#[0-9a-fA-F]{6}/\1${tertiary}/" \
-        -e "s/(gradient_color_1: ')#[0-9a-fA-F]{6}/\1${tertiary}/" \
-        -e "s/(gradient_color_2: ')#[0-9a-fA-F]{6}/\1${tertiary}/" \
-        -e "s/(gradient_color_3: ')#[0-9a-fA-F]{6}/\1${accent}/" "$cfg" > "$cfg_tmp"
-    cat "$cfg_tmp" > "$cfg"
-    rm -f "$cfg_tmp"
-fi
 
 fi  # HAS_PALETTE
