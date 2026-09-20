@@ -43,10 +43,7 @@ Start-Process "C:\Program Files\YASB\yasb.exe"
 # 3.1 ワークスペース切り替え時にauto_hide中のYASBバーを一時表示する常駐スクリプト
 Start-Process "powershell.exe" -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\Users\tnaru\.config\komorebi\workspace-watcher.ps1" -WindowStyle Hidden
 
-# 4. PowerToys
-Start-Process -FilePath "C:\Users\tnaru\AppData\Local\PowerToys\PowerToys.exe"
-
-# 5. Command Palette (ストアアプリ起動の確実化)
+# 4. Command Palette (ストアアプリ起動の確実化)
 Start-Sleep -Seconds 10
 $cmdPalLnk = "C:\Users\tnaru\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Microsoft.CmdPal.UI.lnk"
 if (Test-Path $cmdPalLnk) {
