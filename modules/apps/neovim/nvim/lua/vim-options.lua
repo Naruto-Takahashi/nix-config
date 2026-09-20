@@ -395,3 +395,31 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.sidescrolloff = 4
   end,
 })
+
+-- `nvim`起動時に自動生成される最初の空バッファ([No Name]，未編集・未表示)は，
+-- neo-treeやセッション復元等が先に別バッファを作ると番号が1とは限らなく
+-- なるため，bufnr固定ではなく「空・未編集・どのウィンドウにも非表示」の
+-- listedバッファを都度探して消す。BufAdd(新規バッファ作成)時点ではまだ
+-- そのウィンドウに表示中で条件に引っかからないことがあるため，ウィンドウが
+-- 閉じた/バッファが非表示になったタイミング(BufWinLeave, WinClosed)でも
+-- 再チェックする。BufEnter(切替のたびに毎回発火)は使わない
+-- (反映が1テンポ遅れて不自然に見えるため)。
+vim.api.nvim_create_autocmd({ "BufAdd", "BufWinLeave", "WinClosed" }, {
+  callback = function()
+    vim.schedule(function()
+      local listed = vim.tbl_filter(function(b)
+        return vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted
+      end, vim.api.nvim_list_bufs())
+      if #listed <= 1 then return end
+      for _, b in ipairs(listed) do
+        local empty_scratch = vim.api.nvim_buf_get_name(b) == ""
+          and not vim.bo[b].modified
+          and vim.api.nvim_buf_line_count(b) == 1
+          and vim.api.nvim_buf_get_lines(b, 0, 1, false)[1] == ""
+        if empty_scratch and #vim.fn.win_findbuf(b) == 0 then
+          vim.api.nvim_buf_delete(b, {})
+        end
+      end
+    end)
+  end,
+})

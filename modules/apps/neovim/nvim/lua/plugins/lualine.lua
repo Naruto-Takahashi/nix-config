@@ -69,6 +69,9 @@ return {
           },
           { "mode" },
         },
+        lualine_z = {
+          "location",
+        },
       }
     end
 

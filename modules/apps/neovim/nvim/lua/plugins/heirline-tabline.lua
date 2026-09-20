@@ -60,33 +60,93 @@ return {
       },
     }
 
+    -- heirlineのbuflist既定実装(get_bufs)は全タブページ共通のグローバルな
+    -- listedバッファを表示する。タブページ単位にスコープしようとBufEnterで
+    -- 独自追跡するリファクタを試したが，反映が1テンポ遅れる副作用が出て
+    -- 元のバグ(diffview等の別タブに元タブのバッファが混ざる)より体験が
+    -- 悪化したため撤回。既定のグローバル一覧に戻す。
     local BufferLine = utils.make_buflist(
       Buffer,
       { provider = " \u{e0b3} ", hl = { fg = mc.muted } }, -- 左に隠れタブあり
       { provider = " \u{e0b1} ", hl = { fg = mc.muted } }  -- 右に隠れタブあり
     )
+    local function count_listed_buffers()
+      return #vim.tbl_filter(function(b)
+        return vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted
+      end, vim.api.nvim_list_bufs())
+    end
 
-    -- Starship / lualine / yazi と同じ左端の secondary 装飾ブロック
-    require("heirline").setup({ tabline = { BufferLine } })
+    -- Vimのタブページ(diffview等が専用タブで開くやつ)一覧。バッファタブと
+    -- 同じ平行四辺形デザインだが，色相をpale(accent)にしてバッファタブとは
+    -- 別種の区切りだと分かるようにする。lualineの`tabs`コンポーネントでは
+    -- リスト内の区切り文字がアイテムごとの色を無視して浮いてしまう問題が
+    -- あったが，heirlineは各パーツのhlを自分で計算するので破綻しない。
+    local blend = require("blend")
+    local pale_accent = blend(mc.accent, "#ffffff", 0.4)
+
+    local TabPage = {
+      -- マウス左クリックでそのタブページに切り替え
+      on_click = {
+        callback = function(_, minwid) vim.schedule(function() vim.api.nvim_set_current_tabpage(minwid) end) end,
+        minwid = function(self) return self.tabpage end,
+        name = "heirline_tabline_tabpage_callback",
+      },
+      {
+        provider = LEFT_TRI,
+        hl = function(self)
+          return { fg = self.is_active and pale_accent or mc.surface }
+        end,
+      },
+      {
+        provider = function(self)
+          return " " .. self.tabnr .. " "
+        end,
+        hl = function(self)
+          if self.is_active then
+            return { fg = mc.on_accent, bg = pale_accent, bold = true }
+          end
+          return { fg = mc.muted, bg = mc.surface }
+        end,
+      },
+      {
+        provider = RIGHT_TRI,
+        hl = function(self)
+          return { fg = self.is_active and pale_accent or mc.surface }
+        end,
+      },
+    }
+
+    local TabPageList = utils.make_tablist(TabPage)
+
+    require("heirline").setup({
+      tabline = {
+        {
+          condition = function() return count_listed_buffers() > 1 end,
+          BufferLine,
+        },
+        { provider = "%=" }, -- 以降を右寄せにするフレキシブルスペーサー
+        -- タブページが2枚以上の時だけ表示 (diffview等が開いていない通常時は非表示)
+        {
+          condition = function() return #vim.api.nvim_list_tabpages() > 1 end,
+          TabPageList,
+        },
+      },
+    })
 
     -- タブライン自体の地を透過させる
     vim.api.nvim_set_hl(0, "TabLine", { bg = "none" })
     vim.api.nvim_set_hl(0, "TabLineFill", { bg = "none" })
 
-    -- バッファが2つ以上のときだけタブラインを表示 (WezTerm と同じ挙動)
+    -- バッファ or タブページのどちらかが2つ以上のときだけタブラインを表示
     local function update_showtabline()
-      local listed = vim.tbl_filter(function(b)
-        return vim.api.nvim_buf_is_valid(b) and vim.bo[b].buflisted
-      end, vim.api.nvim_list_bufs())
-      vim.o.showtabline = #listed > 1 and 2 or 0
+      local multi_tabpage = #vim.api.nvim_list_tabpages() > 1
+      vim.o.showtabline = (count_listed_buffers() > 1 or multi_tabpage) and 2 or 0
     end
-    vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete", "BufEnter" }, {
+    vim.api.nvim_create_autocmd({ "BufAdd", "BufDelete", "BufEnter", "TabNew", "TabClosed", "TabEnter" }, {
       callback = function()
-        vim.schedule(function()
-          update_showtabline()
-          -- フォーカス移動で先頭矢印のハイライトが取り残されないよう明示再描画
-          vim.cmd("redrawtabline")
-        end)
+        update_showtabline()
+        -- フォーカス移動で先頭矢印のハイライトが取り残されないよう明示再描画
+        vim.cmd("redrawtabline")
       end,
     })
     update_showtabline()

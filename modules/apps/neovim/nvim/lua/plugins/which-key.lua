@@ -10,6 +10,8 @@ return {
     spec = {
       { "<leader>f", group = "Find (Telescope)", icon = " " },
       { "<leader>l", group = "Lazygit / Log", icon = "󰊢 " },
+      { "<leader>g", group = "GitHub (Octo PR/Issue)", icon = " " },
+      { "<leader>h", group = "Git Hunk (gitsigns)", icon = "󰊢 " },
       { "<leader>c", group = "Code (LSP)", icon = " " },
       { "<leader>d", group = "Debug / Diagnostics", icon = " " },
       { "<leader>q", group = "Session / Quit", icon = " " },
