@@ -318,7 +318,7 @@ widgets:
         on_middle: "do_nothing"
         on_right: "change_wallpaper"
       keybindings:
-        - keys: "ctrl+alt+w"
+        - keys: "alt+w"
           action: "toggle_gallery"
           screen: "primary" # active/cursor/primary
       run_after:
