@@ -111,10 +111,7 @@ config.hide_tab_bar_if_only_one_tab = true
 config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
 config.tab_max_width = 24
--- レトロタブバーは上端に余白を作る手段がなかったため、上端に少し
--- 余裕ができるfancyタブバーを試す。以前は「ウィンドウ透過の外側で
--- 描画されアルファが黒に潰れる」問題を避けてレトロを使っていたので、
--- BAR_BGの透過が意図通りに出ない場合はこの変更を見直すこと
+-- fancyタブバー採用 (レトロより見た目が好まれたため採用継続)
 config.use_fancy_tab_bar = true
 
 -- レトロタブバーはウィンドウ上端に常に張り付く仕様のため、window_padding
@@ -162,7 +159,7 @@ config.colors = {
   selection_fg = colors.surface,
 }
 
--- タブの形状: フラット・縦線区切り (YASBバーの "|" セパレータ意匠に統一)．
+-- タブの形状: フラット (fancyタブバー自体のタブ形状に任せる)．
 --   背景ブロックは塗らず、アクティブ = accentの文字色+太字で区別する
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   -- プロセス名からタブ名を決めます．
@@ -191,11 +188,7 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   end
 
   local elements = {}
-  if tab.tab_index > 0 then
-    table.insert(elements, { Background = { Color = BAR_BG } })
-    table.insert(elements, { Foreground = { Color = colors.muted } })
-    table.insert(elements, { Text = "│" })
-  else
+  if tab.tab_index == 0 then
     -- 左端のウィンドウ角丸に文字がビタづけしないよう、先頭タブだけ余白を足す
     table.insert(elements, { Background = { Color = BAR_BG } })
     table.insert(elements, { Text = "  " })
