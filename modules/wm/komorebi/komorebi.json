@@ -7,7 +7,7 @@
   "transparency_alpha": 252,
   "default_workspace_padding": 4,
   "resize_delta": 100,
-  "default_container_padding": 5,
+  "default_container_padding": 3,
   "border": true,
   "border_implementation": "Windows",
   "border_width": 6,

@@ -111,15 +111,14 @@ config.hide_tab_bar_if_only_one_tab = true
 config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
 config.tab_max_width = 24
--- fancyタブバー採用 (レトロより見た目が好まれたため採用継続)
-config.use_fancy_tab_bar = true
-
--- レトロタブバーはウィンドウ上端に常に張り付く仕様のため、window_padding
+-- fancyタブバーを試したが、タブ形状(角丸/影)が固定でconfigから
+-- 調整できず、縦線セパレータとも噛み合わなかったためレトロに戻す。
+-- レトロタブバーはウィンドウ上端に常に張り付く仕様で、window_padding
 -- (本文用) では余白を作れない。window_frame.border_top_height を試したが
 -- Windowsでは効果なし (公式ドキュメント通りWayland向けの機能だった。
 -- 実機で確認済み)。RESIZEのみのdecorationsでは上端に余白を作る手段が
--- WezTermに用意されておらず、タイトルバーを復活させる(見た目が変わる)
--- か、透過に難のあるfancyタブバーへ切り替える以外に方法が無い
+-- WezTermに用意されていないため、この張り付きは受け入れる
+config.use_fancy_tab_bar = false
 
 -- タブバーの配色（メイン表示領域との溶け込みが最優先）．
 --   alpha=1.0だと本体より明らかに濃い帯になり、逆にalpha=0.85でも
@@ -159,7 +158,7 @@ config.colors = {
   selection_fg = colors.surface,
 }
 
--- タブの形状: フラット (fancyタブバー自体のタブ形状に任せる)．
+-- タブの形状: フラット・縦線区切り (YASBバーの "|" セパレータ意匠に統一)．
 --   背景ブロックは塗らず、アクティブ = accentの文字色+太字で区別する
 wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
   -- プロセス名からタブ名を決めます．
@@ -188,7 +187,11 @@ wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_wid
   end
 
   local elements = {}
-  if tab.tab_index == 0 then
+  if tab.tab_index > 0 then
+    table.insert(elements, { Background = { Color = BAR_BG } })
+    table.insert(elements, { Foreground = { Color = colors.muted } })
+    table.insert(elements, { Text = "│" })
+  else
     -- 左端のウィンドウ角丸に文字がビタづけしないよう、先頭タブだけ余白を足す
     table.insert(elements, { Background = { Color = BAR_BG } })
     table.insert(elements, { Text = "  " })
