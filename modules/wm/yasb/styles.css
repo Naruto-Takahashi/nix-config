@@ -42,17 +42,17 @@
 /* Root Variables */
 :root {
 
-    --icons-font: "JetBrainsMono NFP", "JetBrainsMono Nerd Font Propo";
-    --icons-font-fallback: "JetBrainsMono NFP", "JetBrainsMono Nerd Font Propo";
-    --system-font: "Segoe UI Variable", "Segoe UI";
-    --specialFont: "Segoe UI Variable", "Segoe UI";
+    --icons-font: "JetBrainsMono NFP";
+    --icons-font-fallback: "JetBrainsMono NFP";
+    --system-font: "Segoe UI";
+    --specialFont: "Segoe UI";
     --border-radius: 14;
     --border-radius2: 4;
     --border-radius3: 10;
     --border-radiusWallpapers: 10;
-    --fontSize: 13px;
-    --iconSize: 16px;
-    --fontSizeLarge: 16px;
+    --fontSize: 11px;
+    --iconSize: 13px;
+    --fontSizeLarge: 14px;
     --fontWeight: 400;
 
     /*colors*/
@@ -279,11 +279,11 @@
 }
 
 .yasb-bar.adaptive {
-     -qproperty-railheight: 6;
-     -qproperty-islandradius: 16;
-     -qproperty-grouppadding: 16;
+     -qproperty-railheight: 4;
+     -qproperty-islandradius: 12;
+     -qproperty-grouppadding: 12;
      -qproperty-islands: true;
-     -qproperty-edgeradius: 22;
+     -qproperty-edgeradius: 14;
      -qproperty-borderwidth: 1;
      -qproperty-bordercolor: var(--border);
 }
@@ -1371,7 +1371,7 @@ Example: "Windows Media" becomes "windows-media" */
 .cpu-popup .header .pin-btn {
     font-size: var(--fontSize);
     background: transparent;
-    font-family: "Segoe Fluent Icons";
+    font-family: "Segoe Fluent Icons", "Segoe MDL2 Assets";
     padding: 6px;
     color: var(--text);
 }
@@ -1460,7 +1460,7 @@ Example: "Windows Media" becomes "windows-media" */
 .memory-popup .header .pin-btn {
     font-size: 14px;
     background: transparent;
-    font-family: "Segoe Fluent Icons";
+    font-family: "Segoe Fluent Icons", "Segoe MDL2 Assets";
     border: none;
     padding: 6px;
     color: var(--text);
@@ -1572,7 +1572,7 @@ which is 16 pixels same as the other sections. */
 .control-center-menu .section.power .plan-name .icon,
 .control-center-menu .section.power .mode-name .icon,
 .control-center-menu .section.media .button {
-    font-family: "Segoe Fluent Icons";
+    font-family: "Segoe Fluent Icons", "Segoe MDL2 Assets";
     font-weight: 400;
 }
 
