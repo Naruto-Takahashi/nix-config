@@ -111,9 +111,11 @@ config.hide_tab_bar_if_only_one_tab = true
 config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
 config.tab_max_width = 24
--- fancy タブバーはウィンドウ透過の外側で描画されアルファが黒に潰れるため，
--- 本体と同じ透過にできるレトロタブバー（ターミナル面と同レイヤー）を使います．
-config.use_fancy_tab_bar = false
+-- レトロタブバーは上端に余白を作る手段がなかったため、上端に少し
+-- 余裕ができるfancyタブバーを試す。以前は「ウィンドウ透過の外側で
+-- 描画されアルファが黒に潰れる」問題を避けてレトロを使っていたので、
+-- BAR_BGの透過が意図通りに出ない場合はこの変更を見直すこと
+config.use_fancy_tab_bar = true
 
 -- レトロタブバーはウィンドウ上端に常に張り付く仕様のため、window_padding
 -- (本文用) では余白を作れない。window_frame.border_top_height を試したが
