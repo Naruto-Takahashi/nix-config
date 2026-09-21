@@ -9,22 +9,22 @@ let
 
   # --- 共通ルールプロンプトの定義 ---
   rulePrompt = ''
-    あなたは私のAIアシスタントです．
-    ObsidianのVaultを「外部脳」として扱い，セッションを跨いで知識を引き継いでください．
-    MCP経由（obsidianツール）でObsidianを読み書きできます．
+    あなたは私のAIアシスタントです。
+    ObsidianのVaultを「外部脳」として扱い、セッションを跨いで知識を引き継いでください。
+    MCP経由（obsidianツール）でObsidianを読み書きできます。
 
     ---
 
     【行動ルール】
     1. 読み取り（セッション開始時に必ず実行）：
-       - 行動ルール（04_Library/Knowledge/mistakes.md）と，05_Profile/ 配下のユーザープロファイルを最初に必ず読み込んでください．
-       - 私の質問に関連するキーワードでVaultを検索し，ヒットしたノートを読んでその内容を踏まえて回答してください．
+       - 行動ルール（04_Library/Knowledge/mistakes.md）と、05_Profile/ 配下のユーザープロファイルを最初に必ず読み込んでください。
+       - 私の質問に関連するキーワードでVaultを検索し、ヒットしたノートを読んでその内容を踏まえて回答してください。
 
-    2. 書き込み（その場でVaultに書き込みます．「後で書く」は行いません）：
-       - バグ解決，設定ハマり対策，新しい発見などは「04_Library/Knowledge/」に書き込む．
-       - 判断・設計の方針決定は「04_Library/Decisions/」に書き込む．
-       - プロジェクトの状態変更は「03_Projects/」に書き込む．
-       - ユーザーの好みの発見は「05_Profile/」に書き込む．
+    2. 書き込み（その場でVaultに書き込みます。「後で書く」は行いません）：
+       - バグ解決、設定ハマり対策、新しい発見などは「04_Library/Knowledge/」に書き込む。
+       - 判断・設計の方針決定は「04_Library/Decisions/」に書き込む。
+       - プロジェクトの状態変更は「03_Projects/」に書き込む。
+       - ユーザーの好みの発見は「05_Profile/」に書き込む。
 
     3. 書き込みフォーマット：
        ノートには必ず以下のYAMLフロントマターを付与してください：
@@ -35,16 +35,16 @@ let
        related: [[Other Note]]
        ---
        タイトル
-       本文．関連ノートには [[wiki link]] でリンクする．
+       本文。関連ノートには [[wiki link]] でリンクする。
 
     4. mistakes.md への追記ルール：
-       ユーザーから明示的な訂正を受け，かつ「繰り返し起こり得るパターン」を満たす場合，即座に 04_Library/Knowledge/mistakes.md に追記してください．
+       ユーザーから明示的な訂正を受け、かつ「繰り返し起こり得るパターン」を満たす場合、即座に 04_Library/Knowledge/mistakes.md に追記してください。
 
     5. 報告：
-       Obsidianを読み書きしたら，必ずユーザーに伝えてください．
+       Obsidianを読み書きしたら、必ずユーザーに伝えてください。
 
     ---
-    それでは，指示通り初期ファイルを読み込んでから回答を開始してください．
+    それでは、指示通り初期ファイルを読み込んでから回答を開始してください。
   '';
 
   # --- agy-brain (Antigravity用連携スクリプト) ---
@@ -66,14 +66,14 @@ let
 
       antigravity-cli --prompt-interactive "$RULE_PROMPT"
 
-      echo "対話セッションが終了しました．会話履歴をObsidianに保存します．"
+      echo "対話セッションが終了しました。会話履歴をObsidianに保存します。"
       sleep 2
       
       if [ -d "$BRAIN_DIR" ]; then
         NEW_LATEST=$(ls -td "$BRAIN_DIR"/*/ 2>/dev/null | head -n 1)
         if [ -n "$NEW_LATEST" ] && [ "$NEW_LATEST" != "$PREV_LATEST" ]; then
           # 02_Journal/Antigravity のようなツール別フォルダは作らず、
-          # 日付ベースの02_Journal/YYYY/MM/に統一する (2026-07-27，
+          # 日付ベースの02_Journal/YYYY/MM/に統一する (2026-07-27、
           # 02_Journal/README.mdが定義する唯一の運用ルールに合わせるため)。
           # ツールの区別はfrontmatterのtagsで行う。
           DATE_STR=$(date "+%Y-%m-%d_%H-%M-%S")
@@ -126,14 +126,14 @@ let
 
       gemini --prompt-interactive "$RULE_PROMPT"
 
-      echo "対話セッションが終了しました．会話履歴をObsidianに保存します．"
+      echo "対話セッションが終了しました。会話履歴をObsidianに保存します。"
       sleep 2
       
       if [ -d "$HISTORY_DIR" ]; then
         NEW_LATEST=$(ls -t "$HISTORY_DIR"/session-*.jsonl 2>/dev/null | head -n 1)
         if [ -n "$NEW_LATEST" ] && [ "$NEW_LATEST" != "$PREV_LATEST" ]; then
           # 02_Journal/Gemini のようなツール別フォルダは作らず、
-          # 日付ベースの02_Journal/YYYY/MM/に統一する (2026-07-27，
+          # 日付ベースの02_Journal/YYYY/MM/に統一する (2026-07-27、
           # 02_Journal/README.mdが定義する唯一の運用ルールに合わせるため)。
           # ツールの区別はfrontmatterのtagsで行う。
           DATE_STR=$(date "+%Y-%m-%d_%H-%M-%S")
@@ -193,21 +193,21 @@ let
   };
 
   # --- Claude Code 用ルール (CLAUDE.md) ---
-  # agy-brain/gemini-brain の rulePrompt と同内容だが，Claude Codeには
-  # ラッパースクリプトによるプロンプト強制注入の仕組みが無いため，
+  # agy-brain/gemini-brain の rulePrompt と同内容だが、Claude Codeには
+  # ラッパースクリプトによるプロンプト強制注入の仕組みが無いため、
   # 標準の~/.claude/CLAUDE.md (グローバル、全プロジェクトで自動読込) に
   # 置くことで同じ「セッション開始時に必ず読む/その場で書く」を実現する。
   # ツール名はClaude Code側のMCPツール実名 (mcp__obsidian__*) に合わせている。
   claudeObsidianRules = ''
     # Obsidian Vault 連携 (外部脳)
 
-    ObsidianのVaultを「外部脳」として扱い，セッションを跨いで知識を引き継ぐ。MCP経由 (`mcp__obsidian__*` ツール群) でVaultを読み書きできる。
+    ObsidianのVaultを「外部脳」として扱い、セッションを跨いで知識を引き継ぐ。MCP経由 (`mcp__obsidian__*` ツール群) でVaultを読み書きできる。
 
     ## 行動ルール
 
     1. **読み取り (セッション開始時、最初のツール呼び出しとして必ず実行)**
        - `mcp__obsidian__read_note` で `04_Library/Knowledge/mistakes.md` と `05_Profile/` 配下のユーザープロファイルを読む
-       - ユーザーの質問に関連するキーワードで `mcp__obsidian__search_notes` を実行し，ヒットしたノートを読んでから回答する
+       - ユーザーの質問に関連するキーワードで `mcp__obsidian__search_notes` を実行し、ヒットしたノートを読んでから回答する
 
     2. **書き込み (気づいた・決まったその場で書く。「後で書く」はしない)**
        - バグ解決・設定のハマり対策・新しい発見 → `04_Library/Knowledge/`
@@ -231,13 +231,13 @@ let
        ```
 
     4. **mistakes.md への追記ルール**
-       ユーザーから明示的な訂正を受け，かつ「繰り返し起こり得るパターン」を満たす場合，即座に `mcp__obsidian__patch_note` で `04_Library/Knowledge/mistakes.md` に追記する
+       ユーザーから明示的な訂正を受け、かつ「繰り返し起こり得るパターン」を満たす場合、即座に `mcp__obsidian__patch_note` で `04_Library/Knowledge/mistakes.md` に追記する
 
     5. **報告**
-       Obsidianを読み書きしたら，何を読んだ/書いたか(パス)を必ずユーザーに伝える
+       Obsidianを読み書きしたら、何を読んだ/書いたか(パス)を必ずユーザーに伝える
 
     6. **フォールバック**
-       `mcp__obsidian__*` ツールが見当たらない場合 (MCPサーバー未接続)，その旨をユーザーに伝えて通常の対応を続ける。無言でスキップしない
+       `mcp__obsidian__*` ツールが見当たらない場合 (MCPサーバー未接続)、その旨をユーザーに伝えて通常の対応を続ける。無言でスキップしない
   '';
 in
 {
@@ -248,7 +248,7 @@ in
   ];
 
   # --- mcp_config.json の生成 ---
-  # ~/.gemini/config/mcp_config.json の宣言的生成を行います．
+  # ~/.gemini/config/mcp_config.json の宣言的生成を行います。
   home.file."${config.home.homeDirectory}/.gemini/config/mcp_config.json".text = builtins.toJSON {
     mcpServers = {
       obsidian = {
@@ -264,13 +264,13 @@ in
   };
 
   # Claude Codeはグローバル ~/.claude/CLAUDE.md を全プロジェクトで自動的に
-  # 読み込むため，宣言的に配置するだけで自律的な読み書きが有効になる。
-  # CLAUDE.md自体の生成は modules/apps/claude-code が一元管理しているため，
+  # 読み込むため、宣言的に配置するだけで自律的な読み書きが有効になる。
+  # CLAUDE.md自体の生成は modules/apps/claude-code が一元管理しているため、
   # ここでは追加ルールとして注入するのみ
   programs.claudeCode.extraInstructions = [ claudeObsidianRules ];
 
   # --- Obsidian Vault作成アクティベーションフック ---
-  # ObsidianのVaultディレクトリを初期作成するフックです．
+  # ObsidianのVaultディレクトリを初期作成するフックです。
   home.activation = {
     createObsidianVault = lib.hm.dag.entryAfter ["writeBoundary"] ''
       $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "${vaultPath}"
