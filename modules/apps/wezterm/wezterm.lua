@@ -33,8 +33,6 @@ config.audible_bell = "Disabled"
 -- 選択カーソル表示などが見づらい。Matugenの役割色から個別に組むと破綻しやすいので、
 -- WezTerm組み込みのkanagawa系スキーム(存在すれば)をそのまま採用する。
 -- 見つからない場合は何もしない(デフォルトのまま)ので設定が壊れることはない。
--- 実際に選ばれた配色スキームの背景色 (タブバーのBAR_BG計算で使う)。
--- スキームが見つからない場合のフォールバックは黒 (従来どおり)。
 -- config.color_scheme (名前指定) とconfig.colorsを併用すると、
 -- selection_bg/selection_fgだけはWezTerm側の既知の癖でスキームの値が
 -- 優先されてしまい、cursor_bg等は正しく上書きされるのに選択ハイライト
@@ -42,7 +40,6 @@ config.audible_bell = "Disabled"
 -- 本来ANSI16色パレットだけを拝借したいので、color_schemeとしては
 -- 設定せず、ansi/brightsだけ抜き出してconfig.colorsに直接統合する
 -- (これで selection_bg/fg を含め全キーがMatugen色で確実に上書きされる)
-local scheme_background = "#000000"
 local scheme_ansi = nil
 local scheme_brights = nil
 do
@@ -51,7 +48,6 @@ do
     local candidates = { "Kanagawa Dragon (Gogh)", "Kanagawa (Gogh)", "kanagawabones" }
     for _, name in ipairs(candidates) do
       if schemes[name] then
-        scheme_background = schemes[name].background or scheme_background
         scheme_ansi = schemes[name].ansi
         scheme_brights = schemes[name].brights
         break
@@ -125,19 +121,24 @@ config.use_fancy_tab_bar = false
 --   微妙な差が残る (実機で確認済み・原因未特定。タブバーの背景色
 --   描画がwindow_background_opacityの合成パスと同じ扱いを受けて
 --   いない可能性がある)。ひとまずwindow_background_opacityと同じ
---   0.90で妥協する。
---   (黒決め打ちだとスキームの実際の背景(純黒ではない)とズレて帯が見えてしまう。
---    "none" 指定は素通し=完全透過になるため使いません)
+--   0.95で妥協する。
+--   色そのものはKanagawaスキームの背景(黒固定)ではなくMatugenの
+--   colors.surface (画面本体の背景色と同じロール) から取る
 local function hex_to_rgb(hex)
   hex = hex:gsub("#", "")
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
-local bg_r, bg_g, bg_b = hex_to_rgb(scheme_background)
+local bg_r, bg_g, bg_b = hex_to_rgb(colors.surface)
 local BAR_BG = string.format("rgba(%d, %d, %d, 0.95)", bg_r, bg_g, bg_b)
 
 config.colors = {
   ansi = scheme_ansi,
   brights = scheme_brights,
+  -- 画面本体の背景色。以前はどこにも明示指定しておらずWezTerm組み込みの
+  -- 既定色(Matugenと無関係)のままだった。YASBバーの--baseと同じ
+  -- Matugenの"surface"ロールに揃える (colors.surfaceはmatugen-colors.luaが
+  -- あれば壁紙由来の値、無ければファイル先頭のフォールバック値になる)
+  background = colors.surface,
   tab_bar = {
     background = BAR_BG,
     -- 実際のタブ描画は下の format-tab-title が行うため，ここは保険の既定値

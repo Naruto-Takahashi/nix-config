@@ -22,7 +22,7 @@
     --overlay0: {{colors.outline_variant.default.hex}};
     --surface2: {{colors.surface_container_high.default.hex}};
     --surface1: {{colors.surface_container.default.hex}};
-    --base: {{colors.surface.default.hex}};
+    --base: {{colors.surface.default.rgba | set_alpha: 0.95}};
     --winbutton: {{colors.on_surface.default.hex}};
     --icon: {{colors.primary.default.hex}};
     --basetransparent: {{colors.surface.default.hex}};
