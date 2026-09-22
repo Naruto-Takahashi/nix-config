@@ -260,8 +260,11 @@
     /* 元テーマのredFlashは実際は赤ではなく中立な白系ハイライト
        (rgba(255,255,255,0.16)相当) で、設定歯車/PowerPlan等の広い
        範囲のホバー色として使われていた。var(--red)への割り当ては
-       変数名だけを見た誤対応だったため、--hoverと同じ色に修正する */
-    --redFlash: var(--highlight-hover);
+       変数名だけを見た誤対応だったため修正する。他の一般的なボタン
+       (--hover)と完全に同色にはせず、Matugenの第2アクセント色
+       (--accent-sub、これまでどこにも使われていなかった) を割り当て、
+       「これらのボタンは少し重要」という視覚的な差を色相で表現する */
+    --redFlash: var(--accent-sub);
     --subtext: var(--subtext1);
     --yasb-icon-fg: var(--icon);
 
