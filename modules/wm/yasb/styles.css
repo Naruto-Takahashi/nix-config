@@ -33,7 +33,7 @@
     --crust: #0b0e13;
     --highlight: #a2c9fd;
     --highlight-hover: #1c4975;
-    --island: rgba(17, 20, 24, 0.4);
+    --island: rgba(17, 20, 24, 0.95);
     --island-inner: rgba(11, 14, 19, 0.2);
     --accent-sub: #d7bde4;
 }
