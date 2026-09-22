@@ -257,7 +257,11 @@
     --hover: var(--highlight-hover);
     --mutedBG: var(--surface2);
     --border: var(--overlay0);
-    --redFlash: var(--red);
+    /* 元テーマのredFlashは実際は赤ではなく中立な白系ハイライト
+       (rgba(255,255,255,0.16)相当) で、設定歯車/PowerPlan等の広い
+       範囲のホバー色として使われていた。var(--red)への割り当ては
+       変数名だけを見た誤対応だったため、--hoverと同じ色に修正する */
+    --redFlash: var(--highlight-hover);
     --subtext: var(--subtext1);
     --yasb-icon-fg: var(--icon);
 
