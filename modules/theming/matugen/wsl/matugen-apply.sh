@@ -98,7 +98,22 @@ fi
 # -------------------------------------------------------------------------
 # 2. パレット抽出 (ここで一度だけ。名前は docs/matugen-palette.md と対応)
 # -------------------------------------------------------------------------
-pal() { grep -m1 -- "--$1:" "$CACHE" 2>/dev/null | grep -oE '#[0-9a-fA-F]{6}' || true; }
+# --base等をrgba(r, g, b, a)形式(半透明)に変更したため、#RRGGBBの
+# hexだけでなくrgba()形式からもRGBを抽出してhexに変換できるようにする
+# (alphaは無視。以降の消費側は全てプレーンなhexを期待している)
+pal() {
+    local line hex r g b
+    line="$(grep -m1 -- "--$1:" "$CACHE" 2>/dev/null)" || return 0
+    hex="$(echo "$line" | grep -oE '#[0-9a-fA-F]{6}')"
+    if [[ -n "$hex" ]]; then
+        echo "$hex"
+        return 0
+    fi
+    if [[ "$line" =~ rgba?\(([0-9]+)[,\ ]+([0-9]+)[,\ ]+([0-9]+) ]]; then
+        r="${BASH_REMATCH[1]}"; g="${BASH_REMATCH[2]}"; b="${BASH_REMATCH[3]}"
+        printf '#%02x%02x%02x\n' "$r" "$g" "$b"
+    fi
+}
 
 # surfaceを白と少し混ぜた「背景に馴染む弱い色」を作る (fzfのbg+等、
 # 選択行ハイライト用)。ターミナルの背景色に対して主張が弱く、

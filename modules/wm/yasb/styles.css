@@ -450,7 +450,7 @@
 /* Clock */
 
 .clock-widget .widget-container {
-    background-color: var(--background);
+    /* バー内側の要素なのでbackground-colorは塗らない(.widgetと同じ理由) */
     border: 0px solid var(--accent);
     border-radius: var(--border-radius2);
     margin: 1px 1px;
@@ -881,10 +881,10 @@
 .komorebi-workspaces .ws-btn.populated {
     padding-left: 8;
     padding-right: 8;
-    background-color: var(--background);
+    /* バー内側の要素なのでbackground-colorは塗らない(.widgetと同じ理由) */
     border-radius: var(--border-radius2);
     color: var(--text);
-} 
+}
 
 /*Style for the active workspace button.*/
 .komorebi-workspaces .ws-btn.active {
@@ -966,9 +966,8 @@
 }
 
 /* Systray */
-.systray {
-    background: var(--background);
-}
+/* .systray自体にはbackground-colorを塗らない(バー内側の要素。
+   .widgetと同じ理由。元のKirakira_YASBテーマにもこの指定は無い) */
 
 /* Icon being dragged, we already apply some transparency to it so you don't need to use it */
 
