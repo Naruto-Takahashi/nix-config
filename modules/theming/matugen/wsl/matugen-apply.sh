@@ -127,7 +127,10 @@ if [[ -f "$CACHE" ]]; then
     secondary="$(pal secondary)"
     text="$(pal text)"
     muted="$(pal subtext1)"
-    surface="$(pal surface2)"
+    # YASBの --base (バー本体/ウィジェットの背景色) と同じロールに揃える。
+    # 以前は surface2 (--surface2、明るいコンテナ色) を使っていたため、
+    # WezTermの画面本体がYASBより明るいグレーになってしまっていた
+    surface="$(pal base)"
     on_accent="$(pal base)"
     error="$(pal red)"
     outline="$(pal subtext0)"

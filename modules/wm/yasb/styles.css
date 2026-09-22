@@ -390,7 +390,10 @@
     padding-left: 6px;
     padding-right: 6px;
     margin: 1px 2px;
-    background-color: var(--background);
+    /* 背景色は塗らない。adaptiveスタイルはbar_style.py側がisland単位で
+       一括描画するため、ここでも塗ると二重描画になり、alphaが1.0未満の
+       場合に重なった箇所だけ合成されて暗い丸として見えてしまう
+       (元のKirakira_YASBテーマでも.widgetには背景色を指定していない) */
     border-radius: var(--border-radius);
     border: 0px solid var(--border);
 }
