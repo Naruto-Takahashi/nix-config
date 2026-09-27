@@ -114,6 +114,9 @@ in
       # config()実行時にエラーになる。
       pkgs.gcc
       pkgs.gnumake
+      # marp.nvim が呼び出すMarp CLI本体。npx経由だと毎回ダウンロードが走るため
+      # Nix供給のバイナリをPATHに直接置く。
+      pkgs.marp-cli
     ];
   };
 
