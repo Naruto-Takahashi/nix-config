@@ -52,6 +52,13 @@
           extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
         };
 
+        # 実データ非共有コンテナ(wslc等)内のCLI専用プロファイル
+        "sandbox" = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ ./hosts/sandbox ];
+          extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
+        };
+
         # Mac環境用プロファイル (M1 Mac Mini)
         "mac" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages."aarch64-darwin";
