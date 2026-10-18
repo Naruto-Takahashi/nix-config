@@ -14,8 +14,8 @@
    - **ブロンズ層 (`30-resources/`)**: 調べた記録・外部資料の原本（書き換えない一次データ）。
    - **シルバー層 (`10-knowledge/`)**: 自分に関する事実と、理解・再構成した知識（**分類 `11`〜`17` × ID `1X.YZ` ＋ 日本語タイトル**。ノート間のリンクはファイル名だけで書く）。
    - **ゴールド層 (`20-output/`)**: 研究・開発プロジェクトや最終成果物。
-3. **安全性 (`90-private/`・`91-storage/` の Git 除外 ＋ `gitleaks` 検査)**:
-   - 認証情報・個人情報 (`90-private/`) や大容量ファイル (`91-storage/`)、削除代わりの退避先 (`99-trash/`) は `.gitignore` で保護されます。
+3. **安全性 (`90-local/` の Git 除外 ＋ `gitleaks` 検査)**:
+   - 領域 `90-local/` の認証情報・個人情報 (`91-private/`)、大容量ファイル (`92-storage/`)、削除代わりの退避先 (`99-trash/`) は `.gitignore` で保護されます。
    - さらに `obsidian-vault-sync`（および `_scripts/check-secrets.sh`）がコミット直前に **`gitleaks protect --staged`** を実行し、万一 Git 管理領域に API キー等の機密情報が紛れ込んでいた場合は自動でコミットをブロックします。
 
 ---
@@ -37,10 +37,11 @@ obsidian-vault/
 ├── 30-resources/                    # 【ブロンズ層】調べた記録・外部資料の原本 (<project>/ か 1X-<分類>/ に置く。書き換えない)
 ├── 40-daily/                        # 日誌 (YYYY/MM/YYYY-MM-DD.md)・現在地 (PICKUP.md)・テンプレート (_templates/)
 │
-│  === [Git管理外領域 (.gitignore): 90番台] ===
-├── 90-private/                      # 認証・個人情報・機密メモ (Git管理外)
-├── 91-storage/                      # 大容量ファイル：動画・PDF・エクスポート原本等 (Git管理外)
-└── 99-trash/                        # 削除の代わりの退避先 (Git管理外)
+│  === [Git管理外領域 (.gitignore): 領域 90] ===
+└── 90-local/                        # 領域 90-99 (Git管理外)
+    ├── 91-private/                  #   認証・個人情報・機密メモ
+    ├── 92-storage/                  #   大容量ファイル：動画・PDF・エクスポート原本等
+    └── 99-trash/                    #   削除の代わりの退避先
 ```
 
 ---
