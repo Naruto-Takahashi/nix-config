@@ -3,10 +3,10 @@
 # =========================================================================
 # 責務の分離:
 # - Vault構造・ルール・Skill (.agents/skills/obsidian-brain/SKILL.md) および
-#   機械実行スクリプト本体 (scripts/ob.sh, scripts/sync.sh, scripts/check-secrets.sh) は
+#   機械実行スクリプト本体 (_scripts/ob.sh, _scripts/sync.sh, _scripts/check-secrets.sh) は
 #   すべて obsidian-vault リポジトリ側が正本として自己完結保持する。
 # - 本モジュール (nix-config) は純粋な OS インフラ配線のみを担う:
-#   1. ripgrep / git / gitleaks 等の依存を PATH に保証して Vault 内の scripts/*.sh を呼ぶラッパー
+#   1. ripgrep / git / gitleaks 等の依存を PATH に保証して Vault 内の _scripts/*.sh を呼ぶラッパー
 #   2. Claude Code / Antigravity CLI の skills ディレクトリから Vault 内 SKILL.md への結線
 #   3. グローバル指示 (CLAUDE.md / GEMINI.md) への最小ポインタ注入
 #   4. 30分おきの自動同期タイマー (Linux: systemd.user / macOS: launchd.agents)
@@ -15,7 +15,7 @@
 let
   cfg = config.services.obsidianBrain;
 
-  # --- 双方向Git自動同期ラッパー (実体は Vault 内の scripts/sync.sh) ---
+  # --- 双方向Git自動同期ラッパー (実体は Vault 内の _scripts/sync.sh) ---
   obsidian-vault-sync = pkgs.writeShellApplication {
     name = "obsidian-vault-sync";
     runtimeInputs = [
@@ -27,15 +27,15 @@ let
     ];
     text = ''
       export OBSIDIAN_VAULT_PATH="''${OBSIDIAN_VAULT_PATH:-${cfg.vaultPath}}"
-      if [ ! -f "$OBSIDIAN_VAULT_PATH/scripts/sync.sh" ]; then
-        echo "obsidian-vault-sync: $OBSIDIAN_VAULT_PATH/scripts/sync.sh が見つからないためスキップ"
+      if [ ! -f "$OBSIDIAN_VAULT_PATH/_scripts/sync.sh" ]; then
+        echo "obsidian-vault-sync: $OBSIDIAN_VAULT_PATH/_scripts/sync.sh が見つからないためスキップ"
         exit 0
       fi
-      exec bash "$OBSIDIAN_VAULT_PATH/scripts/sync.sh" "$@"
+      exec bash "$OBSIDIAN_VAULT_PATH/_scripts/sync.sh" "$@"
     '';
   };
 
-  # --- 外部脳操作CLI `ob` ラッパー (実体は Vault 内の scripts/ob.sh) ---
+  # --- 外部脳操作CLI `ob` ラッパー (実体は Vault 内の _scripts/ob.sh) ---
   ob-cli = pkgs.writeShellApplication {
     name = "ob";
     runtimeInputs = [
@@ -50,11 +50,11 @@ let
     ];
     text = ''
       export OBSIDIAN_VAULT_PATH="''${OBSIDIAN_VAULT_PATH:-${cfg.vaultPath}}"
-      if [ ! -f "$OBSIDIAN_VAULT_PATH/scripts/ob.sh" ]; then
-        echo "ob: $OBSIDIAN_VAULT_PATH/scripts/ob.sh が見つかりません" >&2
+      if [ ! -f "$OBSIDIAN_VAULT_PATH/_scripts/ob.sh" ]; then
+        echo "ob: $OBSIDIAN_VAULT_PATH/_scripts/ob.sh が見つかりません" >&2
         exit 1
       fi
-      exec bash "$OBSIDIAN_VAULT_PATH/scripts/ob.sh" "$@"
+      exec bash "$OBSIDIAN_VAULT_PATH/_scripts/ob.sh" "$@"
     '';
   };
 
@@ -67,7 +67,7 @@ let
     ## Obsidian External Brain 連携
 
     - **外部脳 (Vault) の場所**: `${cfg.vaultPath}`（唯一の入り口・構成定義: `${cfg.vaultPath}/AGENTS.md`、詳細手順スキル: `obsidian-brain`、専用CLI: `ob`）
-    - **セッション開始時**: まず `ob pickup`（または `${cfg.vaultPath}/04-todo/PICKUP.md` の読み取り）を実行し、現在の最優先事項と直近の文脈を把握する。
+    - **セッション開始時**: まず `ob pickup`（または `${cfg.vaultPath}/04-daily/PICKUP.md` の読み取り）を実行し、現在の最優先事項と直近の文脈を把握する。
     - **セッション中・終了時**: 新しい知識・設計判断・プロジェクト進捗変化・再発防止教訓は、`obsidian-brain` スキル（`${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md`）の規約に従ってその場で Vault に書き込み（`ob note` 等）、セッションの区切り・終了時は `ob journal "<タイトル>" "<要点>"` で日誌に記録して、読み書きした対象をユーザーへ簡潔に伝えること。
   '';
 in

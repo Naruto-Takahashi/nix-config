@@ -16,7 +16,7 @@
    - **ゴールド層 (`02-output/`)**: 研究・開発プロジェクトや最終成果物。
 3. **安全性 (`90-private/`・`91-storage/` の Git 除外 ＋ `gitleaks` 検査)**:
    - 認証情報・個人情報 (`90-private/`) や大容量ファイル (`91-storage/`)、削除代わりの退避先 (`99-trash/`) は `.gitignore` で保護されます。
-   - さらに `obsidian-vault-sync`（および `scripts/check-secrets.sh`）がコミット直前に **`gitleaks protect --staged`** を実行し、万一 `00`〜`04` に API キー等の機密情報が紛れ込んでいた場合は自動でコミットをブロックします。
+   - さらに `obsidian-vault-sync`（および `_scripts/check-secrets.sh`）がコミット直前に **`gitleaks protect --staged`** を実行し、万一 `00`〜`04` に API キー等の機密情報が紛れ込んでいた場合は自動でコミットをブロックします。
 
 ---
 
@@ -26,7 +26,7 @@
 obsidian-vault/
 ├── AGENTS.md                        # 唯一の入り口ファイル (CLAUDE.md は @AGENTS.md 参照)
 ├── .agents/skills/obsidian-brain/   # エージェントの手順書 (SKILL.md)
-├── scripts/                         # 機械で動かすスクリプト (check-secrets.sh 等)
+├── _scripts/                        # 機械で動かすスクリプト (ob.sh, sync.sh, check-secrets.sh)
 │
 │  === [Git管理領域: 00〜04 の連番] ===
 ├── 00-rules/                        # ルール・再発防止教訓 (mistakes.md)
@@ -40,7 +40,7 @@ obsidian-vault/
 │   └── 16-life-general/             #   日常生活・ライフ管理・お金・健康・一般教養
 ├── 02-output/                       # 【ゴールド層】成果物・進行中プロジェクト (<project>/Status.md)
 ├── 03-resources/                    # 【ブロンズ層】調べた記録・外部資料の原本 (書き換えない)
-├── 04-todo/                         # 未着手のタスク・現在地 (PICKUP.md)・日誌 (daily/YYYY/MM/YYYY-MM-DD.md)
+├── 04-daily/                        # 日誌 (YYYY/MM/YYYY-MM-DD.md)・現在地 (PICKUP.md)・テンプレート (_templates/)
 │
 │  === [Git管理外領域 (.gitignore): 90番台] ===
 ├── 90-private/                      # 認証・個人情報・機密メモ (Git管理外)
@@ -54,12 +54,12 @@ obsidian-vault/
 
 | コマンド | 動作 |
 | :--- | :--- |
-| `ob` / `ob pickup` | `04-todo/PICKUP.md` と今日の日誌を表示 |
+| `ob` / `ob pickup` | `04-daily/PICKUP.md` と今日の日誌を表示 |
 | `ob path` | 現在の環境の Vault パスを表示 |
-| `ob today [--print]` | 今日の日誌 (`04-todo/daily/YYYY/MM/YYYY-MM-DD.md`) を生成して `$EDITOR` で開く |
+| `ob today [--print]` | 今日の日誌 (`04-daily/YYYY/MM/YYYY-MM-DD.md`) を生成して `$EDITOR` で開く |
 | `ob memo <text...>` | 今日の日誌に `- HH:MM <text>` を1行即追記 |
 | `ob journal <title> [summary...]` | 今日の日誌に AI セッション要約を追記（標準入力も可） |
-| `ob note <cat> <title> [proj]` | 日本語タイトル＋フロントマター付きノートを作成 (`cat`: `10`〜`16` / `output` / `resource` / `todo` / `private`) |
+| `ob note <cat> <title> [proj]` | 日本語タイトル＋フロントマター付きノートを作成 (`cat`: `10`〜`16` / `output` / `resource` / `daily` / `private`) |
 | `ob search <query>` | `ripgrep` で Vault 内を高速全文検索 |
 | `ob list [subdir]` | Vault 内のノート一覧を表示 |
 | `ob sync` | `gitleaks` 検査付きの双方向 Git 同期を実行 |
@@ -72,7 +72,7 @@ obsidian-vault/
 | :--- | :--- |
 | `<Vault>/AGENTS.md` | Vault 全体の唯一の入り口ファイル (`CLAUDE.md` は `@AGENTS.md` 参照) |
 | `<Vault>/.agents/skills/obsidian-brain/SKILL.md` | 外部脳運用の手順書 (Claude Code / Antigravity 共通 Skill 正本) |
-| `<Vault>/scripts/ob.sh`, `sync.sh`, `check-secrets.sh` | `ob` CLI 本体・双方向 Git 同期・`gitleaks` 機密検査スクリプトの正本 |
+| `<Vault>/_scripts/ob.sh`, `sync.sh`, `check-secrets.sh` | `ob` CLI 本体・双方向 Git 同期・`gitleaks` 機密検査スクリプトの正本 |
 | `modules/services/obsidian-mcp.nix` | `services.obsidianBrain` オプション・Nix 依存解決ラッパー・Skill 配線・自動同期タイマー |
 | `modules/apps/claude-code/default.nix`, `CLAUDE.md` | `~/.claude/CLAUDE.md` の生成・Claude Code 設定 |
 | `modules/apps/gemini/default.nix`, `GEMINI.md` | `~/.gemini/GEMINI.md` の生成・Antigravity CLI / Gemini CLI 設定 |
