@@ -59,16 +59,16 @@ let
   };
 
   # --- CLAUDE.md / GEMINI.md に注入する最小限の外部脳ポインタ ---
-  # フォルダ構成やルール詳細は Vault 側の正本 (AGENTS.md / SKILL.md) に一元化し、
-  # グローバル指示には「場所」と「発火タイミング」の3行だけを持たせて二重管理・競合を防ぐ。
+  # ルール本文は Vault 側の正本 (AGENTS.md / SKILL.md) にのみ置き、グローバル指示には
+  # 「場所」「発火タイミング」「正本への参照」だけを持たせて二重管理・競合を防ぐ。
   obsidianBrainInstructions = ''
     ---
 
     ## Obsidian External Brain 連携
 
-    - **外部脳 (Vault) の場所**: `${cfg.vaultPath}`（唯一の入り口・構成定義: `${cfg.vaultPath}/AGENTS.md`、詳細手順スキル: `obsidian-brain`、専用CLI: `ob`）
-    - **セッション開始時**: まず `ob pickup`（または `${cfg.vaultPath}/04-daily/PICKUP.md` の読み取り）を実行し、現在のフォーカスを把握する。
-    - **自律記録とキュレーション原則**: ユーザーの指摘・ルール・傾向は `00-rules/mistakes.md` や `10.11-profile/profile.md` へ自律反映し、再来価値の高い体系的知識・非自明な解決策のみを `01-knowledge/1X-.../1X.YZ-.../<日本語タイトル>.md` に「1ファイル1トピック（継ぎ足し肥大化厳禁）」で記録する。「過去の経緯・変遷」は一切書かず現在の結論・仕様のみを記述し、作業の区切りでは `ob journal "<タイトル>" "<要点>"` で日誌に記録して末尾で1行報告すること。
+    - **外部脳 (Vault) の場所**: `${cfg.vaultPath}`（専用CLI: `ob`、手順スキル: `obsidian-brain`）
+    - **セッション開始時**: まず `ob pickup` を実行し、現在のフォーカスを把握する。
+    - **運用ルール**: Vault の記録・キュレーション規則と作業区切りのルーチンは `${cfg.vaultPath}/AGENTS.md` と `obsidian-brain` スキルを正本とし、それに従う。
   '';
 in
 {
