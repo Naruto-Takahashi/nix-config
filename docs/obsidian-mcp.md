@@ -29,7 +29,7 @@ obsidian-vault/
 ├── _scripts/                        # 機械で動かすスクリプト (ob.sh, sync.sh, check-secrets.sh)
 │
 │  === [Git管理領域: 00〜04 の連番] ===
-├── 00-rules/                        # ルール・再発防止教訓 (mistakes.md)
+├── 00-rules/                        # 運用ルールの正本 (行動原則・キュレーション・記述規約・教訓)
 ├── 01-knowledge/                    # 【シルバー層】事実・整理した知識 (1X 大分類 × 1X.YZ 小分類 × 日本語タイトル)
 │   ├── 10-self/                     #   10.11-profile / 10.21-decisions
 │   ├── 11-cs-fundamentals/          #   11.11-architecture / 11.21-network / 11.31-security-theory
