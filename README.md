@@ -37,7 +37,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | **壁紙連動の動的配色** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows側) | [Matugen](docs/matugen-palette.md) ✅ |
 | **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](docs/kanata.md)) |
 | **リモートデスクトップ** | [Tailscale+Sunshine](docs/remote-desktop.md) ✅ | ➖ (接続元クライアント) | ➖ |
-| **Obsidian MCP連携** | ➖ | [Obsidian MCP](docs/obsidian-mcp.md) ✅ | ➖ |
+| **Obsidian 外部脳連携** | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ |
 | **Homebrew Cask管理** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
 | [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
 | [Neovim](docs/neovim.md) | ✅ | ✅ | ✅ |
@@ -122,7 +122,7 @@ Legend: ✅ enabled · ➖ not set up in this config · (Windows) runs on the Wi
 | **Wallpaper-driven theming** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows side) | [Matugen](docs/matugen-palette.md) ✅ |
 | **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](docs/kanata.md)) |
 | **Remote desktop** | [Tailscale+Sunshine](docs/remote-desktop.md) ✅ | ➖ (client only) | ➖ |
-| **Obsidian MCP** | ➖ | [Obsidian MCP](docs/obsidian-mcp.md) ✅ | ➖ |
+| **Obsidian External Brain** | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ |
 | **Homebrew Cask management** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
 | [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
 | [Neovim](docs/neovim.md) | ✅ | ✅ | ✅ |

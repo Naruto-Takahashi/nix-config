@@ -98,7 +98,6 @@
       zn        = "npx zenn new:article";
       zqr       = "~/dotfiles/bash/zqr";
       zstop     = "pkill ngrok && echo \"ngrok stopped.\"";
-      bgemini   = "cp ~/.gemini/GEMINI.md ~/dotfiles/gemini/GEMINI.md && (cd ~/dotfiles && git add gemini/GEMINI.md && git commit -m \"chore: update GEMINI.md backup\" && git push) && echo \"GEMINI.md backed up.\"";
       gchat     = "agy -i";
       achat     = "agy -i";
 

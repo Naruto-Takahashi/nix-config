@@ -33,10 +33,12 @@
     ../modules/apps/git-hooks
     ../modules/apps/btop
     ../modules/apps/claude-code
+    ../modules/services/obsidian-mcp.nix
     ../modules/theming/matugen
   ];
 
   programs.claudeCode.enable = true;
+  services.obsidianBrain.enable = true;
 
   # -----------------------------------------------------------------------
   # 全ホスト共通の小物 CLI ツール

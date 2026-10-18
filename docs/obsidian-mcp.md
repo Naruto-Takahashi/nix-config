@@ -1,52 +1,61 @@
-# Obsidian MCP 連携 (外部脳)
+# Obsidian External Brain v2 (外部脳連携)
 
-**WSL2専用**です．[modules/services/obsidian-mcp.nix](../modules/services/obsidian-mcp.nix) で管理されている，ObsidianのVaultをAIエージェントの「外部脳」として使う仕組みです．セッションを跨いで知識・作業ログを引き継ぐことを目的としています．
-
----
-
-## 仕組み
-
-- **Vault**: Windows側の `C:\Users\<user>\Obsidian\Vault` (WSLからは `/mnt/c/Users/tnaru/Obsidian/Vault`)。初回はhome-managerのactivationフックが自動でディレクトリを作成します。このディレクトリ自体が [obsidian-vault](https://github.com/Naruto-Takahashi/obsidian-vault) リポジトリのworking copy (git管理下) になっている。
-- **自動sync**: `systemd --user` タイマー (`obsidian-vault-sync.timer`) が30分おきに，Vault内の変更を `git add -A && git commit && git push` で自動的にリモートへ反映する。AIエージェントがその場で書き込んだ内容も取りこぼさない。ログオン中しか動かないため，ログオフ中の変更は次回ログオン後の初回実行 (`OnStartupSec`) でまとめて拾われる。手動で今すぐ同期したい場合は `systemctl --user start obsidian-vault-sync.service`。状態確認は `systemctl --user list-timers obsidian-vault-sync.timer`。
-- **MCP接続**: `~/.gemini/config/mcp_config.json` を宣言的に生成し，`@bitbonsai/mcpvault` (npx経由) をMCPサーバーとして登録します。`@bitbonsai/mcpvault` はVaultの場所を**環境変数ではなく位置引数**で受け取る仕様 (省略時はカレントディレクトリをVault扱いしてしまう) のため，`args` にVaultパスを直接渡しています。
-- **ルールプロンプト**: セッション開始時に「行動ルール (`04_Library/Knowledge/mistakes.md`) とユーザープロファイル (`05_Profile/`) を必ず読む」「バグ解決・設計判断・プロジェクト状態変更・ユーザーの好みの発見はその場でVaultへ書き込む (`04_Library/Knowledge/`・`04_Library/Decisions/`・`03_Projects/`・`05_Profile/`)」といった行動ルールをAIに強制するプロンプトが，下記2つのラッパースクリプトに埋め込まれています。
+**全OS共通 (WSL2 / macOS / NixOS / Distrobox)** です。[modules/services/obsidian-mcp.nix](../modules/services/obsidian-mcp.nix) および [modules/apps/claude-code/default.nix](../modules/apps/claude-code/default.nix) で管理されている、Obsidian の Vault を日常・研究・開発すべての一元管理基盤および AI エージェントの「外部脳」として使う仕組みです。
 
 ---
 
-## 提供コマンド
+## アーキテクチャ (v2: 自己完結型 Vault ＋ 軽量 OS 配線)
 
-| コマンド | 対象CLI | 動作 |
-| :--- | :--- | :--- |
-| `agy-brain` | Antigravity CLI | ルールプロンプト付きで対話セッションを起動し，終了後に会話ログ (`transcript.jsonl`) からユーザー発言だけを抽出し，`02_Journal/YYYY/MM/` に要約(箇条書き，`tags: [ai-log, antigravity, summary]`)として保存 |
-| `gemini-brain` | Gemini CLI | 同上。Gemini CLIのセッション履歴 (`~/.gemini/tmp/<project>/chats/session-*.jsonl`) から同様に `02_Journal/YYYY/MM/` に保存 (`tags: [ai-log, gemini, summary]`) |
+従来の Node.js MCP サーバー (`@bitbonsai/mcpvault`) や専用起動ラッパー (`agy-brain` / `gemini-brain`) を廃止し、**「自己完結型 Vault リポジトリ ＋ AI 標準ファイル操作 ＋ 共通 Skill ＋ 軽量 CLI `ob`」** の構成に刷新しています。
 
-以前は `02_Journal/Antigravity/`・`02_Journal/Gemini/` というツール別フォルダに保存していたが，`02_Journal/README.md` が定義する「日付ベース `YYYY/MM/`」という唯一の運用ルールと乖離した並行構造になっていたため，2026-07-27に統一した。ツールの区別は保存場所ではなくfrontmatterの`tags`で行う。
+1. **責務の分離 (`obsidian-vault` vs `nix-config`)**:
+   - **`obsidian-vault` リポジトリ側 (データ ＋ 自己記述スキーマ)**:
+     - ルートに `AGENTS.md` / `CLAUDE.md`、詳細規約として `.agents/skills/obsidian-brain/SKILL.md` を保持。
+     - リポジトリ単体でルールとディレクトリ仕様が完結しているため、ローカル CLI エージェントだけでなく **Web チャット (Claude.ai / ChatGPT の GitHub コネクタや Claude Code Web)** から接続した際にも全く同じルールで参照・編集できる。
+   - **`nix-config` リポジトリ側 (OS インフラ・配線のみ)**:
+     - `~/.claude/CLAUDE.md` と `~/.gemini/GEMINI.md` を単一ソースから宣言的に生成。
+     - `~/.claude/skills/obsidian-brain/SKILL.md` と `~/.gemini/config/skills/obsidian-brain/SKILL.md` を Vault 内の `SKILL.md` へ out-of-store シンボリックリンクで直結（Vault 側でルールを書き換えると `home-manager switch` 不要で即時反映）。
+     - 専用 CLI `ob` と、30分おきの双方向 Git 自動同期タイマー (`obsidian-vault-sync`) を提供。
 
-どちらも `jq` でJSONL形式の会話ログをパースするが，**アシスタントの応答本文・思考プロセスは保存しない** (2026-07-27に方針変更。Vaultが陳腐化したAIログで肥大化する主因だったため。詳細は [[04_Library/Knowledge/mistakes|mistakes.md]] の「情報の粒度管理・陳腐化防止」参照)。ユーザー発言だけを抜き出した軽量な箇条書きに留め，重要な知見・決定はセッション中にルールプロンプトの指示で `04_Library/Knowledge`・`04_Library/Decisions`・`03_Projects` へ直接書き込ませる。保存後は必ずファイルパスをターミナルに表示する。
+2. **OS ごとの Vault パス (`services.obsidianBrain.vaultPath`)**:
+   - **WSL2**: `/mnt/c/Users/tnaru/Obsidian/Vault`（Windows 側の Obsidian デスクトップアプリが直接開くパス）
+   - **macOS / NixOS / Distrobox**: `~/ghq/github.com/Naruto-Takahashi/obsidian-vault`
+   - 環境変数 `$OBSIDIAN_VAULT_PATH`（または `ob path`）でどの OS でも透過的に参照できる。
 
----
-
-## Claude Code での利用
-
-Claude Codeは標準でMCPサーバーに対応しているため，`agy-brain`/`gemini-brain`のような専用ラッパースクリプトは不要で，Claude Code自身の設定にMCPサーバーを1回登録するだけでよい:
-
-```
-claude mcp add -s user obsidian -- npx -y @bitbonsai/mcpvault "/mnt/c/Users/tnaru/Obsidian/Vault"
-```
-
-- `@bitbonsai/mcpvault` はVaultパスを環境変数ではなく**位置引数**で受け取る (省略時はカレントディレクトリをVault扱いしてしまう罠がある。`-e OBSIDIAN_VAULT=...` は効かないので注意)
-- `-s user` でユーザースコープ (全プロジェクト共通) に登録される。この設定は `~/.claude.json` に保存され，home-manager管理外 (Claude Code自身の状態ファイルであり，宣言的に上書きすると他の状態を壊すリスクがあるため意図的に対象外にしている)
-- 新しい環境では上記コマンドを一度実行するだけでよい (`claude mcp list` で `obsidian: ... ✔ Connected` と出れば成功)
-- 登録直後の**今のセッションには反映されない** (MCPサーバーはセッション開始時にしかロードされない)。Claude Codeを再起動した新しいセッションで `mcp__obsidian__list_directory` 等を呼び，Vault側の実際のフォルダ (`01_Meta`/`02_Journal`/... ) が見えることを確認すること。nix-configリポジトリのファイル (`docs`/`modules`/...) が見えたらVaultパスが渡っていない
-- ルールプロンプト (セッション開始時に読むべきファイル・書き込み先など) は，agy-brain/gemini-brainのようなラッパースクリプトによる強制注入ではなく，グローバル `~/.claude/CLAUDE.md` (このモジュールが宣言的に配置。全プロジェクトで自動読込される) で同等の自律読み書きを実現している。中身はagy-brain/gemini-brainの`rulePrompt`と同内容で，ツール名だけClaude Code実際のMCPツール名 (`mcp__obsidian__*`) に合わせてある
-- CLAUDE.mdもMCPサーバーと同様セッション開始時にしか読み込まれないため，登録直後の**今のセッションには反映されない**。新しいセッションで自発的にVaultを読み書きし始めれば成功
-- 会話ログの自動Vault保存 (`02_Journal/`) はagy-brain/gemini-brain相当の仕組みが無い (Claude Codeは会話履歴の保存場所・形式が異なるため未実装)
+3. **双方向 Git 自動同期 (`obsidian-vault-sync`)**:
+   - Linux / WSL では `systemd --user` タイマー (`obsidian-vault-sync.timer`)、macOS では `launchd.agents.obsidian-vault-sync` が30分おきに起動。
+   - `git pull --rebase --autostash` → `git add -A` → `git commit` → `git push` を自動実行するため、Web チャット（GitHub 経由）や別 OS から書き込んだ内容も自動でローカル Vault に取り込まれる。
 
 ---
 
-## 他OSでの扱い
+## Vault ディレクトリ構成（6フォルダ・ゼロ迷い設計）
 
-NixOS・macOSではこのモジュールをimportしていません。Vaultのパスハードコード (`/mnt/c/Users/tnaru/...`) がWindowsパス前提であることもあり，他OS向けには未移植です。
+| ディレクトリ | 役割 |
+| :--- | :--- |
+| `00_Inbox/` | 分類に迷う思いつき・一時メモを即座に放り込む場所 |
+| `01_Daily/` | **1日1ファイル (`YYYY/MM/YYYY-MM-DD.md`)**。日常メモ・ToDo・AI セッション要約を時系列集約（Obsidian デイリーノートと完全一致） |
+| `02_Projects/` | 明確なゴールがある研究・開発プロジェクト (`<repo-name>/Status.md`) |
+| `03_Areas/` | 終わりがない継続的な日常・大学・生活領域 (`university-lab.md`, `life-routines.md` 等) |
+| `04_Knowledge/` | `mistakes.md`（再発防止教訓）、`Tech/`（技術知見）、`Decisions/`（設計判断） |
+| `05_Meta/` | `PICKUP.md`（AI が最初に読む現在地ダッシュボード）、`profile.md`（ユーザー情報）、`Templates/` |
+
+---
+
+## 専用 CLI `ob` コマンド
+
+AI エージェントおよび人間がターミナルから高速に Vault を操作するための CLI です。
+
+| コマンド | 動作 |
+| :--- | :--- |
+| `ob` / `ob pickup` | `05_Meta/PICKUP.md` と今日のデイリーノートを表示 |
+| `ob path` | 現在の環境の Vault パスを表示 |
+| `ob today [--print]` | 今日のデイリーノート (`01_Daily/YYYY/MM/YYYY-MM-DD.md`) を生成して `$EDITOR` で開く（`--print` で標準出力） |
+| `ob memo <text...>` | 今日のデイリーノートに `- HH:MM <text>` を1行即追記 |
+| `ob journal <title> [summary...]` | 今日のデイリーノートに AI セッション要約を追記（標準入力も可） |
+| `ob note <type> <slug> <title> [proj]` | 規約フロントマター付きノートを作成 (`type`: `tech` / `decision` / `project` / `area` / `inbox`) |
+| `ob search <query>` | `ripgrep` で Vault 内を高速全文検索 |
+| `ob list [subdir]` | Vault 内のノート一覧を表示 |
+| `ob sync` | 手動で即座に双方向 Git 同期を実行 |
 
 ---
 
@@ -54,4 +63,6 @@ NixOS・macOSではこのモジュールをimportしていません。Vaultの�
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/services/obsidian-mcp.nix` | MCP設定生成・`agy-brain`/`gemini-brain`ラッパー・Vault作成フックの実装 |
+| `modules/services/obsidian-mcp.nix` | `services.obsidianBrain` オプション定義・`ob` CLI・Skill シンボリックリンク・自動同期タイマー |
+| `modules/apps/claude-code/default.nix` | `~/.claude/CLAUDE.md` と `~/.gemini/GEMINI.md` の単一ソース生成 |
+| `modules/apps/claude-code/CLAUDE.md` | 全 AI エージェント共通のグローバルベース指示 |

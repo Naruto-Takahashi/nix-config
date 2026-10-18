@@ -41,4 +41,4 @@
 
 | ドキュメント | 内容 |
 | :--- | :--- |
-| [obsidian-mcp.md](obsidian-mcp.md) | WSL2専用: ObsidianをAIエージェントの外部脳として使うMCP連携 |
+| [obsidian-mcp.md](obsidian-mcp.md) | 全OS共通: Obsidianを日常管理・AIエージェントの外部脳として使う連携基盤 (`ob` CLI / 共通Skill / 自動Git同期) |

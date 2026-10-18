@@ -13,10 +13,12 @@
     ../../modules/input/kanata/wsl.nix
     ../../modules/wm/komorebi
     ../../modules/wm/yasb
-    ../../modules/services/obsidian-mcp.nix
     ../../modules/apps/vivaldi
     ../../modules/desktop/packages.nix
   ];
+
+  # WSL では Windows 側の Obsidian デスクトップアプリが直接開く Vault を正本とする
+  services.obsidianBrain.vaultPath = "/mnt/c/Users/tnaru/Obsidian/Vault";
 
   # -----------------------------------------------------------------------
   # ユーザーメタデータ & 基本システム設定

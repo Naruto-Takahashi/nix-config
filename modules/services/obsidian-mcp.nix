@@ -1,300 +1,387 @@
 # =========================================================================
-# Obsidian MCP 連携サービス設定モジュール
+# Obsidian External Brain (v2) 連携モジュール
 # =========================================================================
+# 責務の分離:
+# - Vault構造・ルール・Skill本体 (.agents/skills/obsidian-brain/SKILL.md, AGENTS.md) は
+#   obsidian-vault リポジトリ側が正本として自己完結保持する。
+# - 本モジュール (nix-config) は OS レイヤーの配線のみを担う:
+#   1. 全OS共通の軽量操作CLI `ob` と双方向Git同期 `obsidian-vault-sync` の提供
+#   2. Claude Code / Antigravity CLI の skills ディレクトリから Vault 内 SKILL.md への結線
+#   3. グローバル指示 (CLAUDE.md / GEMINI.md) への最小ポインタ注入
+#   4. 30分おきの自動同期タイマー (Linux: systemd.user / macOS: launchd.agents)
 { config, pkgs, lib, ... }:
 
 let
-  # --- Obsidian Vault の場所 (WSL から見た Windows 側パス) ---
-  vaultPath = "/mnt/c/Users/tnaru/Obsidian/Vault";
+  cfg = config.services.obsidianBrain;
 
-  # --- 共通ルールプロンプトの定義 ---
-  rulePrompt = ''
-    あなたは私のAIアシスタントです。
-    ObsidianのVaultを「外部脳」として扱い、セッションを跨いで知識を引き継いでください。
-    MCP経由（obsidianツール）でObsidianを読み書きできます。
-
-    ---
-
-    【行動ルール】
-    1. 読み取り（セッション開始時に必ず実行）：
-       - 行動ルール（04_Library/Knowledge/mistakes.md）と、05_Profile/ 配下のユーザープロファイルを最初に必ず読み込んでください。
-       - 私の質問に関連するキーワードでVaultを検索し、ヒットしたノートを読んでその内容を踏まえて回答してください。
-
-    2. 書き込み（その場でVaultに書き込みます。「後で書く」は行いません）：
-       - バグ解決、設定ハマり対策、新しい発見などは「04_Library/Knowledge/」に書き込む。
-       - 判断・設計の方針決定は「04_Library/Decisions/」に書き込む。
-       - プロジェクトの状態変更は「03_Projects/」に書き込む。
-       - ユーザーの好みの発見は「05_Profile/」に書き込む。
-
-    3. 書き込みフォーマット：
-       ノートには必ず以下のYAMLフロントマターを付与してください：
-       ---
-       date: YYYY-MM-DD
-       tags: [relevant, tags]
-       project: project-name
-       related: [[Other Note]]
-       ---
-       タイトル
-       本文。関連ノートには [[wiki link]] でリンクする。
-
-    4. mistakes.md への追記ルール：
-       ユーザーから明示的な訂正を受け、かつ「繰り返し起こり得るパターン」を満たす場合、即座に 04_Library/Knowledge/mistakes.md に追記してください。
-
-    5. 報告：
-       Obsidianを読み書きしたら、必ずユーザーに伝えてください。
-
-    ---
-    それでは、指示通り初期ファイルを読み込んでから回答を開始してください。
-  '';
-
-  # --- agy-brain (Antigravity用連携スクリプト) ---
-  agy-brain = pkgs.writeShellApplication {
-    name = "agy-brain";
-    runtimeInputs = [ pkgs.gum pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
-    excludeShellChecks = [ "SC2012" ];
-    text = ''
-      VAULT_PATH="${vaultPath}"
-      RULE_PROMPT="${rulePrompt}"
-
-      echo "=== Obsidian 外部脳連携 Antigravity CLI ==="
-      
-      BRAIN_DIR="$HOME/.gemini/antigravity-cli/brain"
-      PREV_LATEST=""
-      if [ -d "$BRAIN_DIR" ]; then
-        PREV_LATEST=$(ls -td "$BRAIN_DIR"/*/ 2>/dev/null | head -n 1)
-      fi
-
-      antigravity-cli --prompt-interactive "$RULE_PROMPT"
-
-      echo "対話セッションが終了しました。会話履歴をObsidianに保存します。"
-      sleep 2
-      
-      if [ -d "$BRAIN_DIR" ]; then
-        NEW_LATEST=$(ls -td "$BRAIN_DIR"/*/ 2>/dev/null | head -n 1)
-        if [ -n "$NEW_LATEST" ] && [ "$NEW_LATEST" != "$PREV_LATEST" ]; then
-          # 02_Journal/Antigravity のようなツール別フォルダは作らず、
-          # 日付ベースの02_Journal/YYYY/MM/に統一する (2026-07-27、
-          # 02_Journal/README.mdが定義する唯一の運用ルールに合わせるため)。
-          # ツールの区別はfrontmatterのtagsで行う。
-          DATE_STR=$(date "+%Y-%m-%d_%H-%M-%S")
-          LOG_DIR="$VAULT_PATH/02_Journal/$(date "+%Y")/$(date "+%m")"
-          mkdir -p "$LOG_DIR"
-          LOG_FILE="$LOG_DIR/$DATE_STR.md"
-
-          TRANSCRIPT_PATH="$NEW_LATEST/transcript.jsonl"
-          if [ -f "$TRANSCRIPT_PATH" ]; then
-            SESSION_ID=$(basename "$NEW_LATEST")
-            # 生ログ(アシスタントの応答・思考プロセス全文)は保存しない
-            # (Vaultの肥大化・陳腐化の主因だったため2026-07-27に方針変更)。
-            # ユーザー発言だけを抜き出した軽量な箇条書き要約に留める。
-            # 重要な知見・決定はセッション中にルールプロンプトが
-            # Knowledge/Decisions/Projectsへ直接書き込ませている
-            {
-              echo "---"
-              echo "date: $(date "+%Y-%m-%d")"
-              echo "tags: [ai-log, antigravity, summary]"
-              echo "session_id: $SESSION_ID"
-              echo "---"
-              echo "# Antigravity CLI セッション要約 (ユーザー発言のみ)"
-              echo ""
-              jq -r 'select(.type=="USER_INPUT") | "- " + ((.content // "") | gsub("\n"; " "))' "$TRANSCRIPT_PATH"
-            } > "$LOG_FILE"
-            echo "-> セッション要約を保存しました: $LOG_FILE"
-          fi
-        fi
-      fi
-    '';
-  };
-
-  # --- gemini-brain (Gemini-CLI用連携スクリプト) ---
-  gemini-brain = pkgs.writeShellApplication {
-    name = "gemini-brain";
-    runtimeInputs = [ pkgs.ripgrep pkgs.jq pkgs.coreutils pkgs.findutils ];
-    excludeShellChecks = [ "SC2012" ];
-    text = ''
-      VAULT_PATH="${vaultPath}"
-      RULE_PROMPT="${rulePrompt}"
-
-      echo "=== Obsidian 外部脳連携 Gemini CLI ==="
-      
-      PROJECT_NAME=$(basename "$(pwd)")
-      HISTORY_DIR="$HOME/.gemini/tmp/$PROJECT_NAME/chats"
-      PREV_LATEST=""
-      if [ -d "$HISTORY_DIR" ]; then
-        PREV_LATEST=$(ls -t "$HISTORY_DIR"/session-*.jsonl 2>/dev/null | head -n 1)
-      fi
-
-      gemini --prompt-interactive "$RULE_PROMPT"
-
-      echo "対話セッションが終了しました。会話履歴をObsidianに保存します。"
-      sleep 2
-      
-      if [ -d "$HISTORY_DIR" ]; then
-        NEW_LATEST=$(ls -t "$HISTORY_DIR"/session-*.jsonl 2>/dev/null | head -n 1)
-        if [ -n "$NEW_LATEST" ] && [ "$NEW_LATEST" != "$PREV_LATEST" ]; then
-          # 02_Journal/Gemini のようなツール別フォルダは作らず、
-          # 日付ベースの02_Journal/YYYY/MM/に統一する (2026-07-27、
-          # 02_Journal/README.mdが定義する唯一の運用ルールに合わせるため)。
-          # ツールの区別はfrontmatterのtagsで行う。
-          DATE_STR=$(date "+%Y-%m-%d_%H-%M-%S")
-          LOG_DIR="$VAULT_PATH/02_Journal/$(date "+%Y")/$(date "+%m")"
-          mkdir -p "$LOG_DIR"
-          LOG_FILE="$LOG_DIR/$DATE_STR.md"
-
-          # 生ログ(アシスタントの応答・思考プロセス全文)は保存しない
-          # (Vaultの肥大化・陳腐化の主因だったため2026-07-27に方針変更)。
-          # ユーザー発言だけを抜き出した軽量な箇条書き要約に留める。
-          # 重要な知見・決定はセッション中にルールプロンプトが
-          # Knowledge/Decisions/Projectsへ直接書き込ませている
-          {
-            echo "---"
-            echo "date: $(date "+%Y-%m-%d")"
-            echo "tags: [ai-log, gemini, summary]"
-            echo "project: $PROJECT_NAME"
-            echo "---"
-            echo "# Gemini CLI セッション要約 (ユーザー発言のみ)"
-            echo ""
-            jq -r 'select(.type=="user") | "- " + ((.content[0].text // "") | gsub("\n"; " "))' "$NEW_LATEST"
-          } > "$LOG_FILE"
-          echo "-> セッション要約を保存しました: $LOG_FILE"
-        fi
-      fi
-    '';
-  };
-
-  # --- vaultPath自体のgit自動commit&push ---
-  # Vault (/mnt/c/Users/tnaru/Obsidian/Vault) は元からgit管理下
-  # (obsidian-vault リポジトリのworking copy) だが、コミット・pushは
-  # 手動運用だったため自動化する。AIエージェント(Claude/Gemini/Antigravity)
-  # がその場で書き込んだ内容も取りこぼさないよう、変更があれば無条件でcommitする。
+  # --- 双方向Git自動同期スクリプト (pull --rebase --autostash + commit + push) ---
   obsidian-vault-sync = pkgs.writeShellApplication {
     name = "obsidian-vault-sync";
-    runtimeInputs = [ pkgs.git ];
+    runtimeInputs = [ pkgs.git pkgs.openssh pkgs.coreutils ];
     text = ''
-      cd "${vaultPath}"
+      VAULT_PATH="''${OBSIDIAN_VAULT_PATH:-${cfg.vaultPath}}"
 
-      # gitリポジトリでなければ何もしない (初回セットアップがまだの環境等)
-      if [ ! -d .git ]; then
-        echo "obsidian-vault-sync: ${vaultPath} はgitリポジトリではないためスキップ"
+      if [ ! -d "$VAULT_PATH/.git" ]; then
+        echo "obsidian-vault-sync: $VAULT_PATH はgitリポジトリではないためスキップ"
         exit 0
       fi
+
+      cd "$VAULT_PATH"
+
+      # Webチャット (GitHub連携) や他OSからの変更を先に取り込む
+      git pull --rebase --autostash -q || echo "obsidian-vault-sync: pull --rebase に失敗 (オフラインまたは競合)" >&2
 
       git add -A
 
-      if git diff --cached --quiet; then
-        exit 0
+      if ! git diff --cached --quiet; then
+        git commit -q -m "auto: vault sync $(date '+%Y-%m-%d %H:%M:%S')"
       fi
 
-      git commit -q -m "auto: vault sync $(date '+%Y-%m-%d %H:%M:%S')"
-      # ネットワーク不通等でpushが失敗してもタイマー自体は落とさない
-      # (次回実行時に前回分もまとめてpushされる)
-      git push -q || echo "obsidian-vault-sync: pushに失敗 (次回リトライされます)" >&2
+      # ローカルに未pushのコミットがあればpushする
+      if [ -n "$(git status -sb 2>/dev/null | grep '\[ahead ' || true)" ]; then
+        git push -q || echo "obsidian-vault-sync: pushに失敗 (次回リトライされます)" >&2
+      fi
     '';
   };
 
-  # --- Claude Code 用ルール (CLAUDE.md) ---
-  # agy-brain/gemini-brain の rulePrompt と同内容だが、Claude Codeには
-  # ラッパースクリプトによるプロンプト強制注入の仕組みが無いため、
-  # 標準の~/.claude/CLAUDE.md (グローバル、全プロジェクトで自動読込) に
-  # 置くことで同じ「セッション開始時に必ず読む/その場で書く」を実現する。
-  # ツール名はClaude Code側のMCPツール実名 (mcp__obsidian__*) に合わせている。
-  claudeObsidianRules = ''
-    # Obsidian Vault 連携 (外部脳)
+  # --- 軽量外部脳操作CLI (ob) ---
+  ob-cli = pkgs.writeShellApplication {
+    name = "ob";
+    runtimeInputs = [
+      pkgs.ripgrep
+      pkgs.git
+      pkgs.coreutils
+      pkgs.findutils
+      obsidian-vault-sync
+    ];
+    text = ''
+      VAULT_PATH="''${OBSIDIAN_VAULT_PATH:-${cfg.vaultPath}}"
 
-    ObsidianのVaultを「外部脳」として扱い、セッションを跨いで知識を引き継ぐ。MCP経由 (`mcp__obsidian__*` ツール群) でVaultを読み書きできる。
+      ensure_daily() {
+        local year month day daily_dir daily_file
+        year="$(date +%Y)"
+        month="$(date +%m)"
+        day="$(date +%Y-%m-%d)"
+        daily_dir="$VAULT_PATH/01_Daily/$year/$month"
+        daily_file="$daily_dir/$day.md"
+        mkdir -p "$daily_dir"
+        if [ ! -f "$daily_file" ]; then
+          cat <<EOF > "$daily_file"
+      ---
+      date: $day
+      tags: [daily]
+      ---
+      # $day
 
-    ## 行動ルール
+      ## Tasks / Focus
+      - [ ] 
 
-    1. **読み取り (セッション開始時、最初のツール呼び出しとして必ず実行)**
-       - `mcp__obsidian__read_note` で `04_Library/Knowledge/mistakes.md` と `05_Profile/` 配下のユーザープロファイルを読む
-       - ユーザーの質問に関連するキーワードで `mcp__obsidian__search_notes` を実行し、ヒットしたノートを読んでから回答する
+      ## Memo / Life Log
 
-    2. **書き込み (気づいた・決まったその場で書く。「後で書く」はしない)**
-       - バグ解決・設定のハマり対策・新しい発見 → `04_Library/Knowledge/`
-       - 判断・設計の方針決定 → `04_Library/Decisions/`
-       - プロジェクトの状態変更 → `03_Projects/`
-       - ユーザーの好みの発見 → `05_Profile/`
-       - `mcp__obsidian__write_note` (新規) または `mcp__obsidian__patch_note` (既存ノートへの追記) を使う
+      ## AI Sessions
+      EOF
+        fi
+        printf '%s\n' "$daily_file"
+      }
 
-    3. **書き込みフォーマット**
-       ノートには必ず以下のYAMLフロントマターを付与する:
-       ```
-       ---
-       date: YYYY-MM-DD
-       tags: [relevant, tags]
-       project: project-name
-       related: [[Other Note]]
-       ---
-       タイトル
+      cmd="''${1:-pickup}"
+      if [ "$#" -gt 0 ]; then
+        shift
+      fi
 
-       本文。関連ノートには [[wiki link]] でリンクする。
-       ```
+      case "$cmd" in
+        pickup|status)
+          echo "=== [05_Meta/PICKUP.md] ==="
+          if [ -f "$VAULT_PATH/05_Meta/PICKUP.md" ]; then
+            cat "$VAULT_PATH/05_Meta/PICKUP.md"
+          else
+            echo "(PICKUP.md が見つかりません: $VAULT_PATH/05_Meta/PICKUP.md)"
+          fi
+          today_file="$VAULT_PATH/01_Daily/$(date +%Y)/$(date +%m)/$(date +%Y-%m-%d).md"
+          if [ -f "$today_file" ]; then
+            echo ""
+            echo "=== [Today: 01_Daily/$(date +%Y/%m/%Y-%m-%d).md] ==="
+            cat "$today_file"
+          fi
+          ;;
 
-    4. **mistakes.md への追記ルール**
-       ユーザーから明示的な訂正を受け、かつ「繰り返し起こり得るパターン」を満たす場合、即座に `mcp__obsidian__patch_note` で `04_Library/Knowledge/mistakes.md` に追記する
+        path)
+          printf '%s\n' "$VAULT_PATH"
+          ;;
 
-    5. **報告**
-       Obsidianを読み書きしたら、何を読んだ/書いたか(パス)を必ずユーザーに伝える
+        search|rg)
+          if [ "$#" -eq 0 ]; then
+            echo "Usage: ob search <query>" >&2
+            exit 1
+          fi
+          rg --smart-case --line-number --heading \
+            -g '!.git' -g '!.obsidian' -g '!.trash' -g '!.agents' \
+            "$*" "$VAULT_PATH" || true
+          ;;
 
-    6. **フォールバック**
-       `mcp__obsidian__*` ツールが見当たらない場合 (MCPサーバー未接続)、その旨をユーザーに伝えて通常の対応を続ける。無言でスキップしない
+        list|ls)
+          target_dir="$VAULT_PATH/''${1:-}"
+          find "$target_dir" \
+            -path '*/.git' -prune -o \
+            -path '*/.obsidian' -prune -o \
+            -path '*/.trash' -prune -o \
+            -type f -name '*.md' -print | sed "s|^$VAULT_PATH/||" | sort
+          ;;
+
+        today|daily)
+          daily_file="$(ensure_daily)"
+          if [ "''${1:-}" = "--print" ] || [ ! -t 1 ]; then
+            echo "File: $daily_file"
+            cat "$daily_file"
+          else
+            "''${EDITOR:-nvim}" "$daily_file"
+          fi
+          ;;
+
+        memo|add)
+          if [ "$#" -eq 0 ]; then
+            echo "Usage: ob memo <text...>" >&2
+            exit 1
+          fi
+          daily_file="$(ensure_daily)"
+          time_str="$(date +%H:%M)"
+          printf '\n- %s %s\n' "$time_str" "$*" >> "$daily_file"
+          echo "-> 追記しました: $daily_file (- $time_str $*)"
+          ;;
+
+        journal|log)
+          if [ "$#" -eq 0 ]; then
+            echo "Usage: ob journal <title> [summary...]" >&2
+            exit 1
+          fi
+          title="$1"
+          shift
+          daily_file="$(ensure_daily)"
+          time_str="$(date +%H:%M)"
+          body=""
+          if [ "$#" -gt 0 ]; then
+            body="$*"
+          elif [ ! -t 0 ]; then
+            body="$(cat)"
+          fi
+          {
+            echo ""
+            echo "### $time_str $title"
+            if [ -n "$body" ]; then
+              echo "$body"
+            fi
+          } >> "$daily_file"
+          echo "-> デイリーノートにセッション要約を記録しました: $daily_file"
+          ;;
+
+        note|new)
+          if [ "$#" -lt 3 ]; then
+            echo "Usage: ob note <tech|decision|project|area|inbox> <slug> <title> [project] [tags]" >&2
+            exit 1
+          fi
+          ntype="$1"
+          slug="$2"
+          title="$3"
+          proj="''${4:-}"
+          tags="''${5:-}"
+          day="$(date +%Y-%m-%d)"
+
+          case "$ntype" in
+            tech|knowledge)
+              rel_dir="04_Knowledge/Tech"
+              default_tags="knowledge, tech"
+              target_file="$VAULT_PATH/$rel_dir/$slug.md"
+              ;;
+            decision|decisions)
+              rel_dir="04_Knowledge/Decisions"
+              default_tags="decision"
+              target_file="$VAULT_PATH/$rel_dir/$slug.md"
+              ;;
+            project|projects)
+              rel_dir="02_Projects/$slug"
+              default_tags="project, status"
+              target_file="$VAULT_PATH/$rel_dir/Status.md"
+              ;;
+            area|areas)
+              rel_dir="03_Areas"
+              default_tags="area"
+              target_file="$VAULT_PATH/$rel_dir/$slug.md"
+              ;;
+            inbox)
+              rel_dir="00_Inbox"
+              default_tags="inbox"
+              target_file="$VAULT_PATH/$rel_dir/$slug.md"
+              ;;
+            *)
+              echo "Unknown note type: $ntype (expected: tech|decision|project|area|inbox)" >&2
+              exit 1
+              ;;
+          esac
+
+          mkdir -p "$(dirname "$target_file")"
+          use_tags="''${tags:-$default_tags}"
+          body=""
+          if [ ! -t 0 ]; then
+            body="$(cat)"
+          fi
+
+          {
+            echo "---"
+            echo "date: $day"
+            echo "tags: [$use_tags]"
+            if [ -n "$proj" ]; then
+              echo "project: $proj"
+            fi
+            echo "---"
+            echo "# $title"
+            echo ""
+            if [ -n "$body" ]; then
+              echo "$body"
+            fi
+          } > "$target_file"
+          echo "-> ノートを作成しました: $target_file"
+          ;;
+
+        sync)
+          obsidian-vault-sync
+          echo "-> Vault の Git 同期が完了しました ($VAULT_PATH)"
+          ;;
+
+        help|--help|-h|*)
+          cat <<EOF
+      ob - Obsidian External Brain CLI (Vault: $VAULT_PATH)
+
+      Usage:
+        ob [pickup]                              05_Meta/PICKUP.md と今日のデイリーノートを表示
+        ob path                                  Vault のパスを表示
+        ob search <query>                        Vault 内を ripgrep で高速検索
+        ob list [subdir]                         Vault 内のノート一覧を表示
+        ob today [--print]                       今日のデイリーノート (01_Daily/YYYY/MM/YYYY-MM-DD.md) を開く/表示
+        ob memo <text...>                        今日のデイリーノートに時刻付き1行メモを即追記
+        ob journal <title> [summary...]          今日のデイリーノートにAIセッション要約を追記 (stdin対応)
+        ob note <type> <slug> <title> [proj]     規約フロントマター付きノートを作成 (type: tech|decision|project|area|inbox)
+        ob sync                                  双方向 Git 同期 (pull --rebase --autostash + commit + push)
+      EOF
+          ;;
+      esac
+    '';
+  };
+
+  # --- CLAUDE.md / GEMINI.md に注入するコンパクトな外部脳ルール ---
+  # 詳細なフォーマットやフォルダ仕様は Vault 内の Skill (.agents/skills/obsidian-brain/SKILL.md)
+  # に集約し、常時プロンプトには最小限のトリガー条件のみを持たせてトークン消費を抑える。
+  obsidianBrainInstructions = ''
+    ---
+
+    ## Obsidian External Brain (The Context Garden v2)
+
+    Obsidian Vault（パス: `${cfg.vaultPath}`）を日常・研究・開発すべてを一元化する「外部脳」として扱い、セッションを跨いで文脈と知識を維持する。
+    操作には重いMCPサーバーは使わず、**AIの標準ファイル操作ツール（Read/Edit/Write/Grep）** または **専用CLI `ob` コマンド** を直接使用する。詳細な規約は `obsidian-brain` スキル（`${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md`）を参照すること。
+
+    ### 1. 読み取り（セッション開始時）
+    - **最小読み込み**: セッション開始時はまず `${cfg.vaultPath}/05_Meta/PICKUP.md` を読む（または `ob pickup` を実行する）だけでよい。
+    - **オンデマンド参照**: タスクに関連する場合のみ、`PICKUP.md` 内のリンク（`02_Projects/*/Status.md`、`03_Areas/*.md`、`04_Knowledge/mistakes.md` 等）を辿るか、`ob search <query>` で必要な箇所だけを読む。
+
+    ### 2. 書き込み（気づいた・決まったその場で書く。「後で書く」はしない）
+    - **バグ解決・ハマり対策・技術知見** → `04_Knowledge/Tech/<slug>.md`（`ob note tech <slug> "<title>"`）
+    - **設計・方針の意思決定（なぜそう決めたか）** → `04_Knowledge/Decisions/<slug>.md`（`ob note decision <slug> "<title>"`）
+    - **研究・開発プロジェクトの進捗変化** → `02_Projects/<project>/Status.md`
+    - **大学・日常生活・継続領域の記録** → `03_Areas/<topic>.md`
+    - **ユーザーの好み・属性の発見** → `05_Meta/profile.md`
+    - **ユーザーからの訂正で再発しうる教訓** → `04_Knowledge/mistakes.md` に即追記
+    - **分類に迷う一時メモ** → `00_Inbox/<slug>.md` または `ob memo "<text>"`
+    - ※新規作成前には必ず `ob search` で既存ノートを確認し、重複テーマがあれば既存ノートへ統合・追記する。
+
+    ### 3. セッション区切り・終了時の行動
+    - 意味のある作業を行ったセッションの区切り・終了時には、`ob journal "<タイトル>" "<要点>"` でその日のデイリーノート（`01_Daily/YYYY/MM/YYYY-MM-DD.md`）に簡潔な要約を追記し、注力事項に変化があれば `05_Meta/PICKUP.md` を更新する。
+    - Vault を読み書きした際は、参照・更新したノートを簡潔にユーザーへ伝えること。
   '';
 in
 {
-  # --- 連携パッケージの追加 ---
-  home.packages = [
-    agy-brain
-    gemini-brain
-  ];
+  options.services.obsidianBrain = {
+    enable = lib.mkEnableOption "Obsidian External Brain 連携 (ob CLI / Skill配線 / 自動git sync)";
 
-  # --- mcp_config.json の生成 ---
-  # ~/.gemini/config/mcp_config.json の宣言的生成を行います。
-  home.file."${config.home.homeDirectory}/.gemini/config/mcp_config.json".text = builtins.toJSON {
-    mcpServers = {
-      obsidian = {
-        command = "npx";
-        # @bitbonsai/mcpvault はVaultパスを環境変数(OBSIDIAN_VAULT)ではなく
-        # 位置引数で受け取る仕様 (省略時はカレントディレクトリをVault扱いする)。
-        # 以前は誤って環境変数経由 + ~/ghq/.../obsidian-vault (git バックアップ用
-        # クローン、実際のノートは入っていない) を指していた。Obsidianアプリ・
-        # agy-brain/gemini-brain が実際に読み書きするVaultに合わせる
-        args = [ "-y" "@bitbonsai/mcpvault" vaultPath ];
+    vaultPath = lib.mkOption {
+      type = lib.types.str;
+      default = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/obsidian-vault";
+      description = ''
+        Obsidian Vault (obsidian-vault リポジトリ) のローカルパス。
+        WSL では /mnt/c/Users/tnaru/Obsidian/Vault、Mac/NixOS では
+        ~/ghq/github.com/Naruto-Takahashi/obsidian-vault を指す。
+      '';
+    };
+  };
+
+  config = lib.mkIf cfg.enable {
+    home.packages = [
+      ob-cli
+      obsidian-vault-sync
+    ];
+
+    home.sessionVariables = {
+      OBSIDIAN_VAULT_PATH = cfg.vaultPath;
+    };
+
+    # Claude Code と Antigravity/Gemini 両方のグローバル指示に外部脳ポインタを注入
+    programs.claudeCode.extraInstructions = [ obsidianBrainInstructions ];
+
+    # Vault 自体が持つ .agents/skills/obsidian-brain/SKILL.md を
+    # Claude Code と Antigravity CLI の両方のグローバルスキルへ直結する。
+    # Out-of-store symlink にすることで、Vault 側で SKILL.md を編集した瞬間に
+    # home-manager switch 無しで両エージェントに即時反映される。
+    home.file.".claude/skills/obsidian-brain/SKILL.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
+    home.file.".gemini/config/skills/obsidian-brain/SKILL.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
+
+    # 旧 @bitbonsai/mcpvault 設定を空にして不要な Node.js MCP 起動を防ぐ
+    home.file.".gemini/config/mcp_config.json".text = builtins.toJSON {
+      mcpServers = { };
+    };
+
+    # Vault ディレクトリ初期化 & ~/.claude.json に残存する旧 obsidian MCP 定義の自動クリーンアップ
+    home.activation.setupObsidianBrain = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "${cfg.vaultPath}"
+      if [ -f "$HOME/.claude.json" ] && ${pkgs.jq}/bin/jq -e '.mcpServers.obsidian' "$HOME/.claude.json" >/dev/null 2>&1; then
+        $DRY_RUN_CMD ${pkgs.jq}/bin/jq 'del(.mcpServers.obsidian)' "$HOME/.claude.json" > "$HOME/.claude.json.tmp"
+        $DRY_RUN_CMD mv "$HOME/.claude.json.tmp" "$HOME/.claude.json"
+      fi
+    '';
+
+    # --- Linux / WSL: systemd --user タイマー (30分おきに双方向sync) ---
+    systemd.user.services = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      obsidian-vault-sync = {
+        Unit.Description = "Obsidian Vault の双方向 git sync (pull --rebase & commit & push)";
+        Service = {
+          Type = "oneshot";
+          ExecStart = "${obsidian-vault-sync}/bin/obsidian-vault-sync";
+        };
       };
     };
-  };
-
-  # Claude Codeはグローバル ~/.claude/CLAUDE.md を全プロジェクトで自動的に
-  # 読み込むため、宣言的に配置するだけで自律的な読み書きが有効になる。
-  # CLAUDE.md自体の生成は modules/apps/claude-code が一元管理しているため、
-  # ここでは追加ルールとして注入するのみ
-  programs.claudeCode.extraInstructions = [ claudeObsidianRules ];
-
-  # --- Obsidian Vault作成アクティベーションフック ---
-  # ObsidianのVaultディレクトリを初期作成するフックです。
-  home.activation = {
-    createObsidianVault = lib.hm.dag.entryAfter ["writeBoundary"] ''
-      $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "${vaultPath}"
-    '';
-  };
-
-  # --- Vault自動sync用 systemd --user タイマー ---
-  # 30分おきにVaultの変更をcommit&pushする。WSL2はsystemd=trueが前提
-  # (/etc/wsl.conf)。ログオン中しか動かないため、ログオフ中の変更は
-  # 次回ログオン後の最初の実行でまとめて拾われる。
-  systemd.user.services.obsidian-vault-sync = {
-    Unit.Description = "Obsidian Vault の変更をgit commit & pushする";
-    Service = {
-      Type = "oneshot";
-      ExecStart = "${obsidian-vault-sync}/bin/obsidian-vault-sync";
+    systemd.user.timers = lib.mkIf pkgs.stdenv.hostPlatform.isLinux {
+      obsidian-vault-sync = {
+        Unit.Description = "obsidian-vault-sync を30分おきに実行";
+        Timer = {
+          OnStartupSec = "5m";
+          OnUnitActiveSec = "30m";
+          Persistent = true;
+        };
+        Install.WantedBy = [ "timers.target" ];
+      };
     };
-  };
-  systemd.user.timers.obsidian-vault-sync = {
-    Unit.Description = "obsidian-vault-sync を30分おきに実行";
-    Timer = {
-      OnStartupSec = "5m"; # ログオン直後の混雑を避けて少し待ってから初回実行
-      OnUnitActiveSec = "30m";
-      Persistent = true; # 前回実行を過ぎていたら起動直後に追いつき実行する
+
+    # --- macOS: launchd エージェント (30分おきに双方向sync) ---
+    launchd.agents = lib.mkIf pkgs.stdenv.hostPlatform.isDarwin {
+      obsidian-vault-sync = {
+        enable = true;
+        config = {
+          ProgramArguments = [ "${obsidian-vault-sync}/bin/obsidian-vault-sync" ];
+          StartInterval = 1800;
+          RunAtLoad = true;
+          StandardOutPath = "/tmp/obsidian-vault-sync.log";
+          StandardErrorPath = "/tmp/obsidian-vault-sync.err";
+        };
+      };
     };
-    Install.WantedBy = [ "timers.target" ];
   };
 }
