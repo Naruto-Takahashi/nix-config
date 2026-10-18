@@ -30,21 +30,21 @@ obsidian-vault/
 │
 │  === [Git管理領域: 00〜04 の連番] ===
 ├── 00-rules/                        # ルール・再発防止教訓 (mistakes.md)
-├── 01-knowledge/                    # 【シルバー層】自分に関する事実・整理した知識 (軽量 Johnny.Decimal)
-│   ├── 10-self/                     #   自分に関する事実 (profile.md) と設計判断 (decisions/)
-│   ├── 11-cs-fundamentals/          #   CS基礎・ネットワーク・OS・DB (例: LANとWANの違い.md)
-│   ├── 12-languages/                #   プログラミング言語 (Python, Rust, Nix, Lua 等)
-│   ├── 13-ai-security/              #   AI・機械学習・セキュリティ・パスワード研究知識
-│   ├── 14-devtools-infra/           #   開発ツール・OS環境設定・トラブル解決知見
-│   ├── 15-academic-career/          #   大学・研究室・論文執筆ノウハウ・キャリア
-│   └── 16-life-general/             #   日常生活・ライフ管理・お金・健康・一般教養
+├── 01-knowledge/                    # 【シルバー層】事実・整理した知識 (1X 大分類 × 1X.YZ 小分類 × 日本語タイトル)
+│   ├── 10-self/                     #   10.11-profile / 10.21-decisions
+│   ├── 11-cs-fundamentals/          #   11.11-architecture / 11.21-network / 11.31-security-theory
+│   ├── 12-languages/                #   12.11-python / 12.12-nix / 12.21-cpp / 12.22-rust / 12.31-verilog
+│   ├── 13-ai-security/              #   13.11-llm-dl / 13.21-hcp
+│   ├── 14-devtools-infra/           #   14.11-nix-env / 14.21-neovim / 14.22-terminal-cli / 14.23-wm-input / 14.31-remote-vpn / 14.32-data-extraction / 14.41-keyboards-devices
+│   ├── 15-academic-career/          #   15.11-sakurai-lab / 15.21-career-grad / 15.22-atcoder
+│   └── 16-life-general/             #   16.11-routines / 16.21-tax-admin / 16.31-side-projects
 ├── 02-output/                       # 【ゴールド層】成果物・進行中プロジェクト (<project>/Status.md)
 ├── 03-resources/                    # 【ブロンズ層】調べた記録・外部資料の原本 (書き換えない)
 ├── 04-daily/                        # 日誌 (YYYY/MM/YYYY-MM-DD.md)・現在地 (PICKUP.md)・テンプレート (_templates/)
 │
 │  === [Git管理外領域 (.gitignore): 90番台] ===
 ├── 90-private/                      # 認証・個人情報・機密メモ (Git管理外)
-├── 91-storage/                      # 大容量ファイル：動画・PDF等 (Git管理外)
+├── 91-storage/                      # 大容量ファイル：動画・PDF・エクスポート原本等 (Git管理外)
 └── 99-trash/                        # 削除の代わりの退避先 (Git管理外)
 ```
 
