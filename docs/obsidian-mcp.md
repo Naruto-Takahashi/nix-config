@@ -9,14 +9,14 @@
 1. **入り口の一本化 (`AGENTS.md`)**:
    - Vault ルートの `AGENTS.md` を唯一の入り口とし、`CLAUDE.md` は `@AGENTS.md` を参照します。
    - 詳細な手順書は `.agents/skills/obsidian-brain/SKILL.md` に格納され、`nix-config` が `~/.claude/skills/obsidian-brain/SKILL.md` と `~/.gemini/config/skills/obsidian-brain/SKILL.md` へシンボリックリンクで直結します。
-2. **メダリオン3層 × 番号固定構造**:
-   - GitHub でマシン間共有される領域を **`00`〜`04` の連番**、Git 管理外（`.gitignore`）の領域を **`90`番台** に分離しています。
-   - **ブロンズ層 (`03-resources/`)**: 調べた記録・外部資料の原本（書き換えない一次データ）。
-   - **シルバー層 (`01-knowledge/`)**: 自分に関する事実と、理解・再構成した知識（**`10`〜`16` の軽量 Johnny.Decimal 分類 ＋ 日本語タイトル**）。
-   - **ゴールド層 (`02-output/`)**: 研究・開発プロジェクトや最終成果物。
+2. **メダリオン3層 × Johnny.Decimal**:
+   - 最上位フォルダは Johnny.Decimal の領域として10刻みの番号を持ちます。GitHub でマシン間共有される領域は `00`〜`40`、Git 管理外（`.gitignore`）の領域は **`90`番台** です。
+   - **ブロンズ層 (`30-resources/`)**: 調べた記録・外部資料の原本（書き換えない一次データ）。
+   - **シルバー層 (`10-knowledge/`)**: 自分に関する事実と、理解・再構成した知識（**分類 `11`〜`17` × ID `1X.YZ` ＋ 日本語タイトル**。ノート間のリンクはファイル名だけで書く）。
+   - **ゴールド層 (`20-output/`)**: 研究・開発プロジェクトや最終成果物。
 3. **安全性 (`90-private/`・`91-storage/` の Git 除外 ＋ `gitleaks` 検査)**:
    - 認証情報・個人情報 (`90-private/`) や大容量ファイル (`91-storage/`)、削除代わりの退避先 (`99-trash/`) は `.gitignore` で保護されます。
-   - さらに `obsidian-vault-sync`（および `_scripts/check-secrets.sh`）がコミット直前に **`gitleaks protect --staged`** を実行し、万一 `00`〜`04` に API キー等の機密情報が紛れ込んでいた場合は自動でコミットをブロックします。
+   - さらに `obsidian-vault-sync`（および `_scripts/check-secrets.sh`）がコミット直前に **`gitleaks protect --staged`** を実行し、万一 Git 管理領域に API キー等の機密情報が紛れ込んでいた場合は自動でコミットをブロックします。
 
 ---
 
@@ -28,19 +28,14 @@ obsidian-vault/
 ├── .agents/skills/obsidian-brain/   # エージェントの手順書 (SKILL.md)
 ├── _scripts/                        # 機械で動かすスクリプト (ob.sh, sync.sh, check-secrets.sh)
 │
-│  === [Git管理領域: 00〜04 の連番] ===
+│  === [Git管理領域: 00〜40 の領域] ===
 ├── 00-rules/                        # 運用ルールの正本 (行動原則・キュレーション・記述規約・教訓)
-├── 01-knowledge/                    # 【シルバー層】事実・整理した知識 (1X 大分類 × 1X.YZ 小分類 × 日本語タイトル)
-│   ├── 10-self/                     #   10.11-profile / 10.21-decisions
-│   ├── 11-cs-fundamentals/          #   11.11-architecture / 11.21-network / 11.31-security-theory
-│   ├── 12-languages/                #   12.11-python / 12.12-nix / 12.21-cpp / 12.22-rust / 12.31-verilog
-│   ├── 13-ai-security/              #   13.11-ml-dl / 13.12-llm / 13.21-hcp
-│   ├── 14-devtools-infra/           #   14.11-nix-env / 14.21-neovim / 14.22-terminal-cli / 14.23-wm-input / 14.31-remote-vpn / 14.32-data-extraction / 14.41-hardware-devices / 14.42-embedded-sbc
-│   ├── 15-academic-career/          #   15.11-sakurai-lab / 15.21-career-grad / 15.22-atcoder
-│   └── 16-life-general/             #   16.11-routines / 16.21-tax-admin / 16.31-side-projects
-├── 02-output/                       # 【ゴールド層】成果物・進行中プロジェクト (<project>/Status.md)
-├── 03-resources/                    # 【ブロンズ層】調べた記録・外部資料の原本 (書き換えない)
-├── 04-daily/                        # 日誌 (YYYY/MM/YYYY-MM-DD.md)・現在地 (PICKUP.md)・テンプレート (_templates/)
+├── 10-knowledge/                    # 【シルバー層】事実・整理した知識 (分類 1X × ID 1X.YZ × 日本語タイトル。一覧の正本は Vault の AGENTS.md §2)
+│   ├── 11-self/  12-cs-fundamentals/  13-languages/  14-ai-security/
+│   └── 15-devtools-infra/  16-academic-career/  17-life-general/
+├── 20-output/                       # 【ゴールド層】成果物・進行中プロジェクト (<project>/Status.md)
+├── 30-resources/                    # 【ブロンズ層】調べた記録・外部資料の原本 (<project>/ か 1X-<分類>/ に置く。書き換えない)
+├── 40-daily/                        # 日誌 (YYYY/MM/YYYY-MM-DD.md)・現在地 (PICKUP.md)・テンプレート (_templates/)
 │
 │  === [Git管理外領域 (.gitignore): 90番台] ===
 ├── 90-private/                      # 認証・個人情報・機密メモ (Git管理外)
@@ -54,9 +49,9 @@ obsidian-vault/
 
 | コマンド | 動作 |
 | :--- | :--- |
-| `ob` / `ob pickup` | `04-daily/PICKUP.md` と今日の日誌を表示 |
+| `ob` / `ob pickup` | `40-daily/PICKUP.md` と今日の日誌を表示 |
 | `ob path` | 現在の環境の Vault パスを表示 |
-| `ob today [--print]` | 今日の日誌 (`04-daily/YYYY/MM/YYYY-MM-DD.md`) を生成して `$EDITOR` で開く |
+| `ob today [--print]` | 今日の日誌 (`40-daily/YYYY/MM/YYYY-MM-DD.md`) を生成して `$EDITOR` で開く |
 | `ob memo <text...>` | 今日の日誌に `- HH:MM <text>` を1行即追記 |
 | `ob journal <title> [summary...]` | 今日の日誌に AI セッション要約を追記（標準入力も可） |
 | `ob note <cat> <title> [proj]` | 日本語タイトル＋フロントマター付きノートを作成 (`cat`: `10`〜`16` / `output` / `resource` / `daily` / `private`) |
