@@ -58,37 +58,17 @@ let
     '';
   };
 
-  # --- CLAUDE.md / GEMINI.md に注入するコンパクトな外部脳ルール ---
+  # --- CLAUDE.md / GEMINI.md に注入する最小限の外部脳ポインタ ---
+  # フォルダ構成やルール詳細は Vault 側の正本 (AGENTS.md / SKILL.md) に一元化し、
+  # グローバル指示には「場所」と「発火タイミング」の3行だけを持たせて二重管理・競合を防ぐ。
   obsidianBrainInstructions = ''
     ---
 
-    ## Obsidian External Brain (Medallion × Lightweight Johnny.Decimal)
+    ## Obsidian External Brain 連携
 
-    Obsidian Vault（パス: `${cfg.vaultPath}`、唯一の入り口: `${cfg.vaultPath}/AGENTS.md`）を日常・大学・研究・開発すべてを一元化する「外部脳」として扱い、セッションを跨いで文脈と知識を維持する。
-    操作には重いMCPサーバーは使わず、**AIの標準ファイル操作ツール（Read/Edit/Write/Grep）** または **専用CLI `ob` コマンド（実体: `${cfg.vaultPath}/scripts/ob.sh`）** を直接使用する。詳細な規約は `obsidian-brain` スキル（`${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md`）を参照すること。
-
-    ### 1. 読み取り（セッション開始時）
-    - **最小読み込み**: セッション開始時はまず `${cfg.vaultPath}/04-todo/PICKUP.md` を読む（または `ob pickup` を実行する）だけでよい。
-    - **オンデマンド参照**: タスクに関連する場合のみ、`PICKUP.md` 内のリンク（`02-output/*/Status.md`、`00-rules/mistakes.md`、`01-knowledge/` 等）を辿るか、`ob search <query>` で必要な箇所だけを読む。
-
-    ### 2. フォルダ構造と書き込み先（気づいた・決まったその場で書く）
-    - **`00-rules/`**: AI・人間が守るべき運用ルール・再発防止教訓（訂正を受けた際は `00-rules/mistakes.md` に即追記）
-    - **`01-knowledge/`【シルバー層：事実・整理した知識】**（ノート名は**日本語タイトル**、例: `LANとWANの違い.md`）
-      - `10-self/`: 自分に関する事実（`profile.md`）および設計・方針の意思決定（`decisions/<日本語タイトル>.md`）
-      - `11-cs-fundamentals/`: CS基礎・ネットワーク・OS・DB（`ob note 11 "<タイトル>"`）
-      - `12-languages/`: プログラミング言語（`ob note 12 "<タイトル>"`）
-      - `13-ai-security/`: AI・機械学習・セキュリティ・パスワード研究知識（`ob note 13 "<タイトル>"`）
-      - `14-devtools-infra/`: 開発ツール・OS環境設定・トラブル解決知見（`ob note 14 "<タイトル>"`）
-      - `15-academic-career/`: 大学・研究室・キャリア（`ob note 15 "<タイトル>"`）
-      - `16-life-general/`: 日常生活・ライフ管理・一般教養（`ob note 16 "<タイトル>"`）
-    - **`02-output/`【ゴールド層：成果物】**: 研究・開発プロジェクトの進捗（`02-output/<project>/Status.md`）や最終成果物
-    - **`03-resources/`【ブロンズ層：原本】**: 調べた記録・外部資料の原本（書き換えない一次データ）
-    - **`04-todo/`**: 現在地（`PICKUP.md`）、未着手タスク、1日1ファイルの日誌（`daily/YYYY/MM/YYYY-MM-DD.md`）
-    - **`90-private/`・`91-storage/`・`99-trash/`**: `.gitignore` 管理外（機密情報・大容量ファイル・削除代わりの退避先）
-
-    ### 3. セッション区切り・終了時の行動
-    - 意味のある作業を行ったセッションの区切り・終了時には、`ob journal "<タイトル>" "<要点>"` でその日の日誌（`04-todo/daily/YYYY/MM/YYYY-MM-DD.md`）に簡潔な要約を追記し、注力事項に変化があれば `04-todo/PICKUP.md` を更新する。
-    - Vault を読み書きした際は、参照・更新したノートを簡潔にユーザーへ伝えること。
+    - **外部脳 (Vault) の場所**: `${cfg.vaultPath}`（唯一の入り口・構成定義: `${cfg.vaultPath}/AGENTS.md`、詳細手順スキル: `obsidian-brain`、専用CLI: `ob`）
+    - **セッション開始時**: まず `ob pickup`（または `${cfg.vaultPath}/04-todo/PICKUP.md` の読み取り）を実行し、現在の最優先事項と直近の文脈を把握する。
+    - **セッション中・終了時**: 新しい知識・設計判断・プロジェクト進捗変化・再発防止教訓は、`obsidian-brain` スキル（`${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md`）の規約に従ってその場で Vault に書き込み（`ob note` 等）、セッションの区切り・終了時は `ob journal "<タイトル>" "<要点>"` で日誌に記録して、読み書きした対象をユーザーへ簡潔に伝えること。
   '';
 in
 {
@@ -117,8 +97,9 @@ in
       OBSIDIAN_VAULT_PATH = cfg.vaultPath;
     };
 
-    # Claude Code と Antigravity/Gemini 両方のグローバル指示に外部脳ポインタを注入
+    # Claude Code と Gemini/Antigravity 両方のグローバル指示に最小ポインタを注入
     programs.claudeCode.extraInstructions = [ obsidianBrainInstructions ];
+    programs.geminiCli.extraInstructions = [ obsidianBrainInstructions ];
 
     # Vault 自体が持つ .agents/skills/obsidian-brain/SKILL.md を
     # Claude Code と Antigravity CLI の両方のグローバルスキルへ直結する。

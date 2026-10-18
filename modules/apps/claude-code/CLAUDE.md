@@ -1,6 +1,6 @@
-# グローバル指示 (Claude Code / Antigravity CLI / Gemini CLI 共通)
+# グローバル指示 (Claude Code)
 
-このファイルは `modules/apps/claude-code` が生成する `~/.claude/CLAUDE.md` および `~/.gemini/GEMINI.md` の共通ベース部分である。機能別の追加ルール（Obsidian外部脳連携など）は `programs.claudeCode.extraInstructions` 経由でこの下に自動追記される。
+このファイルは `modules/apps/claude-code` が生成する `~/.claude/CLAUDE.md` のベース部分である。機能別の追加ルール（Obsidian外部脳連携など）は `programs.claudeCode.extraInstructions` 経由でこの下に自動追記される。
 
 ---
 
@@ -35,8 +35,6 @@
 
 ---
 
-## 開発指針・補助ワークフロー
+## 開発指針
 
 - **CLIツール・スクリプト**: 起動オーバーヘッドを避けるため、可能な限り **Shell Script + curl + jq + gum** で高速・シンプルに実装する。研究・機械学習用途では **Python (`uv`)** や **Rust** を適切に活用する。
-- **クリップボード・スクリーンショット画像連携 (`/c` コマンド)**:
-  - ユーザーが `/c` コマンドを実行し出力に `"Image captured."` が含まれていた場合、またはスクリーンショットを確認する場合は、指定の一時画像パス（`.gemini/tmp/clipboard_image.png`）や `~/screenshots/`（または `~/Pictures/Screenshots/`）内の最新画像を画像対応のファイル読み取りツールで即座に確認する。

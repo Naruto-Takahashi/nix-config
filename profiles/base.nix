@@ -33,11 +33,13 @@
     ../modules/apps/git-hooks
     ../modules/apps/btop
     ../modules/apps/claude-code
+    ../modules/apps/gemini
     ../modules/services/obsidian-mcp.nix
     ../modules/theming/matugen
   ];
 
   programs.claudeCode.enable = true;
+  programs.geminiCli.enable = true;
   services.obsidianBrain.enable = true;
 
   # -----------------------------------------------------------------------
@@ -95,13 +97,6 @@
     pkgs.just # コマンドランナー (justfile に定型タスクをまとめる)
     pkgs.uv # Python パッケージ/プロジェクトマネージャ (pip+venv+poetry相当)。プロジェクト個別ではなく全ホスト共通で保証する
     # `cz commit` (対話コミット) は modules/apps/git-hooks で `cz` ラッパーとして提供
-
-    # AI連携ツール。ghq同様、以前はdesktop系ホストのみ
-    # modules/desktop/packages.nix経由で入っていたが、gchat/achatエイリアス
-    # (modules/shell/zsh/default.nix、全ホスト共通) がagyに依存しているため
-    # 全ホスト共通のここに移した (Mac/CLI専用ホストで欠けていた)
-    pkgs.gemini-cli
-    # claude-code本体は modules/apps/claude-code (programs.claudeCode.enable) が提供
-    pkgs.antigravity-cli # バイナリ名は agy。nixpkgs追従で更新 (手書きderivationのURL/hash固定はやめた)
+    # AI連携ツール本体は modules/apps/claude-code と modules/apps/gemini が提供
   ];
 }
