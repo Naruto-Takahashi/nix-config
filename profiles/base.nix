@@ -100,19 +100,6 @@
     # 全ホスト共通のここに移した (Mac/CLI専用ホストで欠けていた)
     pkgs.gemini-cli
     # claude-code本体は modules/apps/claude-code (programs.claudeCode.enable) が提供
-    (pkgs.stdenv.mkDerivation {
-      pname = "antigravity-cli";
-      version = "1.1.4";
-      src = pkgs.fetchurl {
-        url = "https://storage.googleapis.com/antigravity-public/antigravity-cli/1.1.4-6277569641840640/linux-x64/cli_linux_x64.tar.gz";
-        hash = "sha256-qqtC45XLTjv+WuiJlKNAhl2Un3qefwYE/6Kj8eiq2/o=";
-      };
-      sourceRoot = ".";
-      installPhase = ''
-        mkdir -p $out/bin
-        cp antigravity $out/bin/agy
-        chmod +x $out/bin/agy
-      '';
-    })
+    pkgs.antigravity-cli # バイナリ名は agy。nixpkgs追従で更新 (手書きderivationのURL/hash固定はやめた)
   ];
 }
