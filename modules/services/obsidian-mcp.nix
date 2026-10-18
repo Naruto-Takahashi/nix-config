@@ -1,5 +1,5 @@
 # =========================================================================
-# Obsidian External Brain (Medallion × Lightweight Johnny.Decimal) 連携モジュール
+# Obsidian External Brain (Medallion × Johnny.Decimal 1X.YZ) 連携モジュール
 # =========================================================================
 # 責務の分離:
 # - Vault構造・ルール・Skill (.agents/skills/obsidian-brain/SKILL.md) および
