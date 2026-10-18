@@ -70,6 +70,9 @@ obsidian-vault/
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/services/obsidian-mcp.nix` | `services.obsidianBrain` オプション・`ob` CLI・`gitleaks` 同期・Skill 配線 |
+| `<Vault>/AGENTS.md` | Vault 全体の唯一の入り口ファイル (`CLAUDE.md` は `@AGENTS.md` 参照) |
+| `<Vault>/.agents/skills/obsidian-brain/SKILL.md` | 外部脳運用の手順書 (Claude Code / Antigravity 共通 Skill 正本) |
+| `<Vault>/scripts/ob.sh`, `sync.sh`, `check-secrets.sh` | `ob` CLI 本体・双方向 Git 同期・`gitleaks` 機密検査スクリプトの正本 |
+| `modules/services/obsidian-mcp.nix` | `services.obsidianBrain` オプション・Nix 依存解決ラッパー・Skill 配線・自動同期タイマー |
 | `modules/apps/claude-code/default.nix` | `~/.claude/CLAUDE.md` と `~/.gemini/GEMINI.md` の単一ソース生成 |
 | `modules/apps/claude-code/CLAUDE.md` | 全 AI エージェント共通のグローバルベース指示 |
