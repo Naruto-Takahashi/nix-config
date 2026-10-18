@@ -34,8 +34,8 @@ obsidian-vault/
 │   ├── 10-self/                     #   10.11-profile / 10.21-decisions
 │   ├── 11-cs-fundamentals/          #   11.11-architecture / 11.21-network / 11.31-security-theory
 │   ├── 12-languages/                #   12.11-python / 12.12-nix / 12.21-cpp / 12.22-rust / 12.31-verilog
-│   ├── 13-ai-security/              #   13.11-llm-dl / 13.21-hcp
-│   ├── 14-devtools-infra/           #   14.11-nix-env / 14.21-neovim / 14.22-terminal-cli / 14.23-wm-input / 14.31-remote-vpn / 14.32-data-extraction / 14.41-keyboards-devices
+│   ├── 13-ai-security/              #   13.11-ml-dl / 13.12-llm / 13.21-hcp
+│   ├── 14-devtools-infra/           #   14.11-nix-env / 14.21-neovim / 14.22-terminal-cli / 14.23-wm-input / 14.31-remote-vpn / 14.32-data-extraction / 14.41-hardware-devices / 14.42-embedded-sbc
 │   ├── 15-academic-career/          #   15.11-sakurai-lab / 15.21-career-grad / 15.22-atcoder
 │   └── 16-life-general/             #   16.11-routines / 16.21-tax-admin / 16.31-side-projects
 ├── 02-output/                       # 【ゴールド層】成果物・進行中プロジェクト (<project>/Status.md)
