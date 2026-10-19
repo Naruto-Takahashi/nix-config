@@ -23,6 +23,7 @@ WIN_HOME="$(wslpath "$(cd /mnt/c && /mnt/c/Windows/System32/cmd.exe /c 'echo %US
 
 # 多重起動ガード: 壁紙を素早く切り替えると run_after が並走し、
 # 古いパレットのプロセスが後から生成物を上書きして世代が混ざるため直列化する
+mkdir -p "$HOME/.cache/matugen"
 exec 9>"$HOME/.cache/matugen/.apply.lock"
 flock 9
 
