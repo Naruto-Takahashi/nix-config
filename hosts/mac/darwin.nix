@@ -44,6 +44,9 @@ in
       "vivaldi"            # Vivaldiブラウザ
       "raycast"            # クイックランチャー / Spotlight代替
       "alt-tab"            # WindowsスタイルのAlt+Tabスイッチャー
+      "zotero"             # 文献管理（書誌・注釈。PDF は Google Drive にリンク）
+      "obsidian"           # 外部脳 Vault のエディタ
+      "google-drive"       # Google Drive for desktop（Zotero の PDF 置き場）
     ];
     brews = [
       "borders"            # アクティブウィンドウの枠線ハイライト用ツール
