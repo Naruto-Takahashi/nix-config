@@ -96,6 +96,7 @@
     pkgs.comma # `, <cmd>` で未インストールのコマンドをその場で一時実行
     pkgs.just # コマンドランナー (justfile に定型タスクをまとめる)
     pkgs.uv # Python パッケージ/プロジェクトマネージャ (pip+venv+poetry相当)。プロジェクト個別ではなく全ホスト共通で保証する
+    pkgs.bitwarden-cli # Bitwarden 公式 CLI (`bw`)。パスワード・シークレット管理用
     # `cz commit` (対話コミット) は modules/apps/git-hooks で `cz` ラッパーとして提供
     # AI連携ツール本体は modules/apps/claude-code と modules/apps/gemini が提供
   ];
