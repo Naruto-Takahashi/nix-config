@@ -79,6 +79,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.nalt = import ./hosts/nixos/home.nix;
               home-manager.extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
+              home-manager.backupFileExtension = "backup";
             }
           ];
         };

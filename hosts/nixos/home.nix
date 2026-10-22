@@ -13,7 +13,11 @@
     ../../modules/input/kanata
     ../../modules/wm/hyprland
     ../../modules/apps/vivaldi
+    ../../modules/apps/orca
   ];
+
+  # 自宅 Windows 側の Orca アプリから SSH 経由で起動するエージェント向けスキル
+  programs.orca.enable = true;
 
   # ユーザーメタデータ
   home.username      = "nalt";
@@ -33,6 +37,7 @@
 
   # カーソルテーマの設定 (Bibata Modern Ice)
   home.pointerCursor = {
+    enable = true;
     gtk.enable = true;
     x11.enable = true;
     package = pkgs.bibata-cursors;
