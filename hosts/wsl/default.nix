@@ -14,11 +14,15 @@
     ../../modules/wm/komorebi
     ../../modules/wm/yasb
     ../../modules/apps/vivaldi
+    ../../modules/apps/orca
     ../../modules/desktop/packages.nix
   ];
 
   # WSL では Windows 側の Obsidian デスクトップアプリが直接開く Vault を正本とする
   services.obsidianBrain.vaultPath = "/mnt/c/Users/tnaru/Obsidian/Vault";
+
+  # Windows 側の Orca アプリから managed WSL session で起動するエージェント向けスキル
+  programs.orca.enable = true;
 
   # -----------------------------------------------------------------------
   # ユーザーメタデータ & 基本システム設定
