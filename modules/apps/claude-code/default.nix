@@ -1,5 +1,5 @@
 # =========================================================================
-# Claude Code 宣言的設定モジュール (~/.claude/CLAUDE.md, ~/.claude/settings.json)
+# Claude Code 宣言的設定モジュール (~/.claude/CLAUDE.md)
 # =========================================================================
 # CLAUDE.md はこのモジュールが唯一のオーナーとして生成する。他モジュール
 # (obsidian-mcp 等) が独自ルールを注入したい場合は home.file を直接触らず、
@@ -32,9 +32,7 @@ in
       [ (builtins.readFile ./CLAUDE.md) ] ++ cfg.extraInstructions
     );
 
-    home.file.".claude/settings.json".text = builtins.toJSON {
-      effortLevel = "low";
-      theme = "dark";
-    };
+    # settings.json は管理しない: Claude Code 本体・Orca (hooks 注入)・/config が書き込むため、
+    # 読み取り専用の宣言的ファイルにすると承認記録や設定変更が書けなくなる。
   };
 }
