@@ -28,9 +28,13 @@ jobs:
       - name: evaluate all homeConfigurations
         run: |
           nix eval '.#homeConfigurations."wsl".activationPackage.drvPath'
+          nix eval '.#homeConfigurations."distrobox".activationPackage.drvPath'
+          nix eval '.#homeConfigurations."sandbox".activationPackage.drvPath'
           nix eval '.#homeConfigurations."mac".activationPackage.drvPath'
       - name: evaluate nixosConfigurations
         run: nix eval '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'
+      - name: evaluate darwinConfigurations
+        run: nix eval '.#darwinConfigurations."mac".config.system.build.toplevel.drvPath'
 
   lint:
     runs-on: ubuntu-latest
@@ -86,6 +90,8 @@ jobs:
         run: nix build '.#homeConfigurations."wsl".activationPackage' --no-link
       - name: build distrobox
         run: nix build '.#homeConfigurations."distrobox".activationPackage' --no-link
+      - name: build sandbox
+        run: nix build '.#homeConfigurations."sandbox".activationPackage' --no-link
       - name: build nixos
         run: nix build '.#nixosConfigurations.nixos.config.system.build.toplevel' --no-link
 

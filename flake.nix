@@ -59,10 +59,13 @@
           extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
         };
 
-        # Mac環境用プロファイル (M1 Mac Mini)
+        # Mac環境用プロファイル (M1 Mac Mini - スタンドアロン Home Manager)
         "mac" = home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages."aarch64-darwin";
-          modules = [ ./hosts/mac ];
+          modules = [
+            ./hosts/mac
+            { nixpkgs.config.allowUnfree = true; }
+          ];
           extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
         };
       };

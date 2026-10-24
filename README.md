@@ -58,18 +58,24 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 ├── hosts/                     # ホスト別の設定エントリーポイント
 │   ├── nixos/                 # NixOS 設定（システム設定 ＋ Home Manager 設定）
 │   ├── wsl/                   # WSL2用 Home Manager スタンドアロン設定
-│   └── mac/                   # macOS用 nix-darwin + Home Manager 統合設定
+│   ├── mac/                   # macOS用 nix-darwin + Home Manager 統合設定
+│   ├── distrobox/             # rootless podman コンテナ用 CLI プロファイル
+│   └── sandbox/               # 実データ非共有コンテナ用 最小CLI プロファイル
 ├── modules/                   # 再利用可能な共通設定モジュール群
 │   ├── wm/                    # ウィンドウマネージャー設定 (hyprland, komorebi, yasb)
 │   ├── apps/                  # アプリケーション個別設定 (wezterm, neovim, yazi, lazygit, git, bat,
-│   │                          #   eza, btop, git-hooks, aerospace[Mac専用], vivaldi)
+│   │                          #   eza, btop, git-hooks, aerospace[Mac専用], vivaldi, orca, claude-code, gemini)
 │   ├── services/              # ユーザーサービス (obsidian-mcp)
 │   ├── shell/                 # シェル・端末環境 (zsh, starship, fastfetch, direnv, atuin)
 │   ├── input/                 # 入力系 (kanata キーリマップ[NixOS/Mac], ahk[WSL], fcitx5 日本語入力)
 │   ├── theming/                # Matugen 共通ロジック / テンプレート (lib, templates) と
 │   │                          #   ホスト別パイプライン (wsl/, mac/)
 │   └── desktop/               # Linux GUI 共通 (パッケージ, デスクトップエントリ, MIME)
-├── profiles/                  # 全ホスト共通プロファイル (base.nix)
+├── profiles/                  # 役割別プロファイル
+│   ├── core.nix               # 最小共通 CLI（コンテナ・サーバー・全環境の基盤）
+│   ├── desktop.nix            # デスクトップ GUI 共通（WezTerm, Matugen, フォント）
+│   ├── ai-agent.nix           # AIエージェント統合（Claude Code, Antigravity, Orca, Obsidian Brain）
+│   └── base.nix               # 開発機向けフルセット（desktop + ai-agent）
 └── docs/                      # 各種仕様・キーマップ解説ドキュメント ([索引](docs/README.md))
 ```
 
