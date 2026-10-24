@@ -74,6 +74,19 @@ let
     ".claude/skills/codebase-design".source = "${mattpocockSkillsSrc}/skills/engineering/codebase-design";
     ".gemini/config/skills/codebase-design".source = "${mattpocockSkillsSrc}/skills/engineering/codebase-design";
   };
+
+  workflowSkillsFiles = lib.mkIf cfg.enableWorkflowSkills {
+    ".claude/skills/grill-me".source = "${mattpocockSkillsSrc}/skills/productivity/grill-me";
+    ".gemini/config/skills/grill-me".source = "${mattpocockSkillsSrc}/skills/productivity/grill-me";
+    ".claude/skills/diagnosing-bugs".source = "${mattpocockSkillsSrc}/skills/engineering/diagnosing-bugs";
+    ".gemini/config/skills/diagnosing-bugs".source = "${mattpocockSkillsSrc}/skills/engineering/diagnosing-bugs";
+    ".claude/skills/skill-creator".source = "${anthropicsSkillsSrc}/skills/skill-creator";
+    ".gemini/config/skills/skill-creator".source = "${anthropicsSkillsSrc}/skills/skill-creator";
+    ".claude/skills/xlsx".source = "${anthropicsSkillsSrc}/skills/xlsx";
+    ".gemini/config/skills/xlsx".source = "${anthropicsSkillsSrc}/skills/xlsx";
+    ".claude/skills/pdf".source = "${anthropicsSkillsSrc}/skills/pdf";
+    ".gemini/config/skills/pdf".source = "${anthropicsSkillsSrc}/skills/pdf";
+  };
 in
 {
   options.programs.orca = {
@@ -104,12 +117,18 @@ in
       default = true;
       description = "コードベース設計・アーキテクチャ改善スキル (improve-codebase-architecture / codebase-design) を配置するかどうか。";
     };
+
+    enableWorkflowSkills = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "開発ワークフロー・データ解析スキル (grill-me, diagnosing-bugs, skill-creator, xlsx, pdf) を配置するかどうか。";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.file = lib.mkMerge (
       (map skillFiles cfg.skills)
-      ++ [ findSkillsFiles frontendSkillsFiles architectureSkillsFiles ]
+      ++ [ findSkillsFiles frontendSkillsFiles architectureSkillsFiles workflowSkillsFiles ]
     );
   };
 }
