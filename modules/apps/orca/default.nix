@@ -30,6 +30,20 @@ let
     sha256 = "1djab5lz3yg0r8f4m57071sxj0jpprlzzhrd1zswdann96297xb1";
   };
 
+  anthropicsSkillsSrc = pkgs.fetchFromGitHub {
+    owner = "anthropics";
+    repo = "skills";
+    rev = "dbd4588f9e1033efb41dad4bef2f7947c8993d44";
+    sha256 = "1x81ypg4nfacr4ma9vphj890yrnwhhv6i6124npq6y7jgh32lhpr";
+  };
+
+  vercelAgentSkillsSrc = pkgs.fetchFromGitHub {
+    owner = "vercel-labs";
+    repo = "agent-skills";
+    rev = "063bee94c3f4df8453406c830b0a7df0f2860278";
+    sha256 = "07y8vkfyg44szky962d3035kjz3jd8by5iqlgxa5nhnfkmzqjd5m";
+  };
+
   skillFiles = name: {
     ".claude/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
     ".gemini/config/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
@@ -38,6 +52,13 @@ let
   findSkillsFiles = lib.mkIf cfg.enableFindSkills {
     ".claude/skills/find-skills/SKILL.md".source = "${vercelSkillsSrc}/skills/find-skills/SKILL.md";
     ".gemini/config/skills/find-skills/SKILL.md".source = "${vercelSkillsSrc}/skills/find-skills/SKILL.md";
+  };
+
+  frontendSkillsFiles = lib.mkIf cfg.enableFrontendSkills {
+    ".claude/skills/frontend-design/SKILL.md".source = "${anthropicsSkillsSrc}/skills/frontend-design/SKILL.md";
+    ".gemini/config/skills/frontend-design/SKILL.md".source = "${anthropicsSkillsSrc}/skills/frontend-design/SKILL.md";
+    ".claude/skills/web-design-guidelines/SKILL.md".source = "${vercelAgentSkillsSrc}/skills/web-design-guidelines/SKILL.md";
+    ".gemini/config/skills/web-design-guidelines/SKILL.md".source = "${vercelAgentSkillsSrc}/skills/web-design-guidelines/SKILL.md";
   };
 in
 {
@@ -57,12 +78,18 @@ in
       default = true;
       description = "vercel-labs/skills の find-skills (スキル探索・導入メタスキル) を配置するかどうか。";
     };
+
+    enableFrontendSkills = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "フロントエンド・UI/UX品質向上スキル (frontend-design / web-design-guidelines) を配置するかどうか。";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.file = lib.mkMerge (
       (map skillFiles cfg.skills)
-      ++ [ findSkillsFiles ]
+      ++ [ findSkillsFiles frontendSkillsFiles ]
     );
   };
 }
