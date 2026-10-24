@@ -18,7 +18,7 @@ WSLはさらに以下の点が個別の置換で上書きされています（`w
 - `caps` → `f13` (本機はレジストリのScancode MapでCapsLock物理キーをF13として送出する設定にしているため)
 - `eisu`/`kana` → `@ime-off`/`@ime-on` (Win32 API (`ImmSetOpenStatus`) 経由のIME制御はkanata単体ではWindows上で直接行えないため、`cmd`アクションで実績のあるAHKの`ime_functions.ahk` (`ime-off.ahk`/`ime-on.ahk`) へ委譲する。`danger-enable-cmd`が必要)
 
-macOSはさらに以下の3点が個別の置換で上書きされています（`hosts/mac/default.nix`）:
+macOSはさらに以下の3点が個別の置換で上書きされています（`modules/input/kanata/mac-config.nix`）:
 - `cap-ctrl-action` → `(layer-toggle ctrl-layer)` (CapsLock長押し時のレイヤー)
 - `Alt+Space` (`hyp-d`) → `A-spc` に直接マッピング (wmmodifier経由ではなくmacOS標準のSpotlight的挙動に寄せるため)
 - `Alt+Tab` (`hyp-tab`) → `A-tab` に直接マッピング ([Alt-Tab](https://alt-tab-macos.netlify.app/)アプリとの連携用)
@@ -128,5 +128,5 @@ kanataはクロスプラットフォームだが，WezTermとの連携やExplore
 | :--- | :--- |
 | `modules/input/kanata/config.kbd` | レイヤー定義本体 (3ホスト共通) |
 | `modules/input/kanata/kanata-config.nix` | NixOS向け`wmmodifier-`置換ロジック |
-| `hosts/mac/default.nix` | macOS向け`wmmodifier-`/その他置換ロジック |
+| `modules/input/kanata/mac-config.nix` | macOS向け`wmmodifier-`/その他置換ロジック |
 | `modules/input/ahk/main.ahk` | WSL/Windows向けの別実装 |

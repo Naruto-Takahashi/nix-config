@@ -100,7 +100,7 @@ aerospace reload-config
 
 ## 設定変更時の注意
 
-`aerospace.toml` は `xdg.configFile` でNix管理のファイルとして生成されるため，`darwin-rebuild switch` を実行しないと反映されません．また，ファイルを書き換えただけではAeroSpace自身が読みに行かない（`after-startup-command` は起動時にしか走らない）ため，`darwin-rebuild switch` の後は上記の `aerospace reload-config` を実行するか，次回ログインまで待つ必要があります．
+`aerospace.toml` は `modules/apps/aerospace/aerospace.toml` から `mkOutOfStoreSymlink` で直結されているため，`darwin-rebuild switch` を叩かなくてもファイルを編集するだけで即座に反映可能です．ファイルを書き換えた後は，`aerospace reload-config`（または Alt+Shift+R / `ctrl-cmd-shift-r`）を実行してください．
 
 ---
 
@@ -108,7 +108,8 @@ aerospace reload-config
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/apps/aerospace/default.nix` | `aerospace.toml`本体・LaunchAgentの定義 |
+| `modules/apps/aerospace/default.nix` | LaunchAgentの定義とシンボリックリンク配線 |
+| `modules/apps/aerospace/aerospace.toml` | AeroSpace の設定ファイル本体 (キーマップ・レイアウト・gaps) |
 | `modules/apps/aerospace/launch-borders.sh` | JankyBordersの起動・matugen配色連携スクリプト |
 | `modules/theming/matugen/mac/wallpaper-pick-popup.sh` | 壁紙ピッカーのポップアップ起動スクリプト |
 | `modules/theming/matugen/mac/wallpaper-pick-gui.py` | 壁紙ピッカーのローカルHTTPサーバ本体 |
