@@ -253,48 +253,7 @@ ZSH_HIGHLIGHT_STYLES[arg0]='fg=#98bb6c,bold'
 ZSH_HIGHLIGHT_STYLES[hashed-command]='fg=#98bb6c,bold'
 ZSH_HIGHLIGHT_STYLES[unknown-token]='fg=#e46876,bold'
 
-# 7. Windowsとの設定同期を行います（WSL環境用）．
-function sync-win() {
-    echo "Syncing WezTerm config..."
-    cp ~/.config/wezterm/*.lua /mnt/c/Users/tnaru/.config/wezterm/
-    mkdir -p /mnt/c/Users/tnaru/Tools/Customization
-    # main.ahk (modules/input/ahk) がエントリポイントで、komorebi.ahkは
-    # そこから絶対パスで#Includeされる。存在する場合だけ同期します．
-    if [ -d ~/.config/ahk ]; then
-        echo "Syncing AutoHotkey scripts..."
-        cp -rL ~/.config/ahk/* /mnt/c/Users/tnaru/Tools/Customization/
-    fi
-    echo "Syncing Komorebi config..."
-    mkdir -p /mnt/c/Users/tnaru/.config/komorebi
-    cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/.config/komorebi/
-    cp -L ~/.config/komorebi/komorebi.ahk /mnt/c/Users/tnaru/.config/komorebi/
-    cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/.config/komorebi/
-    cp -L ~/.config/komorebi/workspace-watcher.ps1 /mnt/c/Users/tnaru/.config/komorebi/
-    # 読み込みの確実性を高めるため，ホーム直下にも配置します．
-    cp -L ~/.config/komorebi/komorebi.json /mnt/c/Users/tnaru/
-    cp -L ~/.config/komorebi/applications.json /mnt/c/Users/tnaru/
-    rm -f "/mnt/c/Users/tnaru/AppData/Roaming/Microsoft/Windows/Start Menu/Programs/Startup/komorebi.ahk"
-    # スタートアップ・環境構築スクリプトの同期を行います．
-    cp -L ~/.config/komorebi/startup.ps1 /mnt/c/Users/tnaru/Tools/Customization/
-    cp -L ~/.config/komorebi/setup-windows.ps1 /mnt/c/Users/tnaru/Tools/Customization/
-    echo "Syncing YASB config..."
-    mkdir -p /mnt/c/Users/tnaru/.config/yasb
-    cp -rL ~/.config/yasb/* /mnt/c/Users/tnaru/.config/yasb/
-    # matugen生成済みパレットがあればstyles.cssに再適用します．
-    [ -x ~/.local/bin/matugen-apply ] && ~/.local/bin/matugen-apply --reapply
-    echo "Syncing Vivaldi CSS..."
-    mkdir -p /mnt/c/Users/tnaru/Tools/Vivaldi
-    cp -L ~/.config/vivaldi/custom.css /mnt/c/Users/tnaru/Tools/Vivaldi/custom.css
-    cp -L ~/.config/vivaldi/air-zenify.css /mnt/c/Users/tnaru/Tools/Vivaldi/air-zenify.css
-    echo "Syncing kanata (Windows)..."
-    mkdir -p /mnt/c/Users/tnaru/.config/kanata-wsl
-    cp -L ~/.local/bin/kanata-windows.exe /mnt/c/Users/tnaru/.config/kanata-wsl/kanata-windows.exe
-    cp -L ~/.config/kanata-wsl/config.kbd /mnt/c/Users/tnaru/.config/kanata-wsl/config.kbd
-    cp -L ~/.config/ahk/ime-off.ahk ~/.config/ahk/ime-on.ahk /mnt/c/Users/tnaru/Tools/Customization/
-    echo "Done."
-}
-
-# 8. 最新のスクリーンショットをAntigravityチャットへ連携します（撮影した ~/Pictures/Screenshots/ 下の最新画像を同期）．
+# 7. 最新のスクリーンショットをAntigravityチャットへ連携します（撮影した ~/Pictures/Screenshots/ 下の最新画像を同期）．
 function agy-ss() {
     local ss_dir="$HOME/Pictures/Screenshots"
     local latest_file=$(ls -t "$ss_dir"/Screenshot*.png 2>/dev/null | head -n 1)
@@ -316,7 +275,7 @@ function agy-ss() {
     fi
 }
 
-# 9. 現在の壁紙に対する matugen 抽出色を手動で上書きします．
+# 8. 現在の壁紙に対する matugen 抽出色を手動で上書きします．
 # (matugenは面積優先で色を選ぶため、面積の小さい印象的な色を拾えないことがある)
 function matugen-set-color() {
     local hex="${1:?usage: matugen-set-color '#rrggbb' (現在の壁紙の抽出色を上書き)}"
@@ -335,7 +294,7 @@ function matugen-set-color() {
     matugen-apply --reapply
 }
 
-# 10. 現在の壁紙から「人間の目に印象的な色」に近い候補を提案します．
+# 9. 現在の壁紙から「人間の目に印象的な色」に近い候補を提案します．
 # (顕著性スコア = 頻度加重Lab距離 × 彩度。詳細は suggest-accent.py 参照)
 # 気に入った候補があれば `matugen-set-color <hex>` で確定してください
 function matugen-suggest-color() {

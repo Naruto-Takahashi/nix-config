@@ -46,6 +46,7 @@
   # インストールするパッケージの定義 (WSL固有パッケージ)
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [
+    (import ./sync-win.nix { inherit pkgs; })
     codex
     cowsay
     fortune

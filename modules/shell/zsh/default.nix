@@ -96,8 +96,6 @@
       vimtutor2 = "nvim -c \"Tutor ja/vim-02-beginner\"";
       zp        = "npx zenn preview";
       zn        = "npx zenn new:article";
-      zqr       = "~/dotfiles/bash/zqr";
-      zstop     = "pkill ngrok && echo \"ngrok stopped.\"";
       gchat     = "agy -i";
       achat     = "agy -i";
 
@@ -144,7 +142,7 @@
 
     # ディレクトリハッシュ（hash -d による「~ショートカット」）
     dirHashes = {
-      d    = "$HOME/dotfiles";
+      d    = "$HOME/ghq/github.com/Naruto-Takahashi/nix-config";
       p    = "$HOME/projects";
       zenn = "$HOME/projects/zenn-blog";
       rust = "$HOME/projects/rust-the-book";
