@@ -9,12 +9,14 @@
   imports = [
     ../modules/apps/claude-code
     ../modules/apps/gemini
+    ../modules/apps/agent-skills
     ../modules/apps/orca
     ../modules/services/obsidian-mcp.nix
   ];
 
   programs.claudeCode.enable = true;
   programs.geminiCli.enable = true;
-  services.obsidianBrain.enable = true;
+  programs.agentSkills.enable = true;
   programs.orca.enable = true;
+  services.obsidianBrain.enable = true;
 }
