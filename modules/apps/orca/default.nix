@@ -23,9 +23,21 @@ let
     sha256 = "0af2pcm6pkjy5gjs9adz63n3hs1vjyxq906mr44a6h4wan1phafl";
   };
 
+  vercelSkillsSrc = pkgs.fetchFromGitHub {
+    owner = "vercel-labs";
+    repo = "skills";
+    rev = "a80e4c9d12d607631249d4d7d059f835d4b2f13a";
+    sha256 = "1djab5lz3yg0r8f4m57071sxj0jpprlzzhrd1zswdann96297xb1";
+  };
+
   skillFiles = name: {
     ".claude/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
     ".gemini/config/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
+  };
+
+  findSkillsFiles = lib.mkIf cfg.enableFindSkills {
+    ".claude/skills/find-skills/SKILL.md".source = "${vercelSkillsSrc}/skills/find-skills/SKILL.md";
+    ".gemini/config/skills/find-skills/SKILL.md".source = "${vercelSkillsSrc}/skills/find-skills/SKILL.md";
   };
 in
 {
@@ -39,9 +51,18 @@ in
       default = [ "orchestration" "orca-cli" "computer-use" ];
       description = "stablyai/orca リポジトリの skills/ 配下から配置するスキル名。";
     };
+
+    enableFindSkills = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "vercel-labs/skills の find-skills (スキル探索・導入メタスキル) を配置するかどうか。";
+    };
   };
 
   config = lib.mkIf cfg.enable {
-    home.file = lib.mkMerge (map skillFiles cfg.skills);
+    home.file = lib.mkMerge (
+      (map skillFiles cfg.skills)
+      ++ [ findSkillsFiles ]
+    );
   };
 }
