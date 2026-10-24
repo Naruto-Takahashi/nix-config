@@ -32,7 +32,8 @@ fi
 
 if [ "$STATUS" = "locked" ]; then
   echo "Vault がロックされています。アンロックしてください:"
-  export BW_SESSION="$(bw unlock --raw)"
+  BW_SESSION="$(bw unlock --raw)"
+  export BW_SESSION
 fi
 
 echo "Bitwarden からセキュアメモ '$ITEM_NAME' を取得しています..."
