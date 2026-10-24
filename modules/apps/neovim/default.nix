@@ -1,7 +1,7 @@
 # =========================================================================
 # Neovim テキストエディタ宣言的設定モジュール
 # =========================================================================
-{ config, pkgs, ... }:
+{ config, pkgs, dotfilesPath, ... }:
 
 let
   # --- Treesitterパーサーのビルド ---
@@ -66,15 +66,6 @@ let
       "luap" # lua の string.match パターン
     ]}
   '';
-
-  # --- nvim設定ディレクトリと共通Luaライブラリの合成 ---
-  # blend.lua (2色補間) は yazi (modules/apps/yazi) とも共有しているため
-  # modules/theming/lua-lib に置き、ここでは nvim の lua/ 配下にコピーする。
-  nvimConfigDir = pkgs.runCommand "nvim-config" {} ''
-    cp -r ${./nvim} $out
-    chmod -R u+w $out
-    cp ${../../theming/lua-lib/blend.lua} $out/lua/blend.lua
-  '';
 in
 {
   # --- Neovimパッケージ設定 ---
@@ -121,8 +112,9 @@ in
   };
 
   # --- 設定ファイルおよびパーサーの配置 ---
-  # Neovim設定ディレクトリの宣言的配置（ディレクトリ・ソース方式）を行います．
-  xdg.configFile."nvim".source = nvimConfigDir;
+  # リポジトリ編集がそのまま反映されるよう mkOutOfStoreSymlink で実ファイルに直結する。
+  # home-manager switch 不要でプラグインや Lua 設定のホットリロードが可能。
+  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/apps/neovim/nvim";
 
   # ビルド済みのTreesitterパーサーをNeovimのランタイムパスにシンボリックリンクします．
   xdg.dataFile."nvim/site/parser".source = "${treesitter-parsers}/parser";
