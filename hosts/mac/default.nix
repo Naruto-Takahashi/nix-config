@@ -10,12 +10,8 @@
   imports = [
     ../../profiles/base.nix
     ../../modules/apps/aerospace
-    ../../modules/apps/orca
     ../../modules/theming/matugen/mac
   ];
-
-  # Orca デスクトップアプリから起動するエージェント向けスキル
-  programs.orca.enable = true;
 
   # -----------------------------------------------------------------------
   # ユーザーメタデータ & 基本システム設定

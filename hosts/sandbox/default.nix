@@ -15,7 +15,7 @@
 
 {
   imports = [
-    ../../profiles/base.nix
+    ../../profiles/core.nix
   ];
 
   home.username      = "root";

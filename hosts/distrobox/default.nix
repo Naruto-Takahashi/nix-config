@@ -23,7 +23,8 @@ let
 in
 {
   imports = [
-    ../../profiles/base.nix
+    ../../profiles/core.nix
+    ../../profiles/ai-agent.nix
   ];
 
   home.username      = "pt_takahashi";

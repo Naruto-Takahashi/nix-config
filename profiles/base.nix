@@ -1,103 +1,15 @@
 # =========================================================================
-# 全ホスト共通プロファイル (シェル環境 + コア CLI アプリ)
+# 開発用フルスタック共通プロファイル (base.nix)
 # =========================================================================
-# wsl / mac / nixos / distrobox の全ホストが import する共通セット。
-# ホスト固有のモジュール (WM や OS 依存アプリ) は各 hosts/*/ 側で追加する。
+# desktop.nix (GUI + コアCLI) と ai-agent.nix (AI開発連携) を束ねた
+# デフォルトの開発機向けプロファイル。
+# リモートサーバーやコンテナで GUI が不要な場合は、直接 profiles/core.nix や
+# profiles/ai-agent.nix を単体で import する。
 { config, pkgs, lib, ... }:
 
 {
-  # -----------------------------------------------------------------------
-  # 各モジュールで利用するグローバル引数
-  # -----------------------------------------------------------------------
-  # mkOutOfStoreSymlink で参照するこのリポジトリのチェックアウト位置。
-  # リポジトリをこのパス以外に clone すると、symlink 配置される設定
-  # (starship / yasb / komorebi / vivaldi / matugen-common など) が
-  # すべて壊れるので注意。
-  _module.args = {
-    dotfilesPath = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/nix-config";
-  };
-
   imports = [
-    ../modules/shell/zsh
-    ../modules/shell/starship
-    ../modules/shell/direnv
-    ../modules/shell/fastfetch
-    ../modules/shell/atuin
-    ../modules/apps/wezterm
-    ../modules/apps/neovim
-    ../modules/apps/yazi
-    ../modules/apps/eza
-    ../modules/apps/bat
-    ../modules/apps/git
-    ../modules/apps/lazygit
-    ../modules/apps/git-hooks
-    ../modules/apps/btop
-    ../modules/apps/claude-code
-    ../modules/apps/gemini
-    ../modules/services/obsidian-mcp.nix
-    ../modules/theming/matugen
-  ];
-
-  programs.claudeCode.enable = true;
-  programs.geminiCli.enable = true;
-  services.obsidianBrain.enable = true;
-
-  # -----------------------------------------------------------------------
-  # 全ホスト共通の小物 CLI ツール
-  # -----------------------------------------------------------------------
-  # tldr クライアント (コマンドの使用例を素早く確認する)
-  # 配色は kanagawa-dragon 準拠のフォールバック。matugen 環境 (WSL) では
-  # matugen-apply が ~/.cache/matugen/tealdeer/config.toml を生成し、
-  # zsh が TEALDEER_CONFIG_DIR でそちらを優先する。
-  programs.tealdeer = {
-    enable = true;
-    settings = {
-      updates.auto_update = true; # キャッシュが古いとき自動で `tldr --update` 相当を実行
-      style = {
-        description.foreground.rgb = { r = 225; g = 226; b = 232; };      # text #e1e2e8
-        command_name = {
-          foreground.rgb = { r = 162; g = 201; b = 253; };                # accent #a2c9fd
-          bold = true;
-        };
-        example_text.foreground.rgb = { r = 195; g = 198; b = 207; };     # muted #c3c6cf
-        example_code.foreground.rgb = { r = 215; g = 189; b = 228; };     # tertiary #d7bde4
-        example_variable = {
-          foreground.rgb = { r = 187; g = 199; b = 219; };                # secondary #bbc7db
-          italic = true;
-        };
-      };
-    };
-  };
-
-  # comma (`, <cmd>`) が使う nix-index DB。command-not-found 時の
-  # 「どのパッケージにあるか」提案も有効になる。DB は `nix-index` で生成/更新
-  programs.nix-index = {
-    enable = true;
-    enableZshIntegration = true;
-  };
-
-  home.packages = [
-    pkgs.smassh # MonkeyType 風の TUI タイピング練習
-    pkgs.fd # find の現代版 (fzf バックエンドにも)
-    pkgs.curl # HTTPリクエスト。系OSに依存せずNixで保証する
-    pkgs.wget # ファイルダウンロード。curl同様、系OSに依存せず保証する
-    pkgs.tmux # SSH接続断からの復帰用。セッション永続化に必須
-    pkgs.less # pager。git log等が暗黙に依存するため系OSに頼らず保証する
-    pkgs.file # ファイル種別判定
-    pkgs.man-db # man コマンド本体
-    # ghq-fzf (Ctrl+G, modules/shell/zsh/functions.zsh) と telescope-ghq.nvim
-    # (modules/apps/neovim) が両方とも依存する。以前はdesktop系ホストのみ
-    # modules/desktop/packages.nix経由で入っていたが、CLI専用ホスト
-    # (distrobox) で欠けていたため全ホスト共通のここに移した
-    pkgs.ghq
-    pkgs.gh # GitHub CLI (PR/issue操作など開発に必須)
-    pkgs.jq # JSON整形・抽出 (gh/APIレスポンスの確認などで頻出)
-    pkgs.imagemagick # 画像処理 (matugenの色抽出補助スクリプトが使用)
-    pkgs.comma # `, <cmd>` で未インストールのコマンドをその場で一時実行
-    pkgs.just # コマンドランナー (justfile に定型タスクをまとめる)
-    pkgs.uv # Python パッケージ/プロジェクトマネージャ (pip+venv+poetry相当)。プロジェクト個別ではなく全ホスト共通で保証する
-    pkgs.bitwarden-cli # Bitwarden 公式 CLI (`bw`)。パスワード・シークレット管理用
-    # `cz commit` (対話コミット) は modules/apps/git-hooks で `cz` ラッパーとして提供
-    # AI連携ツール本体は modules/apps/claude-code と modules/apps/gemini が提供
+    ./desktop.nix
+    ./ai-agent.nix
   ];
 }
