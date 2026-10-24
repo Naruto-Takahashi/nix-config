@@ -44,6 +44,13 @@ let
     sha256 = "07y8vkfyg44szky962d3035kjz3jd8by5iqlgxa5nhnfkmzqjd5m";
   };
 
+  mattpocockSkillsSrc = pkgs.fetchFromGitHub {
+    owner = "mattpocock";
+    repo = "skills";
+    rev = "5beb35b040e3de97e54fa9e386d7e42d15c295c2";
+    sha256 = "1lnzvp1xhwmab4fwn8jq1gzbh1d1gzknnjq0kc6cxhf5gxxrylnq";
+  };
+
   skillFiles = name: {
     ".claude/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
     ".gemini/config/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
@@ -59,6 +66,13 @@ let
     ".gemini/config/skills/frontend-design/SKILL.md".source = "${anthropicsSkillsSrc}/skills/frontend-design/SKILL.md";
     ".claude/skills/web-design-guidelines/SKILL.md".source = "${vercelAgentSkillsSrc}/skills/web-design-guidelines/SKILL.md";
     ".gemini/config/skills/web-design-guidelines/SKILL.md".source = "${vercelAgentSkillsSrc}/skills/web-design-guidelines/SKILL.md";
+  };
+
+  architectureSkillsFiles = lib.mkIf cfg.enableArchitectureSkills {
+    ".claude/skills/improve-codebase-architecture".source = "${mattpocockSkillsSrc}/skills/engineering/improve-codebase-architecture";
+    ".gemini/config/skills/improve-codebase-architecture".source = "${mattpocockSkillsSrc}/skills/engineering/improve-codebase-architecture";
+    ".claude/skills/codebase-design".source = "${mattpocockSkillsSrc}/skills/engineering/codebase-design";
+    ".gemini/config/skills/codebase-design".source = "${mattpocockSkillsSrc}/skills/engineering/codebase-design";
   };
 in
 {
@@ -84,12 +98,18 @@ in
       default = true;
       description = "フロントエンド・UI/UX品質向上スキル (frontend-design / web-design-guidelines) を配置するかどうか。";
     };
+
+    enableArchitectureSkills = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "コードベース設計・アーキテクチャ改善スキル (improve-codebase-architecture / codebase-design) を配置するかどうか。";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.file = lib.mkMerge (
       (map skillFiles cfg.skills)
-      ++ [ findSkillsFiles frontendSkillsFiles ]
+      ++ [ findSkillsFiles frontendSkillsFiles architectureSkillsFiles ]
     );
   };
 }
