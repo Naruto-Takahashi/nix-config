@@ -6,11 +6,10 @@
 
 | ドキュメント | 内容 |
 | :--- | :--- |
-| [setup-nixos.md](setup-nixos.md) | NixOSへの導入手順 |
+| [setup-nixos.md](setup-nixos.md) | NixOSへの導入手順 (Tailscale + Sunshine リモートデスクトップ設定を含む) |
 | [setup-wsl.md](setup-wsl.md) | WSL2への導入手順 |
 | [setup-mac.md](setup-mac.md) | macOSへの導入手順 (TCC/SIP関連の手動作業を含む) |
 | [setup-distrobox.md](setup-distrobox.md) | sudo無し共有Linuxホストへの導入手順 (rootless podman/distroboxコンテナ内にNixを構築) |
-| [remote-desktop.md](remote-desktop.md) | NixOS向けリモートデスクトップ (Tailscale + Sunshine + Moonlight) |
 
 ## ウィンドウマネージャー・キーリマップ
 
@@ -32,8 +31,8 @@
 | ドキュメント | 内容 |
 | :--- | :--- |
 | [wezterm.md](wezterm.md) | WezTerm の外観・キーバインド |
-| [neovim.md](neovim.md) | Neovim の設定・プラグイン・キーマップ |
-| [yazi.md](yazi.md) | Yazi (CUIファイルマネージャ) の使い方・テーマ |
+| [neovim.md](neovim.md) | Neovim の設計方針・独自マクロ・操作チートシート |
+| [yazi.md](yazi.md) | Yazi の独自拡張 (rich-preview, compress)・操作チートシート |
 | [cli-tools.md](cli-tools.md) | starship / atuin / tealdeer / fd / delta / eza / btop / smassh の使い方チートシート |
 | [gitmoji.md](gitmoji.md) | git commit へのgitmoji自動付与フック |
 

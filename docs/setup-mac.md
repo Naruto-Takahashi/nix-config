@@ -46,23 +46,23 @@ cd nix-config
 
    # 2回目以降の更新適用 (こちらが推奨・高速)
    darwin-rebuild switch --flake .#mac
+   # または justfile 経由
+   just switch
    ```
-   初回適用時に，Kanataバイナリを安定パス (`/usr/local/bin/kanata`) へ再署名して
-   配置する自己署名証明書が自動生成されます（TCC権限をリビルドのたびに失い直さない
-   ための仕組み。詳細はコメント付きで `hosts/mac/darwin.nix` を参照）．
-   また同じタイミングで **Karabiner-DriverKit-VirtualHIDDevice v6.2.0**
-   (Kanataの仮想キーボード出力に必須のドライバ) のダウンロード・インストール・
-   システム拡張の有効化リクエストも自動で行われます（`hash`固定の`fetchurl`で
-   取得するため常に同じバージョンになります。バージョンが合わないと
-   `connect_failed` エラーで起動しません）。
 
-5. **ドライバの機能拡張を有効化 (初回のみ・手動)**
+5. **機密情報の復元 (Bitwarden CLI)**
+   Bitwarden のセキュアメモから API キー等の環境変数を安全（chmod 600）に復元します．
+   ```bash
+   just restore-secrets
+   ```
+
+6. **ドライバの機能拡張を有効化 (初回のみ・手動)**
    上記でインストール・有効化リクエストまでは自動化されていますが，**実際に
    有効化するトグルはSIPの制約上どうしても手動操作が必要**です．
    `システム設定 → 一般 → ログイン項目と機能拡張 → ドライバの機能拡張` を開き，
    `Karabiner DriverKit VirtualHIDDevice` を有効化してください．
 
-6. **Kanataへの権限付与 (初回のみ)**
+7. **Kanataへの権限付与 (初回のみ)**
    `システム設定 → プライバシーとセキュリティ` で以下2つを許可してください．
    `/usr/local/bin/kanata` をFinderの `Cmd+Shift+G` で直接パス入力して追加する
    のが確実です．
@@ -74,13 +74,13 @@ cd nix-config
    sudo launchctl kickstart -k system/org.nixos.kanata
    ```
 
-7. **配色反映 (Matugen) の初回許可 (任意)**
+8. **配色反映 (Matugen) の初回許可 (任意)**
    `ctrl-cmd-w` (壁紙ピッカー) や `matugen-apply` を初めて実行すると，現在の壁紙を
    取得するために「システムイベント」のオートメーション許可を求めるダイアログが
    出ることがあります．許可すると以後は自動で通ります．詳細は
    [matugen-palette.md](matugen-palette.md) を参照してください．
 
-8. **AeroSpace設定の再読み込み (通常は不要)**
+9. **AeroSpace設定の再読み込み (通常は不要)**
    ログイン20秒後にAeroSpaceの設定リロードとborders起動を自動で行うLaunchAgent
    (`modules/wm/aerospace/default.nix`) があるため，通常は何もしなくても
    次回ログイン時に最新設定が反映されます．`darwin-rebuild switch` 直後，

@@ -22,11 +22,18 @@ cd nix-config
 3. **Home Manager プロファイルの適用**
    ```bash
    nix run github:nix-community/home-manager -- switch --flake .#wsl --impure
+   # またはリポジトリ内の justfile を使用
+   just switch
    ```
-4. **Windows側への設定ファイル同期**
-   WSL2環境下で管理される WezTerm や komorebi / YASB の設定を Windows ホストに反映するため，以下の同期コマンドを実行します．
+4. **機密情報の復元 (Bitwarden CLI)**
+   Bitwarden のセキュアメモから API キー等の環境変数を安全（chmod 600）に復元します．
    ```bash
-   sync-win
+   just restore-secrets
+   ```
+5. **Windows側への設定ファイル同期**
+   WSL2環境下で管理される WezTerm や komorebi / YASB の設定を Windows ホストに反映するため，同期コマンドを実行します．
+   ```bash
+   sync-win # または just sync-win
    exec zsh
    ```
 
@@ -34,4 +41,4 @@ cd nix-config
 
 ## この構成で有効になるもの
 
-キーボードリマップは(WSLからはWindows側のキーボードを直接掴めないため)Kanataではなく [AutoHotkey](../modules/input/ahk/main.ahk) が担当します。komorebi (WM) + YASB (ステータスバー) はWindows側で動作し，`sync-win`で設定を配置します。Matugen壁紙配色はWSL側で完結します (壁紙選択→配色反映)。Obsidian MCP連携もこのホストのみ有効です。詳細は [komorebi.md](komorebi.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
+キーボードリマップは(WSLからはWindows側のキーボードを直接掴めないため)Kanataではなく [AutoHotkey](../modules/input/ahk/main.ahk) が担当します。komorebi (WM) + YASB (ステータスバー) はWindows側で動作し，`sync-win`で設定を配置します。Matugen壁紙配色はWindows側の壁紙からWSL経由で自動生成します。詳細は [komorebi.md](komorebi.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) / [obsidian-brain.md](obsidian-brain.md) を参照してください。

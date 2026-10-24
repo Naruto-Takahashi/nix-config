@@ -36,7 +36,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | **キーボードリマップ** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)※1 | [Kanata](docs/kanata.md) ✅※2 |
 | **壁紙連動の動的配色** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows側) | [Matugen](docs/matugen-palette.md) ✅ |
 | **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](docs/kanata.md)) |
-| **リモートデスクトップ** | [Tailscale+Sunshine](docs/remote-desktop.md) ✅ | ➖ (接続元クライアント) | ➖ |
+| **リモートデスクトップ** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (接続元クライアント) | ➖ |
 | **Obsidian 外部脳連携** | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ |
 | **Homebrew Cask管理** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
 | [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
@@ -141,7 +141,7 @@ Legend: ✅ enabled · ➖ not set up in this config · (Windows) runs on the Wi
 | **Keyboard remapping** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)* | [Kanata](docs/kanata.md) ✅** |
 | **Wallpaper-driven theming** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows side) | [Matugen](docs/matugen-palette.md) ✅ |
 | **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](docs/kanata.md)) |
-| **Remote desktop** | [Tailscale+Sunshine](docs/remote-desktop.md) ✅ | ➖ (client only) | ➖ |
+| **Remote desktop** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (client only) | ➖ |
 | **Obsidian External Brain** | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ |
 | **Homebrew Cask management** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
 | [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
