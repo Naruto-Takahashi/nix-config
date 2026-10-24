@@ -101,6 +101,20 @@ OSごとの詳しい手順は個別ページに分けています．上の対応
 | **macOS** | [docs/setup-mac.md](docs/setup-mac.md) | 手順が最も多い。TCC/SIPの都合で数点だけ手動のGUI操作が残る |
 | **sudo無し共有Linux (rootless podman)** | [docs/setup-distrobox.md](docs/setup-distrobox.md) | CLIツールのみのアドオン的プロファイル。distroboxコンテナ内に`/nix`を作る |
 
+---
+
+### 日常のコマンド操作 (`just`)
+
+共通タスクランナーとして [`just`](justfile) を導入しています．どのマシンでも以下の短縮コマンドが利用できます．
+
+```bash
+just switch            # 現在のOSを自動判別して設定を適用 (git add も自動実行)
+just check             # 全構成の静的評価・構文検証 (CIと同等)
+just fmt               # 全Nixコードの自動フォーマット (nixfmt)
+just sync-win          # Windows側への設定同期 (WSL専用)
+just restore-secrets   # Bitwarden CLI から ~/.env を安全に復元 (chmod 600)
+```
+
 ![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
 
 <details>
