@@ -44,20 +44,8 @@
   fonts.fontconfig.enable = true;
 
 
-  # Mac向け Kanata 設定ファイルの動的生成（Linux/他環境との互換性を維持する置換）
+  # Mac向け Kanata 設定ファイルの動的生成（置換ロジックは mac-config.nix に集約）
   # 英数/かな切り替え・WM操作ともKanata側（config.kbd）で完結させるため，
   # Karabiner-Elements本体（karabiner.json）は導入しない．
-  xdg.configFile."kanata/config.kbd".text =
-    let
-      original = builtins.readFile ../../modules/input/kanata/config.kbd;
-      # 1. macOSでは Ctrl 長押し時に ctrl-layer を有効化する
-      replaced1 = builtins.replaceStrings [ "cap-ctrl-action" ] [ "(layer-toggle ctrl-layer)" ] original;
-      # 2. ウィンドウマネージャーのモディファイアは Ctrl + Cmd (C-M-) にする (wmmodifier- -> C-M-)
-      replaced2 = builtins.replaceStrings [ "wmmodifier-" ] [ "C-M-" ] replaced1;
-      # 3. macOSでは Alt + Space (alt-layer + spc) を A-spc (Alt + Space) に直接マッピングする
-      replaced3 = builtins.replaceStrings [ "@hyp-d " ] [ "A-spc " ] replaced2;
-      # 4. macOSでは Alt + Tab (alt-layer + tab) を A-tab (Alt + Tab) に直接マッピングする (AltTabアプリとの連携用)
-      replaced4 = builtins.replaceStrings [ "@hyp-tab" ] [ "A-tab" ] replaced3;
-    in
-      replaced4;
+  xdg.configFile."kanata/config.kbd".text = import ../../modules/input/kanata/mac-config.nix;
 }
