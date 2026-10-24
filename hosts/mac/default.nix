@@ -31,10 +31,9 @@
   nixpkgs.config.allowUnfree = true;
 
   # -----------------------------------------------------------------------
-  # インストールするパッケージの定義
+  # インストールするパッケージの定義 (Mac固有パッケージ)
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [
-    fastfetch
     cowsay
     # fortune依存のrecode(3.7.16)がテストフェーズでセグフォルトしビルド不能
     # (このnixpkgsピン・aarch64-darwinで発生、upstreamのバグ)。テストだけ
@@ -44,8 +43,6 @@
     })
     lolcat
     nodejs_22
-    gh
-    ghq
     hackgen-nf-font
     kanata
   ];

@@ -9,13 +9,9 @@
     # ターミナルで使用するフォント
     pkgs.hackgen-nf-font # WezTermで指定されているフォントです．
 
-    # 基本CLIユーティリティ
-    pkgs.eza
-    pkgs.bat
+    # Linux デスクトップ/X11 ユーティリティ
     pkgs.feh
     pkgs.picom
-    pkgs.ghq
-    pkgs.git
 
     # 開発環境・コンパイラ
     pkgs.gcc
@@ -36,7 +32,6 @@
     pkgs.cowsay
     pkgs.fortune
     pkgs.lolcat
-    pkgs.fastfetch
 
     # --- カスタムパッケージ定義 ---
     

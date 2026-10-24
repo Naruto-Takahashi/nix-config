@@ -43,18 +43,15 @@
     "/mnt/c/Program Files/Git/mingw64/libexec/git-core/git-credential-wincred.exe";
 
   # -----------------------------------------------------------------------
-  # インストールするパッケージの定義
+  # インストールするパッケージの定義 (WSL固有パッケージ)
   # -----------------------------------------------------------------------
   home.packages = with pkgs; [
-    gemini-cli-bin
     codex
-    fastfetch
     cowsay
     fortune
     lolcat
     nodejs_22
     wsl-open # Windowsの規定のアプリでファイルを開くためのコマンド
-    gh
     sshfs   # SSH経由でリモートホストのファイルシステムをマウントするためのツール
     cava
     matugen # 壁紙から配色を抽出しYASB等へ流し込むツール
