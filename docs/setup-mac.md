@@ -82,7 +82,7 @@ cd nix-config
 
 8. **AeroSpace設定の再読み込み (通常は不要)**
    ログイン20秒後にAeroSpaceの設定リロードとborders起動を自動で行うLaunchAgent
-   (`modules/apps/aerospace/default.nix`) があるため，通常は何もしなくても
+   (`modules/wm/aerospace/default.nix`) があるため，通常は何もしなくても
    次回ログイン時に最新設定が反映されます．`darwin-rebuild switch` 直後，
    ログアウトを待たずにすぐ反映を見たい場合だけ手動でリロードしてください
    （`xdg.configFile`で生成される`aerospace.toml`はファイルを書き換えただけでは

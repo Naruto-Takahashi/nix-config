@@ -18,9 +18,9 @@
     ../../profiles/core.nix
   ];
 
-  home.username      = "root";
+  home.username = "root";
   home.homeDirectory = "/root";
-  home.stateVersion  = "25.11";
+  home.stateVersion = "25.11";
 
   programs.home-manager.enable = true;
 

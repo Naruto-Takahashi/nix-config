@@ -31,78 +31,78 @@
 
     # 履歴管理（History）の設定
     history = {
-      size           = 50000;
-      save           = 50000;
-      path           = "$HOME/.zsh_history";
-      share          = true;  # SHARE_HISTORY
-      ignoreAllDups  = true;  # HIST_IGNORE_ALL_DUPS
-      ignoreSpace    = true;  # HIST_IGNORE_SPACE
+      size = 50000;
+      save = 50000;
+      path = "$HOME/.zsh_history";
+      share = true; # SHARE_HISTORY
+      ignoreAllDups = true; # HIST_IGNORE_ALL_DUPS
+      ignoreSpace = true; # HIST_IGNORE_SPACE
     };
 
     # コマンドエイリアス（shellAliases）の定義
     shellAliases = {
       # WezTerm用ラッパー（Nvidia環境対応）
       wezterm = "nixGL wezterm";
-      
+
       # ユーティリティ & 表示クリア
-      c       = "printf \"\\033[2J\\033[H\"";
-      reload  = "source ~/.zshrc && echo \"Sourced .zshrc\"";
-      path    = "echo $PATH | tr \":\" \"\\n\"";
+      c = "printf \"\\033[2J\\033[H\"";
+      reload = "source ~/.zshrc && echo \"Sourced .zshrc\"";
+      path = "echo $PATH | tr \":\" \"\\n\"";
 
       # 安全性と明示性の確保
-      cp      = "cp -iv";
-      mv      = "mv -iv";
-      rm      = "rm -iv";
+      cp = "cp -iv";
+      mv = "mv -iv";
+      rm = "rm -iv";
 
       # ディレクトリ移動の短縮
-      ".."    = "cd ..";
-      "..."   = "cd ../..";
-      win     = "cd ~/win";
+      ".." = "cd ..";
+      "..." = "cd ../..";
+      win = "cd ~/win";
 
       # システム状況監視
-      df      = "df -h";
-      free    = "free -h";
+      df = "df -h";
+      free = "free -h";
 
       # 開発コアツール
-      g       = "git";
-      ga      = "git add";
-      gc      = "git commit";
-      gp      = "git push";
-      gs      = "git status";
-      vim     = "nvim";
-      v       = "nvim";
-      lg      = "lazygit";
+      g = "git";
+      ga = "git add";
+      gc = "git commit";
+      gp = "git push";
+      gs = "git status";
+      vim = "nvim";
+      v = "nvim";
+      lg = "lazygit";
 
       # GitHub Copilot（Manual Install - v1.0.63+）
-      chat    = "copilot";
-      ask     = "copilot -i";
-      exp     = "copilot -i 'explain '";
+      chat = "copilot";
+      ask = "copilot -i";
+      exp = "copilot -i 'explain '";
       copilot = "copilot";
 
       # モダンCLIユーティリティへの置き換え
-      ls      = "eza --icons";
-      ll      = "eza -alF --icons";
-      la      = "eza -a --icons";
-      l       = "eza -F --icons";
-      tree    = "eza --tree --icons";
-      cat     = "bat";
-      grep    = "grep --color=auto";
+      ls = "eza --icons";
+      ll = "eza -alF --icons";
+      la = "eza -a --icons";
+      l = "eza -F --icons";
+      tree = "eza --tree --icons";
+      cat = "bat";
+      grep = "grep --color=auto";
 
       # tldr を日本語ページで引く (tldr-pages のコミュニティ日本語訳を利用)
-      tldrj   = "LANG=ja_JP.UTF-8 LANGUAGE=ja tldr";
+      tldrj = "LANG=ja_JP.UTF-8 LANGUAGE=ja tldr";
 
       # サブツール・ブログ執筆関連
       vimtutor1 = "nvim -c \"Tutor ja/vim-01-beginner\"";
       vimtutor2 = "nvim -c \"Tutor ja/vim-02-beginner\"";
-      zp        = "npx zenn preview";
-      zn        = "npx zenn new:article";
-      gchat     = "agy -i";
-      achat     = "agy -i";
+      zp = "npx zenn preview";
+      zn = "npx zenn new:article";
+      gchat = "agy -i";
+      achat = "agy -i";
 
       # Raspberry Pi 3B SSHFS マウント操作
-      raspi-mount  = "mkdir -p ~/mnt/raspi && sshfs nalt@192.168.151.253:/home/nalt ~/mnt/raspi && echo 'raspi mounted at ~/mnt/raspi'";
+      raspi-mount = "mkdir -p ~/mnt/raspi && sshfs nalt@192.168.151.253:/home/nalt ~/mnt/raspi && echo 'raspi mounted at ~/mnt/raspi'";
       raspi-umount = "fusermount -u ~/mnt/raspi && echo 'raspi unmounted'";
-      raspi        = "cd ~/mnt/raspi";
+      raspi = "cd ~/mnt/raspi";
     };
 
     # プラグイン設定（Nixによる絶対パスでの自動配置）
@@ -122,7 +122,7 @@
       # ごと取り除いて確実にフォールバックさせる
       {
         name = "fzf-tab";
-        src  = pkgs.runCommand "fzf-tab-no-native-module" { } ''
+        src = pkgs.runCommand "fzf-tab-no-native-module" { } ''
           cp -r ${pkgs.zsh-fzf-tab}/share/fzf-tab $out
           chmod -R u+w $out
           rm -rf $out/modules
@@ -130,23 +130,23 @@
       }
       {
         name = "zsh-autosuggestions";
-        src  = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
+        src = "${pkgs.zsh-autosuggestions}/share/zsh-autosuggestions";
       }
       # 構文ハイライトを有効化
       {
         name = "zsh-syntax-highlighting";
-        src  = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
+        src = "${pkgs.zsh-syntax-highlighting}/share/zsh-syntax-highlighting";
         file = "zsh-syntax-highlighting.zsh";
       }
     ];
 
     # ディレクトリハッシュ（hash -d による「~ショートカット」）
     dirHashes = {
-      d    = "$HOME/ghq/github.com/Naruto-Takahashi/nix-config";
-      p    = "$HOME/projects";
+      d = "$HOME/ghq/github.com/Naruto-Takahashi/nix-config";
+      p = "$HOME/projects";
       zenn = "$HOME/projects/zenn-blog";
       rust = "$HOME/projects/rust-the-book";
-      win  = "$HOME/win";
+      win = "$HOME/win";
     };
 
     # 環境固有の設定，キーバインド，カスタム関数（.zshrcへの流し込み）

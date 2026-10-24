@@ -71,21 +71,21 @@ atuin はシェル履歴の記録・暗号化同期の**バックエンド**と�
 
 ## delta — git diff の美しい表示
 
-インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`programs.git.settings.core.pager`、`modules/apps/git` で管理)。lazygit内蔵の差分パネルも別途 `git.pagers` (`modules/apps/lazygit`) で delta を使うよう明示している。
+インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`programs.git.settings.core.pager`、`modules/cli/git` で管理)。lazygit内蔵の差分パネルも別途 `git.pagers` (`modules/cli/lazygit`) で delta を使うよう明示している。
 
 | 操作 | 動作 |
 | :--- | :--- |
 | **`n` / `N`** | (ページャ内) 次 / 前のファイルへジャンプ (`navigate` 有効) |
 | **`git diff --no-pager`** | 素の diff が欲しいとき |
 
-- シンタックス配色 (`delta.syntax-theme`) は `modules/apps/bat` が登録している `Kanagawa Dragon` テーマ。既定の `Monokai Extended` は他ツールと配色が馴染まないため、kanagawa.nvim本家のtmTheme (無印wave配色) を `lua/kanagawa/themes.lua` の dragon 色定義に合わせて手動で色置換したものを使っている (upstreamにdragon版tmThemeは存在しないため自前で用意、`modules/apps/bat/kanagawa-dragon.tmTheme`)
+- シンタックス配色 (`delta.syntax-theme`) は `modules/cli/bat` が登録している `Kanagawa Dragon` テーマ。既定の `Monokai Extended` は他ツールと配色が馴染まないため、kanagawa.nvim本家のtmTheme (無印wave配色) を `lua/kanagawa/themes.lua` の dragon 色定義に合わせて手動で色置換したものを使っている (upstreamにdragon版tmThemeは存在しないため自前で用意、`modules/cli/bat/kanagawa-dragon.tmTheme`)
 - bat自体もこの `Kanagawa Dragon` テーマが既定 (`bat <file>` の表示にも反映される)
 
 ---
 
 ## eza — ls の置き換え
 
-`ls`/`ll`/`la`/`l`/`tree` エイリアスと `cd` 後の自動一覧表示 (`chpwd`) は全て eza を使う。ファイル種別ごとの色分けは yazi の `theme-template.toml` と同じ拡張子→役割 (tertiary/complement/triad/error/secondary) の対応で揃えており、アイコンの色もファイル名の文字色と一致させている (`modules/apps/eza/theme.yml`、matugen環境では `~/.cache/matugen/eza/theme.yml` を `EZA_CONFIG_DIR` 経由で優先)。
+`ls`/`ll`/`la`/`l`/`tree` エイリアスと `cd` 後の自動一覧表示 (`chpwd`) は全て eza を使う。ファイル種別ごとの色分けは yazi の `theme-template.toml` と同じ拡張子→役割 (tertiary/complement/triad/error/secondary) の対応で揃えており、アイコンの色もファイル名の文字色と一致させている (`modules/cli/eza/theme.yml`、matugen環境では `~/.cache/matugen/eza/theme.yml` を `EZA_CONFIG_DIR` 経由で優先)。
 
 - 拡張子/ファイル名それぞれに `filename.foreground` と `icon.style.foreground` の両方を同じ色で指定する必要がある (eza はアイコン色をファイル名の色から自動導出しないため)
 - 旧来の固定 `LS_COLORS` は eza のテーマ (特に `di`=ディレクトリ色) を上書きしてしまうため撤去済み

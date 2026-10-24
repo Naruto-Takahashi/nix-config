@@ -39,7 +39,7 @@ yazi <path>   # 指定ディレクトリで起動
   (yaziPlugins.rich-preview、`rich-cli`を利用) でレンダリングして表示する。
   生テキストではなく装飾された状態で見える。yaziの実mime判定は`.md`を
   `text/plain`として返すため、拡張子(`url`)で直接マッチさせている
-  (`modules/apps/yazi/default.nix`)
+  (`modules/cli/yazi/default.nix`)
   - word/excel等のOffice文書は非対応 (`office.yazi`はLibreOffice依存で
     重いため見送り済み)
   - PDF/画像プレビューが小さく表示される既知の制約あり。WezTerm+WSLg環境で
@@ -185,7 +185,7 @@ zshの`cd`と同じzoxide履歴を共有するので、シェルでよく行く�
 
 ## テーマカスタマイズ（本環境の設定）
 
-設定ファイル: [`modules/apps/yazi/default.nix`](../modules/apps/yazi/default.nix)
+設定ファイル: [`modules/cli/yazi/default.nix`](../modules/cli/yazi/default.nix)
 
 ### 色彩設定（Matugen パレット準拠）
 
@@ -305,6 +305,6 @@ yazi ~/ghq/github.com/Naruto-Takahashi/
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/apps/yazi/default.nix` | Yazi有効化・keymap上書き・テーマ配置 |
-| `modules/apps/yazi/init.lua` | Matugen配色フォールバック定義 |
-| `modules/apps/yazi/theme-template.toml` | Matugenテンプレート (`@@プレースホルダ@@`) |
+| `modules/cli/yazi/default.nix` | Yazi有効化・keymap上書き・テーマ配置 |
+| `modules/cli/yazi/init.lua` | Matugen配色フォールバック定義 |
+| `modules/cli/yazi/theme-template.toml` | Matugenテンプレート (`@@プレースホルダ@@`) |

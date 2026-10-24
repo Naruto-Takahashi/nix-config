@@ -15,4 +15,4 @@ let
   replaced3 = builtins.replaceStrings [ "@hyp-d " ] [ "A-spc " ] replaced2;
   replaced4 = builtins.replaceStrings [ "@hyp-tab" ] [ "A-tab" ] replaced3;
 in
-  replaced4
+replaced4

@@ -6,6 +6,6 @@
 {
   # --- Kanata: キーボードリマッパー設定 ---
   # Linux（NixOS）向けのキーマップ設定生成を行います．
-  # 置換ロジックは kanata-config.nix に共通化されています．
-  xdg.configFile."kanata/config.kbd".text = import ./kanata-config.nix;
+  # 置換ロジックは linux-config.nix に共通化されています．
+  xdg.configFile."kanata/config.kbd".text = import ./linux-config.nix;
 }

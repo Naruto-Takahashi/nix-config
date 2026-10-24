@@ -1,7 +1,12 @@
 # =========================================================================
 # Hyprland (Waylandコンポジタ) 宣言的設定モジュール
 # =========================================================================
-{ config, pkgs, dotfilesPath, ... }:
+{
+  config,
+  pkgs,
+  dotfilesPath,
+  ...
+}:
 
 let
   cfgPath = "${dotfilesPath}/modules/wm/hyprland/config";
@@ -42,14 +47,11 @@ in
     config.lib.file.mkOutOfStoreSymlink "${cfgPath}/rofi/config.rasi";
 
   # --- SwayNC (通知センター) 設定のリンク ---
-  xdg.configFile."swaync".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfgPath}/swaync";
+  xdg.configFile."swaync".source = config.lib.file.mkOutOfStoreSymlink "${cfgPath}/swaync";
 
   # --- wlogout (ログアウトメニュー) 設定のリンク ---
-  xdg.configFile."wlogout".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfgPath}/wlogout";
+  xdg.configFile."wlogout".source = config.lib.file.mkOutOfStoreSymlink "${cfgPath}/wlogout";
 
   # --- Matugen (配色ジェネレーター) 設定のリンク ---
-  xdg.configFile."matugen".source =
-    config.lib.file.mkOutOfStoreSymlink "${cfgPath}/matugen";
+  xdg.configFile."matugen".source = config.lib.file.mkOutOfStoreSymlink "${cfgPath}/matugen";
 }

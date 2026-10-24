@@ -1,6 +1,6 @@
 # Neovim 設定・主要プラグイン・キーバインド詳細
 
-このドキュメントでは，[modules/apps/neovim/default.nix](../modules/apps/neovim/default.nix) を通じて管理されている Neovim の基本設計，独自マッピング，および強力なプラグインエコシステムについて詳細に解説します．
+このドキュメントでは，[modules/cli/neovim/default.nix](../modules/cli/neovim/default.nix) を通じて管理されている Neovim の基本設計，独自マッピング，および強力なプラグインエコシステムについて詳細に解説します．
 
 **目次**: [基本設定](#基本設定-general-options) / [主要キーマップ](#主要キーマップ-core-keymaps) / [カスタムマクロ・コマンド](#強力な独自カスタムマクロコマンド) / [プラグインエコシステム](#主要プラグインエコシステム-plugin-ecosystem) / [プラグイン個別キーバインド](#各プラグイン個別キーバインド詳細) / [関連ファイル](#関連ファイル)
 
@@ -8,7 +8,7 @@
 
 ## 基本設定 (General Options)
 
-効率的なコーディングとモダンな視覚効果を実現するための基本オプション設計（[vim-options.lua](../modules/apps/neovim/nvim/lua/vim-options.lua)）です．
+効率的なコーディングとモダンな視覚効果を実現するための基本オプション設計（[vim-options.lua](../modules/cli/neovim/nvim/lua/vim-options.lua)）です．
 
 * **タブ・インデント幅**: `expandtab`，`tabstop=4`，`shiftwidth=4` (スペース4つのクリーンなインデント)．
 * **相対行番号 (`relativenumber`)**: 現在行からの相対距離で番号を表示し，`10j` などのVim移動手数を一瞬で測ることができます（`number` も有効なため，現在行のみ絶対行数が表示されます）．
@@ -62,7 +62,7 @@
 
 ## 主要プラグインエコシステム (Plugin Ecosystem)
 
-プラグインマネージャー **Lazy.nvim**（[init.lua](../modules/apps/neovim/nvim/init.lua)）により，以下の最新鋭プラグインが高速に自動ロード・管理されます．
+プラグインマネージャー **Lazy.nvim**（[init.lua](../modules/cli/neovim/nvim/init.lua)）により，以下の最新鋭プラグインが高速に自動ロード・管理されます．
 
 1. **`cyberdream.lua`**: 近未来的なサイバーパンク調の極めて美しいメインカラーテーマ．背景透過処理と美しく調和．
 2. **`lsp-config.lua`**: 高度なコーディング支援（自動コード補完・エラー検出・定義ジャンプ）．
@@ -223,7 +223,7 @@
 
 ### 10. ステータスバー モード別配色 (lualine.nvim)
 
-ステータスバー左端の装飾ブロック ([plugins/lualine.lua](../modules/apps/neovim/nvim/lua/plugins/lualine.lua) の `lead_color()`) は，現在のVimモード (`vim.fn.mode()`) に応じて色を切り替えます．Vim内部のモード表現はかなり細分化されているため，代表的なモードと入り方を以下にまとめます．
+ステータスバー左端の装飾ブロック ([plugins/lualine.lua](../modules/cli/neovim/nvim/lua/plugins/lualine.lua) の `lead_color()`) は，現在のVimモード (`vim.fn.mode()`) に応じて色を切り替えます．Vim内部のモード表現はかなり細分化されているため，代表的なモードと入り方を以下にまとめます．
 
 | `mode()`戻り値 | モード名 | 使う場面 | 入り方 | 配色対応 |
 | :---: | :--- | :--- | :--- | :---: |
@@ -317,8 +317,8 @@ PR/Issueバッファを開いた後は，バッファ内で `<space>ca`(コメ�
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/apps/neovim/default.nix` | Neovim有効化・extraPackages・treesitterパーサー配置 |
-| `modules/apps/neovim/nvim/init.lua` | Lazy.nvimブートストラップ・プラグイン一覧 |
-| `modules/apps/neovim/nvim/lua/vim-options.lua` | 基本オプション・キーマップ定義 |
-| `modules/apps/neovim/nvim/lua/plugins/` | プラグイン個別設定 |
-| `modules/apps/neovim/nvim/lua/matugen.lua` | Matugen配色フォールバック定義 |
+| `modules/cli/neovim/default.nix` | Neovim有効化・extraPackages・treesitterパーサー配置 |
+| `modules/cli/neovim/nvim/init.lua` | Lazy.nvimブートストラップ・プラグイン一覧 |
+| `modules/cli/neovim/nvim/lua/vim-options.lua` | 基本オプション・キーマップ定義 |
+| `modules/cli/neovim/nvim/lua/plugins/` | プラグイン個別設定 |
+| `modules/cli/neovim/nvim/lua/matugen.lua` | Matugen配色フォールバック定義 |

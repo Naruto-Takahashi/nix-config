@@ -1,6 +1,6 @@
 # WezTerm ターミナルエミュレータ設定・キーバインド詳細
 
-このドキュメントでは，[modules/apps/wezterm/](../modules/apps/wezterm/) に定義されている WezTerm ターミナルの機能設計，外観カスタマイズ，およびキーバインドについて詳細に解説します．
+このドキュメントでは，[modules/gui/wezterm/](../modules/gui/wezterm/) に定義されている WezTerm ターミナルの機能設計，外観カスタマイズ，およびキーバインドについて詳細に解説します．
 
 ---
 
@@ -130,6 +130,6 @@ WezTermの標準ショートカットをすべて無効化（`disable_default_ke
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/apps/wezterm/wezterm.lua` | 外観・タブタイトル自動検知ロジック |
-| `modules/apps/wezterm/keybinds.lua` | キーバインド・Leaderキー・key_tables定義 |
-| `modules/apps/wezterm/default.nix` | home-manager配置・matugen配色連携 |
+| `modules/gui/wezterm/wezterm.lua` | 外観・タブタイトル自動検知ロジック |
+| `modules/gui/wezterm/keybinds.lua` | キーバインド・Leaderキー・key_tables定義 |
+| `modules/gui/wezterm/default.nix` | home-manager配置・matugen配色連携 |

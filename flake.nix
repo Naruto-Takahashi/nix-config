@@ -6,35 +6,43 @@
 
   inputs = {
     # Nixpkgs & Home Manager の入力ソース定義
-    nixpkgs.url      = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url            = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    
+
     # nixGL の入力ソース定義 (OpenGLラッパー)
     nixgl = {
-      url            = "github:nix-community/nixGL";
+      url = "github:nix-community/nixGL";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Yazi Kanagawa Dragon フレーバーの入力ソース定義
     kanagawa-dragon-yazi = {
-      url   = "github:Naruto-Takahashi/kanagawa-dragon.yazi";
+      url = "github:Naruto-Takahashi/kanagawa-dragon.yazi";
       flake = false;
     };
 
     # nix-darwin の入力ソース定義
     darwin = {
-      url   = "github:LnL7/nix-darwin";
+      url = "github:LnL7/nix-darwin";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, kanagawa-dragon-yazi, darwin, ... }:
+  outputs =
+    {
+      nixpkgs,
+      home-manager,
+      nixgl,
+      kanagawa-dragon-yazi,
+      darwin,
+      ...
+    }:
     let
       system = "x86_64-linux";
-      pkgs   = nixpkgs.legacyPackages.${system};
+      pkgs = nixpkgs.legacyPackages.${system};
     in
     {
       homeConfigurations = {
@@ -75,12 +83,12 @@
         "nixos" = nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
-            ./hosts/nixos
+            ./hosts/nixos/configuration.nix
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.nalt = import ./hosts/nixos/home.nix;
+              home-manager.users.nalt = import ./hosts/nixos;
               home-manager.extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
               home-manager.backupFileExtension = "backup";
             }
@@ -108,8 +116,8 @@
 
       # コードフォーマッタ (`nix fmt` でリポジトリ全体を整形)
       formatter = {
-        "x86_64-linux" = nixpkgs.legacyPackages."x86_64-linux".nixfmt;
-        "aarch64-darwin" = nixpkgs.legacyPackages."aarch64-darwin".nixfmt;
+        "x86_64-linux" = nixpkgs.legacyPackages."x86_64-linux".nixfmt-tree;
+        "aarch64-darwin" = nixpkgs.legacyPackages."aarch64-darwin".nixfmt-tree;
       };
     };
 }

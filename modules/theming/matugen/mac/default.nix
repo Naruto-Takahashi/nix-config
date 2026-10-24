@@ -4,11 +4,20 @@
 # WSL側 (modules/theming/matugen/wsl/, modules/wm/yasb/default.nix の配線)
 # のMac版。壁紙から抽出したパレットを ~/.local/bin/matugen-apply 経由で
 # WezTerm/nvim/yazi/starship/lazygit/btop/eza/fzf/AeroSpace枠線へ反映する。
-{ config, lib, pkgs, dotfilesPath, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  dotfilesPath,
+  ...
+}:
 
 {
   # chafa: wezterm imgcatが使えない場合の壁紙プレビューのフォールバック用
-  home.packages = [ pkgs.matugen pkgs.chafa ];
+  home.packages = [
+    pkgs.matugen
+    pkgs.chafa
+  ];
 
   xdg.configFile."matugen-mac" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac";

@@ -27,10 +27,10 @@ in
     ../../profiles/ai-agent.nix
   ];
 
-  home.username      = "pt_takahashi";
+  home.username = "pt_takahashi";
   home.homeDirectory =
     if envHome != "" then envHome else "/home/pt_takahashi/distrobox-homes/nixcli-dev";
-  home.stateVersion  = "25.11";
+  home.stateVersion = "25.11";
 
   programs.home-manager.enable = true;
 

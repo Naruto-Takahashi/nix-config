@@ -20,78 +20,79 @@
 let
   base = builtins.readFile ./config.kbd;
 
-  replaced = builtins.replaceStrings
-    [
-      # wmmodifier-A-h 等 (alt-ctrl-layer用、Super+Alt+Hを意味する) は、
-      # Windowsでは wmmodifier 自体がAltなので単純展開すると "A-A-h" という
-      # 不正な二重修飾子表記になってしまう。Windows(AHK)側はこの
-      # alt-ctrl-layer機能を元々実装していない (docs/kanata.md 参照)ため、
-      # 素直にCtrl+Alt+Hとして解釈しておく (無害・構文的に正しい・将来
-      # AHK側に対応するホットキーを足す余地も残る)。より具体的なパターンを
-      # 汎用の "wmmodifier-" 置換より前に置くことで先にマッチさせる
-      "wmmodifier-A-h"
-      "wmmodifier-A-j"
-      "wmmodifier-A-k"
-      "wmmodifier-A-l"
-      # hyp-q (wmmodifier-S-w) はmacOSのCmd+Shift+Q (ログアウト) 衝突回避
-      # のためにqではなくwへずらしたもの。Windowsにその衝突は存在せず、
-      # 素直にA-S-q (Alt+Shift+Q) にすると既存のkomorebi.ahk `!+q::` (閉じる)
-      # と一致する。ずらしたままだと物理Alt+Shift+Qが `!+w::` (壁紙ピッカー)
-      # として誤発火してしまう (実機で確認済み)。汎用の "wmmodifier-" 置換
-      # より前に置いて先にマッチさせる
-      "wmmodifier-S-w   ;; Alt + q"
-      # Alt長押しレイヤー (alt-eng/alt-jp) のhold動作を素の layer-toggle から
-      # (multi 実キー (layer-while-held ...)) に変更する。kanata公式ドキュメント
-      # (config.adoc の `multi` action解説) が明示する「レイヤー越しにOS標準の
-      # Alt+Tab連続切り替えを機能させる」ための唯一の方法がこれで、単純な
-      # layer-toggleではAlt+Tabキーが押されるたびにAlt自体もpress+releaseされて
-      # しまい、Windows側のAlt-Tabスイッチャー(押しっぱなしでTabを連打して
-      # 選ぶUI)が機能しなくなる (kanata移行後にAlt+Tabでのウィンドウ切り替え
-      # が使えなくなったと報告あり。要実機確認)。より具体的なパターンを汎用の
-      # "eisu"/"kana" 単語置換より前に置いて先にマッチさせる
-      "eisu (layer-toggle alt-layer))"
-      "kana (layer-toggle alt-layer))"
-      "cap-ctrl-action"
-      "wmmodifier-"
-      "eisu"
-      "kana"
-      "process-unmapped-keys yes"
-      # 本機はレジストリのScancode MapでCapsLock物理キーをF13として送出する
-      # 設定にしている (main.ahkの `*F13::` コメント参照)。そのためkanataの
-      # defsrcも "caps" ではなく "f13" を監視しないと物理CapsLockを一切
-      # 検知できない。config.kbd内で "caps" はdefsrc行にのみ1箇所しか
-      # 出現しないため単純な文字列置換で安全に対応できる
-      "caps  lalt"
-      # alt-layer中のspc位置 (@hyp-d = Super+D相当) をそのまま素直に
-      # wmmodifier-d (= A-d) へ展開すると、Alt+SpaceがAlt+Dに化けてしまい
-      # PowerToys Command Palette (Alt+Space) が起動できなくなる。
-      # macOS向け (hosts/mac/default.nix) と同じく、この1箇所だけ
-      # 素のAlt+Spaceパススルーに直接上書きする
-      "@hyp-d "
-      # alt-layer中のtab位置 (@hyp-tab = Super+Tab相当) も同様の理由で
-      # 素のAlt+Tabパススルーに上書きする。上のmulti化で実キーのAlt
-      # (lalt/ralt) が物理的に押されっぱなしになるため、tab位置は
-      # 何もせず透過(_)にするだけでOS標準のAlt+Tabとして機能する
-      "@hyp-tab "
-    ]
-    [
-      "C-A-h"
-      "C-A-j"
-      "C-A-k"
-      "C-A-l"
-      "A-S-q   ;; Alt + q"
-      "@ime-off (multi lalt (layer-while-held alt-layer)))"
-      "@ime-on (multi ralt (layer-while-held alt-layer)))"
-      "lctl"
-      "A-"
-      "@ime-off"
-      "@ime-on"
-      "process-unmapped-keys yes\n  danger-enable-cmd yes"
-      "f13   lalt"
-      "A-spc "
-      "_ "
-    ]
-    base;
+  replaced =
+    builtins.replaceStrings
+      [
+        # wmmodifier-A-h 等 (alt-ctrl-layer用、Super+Alt+Hを意味する) は、
+        # Windowsでは wmmodifier 自体がAltなので単純展開すると "A-A-h" という
+        # 不正な二重修飾子表記になってしまう。Windows(AHK)側はこの
+        # alt-ctrl-layer機能を元々実装していない (docs/kanata.md 参照)ため、
+        # 素直にCtrl+Alt+Hとして解釈しておく (無害・構文的に正しい・将来
+        # AHK側に対応するホットキーを足す余地も残る)。より具体的なパターンを
+        # 汎用の "wmmodifier-" 置換より前に置くことで先にマッチさせる
+        "wmmodifier-A-h"
+        "wmmodifier-A-j"
+        "wmmodifier-A-k"
+        "wmmodifier-A-l"
+        # hyp-q (wmmodifier-S-w) はmacOSのCmd+Shift+Q (ログアウト) 衝突回避
+        # のためにqではなくwへずらしたもの。Windowsにその衝突は存在せず、
+        # 素直にA-S-q (Alt+Shift+Q) にすると既存のkomorebi.ahk `!+q::` (閉じる)
+        # と一致する。ずらしたままだと物理Alt+Shift+Qが `!+w::` (壁紙ピッカー)
+        # として誤発火してしまう (実機で確認済み)。汎用の "wmmodifier-" 置換
+        # より前に置いて先にマッチさせる
+        "wmmodifier-S-w   ;; Alt + q"
+        # Alt長押しレイヤー (alt-eng/alt-jp) のhold動作を素の layer-toggle から
+        # (multi 実キー (layer-while-held ...)) に変更する。kanata公式ドキュメント
+        # (config.adoc の `multi` action解説) が明示する「レイヤー越しにOS標準の
+        # Alt+Tab連続切り替えを機能させる」ための唯一の方法がこれで、単純な
+        # layer-toggleではAlt+Tabキーが押されるたびにAlt自体もpress+releaseされて
+        # しまい、Windows側のAlt-Tabスイッチャー(押しっぱなしでTabを連打して
+        # 選ぶUI)が機能しなくなる (kanata移行後にAlt+Tabでのウィンドウ切り替え
+        # が使えなくなったと報告あり。要実機確認)。より具体的なパターンを汎用の
+        # "eisu"/"kana" 単語置換より前に置いて先にマッチさせる
+        "eisu (layer-toggle alt-layer))"
+        "kana (layer-toggle alt-layer))"
+        "cap-ctrl-action"
+        "wmmodifier-"
+        "eisu"
+        "kana"
+        "process-unmapped-keys yes"
+        # 本機はレジストリのScancode MapでCapsLock物理キーをF13として送出する
+        # 設定にしている (main.ahkの `*F13::` コメント参照)。そのためkanataの
+        # defsrcも "caps" ではなく "f13" を監視しないと物理CapsLockを一切
+        # 検知できない。config.kbd内で "caps" はdefsrc行にのみ1箇所しか
+        # 出現しないため単純な文字列置換で安全に対応できる
+        "caps  lalt"
+        # alt-layer中のspc位置 (@hyp-d = Super+D相当) をそのまま素直に
+        # wmmodifier-d (= A-d) へ展開すると、Alt+SpaceがAlt+Dに化けてしまい
+        # PowerToys Command Palette (Alt+Space) が起動できなくなる。
+        # macOS向け (hosts/mac/default.nix) と同じく、この1箇所だけ
+        # 素のAlt+Spaceパススルーに直接上書きする
+        "@hyp-d "
+        # alt-layer中のtab位置 (@hyp-tab = Super+Tab相当) も同様の理由で
+        # 素のAlt+Tabパススルーに上書きする。上のmulti化で実キーのAlt
+        # (lalt/ralt) が物理的に押されっぱなしになるため、tab位置は
+        # 何もせず透過(_)にするだけでOS標準のAlt+Tabとして機能する
+        "@hyp-tab "
+      ]
+      [
+        "C-A-h"
+        "C-A-j"
+        "C-A-k"
+        "C-A-l"
+        "A-S-q   ;; Alt + q"
+        "@ime-off (multi lalt (layer-while-held alt-layer)))"
+        "@ime-on (multi ralt (layer-while-held alt-layer)))"
+        "lctl"
+        "A-"
+        "@ime-off"
+        "@ime-on"
+        "process-unmapped-keys yes\n  danger-enable-cmd yes"
+        "f13   lalt"
+        "A-spc "
+        "_ "
+      ]
+      base;
 
   # AHK側の一発実行スクリプト (modules/input/ahk/ime-off.ahk, ime-on.ahk) を
   # cmdアクションで呼び出すためのdefalias。defaliasはconfig.kbd中に複数

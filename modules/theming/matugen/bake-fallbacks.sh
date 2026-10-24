@@ -71,7 +71,7 @@ sub_kv() {
 }
 
 bake_nvim() {
-  local f="$REPO_ROOT/modules/apps/neovim/nvim/lua/matugen.lua"
+  local f="$REPO_ROOT/modules/cli/neovim/nvim/lua/matugen.lua"
   sub_kv "$f" accent=accent tertiary=tertiary secondary=secondary complement=complement \
     triad=triad text=text muted=muted surface=surface on_accent=on_accent \
     accent_pale=accent_pale error=error selection_bg=selection_bg
@@ -79,7 +79,7 @@ bake_nvim() {
 }
 
 bake_wezterm() {
-  local f="$REPO_ROOT/modules/apps/wezterm/wezterm.lua"
+  local f="$REPO_ROOT/modules/gui/wezterm/wezterm.lua"
   sub_kv "$f" accent=accent tertiary=tertiary secondary=secondary complement=complement \
     triad=triad text=text muted=muted surface=surface on_accent=on_accent \
     accent_pale=accent_pale error=error
@@ -87,7 +87,7 @@ bake_wezterm() {
 }
 
 bake_yazi_pal() {
-  local f="$REPO_ROOT/modules/apps/yazi/init.lua"
+  local f="$REPO_ROOT/modules/cli/yazi/init.lua"
   sub_kv "$f" accent=accent tertiary=tertiary secondary=secondary complement=complement \
     triad=triad text=text muted=muted surface=surface on_accent=on_accent \
     accent_pale=accent_pale error=error
@@ -97,7 +97,7 @@ bake_yazi_pal() {
 bake_yazi_template() {
   # theme-template.toml は本来@@PLACEHOLDER@@のみのはずだが、過去に生の色が
   # 紛れ込んだ実績があるため、念のためチェックする
-  local f="$REPO_ROOT/modules/apps/yazi/theme-template.toml"
+  local f="$REPO_ROOT/modules/cli/yazi/theme-template.toml"
   if grep -qE '"#[0-9a-fA-F]{6}"' "$f"; then
     echo "⚠ yazi/theme-template.toml に生の色コードが残っている (プレースホルダー化すべき):" >&2
     grep -nE '"#[0-9a-fA-F]{6}"' "$f" >&2
@@ -142,7 +142,7 @@ bake_btop() {
 }
 
 bake_eza() {
-  local f="$REPO_ROOT/modules/apps/eza/theme.yml"
+  local f="$REPO_ROOT/modules/cli/eza/theme.yml"
   # 拡張子グループごとのrole (directory=secondary, ドキュメント系=tertiary,
   # スクリプト/メディア系=complement, Web/データ系=triad, コンパイル言語/
   # アーカイブ=error) は modules/theming/matugen/templates/eza-theme.yml の
@@ -159,11 +159,11 @@ bake_eza() {
   [[ -n "$cur" ]] && sedi "s/${cur}/${triad}/g" "$f"
   cur="$(grep -A1 -m1 'コンパイル言語・アーカイブ' "$f" | grep -oE '#[0-9a-fA-F]{6}' | head -1)"
   [[ -n "$cur" ]] && sedi "s/${cur}/${error}/g" "$f"
-  echo "✓ apps/eza/theme.yml"
+  echo "✓ cli/eza/theme.yml"
 }
 
 bake_lazygit() {
-  local f="$REPO_ROOT/modules/apps/lazygit/default.nix"
+  local f="$REPO_ROOT/modules/cli/lazygit/default.nix"
   sedi -E \
     -e "s/(activeBorderColor = \[ )\"#[0-9a-fA-F]{6}\"/\1\"${accent}\"/" \
     -e "s/(inactiveBorderColor = \[ )\"#[0-9a-fA-F]{6}\"/\1\"${muted}\"/" \
@@ -175,18 +175,18 @@ bake_lazygit() {
     -e "s/(unstagedChangesColor = \[ )\"#[0-9a-fA-F]{6}\"/\1\"${error}\"/" \
     -e "s/(defaultFgColor = \[ )\"#[0-9a-fA-F]{6}\"/\1\"${text}\"/" \
     "$f"
-  echo "✓ apps/lazygit/default.nix"
+  echo "✓ cli/lazygit/default.nix"
 }
 
 bake_cz() {
-  local f="$REPO_ROOT/modules/apps/git-hooks/cz.toml"
+  local f="$REPO_ROOT/modules/cli/git-hooks/cz.toml"
   sedi -E \
     -e "s/(\[\"(qmark|answer|pointer|highlighted)\", \"fg:)#[0-9a-fA-F]{6}( bold\"\])/\1${accent}\3/" \
     -e "s/(\[\"selected\", \"fg:)#[0-9a-fA-F]{6}(\"\])/\1${tertiary}\2/" \
     -e "s/(\[\"separator\", \"fg:)#[0-9a-fA-F]{6}(\"\])/\1${secondary}\2/" \
     -e "s/(\[\"disabled\", \"fg:)#[0-9a-fA-F]{6}( italic\"\])/\1${muted}\2/" \
     "$f"
-  echo "✓ apps/git-hooks/cz.toml"
+  echo "✓ cli/git-hooks/cz.toml"
 }
 
 bake_komorebi() {

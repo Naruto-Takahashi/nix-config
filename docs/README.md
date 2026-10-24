@@ -41,4 +41,4 @@
 
 | ドキュメント | 内容 |
 | :--- | :--- |
-| [obsidian-mcp.md](obsidian-mcp.md) | 全OS共通: Obsidianを日常管理・AIエージェントの外部脳として使う連携基盤 (`ob` CLI / 共通Skill / 自動Git同期) |
+| [obsidian-brain.md](obsidian-brain.md) | 全OS共通: Obsidianを日常管理・AIエージェントの外部脳として使う連携基盤 (`ob` CLI / 共通Skill / 自動Git同期) |

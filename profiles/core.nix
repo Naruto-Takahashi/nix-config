@@ -4,7 +4,12 @@
 # デスクトップ (Mac/WSL/NixOS)、リモートサーバー、コンテナ (distrobox/sandbox)
 # のすべての環境で共通して動作するヘッドレスな基盤 CLI ツールセット。
 # GUI アプリ (WezTerm) や外部連携 (Obsidian/Orca) は含まない。
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   # -----------------------------------------------------------------------
@@ -20,14 +25,14 @@
     ../modules/shell/direnv
     ../modules/shell/fastfetch
     ../modules/shell/atuin
-    ../modules/apps/neovim
-    ../modules/apps/yazi
-    ../modules/apps/eza
-    ../modules/apps/bat
-    ../modules/apps/git
-    ../modules/apps/lazygit
-    ../modules/apps/git-hooks
-    ../modules/apps/btop
+    ../modules/cli/neovim
+    ../modules/cli/yazi
+    ../modules/cli/eza
+    ../modules/cli/bat
+    ../modules/cli/git
+    ../modules/cli/lazygit
+    ../modules/cli/git-hooks
+    ../modules/cli/btop
   ];
 
   # -----------------------------------------------------------------------
@@ -38,15 +43,35 @@
     settings = {
       updates.auto_update = true;
       style = {
-        description.foreground.rgb = { r = 225; g = 226; b = 232; };
+        description.foreground.rgb = {
+          r = 225;
+          g = 226;
+          b = 232;
+        };
         command_name = {
-          foreground.rgb = { r = 162; g = 201; b = 253; };
+          foreground.rgb = {
+            r = 162;
+            g = 201;
+            b = 253;
+          };
           bold = true;
         };
-        example_text.foreground.rgb = { r = 195; g = 198; b = 207; };
-        example_code.foreground.rgb = { r = 215; g = 189; b = 228; };
+        example_text.foreground.rgb = {
+          r = 195;
+          g = 198;
+          b = 207;
+        };
+        example_code.foreground.rgb = {
+          r = 215;
+          g = 189;
+          b = 228;
+        };
         example_variable = {
-          foreground.rgb = { r = 187; g = 199; b = 219; };
+          foreground.rgb = {
+            r = 187;
+            g = 199;
+            b = 219;
+          };
           italic = true;
         };
       };

@@ -23,7 +23,10 @@ let
   # 実行可能ファイルとしてPATHに置くことでこの制約を回避する。
   atuin-history-colored = pkgs.writeShellApplication {
     name = "atuin-history-colored";
-    runtimeInputs = [ pkgs.atuin pkgs.gawk ];
+    runtimeInputs = [
+      pkgs.atuin
+      pkgs.gawk
+    ];
     text = ''
       # $@ で --filter-mode directory / --filter-mode session をそのまま
       # atuinへ中継できる (Ctrl+Rでの GLOBAL → DIRECTORY → SESSION 切り替え用)。
@@ -98,14 +101,20 @@ let
   };
 in
 {
-  home.packages = [ atuin-history-colored atuin-delete-entry ];
+  home.packages = [
+    atuin-history-colored
+    atuin-delete-entry
+  ];
 
   programs.atuin = {
     enable = true;
     enableZshIntegration = true;
     # atuin自身のTUI起動キーは使わない (Ctrl+Rはatuin-fzfが担当、
     # ↑キーは通常のzsh履歴のまま維持する)
-    flags = [ "--disable-up-arrow" "--disable-ctrl-r" ];
+    flags = [
+      "--disable-up-arrow"
+      "--disable-ctrl-r"
+    ];
     settings = {
       update_check = false;
     };

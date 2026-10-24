@@ -1,6 +1,6 @@
 # gitmoji 自動付与
 
-`modules/apps/git-hooks` が、個人リポジトリ (`~/ghq/github.com/Naruto-Takahashi/**`) での
+`modules/cli/git-hooks` が、個人リポジトリ (`~/ghq/github.com/Naruto-Takahashi/**`) での
 `git commit` にgitmojiを自動で付与する。git CLI直接実行、lazygit(nvim内/外)、
 Claude CodeなどのAIエージェント経由のコミットも `git commit` を呼ぶ限り対象になる。
 
@@ -45,7 +45,7 @@ feat: add sample file
 | (該当なし) | 💬 | デフォルト |
 
 一覧は [gitmoji.dev](https://gitmoji.dev) 準拠。実装は
-`modules/apps/git-hooks/hooks/prepare-commit-msg` の `MAP` 連想配列。
+`modules/cli/git-hooks/hooks/prepare-commit-msg` の `MAP` 連想配列。
 
 ### 依存関係更新 (scopeベース)
 
@@ -73,10 +73,10 @@ fix(deps): downgrade broken package
 cz commit
 ```
 
-`cz`は`modules/apps/git-hooks`が提供するラッパーコマンドで、実体は
+`cz`は`modules/cli/git-hooks`が提供するラッパーコマンドで、実体は
 [commitizen](https://commitizen-tools.github.io/commitizen/)を
 `~/.config/commitizen/cz.toml` (`cz_customize`アダプタ、ソースは
-`modules/apps/git-hooks/cz.toml`) で常に起動する。**リポジトリごとに
+`modules/cli/git-hooks/cz.toml`) で常に起動する。**リポジトリごとに
 `.cz.toml`を用意する必要はなく、どのリポジトリでも同じ体験になる。**
 
 - type: 絵文字付きでリストから選択(feat/fix/docs/style/refactor/perf/test/
@@ -113,7 +113,7 @@ lazygit内では **`c`** (通常のcommitChangesを上書き) に `cz commit` �
 
 ## 適用範囲
 
-gitconfig (`modules/apps/git`、`programs.git.includes`) の
+gitconfig (`modules/cli/git`、`programs.git.includes`) の
 `[includeIf "gitdir:~/ghq/github.com/Naruto-Takahashi/**"]` で
 個人リポジトリ配下のみに限定している。会社リポジトリや他人のOSSクローンなど
 配下外では自動適用されない。個人リポジトリでも特定の1つだけ外したい場合は、
@@ -129,8 +129,8 @@ git config --local core.hooksPath ""
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/apps/git-hooks/default.nix` | フック配置・`cz`ラッパーの定義 |
-| `modules/apps/git-hooks/hooks/prepare-commit-msg` | type/scope推定とgitmoji自動付与の実装 (`MAP`連想配列) |
-| `modules/apps/git-hooks/hooks/commit-msg` | 絵文字未付与時の警告 (拒否はしない) |
-| `modules/apps/git-hooks/cz.toml` | commitizen (`cz commit`) の対話選択肢定義 |
-| `modules/apps/git` | `programs.git.includes`の`includeIf`で個人リポジトリのみ有効化 |
+| `modules/cli/git-hooks/default.nix` | フック配置・`cz`ラッパーの定義 |
+| `modules/cli/git-hooks/hooks/prepare-commit-msg` | type/scope推定とgitmoji自動付与の実装 (`MAP`連想配列) |
+| `modules/cli/git-hooks/hooks/commit-msg` | 絵文字未付与時の警告 (拒否はしない) |
+| `modules/cli/git-hooks/cz.toml` | commitizen (`cz commit`) の対話選択肢定義 |
+| `modules/cli/git` | `programs.git.includes`の`includeIf`で個人リポジトリのみ有効化 |

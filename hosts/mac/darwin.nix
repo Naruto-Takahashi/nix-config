@@ -40,16 +40,16 @@ in
       "FelixKratz/formulae"
     ];
     casks = [
-      "aerospace"          # タイリングウィンドウマネージャ
-      "vivaldi"            # Vivaldiブラウザ
-      "raycast"            # クイックランチャー / Spotlight代替
-      "alt-tab"            # WindowsスタイルのAlt+Tabスイッチャー
-      "zotero"             # 文献管理（書誌・注釈。PDF は Google Drive にリンク）
-      "obsidian"           # 外部脳 Vault のエディタ
-      "google-drive"       # Google Drive for desktop（Zotero の PDF 置き場）
+      "aerospace" # タイリングウィンドウマネージャ
+      "vivaldi" # Vivaldiブラウザ
+      "raycast" # クイックランチャー / Spotlight代替
+      "alt-tab" # WindowsスタイルのAlt+Tabスイッチャー
+      "zotero" # 文献管理（書誌・注釈。PDF は Google Drive にリンク）
+      "obsidian" # 外部脳 Vault のエディタ
+      "google-drive" # Google Drive for desktop（Zotero の PDF 置き場）
     ];
     brews = [
-      "borders"            # アクティブウィンドウの枠線ハイライト用ツール
+      "borders" # アクティブウィンドウの枠線ハイライト用ツール
     ];
   };
 
@@ -75,8 +75,6 @@ in
   programs.zsh.enable = true;
 
   nixpkgs.config.allowUnfree = true;
-
-
 
   # Karabiner-DriverKit-VirtualHIDDevice (v6.2.0) のダウンロード・インストール・
   # システム拡張の有効化リクエストを自動化する．preActivationはnix-darwinの

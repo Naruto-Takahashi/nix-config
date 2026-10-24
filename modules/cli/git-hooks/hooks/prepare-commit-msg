@@ -1,0 +1,95 @@
+#!/usr/bin/env bash
+# =========================================================================
+# gitmoji 自動付与フック (prepare-commit-msg)
+# =========================================================================
+# Conventional Commits 風の接頭辞 (feat:, fix: など) からgitmojiを推定し、
+# メッセージ先頭に自動で付与する。推定できない場合もデフォルト絵文字を
+# 付けるため、commit-msg側のチェックに引っかかることはほぼ無い。
+# 既にgitmojiが付いている場合や merge/squash はスキップする。
+set -euo pipefail
+
+MSG_FILE="$1"
+SOURCE="${2:-}"
+
+# merge/squash コミット、テンプレートからの生成はスキップ
+case "$SOURCE" in
+  merge|squash) exit 0 ;;
+esac
+
+FIRST_LINE="$(head -n1 "$MSG_FILE")"
+
+# type→絵文字の対応表。modules/cli/git-hooks/cz.toml の choices と
+# 手動で同じ内容を保つこと (typeを追加/変更したら両方直す)。
+declare -A MAP=(
+  [feat]="✨"
+  [fix]="🐛"
+  [docs]="📝"
+  [style]="🎨"
+  [refactor]="♻️"
+  [perf]="⚡️"
+  [test]="✅"
+  [chore]="🔧"
+  [build]="📦️"
+  [ci]="👷"
+  [revert]="⏪️"
+  [wip]="🚧"
+  [remove]="🔥"
+  [security]="🔒️"
+  [init]="🎉"
+  [debug]="🔍️"
+  [merge]="🔀"
+)
+DEFAULT_EMOJI="💬"
+
+GITMOJIS=(
+  🎨 🐛 ✨ 📝 ♻️ ⚡️ ✅ 🔧 📦️ 👷 ⏪️ 🚧 🔥 🔒️ ➕ ➖ ⬆️ ⬇️ 🎉 💚 🔀 💄
+  🍎 🐧 🪟 📱 🚀 🔖 🚨 🚑️ 👥 🔊 🔇 🙈 📸 ⚗️ 🔍️ ♿️ 💡 🍻 💬 🗃️ 🚸 🏗️
+  🤡 🥚 🌐 💫 🗑️ 🛂 🩹 🧐 ⚰️ 🧪 👔 🩺 🧱 🧑‍💻
+)
+
+# 既にgitmoji (絵文字 or :shortcode:) が付いていれば何もしない
+if [[ "$FIRST_LINE" =~ ^[[:space:]]*:[a-z_]+: ]]; then
+  exit 0
+fi
+for emoji in "${GITMOJIS[@]}"; do
+  if [[ "$FIRST_LINE" == "$emoji"* ]]; then
+    exit 0
+  fi
+done
+
+# "feat(scope): subject" / "feat: subject" の接頭辞とscopeを抽出
+TYPE=""
+SCOPE=""
+if [[ "$FIRST_LINE" =~ ^([a-zA-Z]+)\(([^\)]*)\)?!?:[[:space:]] ]]; then
+  TYPE="${BASH_REMATCH[1],,}"
+  SCOPE="${BASH_REMATCH[2],,}"
+elif [[ "$FIRST_LINE" =~ ^([a-zA-Z]+)!?:[[:space:]] ]]; then
+  TYPE="${BASH_REMATCH[1],,}"
+fi
+
+EMOJI="$DEFAULT_EMOJI"
+if [[ -n "$TYPE" && -n "${MAP[$TYPE]+set}" ]]; then
+  EMOJI="${MAP[$TYPE]}"
+elif [[ "$FIRST_LINE" =~ ^Revert\  ]]; then
+  # `git revert` が生成する既定メッセージ (Revert "元のコミット件名") は
+  # Conventional Commits形式に一致しないため、専用に判定する
+  EMOJI="${MAP[revert]}"
+fi
+
+# scope(deps) / scope(deps-dev) は依存関係更新として扱う
+# (Renovate/Dependabot慣例の "chore(deps): bump X" 等に合わせる)
+if [[ "$SCOPE" == "deps" || "$SCOPE" == "deps-dev" ]]; then
+  if [[ "$FIRST_LINE" =~ [Dd]owngrade ]]; then
+    EMOJI="⬇️"
+  else
+    EMOJI="⬆️"
+  fi
+fi
+
+# `sed -i` はGNU/BSDで引数の取り方が違う(BSDはサフィックス必須)ため、
+# 一時ファイル経由で書き換えることで両方で同じ挙動にする。
+TMP_MSG="$(mktemp)"
+sed "1s/^/${EMOJI} /" "$MSG_FILE" > "$TMP_MSG"
+mv "$TMP_MSG" "$MSG_FILE"
+
+exit 0

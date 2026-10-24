@@ -7,11 +7,11 @@
 
 {
   imports = [
-    ../modules/apps/claude-code
-    ../modules/apps/gemini
-    ../modules/apps/agent-skills
-    ../modules/apps/orca
-    ../modules/services/obsidian-mcp.nix
+    ../modules/ai/claude-code
+    ../modules/ai/gemini
+    ../modules/ai/agent-skills
+    ../modules/ai/orca
+    ../modules/services/obsidian-brain.nix
   ];
 
   programs.claudeCode.enable = true;

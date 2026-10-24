@@ -37,7 +37,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | **壁紙連動の動的配色** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows側) | [Matugen](docs/matugen-palette.md) ✅ |
 | **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](docs/kanata.md)) |
 | **リモートデスクトップ** | [Tailscale+Sunshine](docs/remote-desktop.md) ✅ | ➖ (接続元クライアント) | ➖ |
-| **Obsidian 外部脳連携** | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ |
+| **Obsidian 外部脳連携** | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ |
 | **Homebrew Cask管理** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
 | [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
 | [Neovim](docs/neovim.md) | ✅ | ✅ | ✅ |
@@ -55,27 +55,27 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 ```
 .
 ├── flake.nix                  # Flake エントリーポイント（システム構成の定義）
-├── hosts/                     # ホスト別の設定エントリーポイント
-│   ├── nixos/                 # NixOS 設定（システム設定 ＋ Home Manager 設定）
-│   ├── wsl/                   # WSL2用 Home Manager スタンドアロン設定
-│   ├── mac/                   # macOS用 nix-darwin + Home Manager 統合設定
-│   ├── distrobox/             # rootless podman コンテナ用 CLI プロファイル
-│   └── sandbox/               # 実データ非共有コンテナ用 最小CLI プロファイル
-├── modules/                   # 再利用可能な共通設定モジュール群
-│   ├── wm/                    # ウィンドウマネージャー設定 (hyprland, komorebi, yasb)
-│   ├── apps/                  # アプリケーション個別設定 (wezterm, neovim, yazi, lazygit, git, bat,
-│   │                          #   eza, btop, git-hooks, aerospace[Mac専用], vivaldi, orca, claude-code, gemini)
-│   ├── services/              # ユーザーサービス (obsidian-mcp)
+├── justfile                   # 共通タスクランナー (switch, check, fmt, restore-secrets 等)
+├── hosts/                     # ホスト別の設定エントリーポイント (全ホスト default.nix = Home Manager)
+│   ├── nixos/                 # NixOS 設定 (configuration.nix [システム] ＋ default.nix [HM])
+│   ├── wsl/                   # WSL2用 Home Manager スタンドアロン設定 (default.nix + sync-win.nix)
+│   ├── mac/                   # macOS用 nix-darwin (darwin.nix) + Home Manager (default.nix) 統合設定
+│   ├── distrobox/             # rootless podman コンテナ用 CLI プロファイル (default.nix)
+│   └── sandbox/               # 実データ非共有コンテナ用 最小CLI プロファイル (default.nix)
+├── modules/                   # ドメイン別・再利用可能な共通設定モジュール群
+│   ├── wm/                    # ウィンドウマネージャー設定 (hyprland[Linux], komorebi/yasb[Win], aerospace[Mac])
+│   ├── ai/                    # AIエージェント開発環境 (claude-code, gemini, agent-skills, orca)
+│   ├── cli/                   # ターミナルツール・TUI (bat, btop, eza, git, git-hooks, lazygit, neovim, yazi)
+│   ├── gui/                   # デスクトップGUIアプリ (wezterm, vivaldi, linux.nix[Linuxパッケージ])
+│   ├── input/                 # 入力系 (kanata キーリマップ[NixOS/Mac/WSL], ahk[WSL])
+│   ├── services/              # ユーザーサービス (obsidian-brain 外部脳連携)
 │   ├── shell/                 # シェル・端末環境 (zsh, starship, fastfetch, direnv, atuin)
-│   ├── input/                 # 入力系 (kanata キーリマップ[NixOS/Mac], ahk[WSL], fcitx5 日本語入力)
-│   ├── theming/                # Matugen 共通ロジック / テンプレート (lib, templates) と
-│   │                          #   ホスト別パイプライン (wsl/, mac/)
-│   └── desktop/               # Linux GUI 共通 (パッケージ, デスクトップエントリ, MIME)
+│   └── theming/               # Matugen 共通ロジック / テンプレート (lib, templates) とホスト別パイプライン
 ├── profiles/                  # 役割別プロファイル
-│   ├── core.nix               # 最小共通 CLI（コンテナ・サーバー・全環境の基盤）
-│   ├── desktop.nix            # デスクトップ GUI 共通（WezTerm, Matugen, フォント）
-│   ├── ai-agent.nix           # AIエージェント統合（Claude Code, Antigravity, Orca, Obsidian Brain）
-│   └── base.nix               # 開発機向けフルセット（desktop + ai-agent）
+│   ├── core.nix               # 最小共通 CLI (modules/cli/* + modules/shell/*)
+│   ├── desktop.nix            # デスクトップ GUI 共通 (modules/gui/wezterm + modules/theming/*)
+│   ├── ai-agent.nix           # AIエージェント統合 (modules/ai/* + modules/services/obsidian-brain.nix)
+│   └── base.nix               # 開発機向けフルセット (desktop.nix + ai-agent.nix)
 └── docs/                      # 各種仕様・キーマップ解説ドキュメント ([索引](docs/README.md))
 ```
 
@@ -142,7 +142,7 @@ Legend: ✅ enabled · ➖ not set up in this config · (Windows) runs on the Wi
 | **Wallpaper-driven theming** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows side) | [Matugen](docs/matugen-palette.md) ✅ |
 | **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](docs/kanata.md)) |
 | **Remote desktop** | [Tailscale+Sunshine](docs/remote-desktop.md) ✅ | ➖ (client only) | ➖ |
-| **Obsidian External Brain** | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ | [Obsidian Brain](docs/obsidian-mcp.md) ✅ |
+| **Obsidian External Brain** | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ |
 | **Homebrew Cask management** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
 | [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
 | [Neovim](docs/neovim.md) | ✅ | ✅ | ✅ |

@@ -29,7 +29,7 @@
   実装は `modules/theming/matugen/lib/derive-colors.py` に集約されており、
   NixOS (wppicker.sh) と WSL (matugen-apply.sh) の両方がこれを呼ぶ。
 - 各設定にはファイルが無い環境用のフォールバック値がハードコードされている
-  (`nvim/lua/matugen.lua`, `modules/apps/wezterm/wezterm.lua` の colors テーブルなど)。
+  (`nvim/lua/matugen.lua`, `modules/gui/wezterm/wezterm.lua` の colors テーブルなど)。
   壁紙を変えたら `modules/theming/matugen/bake-fallbacks.sh` でこれらを
   今の壁紙色に一括更新できる (詳細は後述の「フォールバックの一括更新」)。
 
@@ -97,7 +97,7 @@
         - render-template.sh: starship.toml / lazygit-theme.yml /
                               yazi theme.toml / cz.toml / eza/theme.yml を
                               共通テンプレートから生成 (cz.tomlのtype選択肢は
-                              modules/apps/git-hooks/cz.toml と手動で同じ
+                              modules/cli/git-hooks/cz.toml と手動で同じ
                               内容を保つ運用。単一ソース化は複雑さに見合わず
                               revert済み)
      3. 残りは WSL/YASB 固有のまま展開する:
@@ -181,7 +181,7 @@ WSL版の簡略版。YASB/komorebi/ロック画面などWindows固有部分を�
         - tealdeer-config.py / fzf-colors.sh もWSL版と同じ
      3. colors.lua を ~/.config/wezterm/matugen-colors.lua と
         ~/.cache/matugen/colors.lua へコピー
-     4. aerospace-launch-borders (modules/apps/aerospace/launch-borders.sh) を呼び、
+     4. aerospace-launch-borders (modules/wm/aerospace/launch-borders.sh) を呼び、
         AeroSpace(JankyBorders)の枠色(accent/muted)を反映する
 ```
 
@@ -273,12 +273,12 @@ commit された配色) は、壁紙を変えるたびに手動で1ファイル�
 
 対象ファイル (2026-07時点):
 
-- `modules/apps/neovim/nvim/lua/matugen.lua` / `modules/apps/wezterm/wezterm.lua` /
-  `modules/apps/yazi/init.lua` — 12キー共通パレット
+- `modules/cli/neovim/nvim/lua/matugen.lua` / `modules/gui/wezterm/wezterm.lua` /
+  `modules/cli/yazi/init.lua` — 12キー共通パレット
 - `modules/shell/starship/starship.toml` (`palettes.matugen` ブロック)
 - `modules/theming/matugen/fallbacks/btop.theme`
-- `modules/apps/eza/theme.yml` / `modules/apps/lazygit/default.nix` /
-  `modules/apps/git-hooks/cz.toml`
+- `modules/cli/eza/theme.yml` / `modules/cli/lazygit/default.nix` /
+  `modules/cli/git-hooks/cz.toml`
 - `modules/wm/komorebi/komorebi.json` (枠色) / `modules/wm/yasb/{styles.css,config.yaml}`
   (YASBパネル全体 + cavaグラデーション)
 - `modules/shell/zsh/functions.zsh` (`FZF_DEFAULT_OPTS`) /
@@ -288,12 +288,12 @@ commit された配色) は、壁紙を変えるたびに手動で1ファイル�
 
 新しいアプリのフォールバックを追加したときは、対応する `bake_*` 関数も
 このスクリプトに追加すること (role→変数名の対応は `matugen-apply.sh` の
-各セクションと揃える)。なお `modules/apps/yazi/theme-template.toml` は
+各セクションと揃える)。なお `modules/cli/yazi/theme-template.toml` は
 フォールバックではなく**レンダリング元テンプレート**そのものなので対象外
 (生の色コードが混入していないかだけ `bake_yazi_template` が検査する)。
 
 Hyprland側 (`modules/wm/hyprland/`) のwaybar/hyprlockフォールバックと、
-Mac側 (`modules/apps/aerospace/launch-borders.sh` のAeroSpace枠色フォールバック)
+Mac側 (`modules/wm/aerospace/launch-borders.sh` のAeroSpace枠色フォールバック)
 は、このスクリプトの対象に**まだ入っていない** (WSLとは別ホスト・別壁紙のため、
 そのホスト上で実行して確認する必要がある)。
 

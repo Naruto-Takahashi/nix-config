@@ -10,8 +10,8 @@ Kanataを使う3ホストの間で、レイヤー定義 (`config.kbd`) は共通
 
 | ホスト | `wmmodifier-` の変換先 | 連携するWM | 備考 |
 | :--- | :--- | :--- | :--- |
-| **NixOS** | `M-` (Super単体) | Hyprland ([hyprland.md](hyprland.md)) | `modules/input/kanata/kanata-config.nix` |
-| **macOS** | `C-M-` (Ctrl+Cmd) | AeroSpace ([aerospace.nix](../modules/apps/aerospace/default.nix)) | macOS標準の`Cmd`単体ショートカットと衝突しないよう二重修飾にしている |
+| **NixOS** | `M-` (Super単体) | Hyprland ([hyprland.md](hyprland.md)) | `modules/input/kanata/linux-config.nix` |
+| **macOS** | `C-M-` (Ctrl+Cmd) | AeroSpace ([aerospace.nix](../modules/wm/aerospace/default.nix)) | macOS標準の`Cmd`単体ショートカットと衝突しないよう二重修飾にしている |
 | **WSL** | `A-` (Alt単体) | komorebi ([komorebi.md](komorebi.md)) | `modules/input/kanata/wsl-config.nix`。既存のAHK側 `!` (Alt) ホットキー群と同じ信号になるためkomorebi.ahk側は無変更で動く |
 
 WSLはさらに以下の点が個別の置換で上書きされています（`wsl-config.nix`）:
@@ -127,6 +127,6 @@ kanataはクロスプラットフォームだが，WezTermとの連携やExplore
 | ファイル | 役割 |
 | :--- | :--- |
 | `modules/input/kanata/config.kbd` | レイヤー定義本体 (3ホスト共通) |
-| `modules/input/kanata/kanata-config.nix` | NixOS向け`wmmodifier-`置換ロジック |
+| `modules/input/kanata/linux-config.nix` | NixOS向け`wmmodifier-`置換ロジック |
 | `modules/input/kanata/mac-config.nix` | macOS向け`wmmodifier-`/その他置換ロジック |
 | `modules/input/ahk/main.ahk` | WSL/Windows向けの別実装 |

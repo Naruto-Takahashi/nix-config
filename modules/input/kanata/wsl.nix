@@ -16,7 +16,12 @@
 #     現時点では避ける判断とした。より確実な動作が必要になった場合は
 #     wintercept版への切り替えを検討する
 #   - cmd_allowed: IME制御をAHKへ委譲する (cmd)アクションに必要
-{ config, pkgs, dotfilesPath, ... }:
+{
+  config,
+  pkgs,
+  dotfilesPath,
+  ...
+}:
 
 let
   kanataWindows = pkgs.stdenvNoCC.mkDerivation {

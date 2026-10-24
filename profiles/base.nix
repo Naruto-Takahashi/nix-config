@@ -5,7 +5,12 @@
 # デフォルトの開発機向けプロファイル。
 # リモートサーバーやコンテナで GUI が不要な場合は、直接 profiles/core.nix や
 # profiles/ai-agent.nix を単体で import する。
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 
 {
   imports = [

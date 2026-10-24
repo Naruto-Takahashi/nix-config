@@ -8,7 +8,7 @@
 {
   imports = [
     ./core.nix
-    ../modules/apps/wezterm
+    ../modules/gui/wezterm
     ../modules/theming/matugen
   ];
 

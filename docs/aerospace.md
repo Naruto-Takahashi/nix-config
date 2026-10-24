@@ -1,6 +1,6 @@
 # AeroSpace ウィンドウマネージャ キーバインド・設定詳細
 
-**macOS専用**です．[modules/apps/aerospace/default.nix](../modules/apps/aerospace/default.nix) で宣言的に管理されているタイル型ウィンドウマネージャ **AeroSpace** の操作・配色連携・自動化まわりを解説します．NixOSの[Hyprland](hyprland.md)，Windows/WSLの[komorebi](komorebi.md)に相当する役割です．
+**macOS専用**です．[modules/wm/aerospace/default.nix](../modules/wm/aerospace/default.nix) で宣言的に管理されているタイル型ウィンドウマネージャ **AeroSpace** の操作・配色連携・自動化まわりを解説します．NixOSの[Hyprland](hyprland.md)，Windows/WSLの[komorebi](komorebi.md)に相当する役割です．
 
 物理キーは全て `Alt` 長押しですが，Kanataがそれを `Ctrl+Cmd` (`ctrl-cmd-*`) に変換してAeroSpaceへ送っています（macOS標準のCmd単体ショートカットと衝突しないようにするため）．変換の仕組みは [kanata.md](kanata.md) の「対象OS・実装方式の違い」を参照してください．
 
@@ -64,7 +64,7 @@
 
 アクティブウィンドウの枠線ハイライトは Homebrew の `borders` (JankyBorders) が担当します．色は壁紙から抽出した [Matugen](matugen-palette.md) のパレット (`~/.cache/matugen/colors.lua` の `accent`/`muted`) に自動追従します．
 
-- 起動スクリプトは [`launch-borders.sh`](../modules/apps/aerospace/launch-borders.sh)．**`borders` は起動中に同じコマンドを再実行するとIPC経由で設定を生きたまま更新する仕様**なので，`pkill`して再起動する必要はありません（`pkill`すると次のインスタンスが上がるまでの一瞬，枠ハイライトが消えるため意図的に避けています）．
+- 起動スクリプトは [`launch-borders.sh`](../modules/wm/aerospace/launch-borders.sh)．**`borders` は起動中に同じコマンドを再実行するとIPC経由で設定を生きたまま更新する仕様**なので，`pkill`して再起動する必要はありません（`pkill`すると次のインスタンスが上がるまでの一瞬，枠ハイライトが消えるため意図的に避けています）．
 - matugenキャッシュが無い場合は，WSL/NixOS側と同じ青ベースのフォールバック配色を使います．
 - ギャップ (`[gaps]`) は `inner.horizontal/vertical = 10`，`outer.left/bottom/right = 8`，`outer.top = 4`．WSL側komorebiの値 (`default_container_padding=6` / `default_workspace_padding=1`) と揃える案も試しましたが，見た目の好みでMac独自の値に戻しています．
 
@@ -100,7 +100,7 @@ aerospace reload-config
 
 ## 設定変更時の注意
 
-`aerospace.toml` は `modules/apps/aerospace/aerospace.toml` から `mkOutOfStoreSymlink` で直結されているため，`darwin-rebuild switch` を叩かなくてもファイルを編集するだけで即座に反映可能です．ファイルを書き換えた後は，`aerospace reload-config`（または Alt+Shift+R / `ctrl-cmd-shift-r`）を実行してください．
+`aerospace.toml` は `modules/wm/aerospace/aerospace.toml` から `mkOutOfStoreSymlink` で直結されているため，`darwin-rebuild switch` を叩かなくてもファイルを編集するだけで即座に反映可能です．ファイルを書き換えた後は，`aerospace reload-config`（または Alt+Shift+R / `ctrl-cmd-shift-r`）を実行してください．
 
 ---
 
@@ -108,8 +108,8 @@ aerospace reload-config
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `modules/apps/aerospace/default.nix` | LaunchAgentの定義とシンボリックリンク配線 |
-| `modules/apps/aerospace/aerospace.toml` | AeroSpace の設定ファイル本体 (キーマップ・レイアウト・gaps) |
-| `modules/apps/aerospace/launch-borders.sh` | JankyBordersの起動・matugen配色連携スクリプト |
+| `modules/wm/aerospace/default.nix` | LaunchAgentの定義とシンボリックリンク配線 |
+| `modules/wm/aerospace/aerospace.toml` | AeroSpace の設定ファイル本体 (キーマップ・レイアウト・gaps) |
+| `modules/wm/aerospace/launch-borders.sh` | JankyBordersの起動・matugen配色連携スクリプト |
 | `modules/theming/matugen/mac/wallpaper-pick-popup.sh` | 壁紙ピッカーのポップアップ起動スクリプト |
 | `modules/theming/matugen/mac/wallpaper-pick-gui.py` | 壁紙ピッカーのローカルHTTPサーバ本体 |
