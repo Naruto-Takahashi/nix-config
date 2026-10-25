@@ -82,7 +82,7 @@
   # システム側の世代は NixOS (hosts/nixos/configuration.nix) / Mac (hosts/mac/darwin.nix) で別途削除する。
   nix.gc = {
     automatic = true;
-    frequency = "weekly";
+    dates = "weekly";
     options = "--delete-older-than 30d";
   };
 
