@@ -3,7 +3,8 @@
 // glass-audit: Vivaldi UI の「ガラス化漏れ」をCDPで検査する
 // =========================================================================
 // 自動非表示UI (.auto-hide-wrapper 配下) とポップアップのうち、不透明な
-// 背景 (alpha >= 0.85) が残っている可視要素を列挙する。Vivaldi更新後に
+// 背景 (alpha >= 0.85) が残っている可視要素と、ガラスの上で読みにくい
+// 文字色 (ダークテーマで暗い文字等) を列挙する。Vivaldi更新後に
 // glass.css のセレクタがまだ効いているかの再監査に使う。
 //
 // 使い方:
@@ -82,6 +83,33 @@ const audit = () => {
     const key = path(el);
     rows.set(key, `a=${a.toFixed(2)} ${bg} ${Math.round(r.width)}x${Math.round(r.height)} | ${key}`);
   }
+
+  // 文字色の検査: ガラス (背景を置き換えた所) の上に、元の不透明背景向けの
+  // 文字色が残っていないか (例: アクティブタブの --colorAccentFg)。
+  // ダークテーマで暗い文字 / ライトテーマで明るい文字を報告する。
+  // 不透明に近い背景 (選択行のアクセント等) の上にある文字は対象外
+  const rgbOf = (c) => {
+    const n = c.match(/[0-9.]+/g).map(Number);
+    return c.startsWith('color(') ? n.slice(0, 3).map((v) => v * 255) : n.slice(0, 3);
+  };
+  const lum = ([r, g, b]) => (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+  const dark = document.getElementById('browser').classList.contains('theme-dark');
+  const onSolid = (el) => {
+    for (let e = el; e && !e.classList.contains('auto-hide-wrapper'); e = e.parentElement)
+      if (alphaOf(getComputedStyle(e).backgroundColor) >= 0.5) return true;
+    return false;
+  };
+  for (const el of document.querySelectorAll('.auto-hide-wrapper *, .button-popup *')) {
+    if (el.matches(ignore) || el.closest('.tree-row-selected')) continue;
+    if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 4 || r.height < 4) continue;
+    const c = getComputedStyle(el).color;
+    const l = lum(rgbOf(c));
+    if ((dark ? l >= 0.35 : l <= 0.65) || onSolid(el)) continue;
+    const key = path(el);
+    rows.set('text:' + key, `text lum=${l.toFixed(2)} ${c} | ${key}`);
+  }
   return [...rows.values()];
 };
 
@@ -101,7 +129,7 @@ const openPanel = async (i) => {
 await evaluate(forceShow, true);
 try {
   const report = (label, rows) =>
-    console.log(`== ${label}: ${rows.length ? rows.length + ' 件の不透明要素' : 'OK'}\n${rows.join('\n')}`.trimEnd());
+    console.log(`== ${label}: ${rows.length ? rows.length + ' 件の問題' : 'OK'}\n${rows.join('\n')}`.trimEnd());
   if (withPanels) {
     const n = await evaluate(panelCount);
     for (let i = 0; i < n; i++) report(await evaluate(openPanel, i), await evaluate(audit));

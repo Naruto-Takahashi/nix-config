@@ -82,8 +82,11 @@ footer#footer {
 /* ==========================================================================
    タブ (非アクティブは透明、hover・アクティブは薄い重ね塗り)
    ========================================================================== */
-/* アクティブタブは color-accent-from-page によりページ由来の不透明色が
-   付くため上書きする */
+/* Vivaldi はアクティブタブを「背景 --colorAccentBg (color-accent-from-page
+   ならページ由来の不透明色) + 文字 --colorAccentFg (その背景に対する
+   コントラスト色)」で塗る。背景をガラスに置き換えるので、文字も通常の
+   前景色 --colorFg に戻す (戻さないと明るいアクセント用の暗い文字が
+   暗いガラスの上に残り読めなくなる) */
 .tab-position .tab {
     background-color: transparent !important;
 }
@@ -92,6 +95,7 @@ footer#footer {
 }
 .tab-position .tab.active {
     background-color: rgba(var(--glass-tint), 0.16) !important;
+    color: var(--colorFg) !important;
 }
 
 /* unified UI でタブバー内に置かれるアドレス欄 */
