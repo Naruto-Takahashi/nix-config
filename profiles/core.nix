@@ -78,6 +78,14 @@
     };
   };
 
+  # ユーザー側の古い世代 (Home Manager 等) を定期的に削除して GC する。
+  # システム側の世代は NixOS (hosts/nixos/configuration.nix) / Mac (hosts/mac/darwin.nix) で別途削除する。
+  nix.gc = {
+    automatic = true;
+    frequency = "weekly";
+    options = "--delete-older-than 30d";
+  };
+
   programs.nix-index = {
     enable = true;
     enableZshIntegration = true;

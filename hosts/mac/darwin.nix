@@ -56,6 +56,27 @@ in
   # Determinate Nix 衝突防止のため、nix-darwin側のNix管理を無効化
   nix.enable = false;
 
+  # nix.enable = false のため nix-darwin の nix.gc は使えない。root の launchd デーモンで
+  # 古いシステム世代を週1 (日曜 4:00) で削除して GC する (ユーザー側の世代は profiles/core.nix の nix.gc)
+  launchd.daemons.nix-gc = {
+    serviceConfig = {
+      ProgramArguments = [
+        "/nix/var/nix/profiles/default/bin/nix-collect-garbage"
+        "--delete-older-than"
+        "30d"
+      ];
+      StartCalendarInterval = [
+        {
+          Weekday = 0;
+          Hour = 4;
+          Minute = 0;
+        }
+      ];
+      StandardOutPath = "/Library/Logs/nix-gc.out.log";
+      StandardErrorPath = "/Library/Logs/nix-gc.err.log";
+    };
+  };
+
   # -----------------------------------------------------------------------
   # macOS システムレベルの設定
   # -----------------------------------------------------------------------

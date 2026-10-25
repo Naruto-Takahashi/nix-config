@@ -96,6 +96,14 @@
     "flakes"
   ];
 
+  # 古いシステム世代を週1で削除して GC し、ストア内の同一ファイルをハードリンクで重複排除する
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+  nix.optimise.automatic = true;
+
   # Hyprland システムモジュールの有効化
   programs.hyprland = {
     enable = true;
