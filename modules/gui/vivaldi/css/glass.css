@@ -58,22 +58,27 @@
     background: transparent !important;
     color: var(--colorFg) !important;
 }
-/* ガラス本体はラッパー自身ではなく背面の疑似要素 (::after) に掛ける。
-   backdrop-filter を持つ要素はその子孫にとっての「backdrop root」になり、
-   子孫の backdrop-filter はラッパーの外 (=ページ) をぼかせなくなるため
-   (例: 下部アドレスバーの入力候補 .OmniDropdown がページ上に伸びても
-   ページが素通しになり読みにくい)。ラッパーは position: fixed + z-index
-   で重ね合わせコンテキストを作るので、z-index: -1 でも中身の背面に収まる。
-   ::before は Vivaldi 自身が表示中 (.show) のマウス反応範囲の拡張に使い
-   background-color: transparent を指定している (詳細度もこちらより高い)
-   ため使わない */
-.auto-hide-wrapper::after {
-    content: "" !important;
-    position: absolute !important;
-    inset: 0 !important;
-    z-index: -1 !important;
+/* ガラス本体はラッパー自身ではなく背面の疑似要素 ::before に掛ける。
+   - 自身に掛けない理由: backdrop-filter を持つ要素はその子孫にとっての
+     「backdrop root」になり、子孫の backdrop-filter はラッパーの外 (=ページ)
+     をぼかせなくなる (例: 下部アドレスバーの入力候補 .OmniDropdown)。
+   - ::after でなく ::before の理由: 表示中のラッパーは app-region: drag
+     (ウィンドウのドラッグ領域) で、タブ・ボタンだけ no-drag で切り抜かれる。
+     app-region は継承され、Chromium は文書順で後の要素の領域を優先するので、
+     全面を覆う ::after (最後の子) だとタブの no-drag を上書きしてクリックが
+     ドラッグになる。::before (最初の子) なら後続の no-drag が優先される。
+   - Vivaldi 自身も表示中 (.show) の ::before をマウス反応範囲の拡張
+     (外側へ inset -6px) に使い、background-color: transparent を指定する。
+     位置・当たり判定はそのまま活かし、見た目の値だけ !important で上書き
+     する (ガラスはウィンドウ縁側へ 6px 広がる)。
+   ラッパーは position: fixed + z-index で重ね合わせコンテキストを作るので、
+   z-index: -1 でも中身の背面に収まる */
+.auto-hide-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
     border-radius: inherit;
-    pointer-events: none !important;
     background-color: var(--glass-bg) !important;
     backdrop-filter: var(--glass-blur) !important;
     box-shadow: var(--glass-edge) !important;

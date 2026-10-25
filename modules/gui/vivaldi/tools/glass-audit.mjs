@@ -111,14 +111,14 @@ const audit = () => {
     rows.set('text:' + key, `text lum=${l.toFixed(2)} ${c} | ${key}`);
   }
 
-  // 各辺のラッパーにガラス (自身か ::after の、半透明背景 + backdrop-filter)
+  // 各辺のラッパーにガラス (自身か ::before の、半透明背景 + backdrop-filter)
   // があるか。ぼかしだけで背景色が消えていると (Vivaldi 側の詳細度の高い
   // 指定に負けた等)、ページの明暗がそのまま透けて文字が読めなくなる
   for (const w of document.querySelectorAll('.auto-hide-wrapper')) {
     const r = w.getBoundingClientRect();
     if (r.width < 4 || r.height < 4) continue;
     const glassy = (cs) => cs.backdropFilter !== 'none' && alphaOf(cs.backgroundColor) > 0;
-    if (!glassy(getComputedStyle(w)) && !glassy(getComputedStyle(w, '::after')))
+    if (!glassy(getComputedStyle(w)) && !glassy(getComputedStyle(w, '::before')))
       rows.set('noglass:' + name(w), `no-glass (背景色かぼかしが無い) | ${name(w)}`);
   }
 
