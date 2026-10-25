@@ -1,0 +1,128 @@
+/*
+ * Vivaldi Glass UI - 自作のガラス化CSS (公開テーマ不使用)
+ *
+ * 自動非表示はVivaldi標準機能 (UI Auto-hide) を使い、このCSSは「どこを
+ * ガラスにするか」だけを担当する。セレクタはすべて Vivaldi 8.2.4133 (Mac)
+ * の実DOMをCDPで確認して決めた。Vivaldi更新後は tools/glass-audit.mjs で
+ * 不透明な背景が残っていないか再検査する。
+ *
+ * 設計ルール:
+ *   - ガラス (半透明背景+backdrop-filter) は外側のコンテナ1層だけに掛け、
+ *     中身は透明にする (半透明が多層に重なって濃く見えるのを防ぐ)
+ *   - 中身の強調 (アクティブタブ・hover・入力欄) は --glass-tint の薄い
+ *     重ね塗りで表現し、ブラーは重ねない
+ *   - 選択行のアクセント色 (.tree-row-selected) は機能的な表示なので残す
+ *
+ * 前提のVivaldi設定: UI自動非表示を有効化、Show Title Bar 無効、
+ * Theme の Transparent Tab Bar 有効 (Blur = 0)
+ */
+
+/* ==========================================================================
+   トークン
+   ========================================================================== */
+.theme-dark {
+    --glass-bg: rgba(0, 0, 0, 0.22);
+    --glass-bg-strong: rgba(30, 30, 30, 0.55);
+    --glass-tint: 255, 255, 255;
+}
+.theme-light {
+    --glass-bg: rgba(255, 255, 255, 0.22);
+    --glass-bg-strong: rgba(250, 250, 250, 0.55);
+    --glass-tint: 0, 0, 0;
+}
+:root {
+    --glass-blur: blur(12px) saturate(140%);
+    --glass-blur-strong: blur(20px) saturate(140%);
+}
+
+/* ==========================================================================
+   ガラスを掛けるコンテナ
+   ========================================================================== */
+/* 自動非表示のラッパー (.auto-hide-wrapper.top/bottom/left/right) は表示時に
+   Vivaldi自身が不透明な背景 (theme の bg) を塗るため、まず透明にする。
+   footer#footer は8.2では空 (ステータスバーは .auto-hide-wrapper.bottom 側) */
+.auto-hide-wrapper,
+.tabbar-wrapper,
+#panels-container,
+#panels .panel-group,
+#switch,
+footer#footer {
+    background: transparent !important;
+}
+
+/* タイトルバー / タブバー / パネル (#switch と .panel-group の共通親) /
+   ステータスバー。.mainbar と .bookmark-bar はアドレスバーが独立行の
+   レイアウトやブックマークバー表示時用 (Macの現設定では非表示) */
+#titlebar,
+#tabs-tabbar-container,
+#panels,
+.toolbar-statusbar,
+.mainbar,
+.bookmark-bar {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+}
+
+/* リンクhover時にページ上へ浮かぶURL表示 (ステータスバー非表示時) */
+.inner > .StatusInfo > .StatusInfo-Content {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+}
+
+/* ツールバーのポップアップ (ワークスペース・拡張機能など)。ページ上に
+   大きく重なるので可読性のため濃いめ・強めのブラーにする */
+.button-popup {
+    background-color: var(--glass-bg-strong) !important;
+    backdrop-filter: var(--glass-blur-strong) !important;
+}
+.button-popup > * {
+    background-color: transparent !important;
+}
+
+/* ==========================================================================
+   タブ (非アクティブは透明、hover・アクティブは薄い重ね塗り)
+   ========================================================================== */
+/* アクティブタブは color-accent-from-page によりページ由来の不透明色が
+   付くため上書きする */
+.tab-position .tab {
+    background-color: transparent !important;
+}
+.tab-position .tab:hover {
+    background-color: rgba(var(--glass-tint), 0.08) !important;
+}
+.tab-position .tab.active {
+    background-color: rgba(var(--glass-tint), 0.16) !important;
+}
+
+/* unified UI でタブバー内に置かれるアドレス欄 */
+#tabs-tabbar-container .UrlBar-AddressField {
+    background-color: rgba(var(--glass-tint), 0.08) !important;
+    backdrop-filter: none !important;
+    border: none !important;
+}
+
+/* ==========================================================================
+   パネルの中身 (ガラスは #panels の1層だけ)
+   ========================================================================== */
+#panels .panel {
+    background-color: transparent !important;
+}
+#switch .button-toolbar.active > button {
+    background-color: rgba(var(--glass-tint), 0.16) !important;
+}
+#panels input:not([type=checkbox]):not([type=range]),
+#panels select,
+#panels textarea,
+#panels .sortselector,
+#panels .toolbar-group button {
+    background-color: rgba(var(--glass-tint), 0.06) !important;
+    background-image: none !important;
+    border-color: transparent !important;
+}
+/* 履歴パネル等のリスト行 (選択行のアクセント色は残す) */
+#panels .tree-row:not(.tree-row-selected) {
+    background-color: transparent !important;
+}
+#panels .tree-row:not(.tree-row-selected):hover {
+    background-color: rgba(var(--glass-tint), 0.08) !important;
+}
