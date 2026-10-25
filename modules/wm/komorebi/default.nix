@@ -36,7 +36,7 @@
     force = true;
   };
 
-  # ワークスペース切り替え時にauto_hide中のYASBバーを一時表示する常駐スクリプト．
+  # ワークスペース切り替え時にYASBバーを一時表示し、モニター再接続時にYASBのAppBar予約を復旧する常駐スクリプト．
   xdg.configFile."komorebi/workspace-watcher.ps1" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/wm/komorebi/workspace-watcher.ps1";
     force = true;
