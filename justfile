@@ -3,7 +3,7 @@
 # =========================================================================
 # 使い方:
 #   just --list      利用可能なタスク一覧を表示
-#   just switch      現在の環境に合わせて自動で switch を実行
+#   just switch [host]  現在の環境に合わせて switch を実行 (host で明示指定も可)
 #   just check       全構成の静的評価・構文検証 (CI と同等)
 #   just fmt         全 Nix ファイルを nixfmt で自動整形
 #   just sync-win    Windows 側へ設定を同期 (WSL 専用)
@@ -23,31 +23,54 @@ check:
 fmt:
     nix fmt
 
-# 現在の OS / 環境を自動判別して設定を適用
-switch:
+# 現在の OS / 環境を自動判別して設定を適用 (host で明示指定も可)
+switch host="":
     #!/usr/bin/env bash
     set -euo pipefail
     git add .
-    if [[ "$OSTYPE" == darwin* ]]; then
-        echo "🍎 macOS (darwin) を検出しました。darwin-rebuild switch を実行します..."
-        darwin-rebuild switch --flake .#mac
-    elif grep -qi microsoft /proc/version 2>/dev/null; then
-        echo "🪟 WSL2 を検出しました。home-manager switch を実行します..."
-        home-manager switch --flake .#wsl
-        if command -v sync-win >/dev/null 2>&1; then
-            echo "Windows 側へ設定を同期します..."
-            sync-win
+    host="{{host}}"
+    # 判定順の注意:
+    #   - wslc 等のコンテナは WSL カーネル上で動き /proc/version に microsoft を含むため、
+    #     コンテナ判定は WSL 判定より前に置く。
+    #   - distrobox も CONTAINER_ID / /run/.containerenv を持つため、sandbox 判定より前に置く。
+    #   - どれにも当てはまらない場合は誤った構成を適用しないようエラーで止める。
+    if [ -z "$host" ]; then
+        if [[ "$OSTYPE" == darwin* ]]; then
+            host=mac
+        elif [ -f /etc/NIXOS ]; then
+            host=nixos
+        elif [ -n "${DISTROBOX_ENTER_PATH:-}" ]; then
+            host=distrobox
+        elif [ -n "${CONTAINER_ID:-}" ] || [ -f /run/.containerenv ] || [ -f /.dockerenv ]; then
+            host=sandbox
+        elif grep -qi microsoft /proc/version 2>/dev/null; then
+            host=wsl
+        else
+            echo "::error:: 環境を判別できません。'just switch <mac|nixos|wsl|distrobox|sandbox>' で明示してください。" >&2
+            exit 1
         fi
-    elif [ -f /etc/NIXOS ]; then
-        echo "❄️ NixOS を検出しました。nixos-rebuild switch を実行します..."
-        sudo nixos-rebuild switch --flake .#nixos
-    elif [ -n "${CONTAINER_ID:-}" ] || [ -f /run/.containerenv ]; then
-        echo "📦 コンテナ環境を検出しました。home-manager switch を実行します..."
-        home-manager switch --flake .#sandbox
-    else
-        echo "🐧 Linux 環境を検出しました。home-manager switch を実行します..."
-        home-manager switch --flake .#wsl
     fi
+    echo "▶ host=$host の構成を適用します..."
+    case "$host" in
+        mac)
+            darwin-rebuild switch --flake .#mac ;;
+        nixos)
+            sudo nixos-rebuild switch --flake .#nixos ;;
+        wsl)
+            home-manager switch --flake .#wsl
+            if command -v sync-win >/dev/null 2>&1; then
+                echo "Windows 側へ設定を同期します..."
+                sync-win
+            fi ;;
+        distrobox)
+            # home.homeDirectory を $HOME から読むため --impure が必須 (hosts/distrobox 参照)
+            home-manager switch --flake .#distrobox --impure ;;
+        sandbox)
+            home-manager switch --flake .#sandbox ;;
+        *)
+            echo "::error:: 未知のホストです: $host" >&2
+            exit 1 ;;
+    esac
 
 # Windows 側へ設定を同期 (WSL 環境専用)
 sync-win:
