@@ -33,7 +33,10 @@ in
     onActivation = {
       autoUpdate = true;
       upgrade = true;
-      cleanup = "none"; # 既存の手動インストールアプリを誤って削除しないよう保護
+      # 既存の手動インストールアプリを誤って削除しないよう保護。新しい Mac では宣言と
+      # 実態が一致した状態から始められるため、移行後に "uninstall" へ切り替える
+      # (宣言から外した cask が switch で自動削除されるようになる。docs/setup-mac.md 参照)。
+      cleanup = "none";
     };
     taps = [
       "nikitabobko/tap"
@@ -48,6 +51,8 @@ in
       "obsidian" # 外部脳 Vault のエディタ
       "google-drive" # Google Drive for desktop（Zotero の PDF 置き場）
     ];
+    # cask が無く手動で入れるアプリ: Orca (stablyai/orca。同名の cask "orca" は
+    # plotly 用の別アプリなので宣言しないこと)。手順は docs/setup-mac.md の移行チェックリスト。
     brews = [
       "borders" # アクティブウィンドウの枠線ハイライト用ツール
     ];
@@ -55,6 +60,13 @@ in
 
   # Determinate Nix 衝突防止のため、nix-darwin側のNix管理を無効化
   nix.enable = false;
+
+  # macOS のシステム設定 (defaults)。キーボード・トラックパッド・ショートカット・
+  # ウィンドウ管理まわりは入力/WM の設定と合わせて別途宣言する。
+  system.defaults = {
+    NSGlobalDomain.AppleInterfaceStyle = "Dark";
+    dock.autohide = true;
+  };
 
   # nix.enable = false のため nix-darwin の nix.gc は使えない。root の launchd デーモンで
   # 古いシステム世代を週1 (日曜 4:00) で削除して GC する (ユーザー側の世代は profiles/core.nix の nix.gc)

@@ -6,6 +6,9 @@ M1 Mac などの macOS 環境でシステム設定およびアプリケーショ
 キーボード操作 (Kanata) と壁紙配色連携 (Matugen) は macOS の TCC (権限管理) の都合上，
 Nixの適用だけでは完結せず，何点か手動でのGUI操作が必要です．下記の順番通りに進めてください．
 
+Mac を買い替える場合は，先に下の「[移行チェックリスト](#移行チェックリスト)」で旧 Mac
+からの持ち出しを済ませてください．
+
 ```bash
 mkdir -p ~/ghq/github.com/Naruto-Takahashi
 cd ~/ghq/github.com/Naruto-Takahashi
@@ -33,16 +36,11 @@ cd nix-config
    ```
 
 4. **設定の構築とシステムへの適用**
-   リポジトリを `ghq` 規定位置に配置後，シンボリックリンクを作成してシステム構成を適用します．
+   リポジトリを `ghq` 規定位置に配置した状態で，システム構成を適用します．
    ```bash
-    # シンボリックリンクの作成 (初回のみ)
-    mv ~/.config/home-manager ~/.config/home-manager.bak
-    ln -s ~/ghq/github.com/Naruto-Takahashi/nix-config ~/.config/home-manager
-
-    # システムの適用と有効化 (初回起動時は nix run でブートストラップ)
-    cd ~/ghq/github.com/Naruto-Takahashi/nix-config
-    git add .
-    sudo nix run github:LnL7/nix-darwin -- switch --flake .#mac --impure
+   # システムの適用と有効化 (初回起動時は nix run でブートストラップ)
+   cd ~/ghq/github.com/Naruto-Takahashi/nix-config
+   sudo nix run github:LnL7/nix-darwin -- switch --flake .#mac
 
    # 2回目以降の更新適用 (こちらが推奨・高速)
    sudo darwin-rebuild switch --flake .#mac
@@ -99,6 +97,34 @@ cd nix-config
    ```bash
    aerospace reload-config
    ```
+
+---
+
+## 移行チェックリスト
+
+Nix で再現できないもの (認証情報・アプリ内データ・手動インストールのアプリ) の持ち出しと，
+新しい Mac での後始末をまとめたものです．
+
+### 旧 Mac で行うこと
+- [ ] **SSH 鍵**: `~/.ssh/id_ed25519` (と `.pub`) を安全な経路で新しい Mac へ移す．リポジトリの
+      リモートはすべて SSH (`git@github.com:...`) のため，鍵が無いと push・Vault 同期ができない．
+      移さない場合は新しい鍵を作り GitHub に登録する．
+- [ ] **Raycast**: ショートカット・拡張機能・スニペットは Raycast 内部の暗号化DBにあり宣言できない．
+      Raycast のコマンド `Export Settings & Data` で `.rayconfig` を書き出す (Cloud Sync を使うなら不要)．
+- [ ] **ブラウザ・アプリのログイン状態**: Vivaldi は Vivaldi Sync，Zotero は Zotero アカウントの同期で
+      引き継ぐ (書誌・注釈は Zotero，PDF は Google Drive)．
+- [ ] **未 push の変更**: nix-config と obsidian-vault に未 push のコミットや未コミットの変更が無いことを確認する．
+
+### 新しい Mac で行うこと (上の手順 1〜9 の後)
+- [ ] **GitHub CLI**: `gh auth login` (Git の操作プロトコルは SSH を選ぶ)．
+- [ ] **機密情報**: `just restore-secrets` で `~/.env` を復元する (手順 5)．
+- [ ] **Raycast**: 書き出した `.rayconfig` を Raycast のコマンド `Import Settings & Data` で取り込む．
+- [ ] **手動インストールのアプリ**: cask が無いもの．
+  - Orca (<https://github.com/stablyai/orca>)。同名の Homebrew cask `orca` は別のアプリなので使わない．
+  - マウスのドライバ (KensingtonWorks / Logi Options+) は使う機種に合わせて入れる．
+- [ ] **Homebrew の掃除方針**: すべてのアプリが宣言どおりに入ったら，`hosts/mac/darwin.nix` の
+      `homebrew.onActivation.cleanup` を `"uninstall"` に変える．以後は宣言から外した cask が
+      switch で自動削除され，宣言と実態がずれなくなる．
 
 ---
 

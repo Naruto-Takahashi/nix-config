@@ -178,7 +178,7 @@ The short version:
 | :--- | :--- | :--- |
 | NixOS | [docs/setup-nixos.md](docs/setup-nixos.md) | `sudo nixos-rebuild switch --flake .#nixos --impure`, then reboot |
 | WSL2 | [docs/setup-wsl.md](docs/setup-wsl.md) | Install Nix, `nix run github:nix-community/home-manager -- switch --flake .#wsl --impure`, then `sync-win` to push config to the Windows side |
-| macOS | [docs/setup-mac.md](docs/setup-mac.md) | `sudo nix run github:LnL7/nix-darwin -- switch --flake .#mac --impure`, then a few manual TCC/SIP permission grants (unavoidable — see the guide) |
+| macOS | [docs/setup-mac.md](docs/setup-mac.md) | `sudo nix run github:LnL7/nix-darwin -- switch --flake .#mac`, then a few manual TCC/SIP permission grants (unavoidable — see the guide) |
 | Sudo-less shared Linux (rootless podman) | [docs/setup-distrobox.md](docs/setup-distrobox.md) | CLI-only add-on profile: `distrobox create` an Ubuntu container, install Nix inside it (real `/nix`, no sudo needed on the host), `nix run github:nix-community/home-manager -- switch --flake .#distrobox --impure` |
 
 
