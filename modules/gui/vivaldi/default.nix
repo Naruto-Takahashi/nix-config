@@ -45,6 +45,9 @@ let
 in
 {
   # --- VivaldiカスタムCSS設定 ---
+  # Mac/NixOS では ~/.config/vivaldi/ をそのまま Vivaldi設定の
+  # CSS UI Mods Directory に指定する (Vivaldi本体は darwin.nix の Homebrew cask)。
+  # WSL のみ以下の理由で Windows 側へ実体コピーする。
   # Windows(Vivaldi)からWSL側のシンボリックリンクを \\wsl.localhost\...
   # 経由で直接読ませると、リンク先を辿れずリンク文字列そのもの(数十バイト)を
   # 読んでしまい、CSSが一切適用されない不具合がある (実機で確認済み。

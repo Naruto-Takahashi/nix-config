@@ -11,6 +11,7 @@
     ../../profiles/base.nix
     ../../modules/wm/aerospace
     ../../modules/theming/matugen/mac
+    ../../modules/gui/vivaldi
   ];
 
   # -----------------------------------------------------------------------
