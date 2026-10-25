@@ -74,6 +74,14 @@ cd nix-config
    sudo launchctl kickstart -k system/org.nixos.kanata
    ```
 
+   署名用の証明書 (`hosts/mac/darwin.nix` の `KANATA_CERT_NAME`) が変わると，macOSは
+   Kanataを別アプリとみなし権限が外れます (ログに `needs macOS Accessibility permission`
+   等が出る)．その場合は両方の一覧から既存の `kanata` を「−」で削除し，上記の手順で
+   追加し直してから再起動してください (オフ→オンだけでは古い署名の情報が残ります)．
+   アクセシビリティの一覧は
+   `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
+   で直接開けます．
+
 8. **配色反映 (Matugen) の初回許可 (任意)**
    `ctrl-cmd-w` (壁紙ピッカー) や `matugen-apply` を初めて実行すると，現在の壁紙を
    取得するために「システムイベント」のオートメーション許可を求めるダイアログが
