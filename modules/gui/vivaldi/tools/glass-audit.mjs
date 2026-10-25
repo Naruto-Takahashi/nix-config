@@ -137,6 +137,8 @@ const audit = () => {
 };
 
 const panelCount = () => document.querySelectorAll('#switch button[aria-controls="ui-region-panel"]').length;
+const activePanel = () =>
+  [...document.querySelectorAll('#switch button[aria-controls="ui-region-panel"]')].findIndex((b) => b.parentElement.classList.contains('active'));
 const openPanel = async (i) => {
   // Vivaldi の UI は click() だけでは反応しないため pointer/mouse 一式を送る
   const b = document.querySelectorAll('#switch button[aria-controls="ui-region-panel"]')[i];
@@ -154,8 +156,12 @@ try {
   const report = (label, rows) =>
     console.log(`== ${label}: ${rows.length ? rows.length + ' 件の問題' : 'OK'}\n${rows.join('\n')}`.trimEnd());
   if (withPanels) {
+    // 検査後は元の表示状態 (開いていたパネル、または閉じた状態) に戻す
+    const before = await evaluate(activePanel);
     const n = await evaluate(panelCount);
     for (let i = 0; i < n; i++) report(await evaluate(openPanel, i), await evaluate(audit));
+    if (before >= 0) await evaluate(openPanel, before);
+    else await evaluate(openPanel, n - 1), await evaluate(openPanel, n - 1);
   } else {
     report('現在の表示', await evaluate(audit));
   }

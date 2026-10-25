@@ -22,15 +22,20 @@
 /* ==========================================================================
    トークン
    ========================================================================== */
+/* --glass-edge: ガラスの縁の 1px の光の線。暗いガラスが暗いページに
+   重なっても形が分かるようにする (全ガラス面に inset box-shadow で付ける)。
+   ライトテーマは暗い文字の可読性のため --glass-bg を濃いめにする */
 .theme-dark {
     --glass-bg: rgba(0, 0, 0, 0.22);
     --glass-bg-strong: rgba(30, 30, 30, 0.55);
     --glass-tint: 255, 255, 255;
+    --glass-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
 }
 .theme-light {
-    --glass-bg: rgba(255, 255, 255, 0.22);
-    --glass-bg-strong: rgba(250, 250, 250, 0.55);
+    --glass-bg: rgba(255, 255, 255, 0.40);
+    --glass-bg-strong: rgba(250, 250, 250, 0.60);
     --glass-tint: 0, 0, 0;
+    --glass-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
 }
 :root {
     --glass-blur: blur(12px) saturate(140%);
@@ -67,6 +72,7 @@
     pointer-events: none;
     background-color: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
+    box-shadow: var(--glass-edge);
 }
 
 /* unified UI 透過時、Vivaldi はバー上の文字色・hover背景を「テーマ背景画像の
@@ -124,6 +130,7 @@
 :is(#titlebar, #tabs-tabbar-container, #panels, .mainbar, .bookmark-bar, .toolbar-statusbar):not(.auto-hide-wrapper *) {
     background-color: var(--glass-bg) !important;
     backdrop-filter: var(--glass-blur) !important;
+    box-shadow: var(--glass-edge) !important;
 }
 :is(.tabbar-wrapper, #panels-container, #panels .panel-group, #switch, footer#footer):not(.auto-hide-wrapper *) {
     background: transparent !important;
@@ -133,6 +140,7 @@
 .inner > .StatusInfo > .StatusInfo-Content {
     background-color: var(--glass-bg) !important;
     backdrop-filter: var(--glass-blur) !important;
+    box-shadow: var(--glass-edge) !important;
 }
 
 /* ツールバーのポップアップ (ワークスペース・拡張機能など)。ページ上に
@@ -140,6 +148,7 @@
 .button-popup {
     background-color: var(--glass-bg-strong) !important;
     backdrop-filter: var(--glass-blur-strong) !important;
+    box-shadow: var(--glass-edge) !important;
 }
 .button-popup > * {
     background-color: transparent !important;
@@ -151,6 +160,7 @@
 .OmniDropdown {
     background-color: var(--glass-bg-strong) !important;
     backdrop-filter: var(--glass-blur-strong) !important;
+    box-shadow: var(--glass-edge) !important;
 }
 
 /* ==========================================================================
@@ -214,4 +224,20 @@
 .SpeedDialView-SearchField {
     background-color: var(--glass-bg) !important;
     backdrop-filter: var(--glass-blur) !important;
+    box-shadow: var(--glass-edge) !important;
+}
+
+/* ==========================================================================
+   クイックコマンド (F2)。ページ上に重なるのでポップアップと同じ濃いめのガラス
+   ========================================================================== */
+.quick-command-container .modal-wrapper {
+    background-color: var(--glass-bg-strong) !important;
+    backdrop-filter: var(--glass-blur-strong) !important;
+    box-shadow: var(--glass-edge) !important;
+}
+.quick-command-container .modal-wrapper :is(.quick-commands, input.quick-command-search-hint) {
+    background-color: transparent !important;
+}
+.quick-command-container .modal-wrapper input.quick-command-search-hint {
+    border-bottom: 1px solid rgba(var(--glass-tint), 0.10) !important;
 }
