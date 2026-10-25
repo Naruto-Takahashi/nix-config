@@ -1,5 +1,5 @@
 # =========================================================================
-# Nix Flake 設定ファイル (~/.config/home-manager/flake.nix)
+# Nix Flake 設定ファイル (nix-config エントリーポイント)
 # =========================================================================
 {
   description = "Home Manager configuration of nalt";
@@ -41,76 +41,65 @@
       ...
     }:
     let
-      system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      # 全モジュールに渡す追加引数 (使わないモジュールは単に受け取らない)
+      specialArgs = { inherit nixgl kanagawa-dragon-yazi; };
+
+      # スタンドアロン Home Manager 構成 (Linux 系ホスト)
+      mkHome =
+        host:
+        home-manager.lib.homeManagerConfiguration {
+          pkgs = nixpkgs.legacyPackages."x86_64-linux";
+          modules = [ ./hosts/${host} ];
+          extraSpecialArgs = specialArgs;
+        };
+
+      # NixOS / nix-darwin に組み込む Home Manager の共通設定
+      hmIntegration = host: {
+        home-manager.useGlobalPkgs = true;
+        home-manager.useUserPackages = true;
+        home-manager.users.nalt = import ./hosts/${host};
+        home-manager.extraSpecialArgs = specialArgs;
+        home-manager.backupFileExtension = "backup";
+      };
+
+      forSystems = f: nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] f;
     in
     {
       homeConfigurations = {
         # WSL環境用プロファイル
-        "wsl" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./hosts/wsl ];
-          extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
-        };
+        "wsl" = mkHome "wsl";
 
         # rootless podman (distrobox) コンテナ内のCLI専用プロファイル
-        "distrobox" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./hosts/distrobox ];
-          extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
-        };
+        "distrobox" = mkHome "distrobox";
 
         # 実データ非共有コンテナ(wslc等)内のCLI専用プロファイル
-        "sandbox" = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ ./hosts/sandbox ];
-          extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
-        };
+        "sandbox" = mkHome "sandbox";
 
         # Mac は nix-darwin (darwinConfigurations.mac) 経由の Home Manager に一本化している。
         # スタンドアロン版を併存させると CI が実運用と別の経路を検証することになるため置かない。
       };
 
       # NixOS環境用プロファイル
-      nixosConfigurations = {
-        "nixos" = nixpkgs.lib.nixosSystem {
-          inherit system;
-          modules = [
-            ./hosts/nixos/configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.nalt = import ./hosts/nixos;
-              home-manager.extraSpecialArgs = { inherit nixgl kanagawa-dragon-yazi; };
-              home-manager.backupFileExtension = "backup";
-            }
-          ];
-        };
+      nixosConfigurations."nixos" = nixpkgs.lib.nixosSystem {
+        system = "x86_64-linux";
+        modules = [
+          ./hosts/nixos/configuration.nix
+          home-manager.nixosModules.home-manager
+          (hmIntegration "nixos")
+        ];
       };
 
       # Mac (nix-darwin) 環境用プロファイル
-      darwinConfigurations = {
-        "mac" = darwin.lib.darwinSystem {
-          system = "aarch64-darwin";
-          modules = [
-            ./hosts/mac/darwin.nix
-            home-manager.darwinModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.nalt = import ./hosts/mac;
-              home-manager.extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
-              home-manager.backupFileExtension = "backup";
-            }
-          ];
-        };
+      darwinConfigurations."mac" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./hosts/mac/darwin.nix
+          home-manager.darwinModules.home-manager
+          (hmIntegration "mac")
+        ];
       };
 
       # コードフォーマッタ (`nix fmt` でリポジトリ全体を整形)
-      formatter = {
-        "x86_64-linux" = nixpkgs.legacyPackages."x86_64-linux".nixfmt-tree;
-        "aarch64-darwin" = nixpkgs.legacyPackages."aarch64-darwin".nixfmt-tree;
-      };
+      formatter = forSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-tree);
     };
 }

@@ -119,6 +119,7 @@ in
     };
 
     # Vault ディレクトリ初期化 & ~/.claude.json に残存する旧 obsidian MCP 定義の自動クリーンアップ
+    # (旧 MCP 撤去の移行処理。全ホストで一度 switch した後、2026-12 以降に削除してよい)
     home.activation.setupObsidianBrain = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD mkdir -p $VERBOSE_ARG "${cfg.vaultPath}"
       if [ -f "$HOME/.claude.json" ] && ${pkgs.jq}/bin/jq -e '.mcpServers.obsidian' "$HOME/.claude.json" >/dev/null 2>&1; then

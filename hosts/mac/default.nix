@@ -1,5 +1,5 @@
 # =========================================================================
-# Home Manager Mac環境用設定ファイル (~/.config/home-manager/hosts/mac/default.nix)
+# Home Manager Mac環境用設定ファイル (hosts/mac/default.nix)
 # =========================================================================
 { config, pkgs, ... }:
 
