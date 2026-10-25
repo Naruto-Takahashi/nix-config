@@ -27,6 +27,12 @@ fmt:
 switch host="":
     #!/usr/bin/env bash
     set -euo pipefail
+    # Mac は内部で sudo darwin-rebuild を呼ぶ。just ごと sudo すると git 操作も root で走り、
+    # .git に root 所有のファイルができうるため止める (sandbox は root 前提なので対象外)
+    if [[ "$OSTYPE" == darwin* && $EUID -eq 0 ]]; then
+        echo "::error:: Mac では sudo を付けずに 'just switch' を実行してください (必要な箇所だけ sudo を求めます)。" >&2
+        exit 1
+    fi
     # flake は git が追跡するファイルしか評価しないため、新規ファイルを追跡対象に加える。
     # 中身は stage せず (-N)、意図しないファイル (秘密情報等) に気づけるよう一覧を表示する。
     if [ -n "$(git ls-files --others --exclude-standard)" ]; then
@@ -59,7 +65,7 @@ switch host="":
     echo "▶ host=$host の構成を適用します..."
     case "$host" in
         mac)
-            darwin-rebuild switch --flake .#mac ;;
+            sudo darwin-rebuild switch --flake .#mac ;;
         nixos)
             sudo nixos-rebuild switch --flake .#nixos ;;
         wsl)

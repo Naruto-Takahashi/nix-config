@@ -45,8 +45,8 @@ cd nix-config
     sudo nix run github:LnL7/nix-darwin -- switch --flake .#mac --impure
 
    # 2回目以降の更新適用 (こちらが推奨・高速)
-   darwin-rebuild switch --flake .#mac
-   # または justfile 経由
+   sudo darwin-rebuild switch --flake .#mac
+   # または justfile 経由 (sudo は付けない。内部で必要な箇所だけ sudo を求める)
    just switch
    ```
 
