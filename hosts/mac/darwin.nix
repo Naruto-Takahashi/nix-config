@@ -140,7 +140,12 @@ in
   system.activationScripts.postActivation.text = ''
     echo "Stabilizing kanata binary identity for TCC permission persistence..."
 
-    KANATA_CERT_NAME="nix-config-kanata-codesign"
+    # 鍵の ACL は codesign のみに限定する (-A で全アプリに開放すると、他のプログラムが
+    # 自身を com.nalt.kanata として署名し kanata の入力監視権限を引き継げてしまう)。
+    # 旧名の証明書は -A 付きで取り込んでいたため削除する。find-certificate -c は
+    # 部分一致なので、新旧の名前は互いに含まれないものにしている。
+    KANATA_CERT_NAME="nalt-kanata-codesign"
+    KANATA_OLD_CERT_NAME="nix-config-kanata-codesign"
     KANATA_KEYCHAIN="/Library/Keychains/System.keychain"
     KANATA_STABLE_BIN="/usr/local/bin/kanata"
     KANATA_SRC_BIN="/run/current-system/sw/bin/kanata"
@@ -158,9 +163,17 @@ in
       # so force the old RC2/3DES encoding that `security import` understands.
       ${pkgs.openssl}/bin/openssl pkcs12 -export -legacy -out "$TMP_CERT_DIR/bundle.p12" \
         -inkey "$TMP_CERT_DIR/key.pem" -in "$TMP_CERT_DIR/cert.pem" -passout pass:nixconfig
-      /usr/bin/security import "$TMP_CERT_DIR/bundle.p12" -k "$KANATA_KEYCHAIN" -P nixconfig -T /usr/bin/codesign -A
+      /usr/bin/security import "$TMP_CERT_DIR/bundle.p12" -k "$KANATA_KEYCHAIN" -P nixconfig -T /usr/bin/codesign
       rm -rf "$TMP_CERT_DIR"
+      echo "NOTE: kanata の署名証明書を作り直しました。システム設定 → プライバシーとセキュリティ の"
+      echo "      入力監視 / アクセシビリティ で /usr/local/bin/kanata を一度オフ→オンしてください。"
     fi
+
+    for _ in 1 2 3; do
+      /usr/bin/security find-certificate -c "$KANATA_OLD_CERT_NAME" "$KANATA_KEYCHAIN" >/dev/null 2>&1 || break
+      echo "Removing legacy code-signing identity: $KANATA_OLD_CERT_NAME"
+      /usr/bin/security delete-identity -c "$KANATA_OLD_CERT_NAME" "$KANATA_KEYCHAIN" || break
+    done
 
     if [ -f "$KANATA_SRC_BIN" ]; then
       cp -f "$KANATA_SRC_BIN" "$KANATA_STABLE_BIN"
