@@ -10,7 +10,7 @@
 #   matugen-apply --reapply   前回の壁紙で再生成 (テンプレート更新の反映用)
 set -euo pipefail
 
-export PATH="$HOME/.nix-profile/bin:/opt/homebrew/bin:$PATH"
+export PATH="/etc/profiles/per-user/$USER/bin:$HOME/.nix-profile/bin:/opt/homebrew/bin:$PATH"
 
 # 多重起動ガード (壁紙切り替え時の二重実行対策)。macOSに`flock`が無いため
 # `mkdir`のアトミック性を使った簡易ロックにする (WSL/Linuxの`flock`と役割は同じ)。
