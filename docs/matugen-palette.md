@@ -90,7 +90,8 @@
           (matugen が作るのはこの CSS 1枚だけ)
         あわせて Windows のロック画面壁紙も同じ画像に設定する
         (UWP UserProfile.LockScreen API を PowerShell -EncodedCommand で呼ぶ)
-     2. matugen-apply が palette.css から CSS 変数を抽出し、一時 colors.lua
+     2. Mac と共通の lib/palette.sh (matugen_build_palette / matugen_render_common。
+        surface には --base を使う) が palette.css から CSS 変数を抽出し、一時 colors.lua
         (7キー: accent/tertiary/secondary/text/muted/surface/on_accent + error)
         を組み立てて NixOS と共通の modules/theming/matugen/lib/ に渡す:
         - derive-colors.py  : complement/triad/accent_pale を追記 (11キーに)
@@ -173,7 +174,8 @@ WSL版の簡略版。YASB/komorebi/ロック画面などWindows固有部分を�
      1. matugen image <壁紙> -c ~/.config/matugen-mac/config.toml
         → テンプレート palette.css (WSL版と同じCSS変数構成) から
           ~/.cache/matugen/mac-palette.css を生成 (matugenが作るのはこの1枚だけ)
-     2. WSL版と同じ抽出→派生色計算→レンダリングをそのまま行う:
+     2. WSL版と共通の lib/palette.sh で抽出→派生色計算→レンダリングを行う
+        (surface には --surface2 を使う):
         - CSS変数からMaterial roleを抽出し一時colors.luaを組み立てる
         - derive-colors.py (共通lib) でcomplement/triad/accent_pale/selection_bgを追記
         - render-template.sh (共通lib) でstarship/lazygit/cz.toml/yazi theme.toml/
@@ -321,6 +323,7 @@ WSL/Mac は matugen-apply.sh に palette.css からの抽出を足し、NixOS �
 
 | ファイル | 役割 |
 | :--- | :--- |
+| `modules/theming/matugen/lib/palette.sh` | CSSパレットの抽出・派生色計算・OS共通アプリへの展開 (WSL/Mac の matugen-apply が source する) |
 | `modules/theming/matugen/lib/derive-colors.py` | complement/triad/accent_pale/selection_bgの派生色計算 (全ホスト共通) |
 | `modules/theming/matugen/lib/render-template.sh` | `@@KEY@@`プレースホルダのテンプレート置換エンジン (全ホスト共通) |
 | `modules/theming/matugen/templates/` | starship/lazygit/cz.toml/eza/btop用の共通テンプレート |
