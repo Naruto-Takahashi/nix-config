@@ -2,9 +2,7 @@
 # Vivaldi 宣言的設定モジュール
 # =========================================================================
 {
-  config,
   pkgs,
-  dotfilesPath,
   ...
 }:
 
@@ -17,23 +15,28 @@ let
   # 特定コミットから取得する。DynamicNeonTab.css (ネオン配色のタブ) は
   # 現在のmatugen連携の落ち着いた配色と合わないため採用していない。
   #
-  # ⚠️ 運用ポリシー: rev/hashを気軽に書き換えて「最新版に追従」しない。
-  # このテーマは実際に使っているVivaldiバージョン(8.1.4087時点)との間で
-  # 複数のセレクタ不一致バグが見つかっており (下記4件、すべてcustom.css側
-  # で個別に上書き修正済み)、アップストリーム側がどのVivaldiバージョンを
-  # 前提にしているか不明で、動くことを検証せずに追従するのは危険:
+  # ⚠️ 運用ポリシー: AirZenify単体で運用し、自作CSSは持たない
+  # (2026-10 に独自custom.cssを廃止。ガラス化の対象選定を公開テーマに任せ、
+  # 見落とし探しを自前で抱えないため)。気になる不具合が出たら個別対処する。
+  # rev はアップストリームの最新コミット (2026-05-27) を固定している。
+  # 以下はVivaldi 8.1.4087時点でCDPにより確認した既知のセレクタ不一致で、
+  # 廃止したcustom.css (git履歴に残る) で上書き修正していたもの。
+  # 現在は修正せず受け入れている。個別対処の際の手がかりとして残す:
   #   1. `.auto-hide #browser ...` という子孫セレクタが実際は
   #      `#browser.auto-hide` (autoHideクラスは#browser自身に付与される)
-  #      であるべきで一度もマッチしていなかった (box-shadow/margin未リセット)
+  #      であるべきで一度もマッチしていない (自動非表示時に#webpage-stackの
+  #      影付き内枠 box-shadow/margin が残る)
   #   2. `.unified-ui .auto-hide-wrapper` の transparent 指定が同名クラスの
-  #      ガラス効果定義と詳細度が同じで後勝ちしてしまうケースがあった
+  #      ガラス効果定義と詳細度が同じで後勝ちしてしまうケースがある
   #   3. 信号ボタン(.window-buttongroup)は#headerではなく常時opacity:1の
   #      #titlebarの子要素で、AirZenify本体はどちらの表示状態も制御しない
+  #      (#titlebar の背景も transparent 固定)
   #   4. フローティングパネル有効時の実際のクラスは `.overlay` ではなく
-  #      `.expanded` で、パネル本体のガラス効果が一度も適用されていなかった
-  # 本当にアップデートしたい場合は、rev/hashを書き換えた後、CDP
-  # (chrome devtools protocol) で実際のDOM/computedStyleを確認しながら
-  # custom.css側の上書き修正が今も必要か・新たに必要かを再監査すること。
+  #      `.expanded` で、パネル本体 (.panel-group/#switch) のガラス効果が
+  #      適用されない
+  # rev/hashを更新する場合は、CDP (chrome devtools protocol) で実際の
+  # DOM/computedStyleを確認し、上記が解消されたか・新たな不一致がないかを
+  # 再監査すること。
   airZenifyRev = "cb65d550a6f68c74dc7b07ecf37388a0c7a7a3b7";
   airZenifyCss = pkgs.fetchurl {
     url = "https://raw.githubusercontent.com/ELGUAPOLIFE/Zen-Theme-CSS-for-Vivaldi-Browser/${airZenifyRev}/AirZenify.css";
@@ -45,19 +48,14 @@ in
   # Windows(Vivaldi)からWSL側のシンボリックリンクを \\wsl.localhost\...
   # 経由で直接読ませると、リンク先を辿れずリンク文字列そのもの(数十バイト)を
   # 読んでしまい、CSSが一切適用されない不具合がある (実機で確認済み。
-  # mkOutOfStoreSymlinkもfetchurlの結果もどちらもシンボリックリンクのため
-  # 影響を受ける)。そのため他のWindows向け設定 (wezterm/komorebi/yasb等)
-  # と同じく、sync-win (cp -L で実体を解決してコピー) で
-  # C:\Users\tnaru\Tools\Vivaldi\ へ配置し、Vivaldi設定のCSS UI Mods
-  # DirectoryもそちらへUIから向ける。custom.css はAirZenifyにない
-  # 独自要素 (信号ボタンの色・タブ高さ・アクティブタブのガラス化) に加え、
-  # 上記のAirZenify側バグ4件を上書き修正する役割も持つ (詳細は
-  # custom.css内の各コメント参照)。@importの順序上、air-zenify.cssより
-  # 後に読み込まれるため上書きが効く。
-  xdg.configFile."vivaldi/custom.css" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/gui/vivaldi/css/custom.css";
-    force = true;
-  };
+  # fetchurlの結果もシンボリックリンクのため影響を受ける)。そのため他の
+  # Windows向け設定 (wezterm/komorebi/yasb等) と同じく、sync-win
+  # (cp -L で実体を解決してコピー) で C:\Users\tnaru\Tools\Vivaldi\ へ配置し、
+  # Vivaldi設定のCSS UI Mods DirectoryもそちらへUIから向ける。
+  # 前提となるVivaldi設定 (UIで手動設定):
+  #   - Settings > Appearance/Tabs でUI自動非表示 (Auto-hide) を有効化
+  #   - Show Title Bar を無効化
+  #   - Theme設定で Transparent Tab Bar を有効化 (Blur = 0)
   xdg.configFile."vivaldi/air-zenify.css" = {
     source = airZenifyCss;
     force = true;

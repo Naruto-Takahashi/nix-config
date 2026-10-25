@@ -40,7 +40,9 @@ pkgs.writeShellApplication {
 
     echo "Syncing Vivaldi CSS..."
     mkdir -p ${windowsHome}/Tools/Vivaldi
-    cp -L ~/.config/vivaldi/custom.css ${windowsHome}/Tools/Vivaldi/custom.css
+    # 廃止した自作custom.cssの残骸を消す (VivaldiはMods Directory内の
+    # CSSを全て読み込むため、残っていると適用され続ける)
+    rm -f ${windowsHome}/Tools/Vivaldi/custom.css
     cp -L ~/.config/vivaldi/air-zenify.css ${windowsHome}/Tools/Vivaldi/air-zenify.css
 
     echo "Syncing kanata (Windows)..."
