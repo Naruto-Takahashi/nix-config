@@ -3,44 +3,24 @@
 # =========================================================================
 # Claude Code (~/.claude/skills) および Antigravity CLI (~/.gemini/config/skills)
 # に共通で配備する汎用エンジニアリング・ワークフロースキル群。
-# 上流リポジトリをコミット固定で宣言的に取得・配置する。
+# 上流リポジトリは flake inputs (flake.lock) で固定し、週次の lock 更新で追従する。
 {
   config,
   lib,
-  pkgs,
+  skillSources,
   ...
 }:
 
 let
   cfg = config.programs.agentSkills;
 
-  vercelSkillsSrc = pkgs.fetchFromGitHub {
-    owner = "vercel-labs";
-    repo = "skills";
-    rev = "a80e4c9d12d607631249d4d7d059f835d4b2f13a";
-    sha256 = "1djab5lz3yg0r8f4m57071sxj0jpprlzzhrd1zswdann96297xb1";
-  };
+  vercelSkillsSrc = skillSources.vercel-skills;
 
-  anthropicsSkillsSrc = pkgs.fetchFromGitHub {
-    owner = "anthropics";
-    repo = "skills";
-    rev = "dbd4588f9e1033efb41dad4bef2f7947c8993d44";
-    sha256 = "1x81ypg4nfacr4ma9vphj890yrnwhhv6i6124npq6y7jgh32lhpr";
-  };
+  anthropicsSkillsSrc = skillSources.anthropic-skills;
 
-  vercelAgentSkillsSrc = pkgs.fetchFromGitHub {
-    owner = "vercel-labs";
-    repo = "agent-skills";
-    rev = "063bee94c3f4df8453406c830b0a7df0f2860278";
-    sha256 = "07y8vkfyg44szky962d3035kjz3jd8by5iqlgxa5nhnfkmzqjd5m";
-  };
+  vercelAgentSkillsSrc = skillSources.vercel-agent-skills;
 
-  mattpocockSkillsSrc = pkgs.fetchFromGitHub {
-    owner = "mattpocock";
-    repo = "skills";
-    rev = "5beb35b040e3de97e54fa9e386d7e42d15c295c2";
-    sha256 = "1lnzvp1xhwmab4fwn8jq1gzbh1d1gzknnjq0kc6cxhf5gxxrylnq";
-  };
+  mattpocockSkillsSrc = skillSources.mattpocock-skills;
 
   findSkillsFiles = lib.mkIf cfg.enableFindSkills {
     ".claude/skills/find-skills/SKILL.md".source = "${vercelSkillsSrc}/skills/find-skills/SKILL.md";

@@ -7,19 +7,14 @@
 {
   config,
   lib,
-  pkgs,
+  skillSources,
   ...
 }:
 
 let
   cfg = config.programs.orca;
 
-  orcaSrc = pkgs.fetchFromGitHub {
-    owner = "stablyai";
-    repo = "orca";
-    rev = "071747853f5995ee233b36751613f09a60007c2b";
-    sha256 = "0af2pcm6pkjy5gjs9adz63n3hs1vjyxq906mr44a6h4wan1phafl";
-  };
+  orcaSrc = skillSources.orca;
 
   skillFiles = name: {
     ".claude/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";

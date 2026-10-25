@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "anthropic-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791571549,
+        "narHash": "sha256-+UIqBnzyeIOvJSKYaDaE3GYPEpLw7qQqyUw5S971AfU=",
+        "owner": "anthropics",
+        "repo": "skills",
+        "rev": "dbd4588f9e1033efb41dad4bef2f7947c8993d44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
     "darwin": {
       "inputs": {
         "nixpkgs": [
@@ -74,6 +90,22 @@
         "type": "github"
       }
     },
+    "mattpocock-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792425100,
+        "narHash": "sha256-2FKfe3/Fwc4MmwBLa+d/oQW4/gtYIssdWapy2MPd39I=",
+        "owner": "mattpocock",
+        "repo": "skills",
+        "rev": "5beb35b040e3de97e54fa9e386d7e42d15c295c2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mattpocock",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
     "nixgl": {
       "inputs": {
         "flake-utils": "flake-utils",
@@ -111,13 +143,34 @@
         "type": "github"
       }
     },
+    "orca": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792565499,
+        "narHash": "sha256-1Cl4g1WcQKMIydWAhLuXO2g47DC/qaTlK17Oayq7wik=",
+        "owner": "stablyai",
+        "repo": "orca",
+        "rev": "071747853f5995ee233b36751613f09a60007c2b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "stablyai",
+        "repo": "orca",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
+        "anthropic-skills": "anthropic-skills",
         "darwin": "darwin",
         "home-manager": "home-manager",
         "kanagawa-dragon-yazi": "kanagawa-dragon-yazi",
+        "mattpocock-skills": "mattpocock-skills",
         "nixgl": "nixgl",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs",
+        "orca": "orca",
+        "vercel-agent-skills": "vercel-agent-skills",
+        "vercel-skills": "vercel-skills"
       }
     },
     "systems": {
@@ -132,6 +185,38 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "vercel-agent-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787924167,
+        "narHash": "sha256-tTSJf53OQltUfxTH4hdqcnw5ywCjCZP8/JqQ593cyB8=",
+        "owner": "vercel-labs",
+        "repo": "agent-skills",
+        "rev": "063bee94c3f4df8453406c830b0a7df0f2860278",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vercel-labs",
+        "repo": "agent-skills",
+        "type": "github"
+      }
+    },
+    "vercel-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792442059,
+        "narHash": "sha256-YfWThEnWqsb1Dy3D/2m+VwLZdTjglEocyuD58WlZSrY=",
+        "owner": "vercel-labs",
+        "repo": "skills",
+        "rev": "a80e4c9d12d607631249d4d7d059f835d4b2f13a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vercel-labs",
+        "repo": "skills",
         "type": "github"
       }
     }

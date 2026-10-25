@@ -24,6 +24,29 @@
       flake = false;
     };
 
+    # AI エージェント用スキルの上流リポジトリ (modules/ai/agent-skills, modules/ai/orca)。
+    # flake.lock で固定し、週次の update-flake-lock で他の依存と一緒に更新する。
+    vercel-skills = {
+      url = "github:vercel-labs/skills";
+      flake = false;
+    };
+    anthropic-skills = {
+      url = "github:anthropics/skills";
+      flake = false;
+    };
+    vercel-agent-skills = {
+      url = "github:vercel-labs/agent-skills";
+      flake = false;
+    };
+    mattpocock-skills = {
+      url = "github:mattpocock/skills";
+      flake = false;
+    };
+    orca = {
+      url = "github:stablyai/orca";
+      flake = false;
+    };
+
     # nix-darwin の入力ソース定義
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -32,7 +55,7 @@
   };
 
   outputs =
-    {
+    inputs@{
       nixpkgs,
       home-manager,
       nixgl,
@@ -42,7 +65,18 @@
     }:
     let
       # 全モジュールに渡す追加引数 (使わないモジュールは単に受け取らない)
-      specialArgs = { inherit nixgl kanagawa-dragon-yazi; };
+      specialArgs = {
+        inherit nixgl kanagawa-dragon-yazi;
+        skillSources = {
+          inherit (inputs)
+            vercel-skills
+            anthropic-skills
+            vercel-agent-skills
+            mattpocock-skills
+            orca
+            ;
+        };
+      };
 
       # スタンドアロン Home Manager 構成 (Linux 系ホスト)
       mkHome =
