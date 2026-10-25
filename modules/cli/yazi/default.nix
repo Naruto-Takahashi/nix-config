@@ -213,7 +213,7 @@
   xdg.configFile."yazi/init.lua".source = ./init.lua;
 
   # 2色補間 (blend) は nvim (modules/cli/neovim) の lualine とロジックを
-  # 共有しているため modules/theming/lua-lib に集約し、ここに配置する。
+  # 共有しているため modules/theming/lib に集約し、ここに配置する。
   # yazi の Lua ランタイムは require が使えないため dofile で読み込む。
   xdg.configFile."yazi/blend.lua".source = ../../theming/lib/blend.lua;
 
