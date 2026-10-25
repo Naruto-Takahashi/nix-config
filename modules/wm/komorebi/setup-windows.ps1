@@ -17,16 +17,16 @@ foreach ($app in $apps) {
 }
 
 # 2. Create directory for Customization tools
-$customDir = "C:\Users\tnaru\Tools\Customization"
+$customDir = "$env:USERPROFILE\Tools\Customization"
 if (!(Test-Path $customDir)) {
     New-Item -ItemType Directory -Path $customDir -Force | Out-Null
 }
 
 # 3. Register Scheduled Task for Startup
 $taskName = "Start-Custom-WM-Environment"
-$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -File C:\Users\tnaru\Tools\Customization\startup.ps1"
+$action = New-ScheduledTaskAction -Execute "powershell.exe" -Argument "-NoProfile -WindowStyle Hidden -File $env:USERPROFILE\Tools\Customization\startup.ps1"
 $trigger = New-ScheduledTaskTrigger -AtLogOn
-$principal = New-ScheduledTaskPrincipal -UserId "tnaru" -RunLevel Highest
+$principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries
 
 Write-Host "Registering Scheduled Task: $taskName..." -ForegroundColor Cyan

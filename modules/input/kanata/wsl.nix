@@ -40,12 +40,16 @@ let
   };
 in
 {
+  imports = [ ../../platform/wsl.nix ];
+
   home.file.".local/bin/kanata-windows.exe".source = "${kanataWindows}/kanata.exe";
 
   # config.kbd はビルド時に生成される (プレースホルダ置換済みの静的テキスト)
   # ため mkOutOfStoreSymlink ではなく通常の home.file.text にしている。
   # wsl-config.nix を編集したら home-manager switch が必要
-  xdg.configFile."kanata-wsl/config.kbd".text = import ./wsl-config.nix;
+  xdg.configFile."kanata-wsl/config.kbd".text = import ./wsl-config.nix {
+    inherit (config.platform.wsl) windowsHomeNative;
+  };
 
   # IME制御委譲用の一発実行AHKスクリプト。main.ahkと同じくsync-winで
   # ~/.config/ahk 配下ごとWindows側へコピーされる (modules/input/ahk/default.nix)

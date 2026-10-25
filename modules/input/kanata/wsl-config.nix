@@ -17,6 +17,10 @@
 # home-manager (modules/input/kanata/wsl.nix) がこのテキストをWindows側へ
 # 配置する。sync-win/matugen-apply等と同じくAHK側 (modules/input/ahk/) の
 # ime-off.ahk / ime-on.ahk を直接呼び出す。
+#
+# 引数 windowsHomeNative: Windows 側ホーム (例: C:/Users/<name>)。platform.wsl から渡す。
+{ windowsHomeNative }:
+
 let
   base = builtins.readFile ./config.kbd;
 
@@ -104,8 +108,8 @@ let
     ;; IME制御 (Windows専用委譲): Win32 API呼び出しが必要なため、
     ;; 実績のあるAHKのime_functions.ahk (ime-off.ahk/ime-on.ahk) へ委譲する
     (defalias
-      ime-off (cmd "C:/Program Files/AutoHotkey/v1.1.37.02/AutoHotkeyU64.exe" "C:/Users/tnaru/Tools/Customization/ime-off.ahk")
-      ime-on  (cmd "C:/Program Files/AutoHotkey/v1.1.37.02/AutoHotkeyU64.exe" "C:/Users/tnaru/Tools/Customization/ime-on.ahk")
+      ime-off (cmd "C:/Program Files/AutoHotkey/v1.1.37.02/AutoHotkeyU64.exe" "${windowsHomeNative}/Tools/Customization/ime-off.ahk")
+      ime-on  (cmd "C:/Program Files/AutoHotkey/v1.1.37.02/AutoHotkeyU64.exe" "${windowsHomeNative}/Tools/Customization/ime-on.ahk")
     )
 
   '';

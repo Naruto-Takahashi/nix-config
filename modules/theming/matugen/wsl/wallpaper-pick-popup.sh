@@ -33,8 +33,12 @@ if [[ -z "$port" ]]; then
     exit 1
 fi
 
-VIVALDI='C:\Users\tnaru\AppData\Local\Vivaldi\Application\vivaldi.exe'
-PROFILE_DIR_WIN="C:\\Users\\tnaru\\AppData\\Local\\Temp\\wallpaper-pick-profile-$$"
+# Windows 側ユーザープロファイル (Windows 形式)。動的解決に失敗したら従来値
+WIN_PROFILE="$(cd /mnt/c && /mnt/c/Windows/System32/cmd.exe /c 'echo %USERPROFILE%' 2>/dev/null | tr -d '\r' || true)"
+[[ "$WIN_PROFILE" == [A-Za-z]:\\* ]] || WIN_PROFILE='C:\Users\tnaru'
+
+VIVALDI="${WIN_PROFILE}\\AppData\\Local\\Vivaldi\\Application\\vivaldi.exe"
+PROFILE_DIR_WIN="${WIN_PROFILE}\\AppData\\Local\\Temp\\wallpaper-pick-profile-$$"
 
 /mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -NoProfile -Command "
   Start-Process -FilePath '${VIVALDI}' -ArgumentList '--app=http://localhost:${port}','--user-data-dir=${PROFILE_DIR_WIN}','--window-position=200,120','--window-size=900,760'

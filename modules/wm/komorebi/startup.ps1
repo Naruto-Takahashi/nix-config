@@ -1,15 +1,15 @@
 # Start critical background tools at logon as fast as possible
 
 # 1. AutoHotkey (main.ahkがエントリポイント。komorebi.ahkはそこから#Includeされる)
-Start-Process "C:\Users\tnaru\Tools\Customization\main.ahk"
+Start-Process "$env:USERPROFILE\Tools\Customization\main.ahk"
 
 # 1.1 kanata (SandS/CapsLock/Alt-IME切り替え。AHKの `Key & Key` コンボ実装が
 # キー状態を稀に取りこぼす不具合の対策として移行中。main.ahk側は
 # KanataActive()でkanata起動を検知すると該当ホットキーを自動的に無効化する
 # ため、二重定義のまま共存できる。ロールバックしたい場合はこのプロセスを
 # 終了するだけでよい (AHK再起動不要)
-$kanataExe = "C:\Users\tnaru\.config\kanata-wsl\kanata-windows.exe"
-$kanataConfig = "C:\Users\tnaru\.config\kanata-wsl\config.kbd"
+$kanataExe = "$env:USERPROFILE\.config\kanata-wsl\kanata-windows.exe"
+$kanataConfig = "$env:USERPROFILE\.config\kanata-wsl\config.kbd"
 if ((Test-Path $kanataExe) -and (Test-Path $kanataConfig)) {
     Start-Process $kanataExe -ArgumentList "-c", "`"$kanataConfig`""
 }
@@ -41,11 +41,11 @@ if ($state -and $state.monitors.elements.Count -gt 1) {
 Start-Process "C:\Program Files\YASB\yasb.exe"
 
 # 3.1 ワークスペース切り替え時にauto_hide中のYASBバーを一時表示する常駐スクリプト
-Start-Process "powershell.exe" -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\Users\tnaru\.config\komorebi\workspace-watcher.ps1" -WindowStyle Hidden
+Start-Process "powershell.exe" -ArgumentList "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "$env:USERPROFILE\.config\komorebi\workspace-watcher.ps1" -WindowStyle Hidden
 
 # 4. Command Palette (ストアアプリ起動の確実化)
 Start-Sleep -Seconds 10
-$cmdPalLnk = "C:\Users\tnaru\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Microsoft.CmdPal.UI.lnk"
+$cmdPalLnk = "$env:USERPROFILE\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Microsoft.CmdPal.UI.lnk"
 if (Test-Path $cmdPalLnk) {
     Start-Process $cmdPalLnk
 } else {

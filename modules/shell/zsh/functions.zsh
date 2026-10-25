@@ -18,7 +18,8 @@ export VISUAL="nvim"
 
 # 外部ツールなどのパスを追加します．
 export PATH="$HOME/.local/bin:$HOME/.fzf/bin:$PATH"
-export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:/home/nalt/lib/ac-library-master
+# AtCoder Library (手動配置) がある環境でのみインクルードパスに追加する
+[[ -d "$HOME/lib/ac-library-master" ]] && export CPLUS_INCLUDE_PATH=$CPLUS_INCLUDE_PATH:$HOME/lib/ac-library-master
 export PATH=$PATH:/usr/local/go/bin
 export PATH=$PATH:$HOME/go/bin
 

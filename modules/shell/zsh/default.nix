@@ -98,11 +98,6 @@
       zn = "npx zenn new:article";
       gchat = "agy -i";
       achat = "agy -i";
-
-      # Raspberry Pi 3B SSHFS マウント操作
-      raspi-mount = "mkdir -p ~/mnt/raspi && sshfs nalt@192.168.151.253:/home/nalt ~/mnt/raspi && echo 'raspi mounted at ~/mnt/raspi'";
-      raspi-umount = "fusermount -u ~/mnt/raspi && echo 'raspi unmounted'";
-      raspi = "cd ~/mnt/raspi";
     };
 
     # プラグイン設定（Nixによる絶対パスでの自動配置）

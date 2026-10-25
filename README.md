@@ -68,6 +68,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 │   ├── cli/                   # ターミナルツール・TUI (bat, btop, eza, git, git-hooks, lazygit, neovim, yazi)
 │   ├── gui/                   # デスクトップGUIアプリ (wezterm, vivaldi, linux.nix[Linuxパッケージ])
 │   ├── input/                 # 入力系 (kanata キーリマップ[NixOS/Mac/WSL], ahk[WSL])
+│   ├── platform/              # プラットフォーム共通オプション (wsl.nix: Windows 側ユーザー名・ホーム)
 │   ├── services/              # ユーザーサービス (obsidian-brain 外部脳連携)
 │   ├── shell/                 # シェル・端末環境 (zsh, starship, fastfetch, direnv, atuin)
 │   └── theming/               # Matugen 共通ロジック / テンプレート (lib, templates) とホスト別パイプライン
