@@ -3,7 +3,7 @@
 # =========================================================================
 # 使い方:
 #   just --list      利用可能なタスク一覧を表示
-#   just switch [host]  現在の環境に合わせて switch を実行 (host で明示指定も可)
+#   just switch [host]  現在の環境に合わせて switch を実行 (host で明示指定も可。新規ファイルは git add -N)
 #   just check       全構成の静的評価・構文検証 (CI と同等)
 #   just fmt         全 Nix ファイルを nixfmt で自動整形
 #   just sync-win    Windows 側へ設定を同期 (WSL 専用)
@@ -27,7 +27,13 @@ fmt:
 switch host="":
     #!/usr/bin/env bash
     set -euo pipefail
-    git add .
+    # flake は git が追跡するファイルしか評価しないため、新規ファイルを追跡対象に加える。
+    # 中身は stage せず (-N)、意図しないファイル (秘密情報等) に気づけるよう一覧を表示する。
+    if [ -n "$(git ls-files --others --exclude-standard)" ]; then
+        echo "⚠ 未追跡ファイルを評価対象に加えます (git add -N):"
+        git ls-files --others --exclude-standard | sed 's/^/    /'
+        git ls-files -z --others --exclude-standard | xargs -0 git add -N --
+    fi
     host="{{host}}"
     # 判定順の注意:
     #   - wslc 等のコンテナは WSL カーネル上で動き /proc/version に microsoft を含むため、

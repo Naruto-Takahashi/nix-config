@@ -109,7 +109,7 @@ OSごとの詳しい手順は個別ページに分けています．上の対応
 共通タスクランナーとして [`just`](justfile) を導入しています．どのマシンでも以下の短縮コマンドが利用できます．
 
 ```bash
-just switch            # 現在のOSを自動判別して設定を適用 (git add も自動実行)
+just switch            # 現在のOSを自動判別して設定を適用 (新規ファイルは git add -N で自動的に評価対象へ)
 just check             # 全構成の静的評価・構文検証 (CIと同等)
 just fmt               # 全Nixコードの自動フォーマット (nixfmt)
 just sync-win          # Windows側への設定同期 (WSL専用)
