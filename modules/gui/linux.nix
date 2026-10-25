@@ -14,9 +14,8 @@
     # ターミナルで使用するフォント
     pkgs.hackgen-nf-font # WezTermで指定されているフォントです．
 
-    # Linux デスクトップ/X11 ユーティリティ
+    # 画像ビューア
     pkgs.feh
-    pkgs.picom
 
     # 開発環境・コンパイラ
     pkgs.gcc
@@ -29,9 +28,6 @@
     pkgs.wl-clipboard
     pkgs.kanata
 
-    # スクリーンショットツール
-    pkgs.maim # 超軽量・極めて安定したスクリーンショットツール（GPUに依存しない）です．
-    pkgs.slop # maim用の美しいドラッグ範囲選択ツールです．
 
     # ジョークツール・装飾
     pkgs.cowsay

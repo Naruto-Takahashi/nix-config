@@ -62,10 +62,6 @@
       inherit (config.platform.wsl) windowsHome;
     })
     codex
-    cowsay
-    fortune
-    lolcat
-    nodejs_22
     wsl-open # Windowsの規定のアプリでファイルを開くためのコマンド
     sshfs # SSH経由でリモートホストのファイルシステムをマウントするためのツール (raspi-* エイリアスが使用)
     cava

@@ -15,7 +15,6 @@
   imports = [
     ../../profiles/base.nix
     ../../modules/gui/linux.nix
-    ../../modules/input/kanata
     ../../modules/wm/hyprland
     ../../modules/gui/vivaldi
   ];

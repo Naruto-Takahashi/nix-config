@@ -72,7 +72,6 @@
     extraGroups = [
       "networkmanager"
       "wheel"
-      "docker"
       "input"
       "uinput"
     ];
@@ -141,8 +140,7 @@
   ];
 
   # Kanata キーボードリマッパーのシステムサービス有効化
-  # 置換ロジックは home-manager 側 (modules/input/kanata) と共通の
-  # linux-config.nix を使う。
+  # 設定は modules/input/kanata/linux-config.nix (config.kbd テンプレートの NixOS 向け置換) から生成する。
   services.kanata = {
     enable = true;
     keyboards = {
