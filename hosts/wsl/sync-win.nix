@@ -45,7 +45,11 @@ pkgs.writeShellApplication {
 
     echo "Syncing kanata (Windows)..."
     mkdir -p ${windowsHome}/.config/kanata-wsl
-    cp -L ~/.local/bin/kanata-windows.exe ${windowsHome}/.config/kanata-wsl/kanata-windows.exe
+    if ! cmp -s ~/.local/bin/kanata-windows.exe ${windowsHome}/.config/kanata-wsl/kanata-windows.exe; then
+        if ! cp -L ~/.local/bin/kanata-windows.exe ${windowsHome}/.config/kanata-wsl/kanata-windows.exe 2>/dev/null; then
+            echo "::warning:: kanata-windows.exe の更新に失敗しました (Windows 側で実行中の可能性があります)。kanata を停止してから再度 sync-win を実行してください。" >&2
+        fi
+    fi
     cp -L ~/.config/kanata-wsl/config.kbd ${windowsHome}/.config/kanata-wsl/config.kbd
     cp -L ~/.config/ahk/ime-off.ahk ~/.config/ahk/ime-on.ahk ${windowsHome}/Tools/Customization/
 
