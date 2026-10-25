@@ -158,8 +158,9 @@ in
           ProgramArguments = [ "${obsidian-vault-sync}/bin/obsidian-vault-sync" ];
           StartInterval = 1800;
           RunAtLoad = true;
-          StandardOutPath = "/tmp/obsidian-vault-sync.log";
-          StandardErrorPath = "/tmp/obsidian-vault-sync.err";
+          # /tmp は再起動で消えるため、Console.app からも見える ~/Library/Logs に置く
+          StandardOutPath = "${config.home.homeDirectory}/Library/Logs/obsidian-vault-sync.log";
+          StandardErrorPath = "${config.home.homeDirectory}/Library/Logs/obsidian-vault-sync.err";
         };
       };
     };
