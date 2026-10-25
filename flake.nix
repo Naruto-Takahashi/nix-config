@@ -67,15 +67,8 @@
           extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
         };
 
-        # Mac環境用プロファイル (M1 Mac Mini - スタンドアロン Home Manager)
-        "mac" = home-manager.lib.homeManagerConfiguration {
-          pkgs = nixpkgs.legacyPackages."aarch64-darwin";
-          modules = [
-            ./hosts/mac
-            { nixpkgs.config.allowUnfree = true; }
-          ];
-          extraSpecialArgs = { inherit kanagawa-dragon-yazi; };
-        };
+        # Mac は nix-darwin (darwinConfigurations.mac) 経由の Home Manager に一本化している。
+        # スタンドアロン版を併存させると CI が実運用と別の経路を検証することになるため置かない。
       };
 
       # NixOS環境用プロファイル

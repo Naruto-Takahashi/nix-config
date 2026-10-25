@@ -30,7 +30,6 @@ jobs:
           nix eval '.#homeConfigurations."wsl".activationPackage.drvPath'
           nix eval '.#homeConfigurations."distrobox".activationPackage.drvPath'
           nix eval '.#homeConfigurations."sandbox".activationPackage.drvPath'
-          nix eval '.#homeConfigurations."mac".activationPackage.drvPath'
       - name: evaluate nixosConfigurations
         run: nix eval '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'
       - name: evaluate darwinConfigurations
@@ -100,5 +99,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/nix-installer-action@v16
-      - name: build mac
-        run: nix build '.#homeConfigurations."mac".activationPackage' --no-link
+      - name: build mac (nix-darwin + Home Manager)
+        run: nix build '.#darwinConfigurations."mac".config.system.build.toplevel' --no-link
