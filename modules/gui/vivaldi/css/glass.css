@@ -79,6 +79,14 @@ footer#footer {
     background-color: transparent !important;
 }
 
+/* 入力中の候補リスト (アドレス欄・スタートページ検索欄の両方で共通)。
+   入力欄の上に重なって表示されるため、ポップアップと同じ濃いめのガラス。
+   ハイライト行のアクセント色は残す */
+.OmniDropdown {
+    background-color: var(--glass-bg-strong) !important;
+    backdrop-filter: var(--glass-blur-strong) !important;
+}
+
 /* ==========================================================================
    タブ (非アクティブは透明、hover・アクティブは薄い重ね塗り)
    ========================================================================== */
@@ -98,8 +106,10 @@ footer#footer {
     color: var(--colorFg) !important;
 }
 
-/* unified UI でタブバー内に置かれるアドレス欄 */
-#tabs-tabbar-container .UrlBar-AddressField {
+/* アドレス欄・検索欄 (unified UI のタブバー内、アドレスバー行のどちらでも)。
+   ガラスは親のタブバー/アドレスバーにあるので薄い重ね塗りだけにする */
+.UrlBar-AddressField,
+.toolbar-mainbar .SearchField {
     background-color: rgba(var(--glass-tint), 0.08) !important;
     backdrop-filter: none !important;
     border: none !important;
@@ -129,4 +139,13 @@ footer#footer {
 }
 #panels .tree-row:not(.tree-row-selected):hover {
     background-color: rgba(var(--glass-tint), 0.08) !important;
+}
+
+/* ==========================================================================
+   スタートページ (window.html 内に描画されるため UI Mods が効く)
+   ========================================================================== */
+/* 検索欄: Vivaldi 標準で blur は付くが背景が不透明なので半透明にする */
+.SpeedDialView-SearchField {
+    background-color: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
 }
