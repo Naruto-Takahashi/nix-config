@@ -24,7 +24,8 @@
    ========================================================================== */
 /* --glass-edge: ガラスの縁の 1px の光の線。暗いガラスが暗いページに
    重なっても形が分かるようにする (全ガラス面に inset box-shadow で付ける)。
-   ライトテーマは暗い文字の可読性のため --glass-bg を濃いめにする */
+   ライトテーマは暗いページ上でも暗い文字が読めるよう --glass-bg を濃いめ
+   (0.65、macOS のライトのガラスに近い濃さ) にする */
 .theme-dark {
     --glass-bg: rgba(0, 0, 0, 0.22);
     --glass-bg-strong: rgba(30, 30, 30, 0.55);
@@ -32,8 +33,8 @@
     --glass-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
 }
 .theme-light {
-    --glass-bg: rgba(255, 255, 255, 0.40);
-    --glass-bg-strong: rgba(250, 250, 250, 0.60);
+    --glass-bg: rgba(255, 255, 255, 0.65);
+    --glass-bg-strong: rgba(250, 250, 250, 0.75);
     --glass-tint: 0, 0, 0;
     --glass-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
 }
@@ -106,6 +107,30 @@
     --colorImageBottomBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
     --colorImageLeftBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
     --colorImageRightBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+}
+
+/* 「タブの背景にアクセントカラー」(color-behind-tabs-on) や「ページから
+   アクセントカラー」が有効なテーマでは、タブバー等を --colorTabBar /
+   --colorAccentBg 系 (例: ページ由来の青) で塗り、文字を --colorAccentFg
+   (その上で読める色、例: 白) にする。ガラスの上では読めなくなるので、
+   ラッパー内ではアクセント系もガラスの重ね塗りとテーマの前景色に差し替える。
+   選択行のハイライトは別系統 (--colorHighlightBg/Fg) なので影響しない */
+.auto-hide-wrapper {
+    --colorTabBar: transparent;
+    --colorAccentFg: var(--colorFg);
+    --colorAccentFgAlpha: color-mix(in srgb, var(--colorFg) 50%, transparent);
+    --colorAccentFgFaded: color-mix(in srgb, var(--colorFg) 70%, transparent);
+    --colorAccentBg: rgba(var(--glass-tint), 0.16);
+    --colorAccentBgAlpha: rgba(var(--glass-tint), 0.08);
+    --colorAccentBgAlphaBlur: rgba(var(--glass-tint), 0.08);
+    --colorAccentBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+    --colorAccentBgDark: rgba(var(--glass-tint), 0.12);
+    --colorAccentBgDarker: rgba(var(--glass-tint), 0.16);
+    --colorAccentBgFaded: rgba(var(--glass-tint), 0.06);
+    --colorAccentBgFadedMore: rgba(var(--glass-tint), 0.04);
+    --colorAccentBgFadedMost: rgba(var(--glass-tint), 0.03);
+    --colorAccentBorder: rgba(var(--glass-tint), 0.10);
+    --colorAccentBorderDark: rgba(var(--glass-tint), 0.14);
 }
 .auto-hide-wrapper :is(
     #titlebar,
