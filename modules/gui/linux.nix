@@ -28,7 +28,6 @@
     pkgs.wl-clipboard
     pkgs.kanata
 
-
     # ジョークツール・装飾
     pkgs.cowsay
     pkgs.fortune
