@@ -8,7 +8,9 @@
  *
  * 設計ルール:
  *   - ガラス (半透明背景+backdrop-filter) は外側のコンテナ1層だけに掛け、
- *     中身は透明にする (半透明が多層に重なって濃く見えるのを防ぐ)
+ *     中身は透明にする (半透明が多層に重なって濃く見えるのを防ぐ)。
+ *     自動非表示時は「辺ごとのラッパー」を1層とみなし、バーの配置に
+ *     依存しないようにする
  *   - 中身の強調 (アクティブタブ・hover・入力欄) は --glass-tint の薄い
  *     重ね塗りで表現し、ブラーは重ねない
  *   - 選択行のアクセント色 (.tree-row-selected) は機能的な表示なので残す
@@ -38,29 +40,93 @@
 /* ==========================================================================
    ガラスを掛けるコンテナ
    ========================================================================== */
-/* 自動非表示のラッパー (.auto-hide-wrapper.top/bottom/left/right) は表示時に
-   Vivaldi自身が不透明な背景 (theme の bg) を塗るため、まず透明にする。
-   footer#footer は8.2では空 (ステータスバーは .auto-hide-wrapper.bottom 側) */
-.auto-hide-wrapper,
-.tabbar-wrapper,
-#panels-container,
-#panels .panel-group,
-#switch,
-footer#footer {
+/* 自動非表示時、各辺のバーはすべて .auto-hide-wrapper.{top,bottom,left,right}
+   の中に入る (例: 上=タイトルバー+ブックマークバー、下=アドレスバー+
+   ステータスバー、左右=タブバーやパネル。タブを上に置けばタブバーも top 側)。
+   ガラスはこのラッパーに1枚だけ掛け、中のバーは透明にする。バーごとに
+   ガラスを掛けると、同じ辺に積まれたバー同士の継ぎ目や数pxのすき間が
+   線として見えるため。こうしておけば、どのバーをどの辺に置いても1辺は
+   継ぎ目のない1枚になる。なおラッパーは表示時 (.show) に Vivaldi 自身が
+   不透明な背景 (theme の bg) を塗るので、それもここで上書きされる */
+.auto-hide-wrapper {
     background: transparent !important;
+    color: var(--colorFg) !important;
+}
+/* ガラス本体はラッパー自身ではなく背面の疑似要素に掛ける。backdrop-filter
+   を持つ要素はその子孫にとっての「backdrop root」になり、子孫の
+   backdrop-filter はラッパーの外 (=ページ) をぼかせなくなるため
+   (例: 下部アドレスバーの入力候補 .OmniDropdown がページ上に伸びても
+   ページが素通しになり読みにくい)。ラッパーは position: fixed + z-index
+   で重ね合わせコンテキストを作るので、z-index: -1 でも中身の背面に収まる */
+.auto-hide-wrapper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    pointer-events: none;
+    background-color: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
 }
 
-/* タイトルバー / タブバー / パネル (#switch と .panel-group の共通親) /
-   ステータスバー。.mainbar と .bookmark-bar はアドレスバーが独立行の
-   レイアウトやブックマークバー表示時用 (Macの現設定では非表示) */
-#titlebar,
-#tabs-tabbar-container,
-#panels,
-.toolbar-statusbar,
-.mainbar,
-.bookmark-bar {
+/* unified UI 透過時、Vivaldi はバー上の文字色・hover背景を「テーマ背景画像の
+   その位置の明暗」に連動する変数で決める (--colorImage{,Top,Bottom,Left,
+   Right,Center}{Fg,Bg}...。暗い画像なら白文字)。ガラスの明暗はテーマ
+   (.theme-light/dark) に連動させているので、ラッパー内ではこれらを全て
+   テーマの前景色と薄い重ね塗りに差し替え、バーの配置に関係なく揃える */
+.auto-hide-wrapper {
+    --colorImageFg: var(--colorFg);
+    --colorImageTopFg: var(--colorFg);
+    --colorImageBottomFg: var(--colorFg);
+    --colorImageLeftFg: var(--colorFg);
+    --colorImageRightFg: var(--colorFg);
+    --colorImageCenterFg: var(--colorFg);
+    --colorImageBottomFgAlpha: color-mix(in srgb, var(--colorFg) 50%, transparent);
+    --colorImageCenterFgAlpha: color-mix(in srgb, var(--colorFg) 50%, transparent);
+    --colorImageLeftFgAlphaHeavy: color-mix(in srgb, var(--colorFg) 70%, transparent);
+    --colorImageRightFgAlphaHeavy: color-mix(in srgb, var(--colorFg) 70%, transparent);
+    --colorImageBg: rgba(var(--glass-tint), 0.08);
+    --colorImageTopBg: rgba(var(--glass-tint), 0.08);
+    --colorImageBottomBg: rgba(var(--glass-tint), 0.08);
+    --colorImageLeftBg: rgba(var(--glass-tint), 0.08);
+    --colorImageRightBg: rgba(var(--glass-tint), 0.08);
+    --colorImageBgAlpha: rgba(var(--glass-tint), 0.06);
+    --colorImageTopBgAlpha: rgba(var(--glass-tint), 0.06);
+    --colorImageBottomBgAlpha: rgba(var(--glass-tint), 0.06);
+    --colorImageLeftBgAlpha: rgba(var(--glass-tint), 0.06);
+    --colorImageRightBgAlpha: rgba(var(--glass-tint), 0.06);
+    --colorImageBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+    --colorImageTopBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+    --colorImageBottomBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+    --colorImageLeftBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+    --colorImageRightBgAlphaHeavy: rgba(var(--glass-tint), 0.12);
+}
+.auto-hide-wrapper :is(
+    #titlebar,
+    .tabbar-wrapper,
+    #tabs-tabbar-container,
+    #panels-container,
+    #panels,
+    #panels .panel-group,
+    #switch,
+    .mainbar,
+    .bookmark-bar,
+    .toolbar-statusbar
+) {
+    background: transparent !important;
+    backdrop-filter: none !important;
+    border-color: transparent !important;
+    box-shadow: none !important;
+}
+
+/* 自動非表示を使わない構成 (ラッパーの外にあるバー) では、バーごとに
+   ガラスを掛ける。footer#footer は8.2の自動非表示時は空 */
+:is(#titlebar, #tabs-tabbar-container, #panels, .mainbar, .bookmark-bar, .toolbar-statusbar):not(.auto-hide-wrapper *) {
     background-color: var(--glass-bg) !important;
     backdrop-filter: var(--glass-blur) !important;
+}
+:is(.tabbar-wrapper, #panels-container, #panels .panel-group, #switch, footer#footer):not(.auto-hide-wrapper *) {
+    background: transparent !important;
 }
 
 /* リンクhover時にページ上へ浮かぶURL表示 (ステータスバー非表示時) */

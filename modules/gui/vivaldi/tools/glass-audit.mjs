@@ -110,6 +110,29 @@ const audit = () => {
     const key = path(el);
     rows.set('text:' + key, `text lum=${l.toFixed(2)} ${c} | ${key}`);
   }
+
+  // 各辺のラッパーにガラス (自身か ::before の backdrop-filter) があるか
+  for (const w of document.querySelectorAll('.auto-hide-wrapper')) {
+    const r = w.getBoundingClientRect();
+    if (r.width < 4 || r.height < 4) continue;
+    if (getComputedStyle(w).backdropFilter === 'none' && getComputedStyle(w, '::before').backdropFilter === 'none')
+      rows.set('noglass:' + name(w), `no-glass | ${name(w)}`);
+  }
+
+  // ガラスの二重掛け検査: ガラス (backdrop-filter) の中に別のガラスがあると、
+  // 半透明が重なって濃く見えたり、同じ辺のバー同士の継ぎ目が線として
+  // 見えたりする。入力候補・ポップアップは上に重なる別レイヤーなので対象外
+  const layered = '.OmniDropdown, .button-popup';
+  for (const el of document.querySelectorAll('.auto-hide-wrapper *')) {
+    if (getComputedStyle(el).backdropFilter === 'none' || el.matches(layered) || el.closest(layered)) continue;
+    const r = el.getBoundingClientRect();
+    if (r.width < 4 || r.height < 4) continue;
+    const outer = el.parentElement.closest('.auto-hide-wrapper, .auto-hide-wrapper *');
+    let a = el.parentElement;
+    while (a && getComputedStyle(a).backdropFilter === 'none') a = a.parentElement;
+    if (!a || !outer) continue;
+    rows.set('nested:' + path(el), `nested-glass in ${name(a)} | ${path(el)}`);
+  }
   return [...rows.values()];
 };
 
