@@ -31,8 +31,10 @@ in
   homebrew = {
     enable = true;
     onActivation = {
-      autoUpdate = true;
-      upgrade = true;
+      # switch ではバージョン更新をしない (宣言と実態の一致だけを担当させる)。
+      # WM 周りの更新は任意のタイミングで `brew update && brew upgrade` を実行する。
+      autoUpdate = false;
+      upgrade = false;
       # 既存の手動インストールアプリを誤って削除しないよう保護。新しい Mac では宣言と
       # 実態が一致した状態から始められるため、移行後に "uninstall" へ切り替える
       # (宣言から外した cask が switch で自動削除されるようになる。docs/setup-mac.md 参照)。
@@ -42,17 +44,15 @@ in
       "nikitabobko/tap"
       "FelixKratz/formulae"
     ];
+    # WM 周り (インフラ) だけを cask で管理する。aerospace は CLI が /opt/homebrew/bin に入り、
+    # アクセシビリティ権限も /Applications 固定のパスで安定する。
     casks = [
       "aerospace" # タイリングウィンドウマネージャ
-      "vivaldi" # Vivaldiブラウザ
-      "raycast" # クイックランチャー / Spotlight代替
       "alt-tab" # WindowsスタイルのAlt+Tabスイッチャー
-      "zotero" # 文献管理（書誌・注釈。PDF は Google Drive にリンク）
-      "obsidian" # 外部脳 Vault のエディタ
-      "google-drive" # Google Drive for desktop（Zotero の PDF 置き場）
     ];
-    # cask が無く手動で入れるアプリ: Orca (stablyai/orca。同名の cask "orca" は
-    # plotly 用の別アプリなので宣言しないこと)。手順は docs/setup-mac.md の移行チェックリスト。
+    # 手動で入れるアプリ (自己更新するため宣言しない): Vivaldi / Raycast / Zotero / Obsidian /
+    # Google Drive / Orca (同名の cask "orca" は plotly 用の別アプリなので使わないこと)。
+    # 手順は docs/setup-mac.md の移行チェックリスト。
     brews = [
       "borders" # アクティブウィンドウの枠線ハイライト用ツール
     ];

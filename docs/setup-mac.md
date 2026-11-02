@@ -121,7 +121,13 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 - [ ] **GitHub CLI**: `gh auth login` (Git の操作プロトコルは SSH を選ぶ)．
 - [ ] **機密情報・SSH鍵**: `just restore-secrets` で `~/.env` を，`just restore-ssh` で `~/.ssh/` を復元する (手順 5)．
 - [ ] **Raycast**: 書き出した `.rayconfig` を Raycast のコマンド `Import Settings & Data` で取り込む．
-- [ ] **手動インストールのアプリ**: cask が無いもの．
+- [ ] **手動インストールのアプリ**: 自己更新するため，cask では管理せず公式サイトから個別に入れる
+      (WM 周りの AeroSpace / AltTab / borders だけが Homebrew 管理)．
+  - Vivaldi (<https://vivaldi.com/download/>)
+  - Raycast (<https://www.raycast.com/>)
+  - Zotero (<https://www.zotero.org/download/>)
+  - Obsidian (<https://obsidian.md/download>)
+  - Google Drive for desktop (<https://www.google.com/drive/download/>)
   - Orca (<https://github.com/stablyai/orca>)。同名の Homebrew cask `orca` は別のアプリなので使わない．
   - マウスのドライバ (KensingtonWorks / Logi Options+) は使う機種に合わせて入れる．
 - [ ] **Homebrew の掃除方針**: すべてのアプリが宣言どおりに入ったら，`hosts/mac/darwin.nix` の
@@ -132,7 +138,7 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 
 ## この構成で有効になるもの
 
-AeroSpace (WM) + JankyBorders，Kanata (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew Cask管理。詳細は [aerospace.md](aerospace.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
+AeroSpace (WM) + JankyBorders，Kanata (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りのみ。他のアプリは手動インストール)。詳細は [aerospace.md](aerospace.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
 
 ---
 

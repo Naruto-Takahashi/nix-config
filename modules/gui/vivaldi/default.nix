@@ -15,7 +15,7 @@
 {
   # --- VivaldiカスタムCSS設定 ---
   # Mac/NixOS では ~/.config/vivaldi/ をそのまま Vivaldi設定の
-  # CSS UI Mods Directory に指定する (Vivaldi本体は darwin.nix の Homebrew cask)。
+  # CSS UI Mods Directory に指定する (Vivaldi本体は Mac では手動インストール)。
   # WSL のみ、Windows(Vivaldi)から \\wsl.localhost\... 経由のシンボリック
   # リンクを辿れずリンク文字列そのものを読んでしまう (実機で確認済み) ため、
   # sync-win (cp -L で実体を解決してコピー) で C:\Users\tnaru\Tools\Vivaldi\
