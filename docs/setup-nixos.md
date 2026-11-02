@@ -26,10 +26,11 @@ cd nix-config
    just switch
    ```
 
-3. **機密情報の復元 (Bitwarden CLI)**
-   Bitwarden のセキュアメモから API キー等の環境変数を安全（chmod 600）に復元します．
+3. **機密情報・SSH鍵の復元 (Bitwarden CLI)**
+   Bitwarden から API キー (`~/.env`) および SSH 鍵・config (`~/.ssh/`) を安全（chmod 600）に復元します．
    ```bash
    just restore-secrets
+   just restore-ssh
    ```
 
 4. **システムの再起動**

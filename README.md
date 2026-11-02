@@ -114,6 +114,7 @@ just check             # 全構成の静的評価・構文検証 (CIと同等)
 just fmt               # 全Nixコードの自動フォーマット (nixfmt)
 just sync-win          # Windows側への設定同期 (WSL専用)
 just restore-secrets   # Bitwarden CLI から ~/.env を安全に復元 (chmod 600)
+just restore-ssh       # Bitwarden CLI から SSH 鍵と config を復元 (chmod 600)
 ```
 
 ![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)

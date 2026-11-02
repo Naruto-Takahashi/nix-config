@@ -25,10 +25,11 @@ cd nix-config
    # またはリポジトリ内の justfile を使用
    just switch
    ```
-4. **機密情報の復元 (Bitwarden CLI)**
-   Bitwarden のセキュアメモから API キー等の環境変数を安全（chmod 600）に復元します．
+4. **機密情報・SSH鍵の復元 (Bitwarden CLI)**
+   Bitwarden から API キー (`~/.env`) および SSH 鍵・config (`~/.ssh/`) を安全（chmod 600）に復元します．
    ```bash
    just restore-secrets
+   just restore-ssh
    ```
 5. **Windows側への設定ファイル同期**
    WSL2環境下で管理される WezTerm や komorebi / YASB の設定を Windows ホストに反映するため，同期コマンドを実行します．

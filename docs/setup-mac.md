@@ -48,11 +48,14 @@ cd nix-config
    just switch
    ```
 
-5. **機密情報の復元 (Bitwarden CLI)**
-   Bitwarden のセキュアメモから API キー等の環境変数を安全（chmod 600）に復元します．
+5. **機密情報・SSH鍵の復元 (Bitwarden CLI)**
+   Bitwarden から API キー (`~/.env`) および SSH 鍵・config (`~/.ssh/`) を安全（chmod 600）に復元します．
    ```bash
    just restore-secrets
+   just restore-ssh
    ```
+   ※ Bitwarden デスクトップアプリの SSH Agent（Touch ID での鍵供給）を利用する場合は，
+   Bitwarden の設定で SSH Agent を有効化してください．
 
 6. **ドライバの機能拡張を有効化 (初回のみ・手動)**
    上記でインストール・有効化リクエストまでは自動化されていますが，**実際に
@@ -105,10 +108,9 @@ cd nix-config
 Nix で再現できないもの (認証情報・アプリ内データ・手動インストールのアプリ) の持ち出しと，
 新しい Mac での後始末をまとめたものです．
 
-### 旧 Mac で行うこと
-- [ ] **SSH 鍵**: `~/.ssh/id_ed25519` (と `.pub`) を安全な経路で新しい Mac へ移す．リポジトリの
-      リモートはすべて SSH (`git@github.com:...`) のため，鍵が無いと push・Vault 同期ができない．
-      移さない場合は新しい鍵を作り GitHub に登録する．
+### 旧環境 (PC / WSL) で行うこと
+- [ ] **SSH 鍵の Bitwarden 格納**: `id_ed25519` / `id_ed25519.pub` および `~/.ssh/config` を Bitwarden に
+      アイテム名 `ssh-id_ed25519`（SSHキーまたはセキュアメモ）として保存する．
 - [ ] **Raycast**: ショートカット・拡張機能・スニペットは Raycast 内部の暗号化DBにあり宣言できない．
       Raycast のコマンド `Export Settings & Data` で `.rayconfig` を書き出す (Cloud Sync を使うなら不要)．
 - [ ] **ブラウザ・アプリのログイン状態**: Vivaldi は Vivaldi Sync，Zotero は Zotero アカウントの同期で
@@ -117,7 +119,7 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 
 ### 新しい Mac で行うこと (上の手順 1〜9 の後)
 - [ ] **GitHub CLI**: `gh auth login` (Git の操作プロトコルは SSH を選ぶ)．
-- [ ] **機密情報**: `just restore-secrets` で `~/.env` を復元する (手順 5)．
+- [ ] **機密情報・SSH鍵**: `just restore-secrets` で `~/.env` を，`just restore-ssh` で `~/.ssh/` を復元する (手順 5)．
 - [ ] **Raycast**: 書き出した `.rayconfig` を Raycast のコマンド `Import Settings & Data` で取り込む．
 - [ ] **手動インストールのアプリ**: cask が無いもの．
   - Orca (<https://github.com/stablyai/orca>)。同名の Homebrew cask `orca` は別のアプリなので使わない．

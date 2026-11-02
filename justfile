@@ -8,6 +8,7 @@
 #   just fmt         全 Nix ファイルを nixfmt で自動整形
 #   just sync-win    Windows 側へ設定を同期 (WSL 専用)
 #   just restore-secrets [item] [path]  Bitwarden から ~/.env を復元
+#   just restore-ssh [item] [target_dir] [key_name]  Bitwarden から SSH 鍵と config を復元
 
 set shell := ["bash", "-cu"]
 
@@ -97,6 +98,10 @@ sync-win:
 # Bitwarden CLI から ~/.env を復元
 restore-secrets item="developer-env" target="$HOME/.env":
     ./modules/shell/zsh/scripts/restore-secrets.sh "{{item}}" "{{target}}"
+
+# Bitwarden CLI から SSH 鍵 (id_ed25519) と config を復元
+restore-ssh item="ssh-id_ed25519" target_dir="$HOME/.ssh" key_name="id_ed25519":
+    ./modules/shell/zsh/scripts/restore-ssh.sh "{{item}}" "{{target_dir}}" "{{key_name}}""
 
 # ドキュメント内リンクの死活チェック
 check-links:
