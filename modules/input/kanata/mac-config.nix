@@ -30,7 +30,7 @@ let
         "@hyp-tab"
       ]
       [
-        "\"Apple Internal Keyboard / Trackpad\"\n    \"HHKB-Hybrid_2\""
+        "\"Apple Internal Keyboard / Trackpad\"\n    \"Keychron Q11 Ultra 8K L\"\n    \"Keychron Q11 Ultra 8K R\"\n    \"Keychron Q11 Ultra 8K\"\n    \"Keychron Q11 Ultra\"\n    \"HHKB-Hybrid_2\""
         "caps  lalt  lmet  spc   rmet  ralt  lctl  esc"
         "  ;; 左右Command単押しでのIME切り替え（Tap：英数/かな / Hold：通常のCommand）\n  cmd-eng  (tap-hold-press 200 200 eisu lmet)\n  cmd-jp   (tap-hold-press 200 200 kana rmet)\n\n  ;; 左右Alt(Option)長押しでのウィンドウ操作レイヤー移行\n  alt-wm   (layer-toggle alt-layer)"
         "@cap-ctrl @alt-wm @cmd-eng @spc-nav @cmd-jp @alt-wm @cap-ctrl @esc-eng"
