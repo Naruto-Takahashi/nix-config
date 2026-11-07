@@ -107,6 +107,9 @@ in
   # シェルの設定 (Zshを有効化)
   programs.zsh.enable = true;
 
+  # sudo の認証に Touch ID を有効化 (macOS 標準の pam_tid.so を sudo_local 経由で使用)
+  security.pam.services.sudo_local.touchIdAuth = true;
+
   nixpkgs.config.allowUnfree = true;
 
   # Karabiner-DriverKit-VirtualHIDDevice (v6.2.0) のダウンロード・インストール・

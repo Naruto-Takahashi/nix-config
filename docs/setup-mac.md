@@ -69,6 +69,7 @@ cd nix-config
    のが確実です．
    - **入力監視 (Input Monitoring)**
    - **アクセシビリティ (Accessibility)**
+     ※ macOS 27以降では「**デバイスの制御とデータへのアクセス**」に改名・再編されています。一覧に「アクセシビリティ」が見当たらない場合はこちらを開き、`+` ボタンから `/usr/local/bin/kanata` を追加してください。
 
    許可後にKanataが権限を拾わない場合は，一度再起動を促してください．
    ```bash
@@ -81,7 +82,7 @@ cd nix-config
    追加し直してから再起動してください (オフ→オンだけでは古い署名の情報が残ります)．
    アクセシビリティの一覧は
    `open "x-apple.systempreferences:com.apple.preference.security?Privacy_Accessibility"`
-   で直接開けます．
+   で直接開けます。
 
 8. **配色反映 (Matugen) の初回許可 (任意)**
    `ctrl-cmd-w` (壁紙ピッカー) や `matugen-apply` を初めて実行すると，現在の壁紙を
