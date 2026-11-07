@@ -3,15 +3,13 @@
 # ログイン時に起動します．
 start-at-login = true
 
-# デフォルトのレイアウトをアコーディオンではなく「タイル型 (tiles)」にします．
+# デフォルトのレイアウトをタイル型 (tiles) にします．
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# マウスカーソルが乗ったウィンドウに自動でフォーカスを移します（focus follows mouse）．
-focus-follows-mouse.enabled = true
-
-# キーボード操作等でフォーカスが変わった際は，逆にマウスカーソルの方をフォーカスウィンドウの中央へ追従させます．
-on-focus-changed = ['move-mouse window-lazy-center']
+# ポップアップやドロップダウンの誤消滅・誤フォーカス奪取を防ぐため，
+# マウス追従 (focus-follows-mouse) は無効化します．
+focus-follows-mouse.enabled = false
 
 # AeroSpace起動完了時にJankyBorders（アクティブウィンドウ枠線表示ツール）をバックグラウンド実行します．
 # 色はmatugenパレット(~/.cache/matugen/colors.lua)のaccent/mutedに追従します
@@ -21,12 +19,27 @@ after-startup-command = [
   'exec-and-forget /Users/nalt/.local/bin/aerospace-launch-borders'
 ]
 
-# 壁紙ピッカー(wallpaper-pick-popup.sh)のVivaldiアプリモードウィンドウは
-# ポップアップとして使いたいのでタイル化させずフローティング表示にします．
-# タイトルで判定するため他のVivaldiウィンドウには影響しません．
+# 特定の固定サイズアプリ・ダイアログ・ポップアップのフローティング例外ルール
+# (最低限の元凶のみ登録し，ハードコードの肥大化を防ぎます)
 on-window-detected = [
-  { if = 'test %{window-title} ~= "wallpaper picker"', run = 'layout floating' }
+  { if = 'test %{window-title} ~= "wallpaper picker"', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = "com.apple.systempreferences"', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = "com.apple.finder"', run = 'layout floating' }
 ]
+
+# ワークスペースとモニタの割り当て（メイン: 1〜5 / サブモニタ: 6〜9）
+# Komorebi（Windows側）と構成を統一しています．
+# サブモニタ未接続時は自動的にメインモニタへフォールバックします．
+[workspace-to-monitor-force-assignment]
+1 = 'main'
+2 = 'main'
+3 = 'main'
+4 = 'main'
+5 = 'main'
+6 = ['secondary', 'main']
+7 = ['secondary', 'main']
+8 = ['secondary', 'main']
+9 = ['secondary', 'main']
 
 # ギャップ設定（Gaps）
 [gaps]
@@ -63,12 +76,16 @@ ctrl-cmd-r = 'mode resize'
 
 # ウィンドウ分割方向の切り替え（Alt + Shift + T）
 # NixOS(togglesplit)・WSL(cycle-layout)と同じ Shift+T に統一している．
-# 以前はAlt+Vだったが，起動系キーは「アプリ名の頭文字」に揃えるため
-# Vivaldi起動（後述）に譲った．
 ctrl-cmd-shift-t = 'layout tiles horizontal vertical'
 
 # フローティング/タイリングの切り替え（Alt + Shift + Space）
 ctrl-cmd-shift-space = 'layout floating tiling'
+
+# ゴーストウィンドウ（空ノード）の解消・ツリー平坦化（Alt + Shift + Backspace）
+ctrl-cmd-shift-backspace = 'flatten-workspace-tree'
+
+# ウィンドウサイズの均等化（Alt + Shift + B）
+ctrl-cmd-shift-b = 'balance-sizes'
 
 # フルスクリーン表示の切り替え（Alt + F）
 ctrl-cmd-f = 'fullscreen'
