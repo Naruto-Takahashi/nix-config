@@ -40,6 +40,9 @@
   ;; スペースキー長押しでのナビゲーションレイヤー移行（Tap：Space / Hold：Nav-Layer）
   spc-nav  (tap-hold-press 200 200 spc (layer-toggle nav))
 
+  ;; Superwhisper 起動用マクロ (Right Control / Push-to-Talk)
+  whisper  rctl
+
   ;; =================================================================
   ;; Alt長押し（Alt-Layer）時の Super（lmet）ショートカットの定義
   ;; =================================================================
@@ -132,7 +135,7 @@
   _     _     _     _     _     _
   _     _     _     _     _     _     _     _     _     _
   _     _     _     end   _     _     _     C-z   _     _     _     _
-  home  _     _     _     _     left  down  up    right
+  home  _     @whisper _  _     left  down  up    right
   _     del   _     _     bspc  _     _
   _     _     _     _
 )
