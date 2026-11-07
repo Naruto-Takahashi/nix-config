@@ -6,24 +6,39 @@
 
 **Windows/WSL2環境では、kanataはWindows側でネイティブに動く別バイナリとして稼働します**（WSL上のプロセスはWindows側のキーボード入力を物理的に捕まえられないため、WSL内でkanataを動かすのではなく、Windows用にビルドされたkanataバイナリをWindows側で直接起動する構成)。従来はWindows専用の [AutoHotkeyスクリプト](../modules/input/ahk/main.ahk) がSandS/CapsLock/Alt-IME切り替えを独自実装していたが、AHKの `Key & Key` コンボ実装がキー状態を稀に取りこぼし「押されっぱなし」になる不具合があったため、その部分をkanataへ移行した(`modules/input/kanata/wsl.nix` / `wsl-config.nix`)。AHK側の実装は削除せず、kanata稼働中は自動的に無効化される形で残してあり(`main.ahk`の`KanataActive()`)、kanataのプロセスを終了するだけで即座にAHK実装へロールバックできる。komorebi固有のWMショートカット(Alt+文字)は元々AHK側で素のAlt修飾として直接実装されているため変更していない。
 
-Kanataを使う3ホストの間で、レイヤー定義 (`config.kbd`) は共通の1ファイルですが、`wmmodifier-` プレースホルダの実際の変換先がホストごとに異なります（ホスト側の `.nix` ファイルで文字列置換）:
+Kanataを使う3ホストの間で、レイヤー定義 (`config.kbd`) は共通の1ファイルです。ホストごとに変わる「信号」(WM修飾子・Alt+Space/Tab・Undo など) は、`config.kbd` 内の `(platform (macos) ...)` / `(platform (linux) ...)` / `(platform (win winiov2 wintercept) ...)` と `deftemplate` (`wm-aliases`) で **kanata 自身が実行時に解決**します。Nix 側の文字列置換は、物理配列など構造そのものが違う部分にだけ残しています。
 
-| ホスト | `wmmodifier-` の変換先 | 連携するWM | 備考 |
+| ホスト | WM修飾子 (`wm-aliases` の `p`) | 連携するWM | 備考 |
 | :--- | :--- | :--- | :--- |
-| **NixOS** | `M-` (Super単体) | Hyprland ([hyprland.md](hyprland.md)) | `modules/input/kanata/linux-config.nix` |
+| **NixOS** | `M-` (Super単体) | Hyprland ([hyprland.md](hyprland.md)) | `modules/input/kanata/linux-config.nix` は `eisu`/`kana` → `muhenkan`/`henkan` のみ置換 |
 | **macOS** | `C-M-` (Ctrl+Cmd) | AeroSpace ([aerospace.nix](../modules/wm/aerospace/default.nix)) | macOS標準の`Cmd`単体ショートカットと衝突しないよう二重修飾にしている |
 | **WSL** | `A-` (Alt単体) | komorebi ([komorebi.md](komorebi.md)) | `modules/input/kanata/wsl-config.nix`。既存のAHK側 `!` (Alt) ホットキー群と同じ信号になるためkomorebi.ahk側は無変更で動く |
+
+`wm-aliases` の引数 (`p close dact tabact cp`) のホスト別の値:
+
+| 引数 | macOS | NixOS | WSL | 意味 |
+| :--- | :--- | :--- | :--- | :--- |
+| `p` | `C-M-` | `M-` | `A-` | 通常のWM修飾子 |
+| `close` | `S-w` | `S-w` | `S-q` | Alt+q の信号 (macOSは Cmd+Shift+Q=ログアウト衝突回避で w にずらす) |
+| `dact` | `A-spc` | `M-d` | `A-spc` | Alt+Space (macOS/WindowsはOS標準のAlt+Spaceを通す) |
+| `tabact` | `A-tab` | `M-tab` | `_` | Alt+Tab ([Alt-Tab](https://alt-tab-macos.netlify.app/)連携 / WindowsはOS標準) |
+| `cp` | `C-M-A-` | `M-A-` | `C-A-` | alt-ctrl-layer (join-with) 用 |
+
+Ctrl長押しは全ホスト共通で素の `lctl` です (以前 macOS にあった Ctrl→Cmd 変換レイヤー `ctrl-layer` は、ターミナルの Ctrl+C 等を潰すため廃止)。Nav レイヤーの `U` (Undo) は macOS だけ `M-z` (Cmd+Z)、他は `C-z` です。
 
 WSLはさらに以下の点が個別の置換で上書きされています（`wsl-config.nix`）:
 - `caps` → `f13` (本機はレジストリのScancode MapでCapsLock物理キーをF13として送出する設定にしているため)
 - `eisu`/`kana` → `@ime-off`/`@ime-on` (Win32 API (`ImmSetOpenStatus`) 経由のIME制御はkanata単体ではWindows上で直接行えないため、`cmd`アクションで実績のあるAHKの`ime_functions.ahk` (`ime-off.ahk`/`ime-on.ahk`) へ委譲する。`danger-enable-cmd`が必要)
+- Alt長押しのhold動作を `(multi 実キー (layer-while-held alt-layer))` に変更 (OS標準のAlt+Tab連続切り替えのため)
 
-macOSはさらに以下の3点が個別の置換で上書きされています（`modules/input/kanata/mac-config.nix`）:
-- `cap-ctrl-action` → `(layer-toggle ctrl-layer)` (CapsLock長押し時のレイヤー)
-- `Alt+Space` (`hyp-d`) → `A-spc` に直接マッピング (wmmodifier経由ではなくmacOS標準のSpotlight的挙動に寄せるため)
-- `Alt+Tab` (`hyp-tab`) → `A-tab` に直接マッピング ([Alt-Tab](https://alt-tab-macos.netlify.app/)アプリとの連携用)
+macOSはさらに以下の点が個別の置換で上書きされています（`modules/input/kanata/mac-config.nix`）。いずれも物理配列の列数が違うための構造差分です:
+- デバイス指定に内蔵キーボード・Keychronを追加
+- `defsrc` と各レイヤーに左右Command (`lmet`/`rmet`) の列を追加し、Command単押しで英数/かな、左右Option長押しで `alt-layer`
+- 最下段の物理左Controlを `@whisper` (`rctl`) に割り当て、Superwhisper 録音キーとして使用 (CapsLockは通常の `lctl` のまま維持され録音は反応しない。FnキーはmacOS標準機能として開放。Nav レイヤーの Space+D とも併用可能)
 
-下記の「2. 窓操作の最適化」セクションの表は `Super + ...` の**NixOS向けの表記**です。macOSでは同じキー入力が `Ctrl+Cmd + ...` に変換されます。IME切り替え（3節）とSandSナビゲーション（1節）、CapsLock改修（4節）は2ホスト共通です。
+検証手順: `kanata --check --cfg <生成した設定>` で構文を確認できます (WSL用は `cmd` 機能付きのkanataが必要)。`platform` は一致しないOSの枝を評価しないため、NixOS/WSL向けの変更は各ホストで確認してください。
+
+下記の「2. 窓操作の最適化」セクションの表は `Super + ...` の**NixOS向けの表記**です。macOSでは同じキー入力が `Ctrl+Cmd + ...` に変換されます。
 
 ---
 
@@ -51,7 +66,7 @@ Kanata をバックグラウンドサービスとして稼働させることで�
 | **`L`** | **`Right` (→)** | 右に1文字移動 (Vimスタイル) |
 | **`A`** | **`Home`** | 行頭（一番左）にジャンプ |
 | **`E`** | **`End`** | 行末（一番右）にジャンプ |
-| **`U`** | **`Ctrl + Z`** | 直前の操作を取り消す (**Undo / 元に戻す**) |
+| **`U`** | **`Ctrl + Z`** (macOSは `Cmd + Z`) | 直前の操作を取り消す (**Undo / 元に戻す**) |
 | **`B`** | **`Backspace`** | 1文字左側を削除する (**バックスペース**) |
 | **`X`** | **`Delete`** | 1文字右側（カーソル上）を削除する (**デリート**) |
 
@@ -133,6 +148,6 @@ kanataはクロスプラットフォームだが，WezTermとの連携やExplore
 | ファイル | 役割 |
 | :--- | :--- |
 | `modules/input/kanata/config.kbd` | レイヤー定義本体 (3ホスト共通) |
-| `modules/input/kanata/linux-config.nix` | NixOS向け`wmmodifier-`置換ロジック |
-| `modules/input/kanata/mac-config.nix` | macOS向け`wmmodifier-`/その他置換ロジック |
+| `modules/input/kanata/linux-config.nix` | NixOS向け`eisu`/`kana`置換ロジック |
+| `modules/input/kanata/mac-config.nix` | macOS向け物理配列まわりの置換ロジック |
 | `modules/input/ahk/main.ahk` | WSL/Windows向けの別実装 |
