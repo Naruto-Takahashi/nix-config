@@ -101,7 +101,7 @@ restore-secrets item="developer-env" target="$HOME/.env":
 
 # Bitwarden CLI から SSH 鍵 (id_ed25519) と config を復元
 restore-ssh item="ssh-id_ed25519" target_dir="$HOME/.ssh" key_name="id_ed25519":
-    ./modules/shell/zsh/scripts/restore-ssh.sh "{{item}}" "{{target_dir}}" "{{key_name}}""
+    ./modules/shell/zsh/scripts/restore-ssh.sh "{{item}}" "{{target_dir}}" "{{key_name}}"
 
 # ドキュメント内リンクの死活チェック
 check-links:

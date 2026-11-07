@@ -47,8 +47,10 @@ fi
 echo "Bitwarden からアイテム '$ITEM_NAME' を取得しています..."
 
 # 3. アイテム JSON の取得
-if ! ITEM_JSON="$(bw get item "$ITEM_NAME" 2>/dev/null)"; then
-  echo "::error:: アイテム '$ITEM_NAME' の取得に失敗しました。" >&2
+BW_ERR="$(mktemp)"
+trap 'rm -f "$BW_ERR"' EXIT
+if ! ITEM_JSON="$(bw get item "$ITEM_NAME" 2>"$BW_ERR")"; then
+  echo "::error:: アイテム '$ITEM_NAME' の取得に失敗しました: $(cat "$BW_ERR")" >&2
   echo "Bitwarden 内に '$ITEM_NAME' という名前のアイテム (SSHキーまたはセキュアメモ) が存在するか確認してください。" >&2
   exit 1
 fi
