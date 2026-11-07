@@ -118,7 +118,9 @@ in
   # ドライバの機能拡張」でのトグルON操作のみ (SIPにより人間の操作が必須)．
   system.activationScripts.preActivation.text = ''
     echo "Ensuring Karabiner-DriverKit-VirtualHIDDevice v6.2.0 is installed..."
-    installed_version="$(/usr/sbin/pkgutil --pkg-info org.pqrs.Karabiner-DriverKit-VirtualHIDDevice 2>/dev/null | /usr/bin/awk '/^version:/{print $2}')"
+    # 未インストール時は pkgutil が非0で終わる。activate は set -e + pipefail で走るため，
+    # || true が無いと新しい Mac ではここで無言のまま activation が中断する。
+    installed_version="$(/usr/sbin/pkgutil --pkg-info org.pqrs.Karabiner-DriverKit-VirtualHIDDevice 2>/dev/null | /usr/bin/awk '/^version:/{print $2}' || true)"
     if [ "$installed_version" != "6.2.0" ]; then
       echo "Installing Karabiner-DriverKit-VirtualHIDDevice v6.2.0 (found: ''${installed_version:-none})..."
       /usr/sbin/installer -pkg ${karabinerVhidPkg} -target /
