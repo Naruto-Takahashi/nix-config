@@ -43,12 +43,14 @@ in
     taps = [
       "nikitabobko/tap"
       "FelixKratz/formulae"
+      "rdrkr/tap"
     ];
     # WM 周り (インフラ) だけを cask で管理する。aerospace は CLI が /opt/homebrew/bin に入り、
     # アクセシビリティ権限も /Applications 固定のパスで安定する。
     casks = [
       "aerospace" # タイリングウィンドウマネージャ
       "alt-tab" # WindowsスタイルのAlt+Tabスイッチャー
+      "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，docs/aerospace.md参照)
     ];
     # 手動で入れるアプリ (自己更新するため宣言しない): Vivaldi / Raycast / Zotero / Obsidian /
     # Google Drive / Orca (同名の cask "orca" は plotly 用の別アプリなので使わないこと)。

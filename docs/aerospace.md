@@ -104,6 +104,18 @@ aerospace reload-config
 
 ---
 
+## メニューバーのワークスペース表示 (AeroSpaceBar)
+
+ワークスペース表示には [AeroSpaceBar](https://github.com/rdrkr/AeroSpaceBar) (cask `aerospacebar`，tap `rdrkr/tap`) を使います．標準メニューバーの左半分を透明パネルで覆って描画するため，メニューバーが2段になりません．
+
+- **モニタ**: `Settings → Spaces → Show Spaces On` を `All Displays` にすると全モニタに出ます．ただしワークスペースをモニタごとに絞る機能はなく，全バーが同じ一覧を表示します．選択は TOML ではなく UUID でローカル保存されます．
+- **アプリメニューが隠れる件**: `fn` (Globe) を押しながらメニューバーにマウスを乗せている間だけ表示が消えて，標準のアプリメニューが見えます (Quick Hide，`quick-hide-trigger-key = 'fn'`)．
+- **設定の置き場**: アプリ自身が `~/.config/aerospacebar/aerospacebar.toml` を書き換えるため，Nix の読み取り専用リンクにはせず手動管理にしています．
+- **自動起動**: AeroSpace 側からは起動されないので，AeroSpaceBar の `Launch at Login` はオンにしておきます (macOS は同一アプリを二重起動しません)．
+- 以前使っていた SketchyBar は，メニューバーの下に1行増えて画面を圧迫するため廃止しました．
+
+---
+
 ## 関連ファイル
 
 | ファイル | 役割 |
