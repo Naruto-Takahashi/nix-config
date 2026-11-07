@@ -11,13 +11,23 @@
 # (他人のOSSや会社リポジトリなど)に無断でgitmojiが混ざるのを防ぐ。
 { config, pkgs, ... }:
 
+let
+  # フックは連想配列 (declare -A) や ${var,,} など bash 4+ の機能を使う。
+  # macOS では `/usr/bin/env bash` が /bin/bash (3.2) に解決されて失敗するため、
+  # shebang を Nix の bash に固定する。
+  pinBash =
+    file:
+    builtins.replaceStrings [ "#!/usr/bin/env bash" ] [ "#!${pkgs.bash}/bin/bash" ] (
+      builtins.readFile file
+    );
+in
 {
   home.file.".config/git/hooks/prepare-commit-msg" = {
-    source = ./hooks/prepare-commit-msg;
+    text = pinBash ./hooks/prepare-commit-msg;
     executable = true;
   };
   home.file.".config/git/hooks/commit-msg" = {
-    source = ./hooks/commit-msg;
+    text = pinBash ./hooks/commit-msg;
     executable = true;
   };
   home.file.".config/git/gitmoji.conf".text = ''
