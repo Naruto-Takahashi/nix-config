@@ -77,9 +77,10 @@ PUBLIC_KEY="$(echo "$ITEM_JSON" | jq -r '
 ')"
 
 # 6. SSH config の抽出 (カスタムフィールド "config" または メモ欄に Host 定義がある場合)
+# 先頭にコメント (#) や空行があっても確実に拾えるよう、改行後の Host 定義もマッチさせる
 SSH_CONFIG="$(echo "$ITEM_JSON" | jq -r '
   (.fields[]? | select(.name == "config" or .name == "ssh_config") | .value) //
-  (if (.notes // "") | test("^Host ") then .notes else empty end) //
+  (if (.notes // "") | test("(^|\\n)[ \\t]*Host[ \\t]+") then .notes else empty end) //
   empty
 ')"
 
