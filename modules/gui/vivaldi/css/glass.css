@@ -276,9 +276,10 @@
 }
 
 /* ==========================================================================
-   Webページ表示領域 & 自動非表示バーの角丸 (ウィンドウ枠線 8px と完全同期)
+   Webページ表示領域 & バー・パネルの角丸 (ウィンドウ枠線と完全調和)
    ========================================================================== */
-/* Webページ表示領域の余白を除去し、スタートページ背景も含めて四隅を 8px でクリップ */
+/* Webページ表示コンテナの余白を除去し、ウィンドウ端に密着させる。
+   ※ .startpage や .SpeedDialView のパディングは触らない (検索欄の位置を崩さないため) */
 #browser,
 .inner,
 #main,
@@ -297,13 +298,11 @@
 
 .webpageview,
 .website-wrapper,
-webview,
-.startpage,
-.SpeedDialView {
+webview {
     border: none !important;
     margin: 0px !important;
     padding: 0px !important;
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     overflow: hidden !important;
     box-shadow: none !important;
 }
@@ -311,14 +310,12 @@ webview,
 #browser.ui-rounded .website-wrapper,
 #browser.ui-rounded #webpage-stack,
 #browser.ui-rounded .webpageview {
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     margin: 0 !important;
     padding: 0 !important;
 }
 
-/* マウスオーバー時に出現するバー・パネル (縦タブ・上部バー等) の角丸を統一。
-   ラッパー自身、ガラス背景 (::before)、および内部の各コンテナすべてに
-   border-radius と overflow: hidden を適用してカクつき・はみ出しを確実に防止 */
+/* --- 自動非表示 (auto-hide) ラッパーの角丸 --- */
 .auto-hide-wrapper,
 .auto-hide-wrapper::before,
 .auto-hide-wrapper.left,
@@ -329,7 +326,25 @@ webview,
 .auto-hide-wrapper.top::before,
 .auto-hide-wrapper.bottom,
 .auto-hide-wrapper.bottom::before {
-    border-radius: 8px !important;
+    border-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+/* --- 常時表示の固定バー・パネル (auto-hide外) の角丸 --- */
+/* 左側の垂直タブバー・パネル全体の外側の角丸 (右上の角と右下の角) */
+#tabs-tabbar-container.left,
+#panels-container.left,
+.auto-hide-wrapper.left {
+    border-top-right-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    border-top-left-radius: 10px !important;
+    border-bottom-left-radius: 10px !important;
+    overflow: hidden !important;
+}
+
+/* 内部コンテナの四角いはみ出しを強制クリップ */
+:is(#tabs-tabbar-container, #panels-container, #panels, .tabbar-wrapper, #switch) {
+    border-radius: inherit !important;
     overflow: hidden !important;
 }
 
