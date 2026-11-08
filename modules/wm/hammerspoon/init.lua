@@ -2,15 +2,12 @@
 -- 3本指スワイプ: ワークスペース切り替え (左: prev / 右: next)
 -- 4本指スワイプ: フォーカスウィンドウを連れて移動 (左: prev / 右: next)
 -- 4本指下スワイプ: ウィンドウ/タブを確実に閉じる (Cmd+W -> 閉じなければ AeroSpace close)
--- コーナータップ (四隅のクイックタップ):
---   上側の角 (左上 or 右上): コピー (Cmd + C)
---   下側の角 (左下 or 右下): ペースト (Cmd + V)
--- エッジ中央タップ (キワキワ):
---   上端中央タップ: 範囲選択スクリーンショット -> クリップボード直行 (Cmd + Ctrl + Shift + 4)
---   下端中央タップ: 画面全体スクリーンショット -> クリップボード直行 (Cmd + Ctrl + Shift + 3)
--- エッジスクロール (端を指1本でなぞる):
+-- 右手特化タップ (右利き用・左側の誤爆防止):
+--   右上の角: コピー (Cmd + C -> Copied)
+--   右下の角: ペースト (Cmd + V -> Pasted)
+--   下端中央: 画面全体スクリーンショット -> クリップボード直行 (Captured)
+-- エッジスクロール (右端を指1本でなぞる):
 --   右端を上下になぞる: 音量調整 (macOS標準HUD表示付き)
---   左端を上下になぞる: 画面輝度調整 (macOS標準HUD表示付き)
 
 hs.allowAppleScript(true)
 hs.dockicon.hide()
@@ -70,15 +67,9 @@ local function handleEdgesAndTaps(touches)
             touchTracker.didSlide = false
             touchTracker.moved = false
 
-            -- 1本指で左右の端からスタートした場合の種別判定
-            if n == 1 then
-                if x >= 0.93 then
-                    touchTracker.edge = "right"   -- 音量
-                elseif x <= 0.07 then
-                    touchTracker.edge = "left"    -- 輝度
-                else
-                    touchTracker.edge = nil
-                end
+            -- 1本指で右端からスタートした場合のみ音量調整 (左端は誤爆防止のため無効化)
+            if n == 1 and x >= 0.93 then
+                touchTracker.edge = "right"   -- 音量
             else
                 touchTracker.edge = nil
             end
@@ -95,8 +86,8 @@ local function handleEdgesAndTaps(touches)
                 touchTracker.moved = true
             end
 
-            -- エッジスライド処理 (1本指: 音量 / 輝度)
-            if n == 1 and touchTracker.edge then
+            -- エッジスライド処理 (1本指: 右端の音量調整のみ)
+            if n == 1 and touchTracker.edge == "right" then
                 local y = t.normalizedPosition.y
                 local deltaY = y - touchTracker.lastY
                 touchTracker.lastY = y
@@ -106,21 +97,11 @@ local function handleEdgesAndTaps(touches)
                 if math.abs(touchTracker.accumulatedDelta) >= step then
                     touchTracker.didSlide = true
                     if touchTracker.accumulatedDelta > 0 then
-                        if touchTracker.edge == "right" then
-                            hs.eventtap.event.newSystemKeyEvent("SOUND_UP", true):post()
-                            hs.eventtap.event.newSystemKeyEvent("SOUND_UP", false):post()
-                        elseif touchTracker.edge == "left" then
-                            hs.eventtap.event.newSystemKeyEvent("BRIGHTNESS_UP", true):post()
-                            hs.eventtap.event.newSystemKeyEvent("BRIGHTNESS_UP", false):post()
-                        end
+                        hs.eventtap.event.newSystemKeyEvent("SOUND_UP", true):post()
+                        hs.eventtap.event.newSystemKeyEvent("SOUND_UP", false):post()
                     else
-                        if touchTracker.edge == "right" then
-                            hs.eventtap.event.newSystemKeyEvent("SOUND_DOWN", true):post()
-                            hs.eventtap.event.newSystemKeyEvent("SOUND_DOWN", false):post()
-                        elseif touchTracker.edge == "left" then
-                            hs.eventtap.event.newSystemKeyEvent("BRIGHTNESS_DOWN", true):post()
-                            hs.eventtap.event.newSystemKeyEvent("BRIGHTNESS_DOWN", false):post()
-                        end
+                        hs.eventtap.event.newSystemKeyEvent("SOUND_DOWN", true):post()
+                        hs.eventtap.event.newSystemKeyEvent("SOUND_DOWN", false):post()
                     end
                     touchTracker.accumulatedDelta = 0
                 end
@@ -138,30 +119,24 @@ local function handleEdgesAndTaps(touches)
             touchTracker.active = false
 
             -- 0.38秒以内のクイックタップ かつ スライドしていない
+            -- 右利き特化: 左半分(x < 0.25)や上端中央の誤爆要因を全廃し、右手で自然に届く右側・下端中央のみに限定
             if not didSlide and not moved and duration > 0.03 and duration < 0.38 and (now - touchTracker.lastTriggered) > 0.30 then
                 if maxF == 1 then
                     -- 1本指タップ
                     if y >= 0.75 then
-                        -- 上端エリア (y >= 0.75)
-                        if x <= 0.25 or x >= 0.75 then
-                            -- 左上 または 右上の角: Copy
+                        -- 上端エリア: 右上の角のみ Copy (左上や上端中央は無効化)
+                        if x >= 0.75 then
                             touchTracker.lastTriggered = now
                             hs.eventtap.keyStroke({"cmd"}, "c")
                             showHUD("Copied")
-                        else
-                            -- 上端の中央エリア (25%〜75%): 範囲選択スクリーンショット -> クリップボード直行 (HUDなし、カーソル変化のみ)
-                            touchTracker.lastTriggered = now
-                            hs.task.new("/usr/sbin/screencapture", nil, {"-ic"}):start()
                         end
                     elseif y <= 0.25 then
-                        -- 下端エリア (y <= 0.25)
-                        if x <= 0.25 or x >= 0.75 then
-                            -- 左下 または 右下の角: Paste
+                        -- 下端エリア: 右下の角 Paste、下端中央 Captured (左下角は無効化)
+                        if x >= 0.75 then
                             touchTracker.lastTriggered = now
                             hs.eventtap.keyStroke({"cmd"}, "v")
                             showHUD("Pasted")
-                        else
-                            -- 下端の中央エリア (25%〜75%): 画面全体スクリーンショット -> クリップボード直行 (消音時でも分かるようHUD表示)
+                        elseif x >= 0.25 then
                             touchTracker.lastTriggered = now
                             showHUD("Captured")
                             hs.task.new("/usr/sbin/screencapture", nil, {"-c"}):start()
