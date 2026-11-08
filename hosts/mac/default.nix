@@ -28,6 +28,9 @@
   # -----------------------------------------------------------------------
   # インストールするパッケージの定義 (Mac固有パッケージ)
   # -----------------------------------------------------------------------
+  # kanata は hosts/mac/darwin.nix の systemPackages + postActivation で
+  # /usr/local/bin/kanata へ署名コピーされるため、ユーザープロファイルには置かない。
+  # hackgen-nf-font は darwin.nix の fonts.packages でシステムフォントとして配置。
   home.packages = with pkgs; [
     cowsay
     # fortune依存のrecode(3.7.16)がテストフェーズでセグフォルトしビルド不能
@@ -40,8 +43,6 @@
     })
     lolcat
     nodejs_22
-    hackgen-nf-font
-    kanata
   ];
 
   # フォントの設定を有効化

@@ -12,12 +12,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # nixGL の入力ソース定義 (OpenGLラッパー)
-    nixgl = {
-      url = "github:nix-community/nixGL";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Yazi Kanagawa Dragon フレーバーの入力ソース定義
     kanagawa-dragon-yazi = {
       url = "github:Naruto-Takahashi/kanagawa-dragon.yazi";
@@ -54,7 +48,6 @@
     inputs@{
       nixpkgs,
       home-manager,
-      nixgl,
       kanagawa-dragon-yazi,
       darwin,
       ...
@@ -62,7 +55,7 @@
     let
       # 全モジュールに渡す追加引数 (使わないモジュールは単に受け取らない)
       specialArgs = {
-        inherit nixgl kanagawa-dragon-yazi;
+        inherit kanagawa-dragon-yazi;
         skillSources = {
           inherit (inputs)
             vercel-skills

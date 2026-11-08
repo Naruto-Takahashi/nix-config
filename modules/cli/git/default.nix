@@ -4,7 +4,7 @@
 # 以前は ~/.gitconfig を手動管理していたが(git-hooksモジュールのgitmoji
 # include等を初回のみ手動追記する運用)、他の設定と同じく一元管理したいので
 # programs.git に移行する。ホスト固有の値 (WSLのcredential.helperなど)は
-# 各hosts/*/default.nix側で programs.git.extraConfig に追記する
+# 各hosts/*/default.nix側で programs.git.settings に追記する
 { config, pkgs, ... }:
 
 {

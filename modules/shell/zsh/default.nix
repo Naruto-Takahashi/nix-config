@@ -41,8 +41,6 @@
 
     # コマンドエイリアス（shellAliases）の定義
     shellAliases = {
-      # WezTerm用ラッパー（Nvidia環境対応）
-      wezterm = "nixGL wezterm";
 
       # ユーティリティ & 表示クリア
       c = "printf \"\\033[2J\\033[H\"";
