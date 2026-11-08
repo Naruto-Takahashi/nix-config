@@ -102,6 +102,7 @@
     pkgs.ghq # リポジトリ一元管理
     pkgs.gh # GitHub CLI
     pkgs.jq # JSON整形・抽出
+    pkgs.poppler-utils # PDF を画像・テキストに変換 (Claude Code の PDF 読み取りが pdftoppm を使う)
     pkgs.comma # 一時パッケージ実行
     pkgs.just # コマンドランナー
     pkgs.uv # Python 開発ツール (全環境共通)
