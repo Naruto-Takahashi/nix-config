@@ -315,3 +315,37 @@ webview {
     margin: 0 !important;
     padding: 0 !important;
 }
+
+/* ==========================================================================
+   自動非表示バー・パネルの角丸 (ウィンドウ枠線の 8px カーブと統一)
+   ========================================================================== */
+/* マウスオーバーで出現する上部バーや左パネルの角丸をウィンドウ枠線 (8px) と揃え、
+   カクつき感を解消してUI全体の曲率を美しく調和させる */
+.auto-hide-wrapper.top {
+    border-bottom-left-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+.auto-hide-wrapper.left {
+    border-top-right-radius: 8px !important;
+    border-bottom-right-radius: 8px !important;
+}
+.auto-hide-wrapper.right {
+    border-top-left-radius: 8px !important;
+    border-bottom-left-radius: 8px !important;
+}
+.auto-hide-wrapper.bottom {
+    border-top-left-radius: 8px !important;
+    border-top-right-radius: 8px !important;
+}
+
+/* ::before (ガラス背面) もラッパーの角丸を正しく継承するよう保証 */
+.auto-hide-wrapper::before {
+    border-radius: inherit !important;
+}
+
+/* バー内のアクティブ要素・アドレス欄・ボタンの角丸も自然に調和させる */
+.tab-position .tab,
+.UrlBar-AddressField,
+#panels .button-toolbar > button {
+    border-radius: 6px !important;
+}
