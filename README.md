@@ -64,7 +64,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 │   └── sandbox/               # 実データ非共有コンテナ用 最小CLI プロファイル (default.nix)
 ├── modules/                   # ドメイン別・再利用可能な共通設定モジュール群
 │   ├── wm/                    # ウィンドウマネージャー設定 (hyprland[Linux], komorebi/yasb[Win], aerospace[Mac])
-│   ├── ai/                    # AIエージェント開発環境 (claude-code, gemini, agent-skills, orca)
+│   ├── ai/                    # AIエージェント開発環境 (claude-code, gemini, agent-skills)
 │   ├── cli/                   # ターミナルツール・TUI (bat, btop, eza, git, git-hooks, lazygit, neovim, yazi)
 │   ├── gui/                   # デスクトップGUIアプリ (wezterm, vivaldi, linux.nix[Linuxパッケージ])
 │   ├── input/                 # 入力系 (kanata キーリマップ[NixOS/Mac/WSL], ahk[WSL])

@@ -24,7 +24,7 @@
       flake = false;
     };
 
-    # AI エージェント用スキルの上流リポジトリ (modules/ai/agent-skills, modules/ai/orca)。
+    # AI エージェント用スキルの上流リポジトリ (modules/ai/agent-skills)。
     # flake.lock で固定し、週次の update-flake-lock で他の依存と一緒に更新する。
     vercel-skills = {
       url = "github:vercel-labs/skills";
@@ -40,10 +40,6 @@
     };
     mattpocock-skills = {
       url = "github:mattpocock/skills";
-      flake = false;
-    };
-    orca = {
-      url = "github:stablyai/orca";
       flake = false;
     };
 
@@ -73,7 +69,6 @@
             anthropic-skills
             vercel-agent-skills
             mattpocock-skills
-            orca
             ;
         };
       };

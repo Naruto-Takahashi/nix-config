@@ -10,13 +10,13 @@
     ../modules/ai/claude-code
     ../modules/ai/gemini
     ../modules/ai/agent-skills
-    ../modules/ai/orca
     ../modules/services/obsidian-brain.nix
   ];
 
   programs.claudeCode.enable = true;
   programs.geminiCli.enable = true;
   programs.agentSkills.enable = true;
-  programs.orca.enable = true;
+  # Orca 特有のスキル (orchestration, orca-cli 等) はアプリ本体と密結合しているため、
+  # Orca 自身 (orca skills install) に管理を委ねる。
   services.obsidianBrain.enable = true;
 }
