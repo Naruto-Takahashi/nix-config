@@ -160,13 +160,31 @@
 
 /* 自動非表示を使わない構成 (ラッパーの外にあるバー) では、バーごとに
    ガラスを掛ける。footer#footer は8.2の自動非表示時は空 */
-:is(#titlebar, #tabs-tabbar-container, #panels, .mainbar, .bookmark-bar, .toolbar-statusbar):not(.auto-hide-wrapper *) {
+:is(#tabs-tabbar-container, #panels, .mainbar, .bookmark-bar, .toolbar-statusbar):not(.auto-hide-wrapper *) {
     background-color: var(--glass-bg) !important;
     backdrop-filter: var(--glass-blur) !important;
     box-shadow: var(--glass-edge) !important;
 }
 :is(.tabbar-wrapper, #panels-container, #panels .panel-group, #switch, footer#footer):not(.auto-hide-wrapper *) {
     background: transparent !important;
+}
+
+/* タイトルバー (#header, #titlebar):
+   Macネイティブの透過タイトルバーとして機能させ、不透明な背景 (--colorBg) や
+   下端の黒い線 (box-shadow / border) を完全に除去して壁紙を最上部まで透過させる */
+#browser #header,
+#browser #header:not(.auto-hide-wrapper *),
+#browser:not(.tabs-top, .unified-ui) #header,
+#browser:not(.is-settingspage, .popup, .native).address-top-off.tabs-off.bookmark-bar-off #header,
+#browser:not(.address-top.mail-bar-top, .unified-ui) > #header,
+#header,
+#titlebar,
+.window-buttongroup {
+    background: transparent !important;
+    background-color: transparent !important;
+    backdrop-filter: none !important;
+    box-shadow: none !important;
+    border: none !important;
 }
 
 /* リンクhover時にページ上へ浮かぶURL表示 (ステータスバー非表示時) */
@@ -302,7 +320,7 @@ webview {
     border: none !important;
     margin: 0px !important;
     padding: 0px !important;
-    border-radius: 10px !important;
+    border-radius: 14px !important;
     overflow: hidden !important;
     box-shadow: none !important;
 }
@@ -310,7 +328,7 @@ webview {
 #browser.ui-rounded .website-wrapper,
 #browser.ui-rounded #webpage-stack,
 #browser.ui-rounded .webpageview {
-    border-radius: 10px !important;
+    border-radius: 14px !important;
     margin: 0 !important;
     padding: 0 !important;
 }
@@ -335,10 +353,10 @@ webview {
 #tabs-tabbar-container.left,
 #panels-container.left,
 .auto-hide-wrapper.left {
-    border-top-right-radius: 12px !important;
-    border-bottom-right-radius: 12px !important;
-    border-top-left-radius: 10px !important;
-    border-bottom-left-radius: 10px !important;
+    border-top-right-radius: 18px !important;
+    border-bottom-right-radius: 18px !important;
+    border-top-left-radius: 14px !important;
+    border-bottom-left-radius: 14px !important;
     overflow: hidden !important;
 }
 
@@ -367,6 +385,7 @@ webview {
 /* バー内のアクティブ要素・アドレス欄・ボタンの角丸 */
 .tab-position .tab,
 .UrlBar-AddressField,
+#switch button,
 #panels .button-toolbar > button {
-    border-radius: 6px !important;
+    border-radius: 10px !important;
 }

@@ -123,7 +123,7 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 - [ ] **機密情報・SSH鍵**: `just restore-secrets` で `~/.env` を，`just restore-ssh` で `~/.ssh/` を復元する (手順 5)．
 - [ ] **Raycast**: 書き出した `.rayconfig` を Raycast のコマンド `Import Settings & Data` で取り込む．
 - [ ] **手動インストールのアプリ**: 自己更新するため，cask では管理せず公式サイトから個別に入れる
-      (WM 周りの AeroSpace / AeroSpaceBar / AltTab / borders だけが Homebrew 管理)．
+      (WM 周りの AeroSpace / AeroSpaceBar / borders だけが Homebrew 管理)．
   - Vivaldi (<https://vivaldi.com/download/>)
   - Raycast (<https://www.raycast.com/>)
   - Zotero (<https://www.zotero.org/download/>)

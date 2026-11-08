@@ -49,7 +49,6 @@ in
     # アクセシビリティ権限も /Applications 固定のパスで安定する。
     casks = [
       "aerospace" # タイリングウィンドウマネージャ
-      "alt-tab" # WindowsスタイルのAlt+Tabスイッチャー
       "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，docs/aerospace.md参照)
     ];
     # 手動で入れるアプリ (自己更新するため宣言しない): Vivaldi / Raycast / Zotero / Obsidian /
