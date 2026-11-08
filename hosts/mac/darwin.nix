@@ -57,6 +57,7 @@ in
     # 手順は docs/setup-mac.md の移行チェックリスト。
     brews = [
       "borders" # アクティブウィンドウの枠線ハイライト用ツール
+      "libomp" # LightGBM (PyPI wheel) が必要とする OpenMP ランタイム
     ];
   };
 
