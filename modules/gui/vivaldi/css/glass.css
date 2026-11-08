@@ -276,12 +276,9 @@
 }
 
 /* ==========================================================================
-   Webページ表示領域 (フローティングカードの余白を除去し枠線カーブに調和)
+   Webページ表示領域 & 自動非表示バーの角丸 (ウィンドウ枠線 8px と完全同期)
    ========================================================================== */
-/* Vivaldi 7.0/8.0+ の浮き出しUIによって生じるWebページ周囲のマージンを除去し、
-   ウィンドウ枠 (JankyBorders) のすぐ内側まで隙間なく広げる。
-   角丸は直角(0px)だと枠線の丸みと曲率が合わず角が窮屈になるため、
-   枠線の内側カーブに合わせて 8px の角丸を適用して自然に調和させる */
+/* Webページ表示領域の余白を除去し、スタートページ背景も含めて四隅を 8px でクリップ */
 #browser,
 .inner,
 #main,
@@ -300,11 +297,14 @@
 
 .webpageview,
 .website-wrapper,
-webview {
+webview,
+.startpage,
+.SpeedDialView {
     border: none !important;
     margin: 0px !important;
     padding: 0px !important;
     border-radius: 8px !important;
+    overflow: hidden !important;
     box-shadow: none !important;
 }
 
@@ -316,34 +316,40 @@ webview {
     padding: 0 !important;
 }
 
-/* ==========================================================================
-   自動非表示バー・パネルの角丸 (ウィンドウ枠線の 8px カーブと統一)
-   ========================================================================== */
-/* マウスオーバーで出現する上部バーや左パネルの角丸をウィンドウ枠線 (8px) と揃え、
-   カクつき感を解消してUI全体の曲率を美しく調和させる */
-.auto-hide-wrapper.top {
-    border-bottom-left-radius: 8px !important;
-    border-bottom-right-radius: 8px !important;
-}
-.auto-hide-wrapper.left {
-    border-top-right-radius: 8px !important;
-    border-bottom-right-radius: 8px !important;
-}
-.auto-hide-wrapper.right {
-    border-top-left-radius: 8px !important;
-    border-bottom-left-radius: 8px !important;
-}
-.auto-hide-wrapper.bottom {
-    border-top-left-radius: 8px !important;
-    border-top-right-radius: 8px !important;
+/* マウスオーバー時に出現するバー・パネル (縦タブ・上部バー等) の角丸を統一。
+   ラッパー自身、ガラス背景 (::before)、および内部の各コンテナすべてに
+   border-radius と overflow: hidden を適用してカクつき・はみ出しを確実に防止 */
+.auto-hide-wrapper,
+.auto-hide-wrapper::before,
+.auto-hide-wrapper.left,
+.auto-hide-wrapper.left::before,
+.auto-hide-wrapper.right,
+.auto-hide-wrapper.right::before,
+.auto-hide-wrapper.top,
+.auto-hide-wrapper.top::before,
+.auto-hide-wrapper.bottom,
+.auto-hide-wrapper.bottom::before {
+    border-radius: 8px !important;
+    overflow: hidden !important;
 }
 
-/* ::before (ガラス背面) もラッパーの角丸を正しく継承するよう保証 */
-.auto-hide-wrapper::before {
+.auto-hide-wrapper :is(
+    #titlebar,
+    .tabbar-wrapper,
+    #tabs-tabbar-container,
+    #panels-container,
+    #panels,
+    #panels .panel-group,
+    #switch,
+    .mainbar,
+    .bookmark-bar,
+    .toolbar-statusbar
+) {
     border-radius: inherit !important;
+    overflow: hidden !important;
 }
 
-/* バー内のアクティブ要素・アドレス欄・ボタンの角丸も自然に調和させる */
+/* バー内のアクティブ要素・アドレス欄・ボタンの角丸 */
 .tab-position .tab,
 .UrlBar-AddressField,
 #panels .button-toolbar > button {
