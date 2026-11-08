@@ -276,10 +276,12 @@
 }
 
 /* ==========================================================================
-   Webページ表示領域 (フローティングカードの余白・角丸を除去しウィンドウ端に密着)
+   Webページ表示領域 (フローティングカードの余白を除去し枠線カーブに調和)
    ========================================================================== */
-/* Vivaldi 7.0/8.0+ の浮き出しUIによって生じるWebページ周囲のマージンと角丸を
-   リセットし、ウィンドウ枠 (JankyBorders) のすぐ内側まで隙間なく広げる */
+/* Vivaldi 7.0/8.0+ の浮き出しUIによって生じるWebページ周囲のマージンを除去し、
+   ウィンドウ枠 (JankyBorders) のすぐ内側まで隙間なく広げる。
+   角丸は直角(0px)だと枠線の丸みと曲率が合わず角が窮屈になるため、
+   枠線の内側カーブに合わせて 8px の角丸を適用して自然に調和させる */
 #browser,
 .inner,
 #main,
@@ -293,6 +295,7 @@
     padding: 0px !important;
     margin: 0px !important;
     border: none !important;
+    box-shadow: none !important;
 }
 
 .webpageview,
@@ -301,14 +304,14 @@ webview {
     border: none !important;
     margin: 0px !important;
     padding: 0px !important;
-    border-radius: 0px !important;
+    border-radius: 8px !important;
     box-shadow: none !important;
 }
 
 #browser.ui-rounded .website-wrapper,
 #browser.ui-rounded #webpage-stack,
 #browser.ui-rounded .webpageview {
-    border-radius: 0 !important;
+    border-radius: 8px !important;
     margin: 0 !important;
     padding: 0 !important;
 }

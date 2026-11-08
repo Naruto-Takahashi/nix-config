@@ -5,6 +5,7 @@
 # =========================================================================
 # 壁紙と同化して見失わないよう、枠線色(active_color)には色相120度回転の
 # triad を優先して使う (無ければ complement / accent を使う)。
+# order=above でウィンドウ手前に枠線を描画し、ウィンドウ自体の極細な黒いフチを隠す。
 #
 # borders は既に起動中のインスタンスがあれば、同じコマンドを再実行するだけで
 # IPC経由で設定を生きたまま更新する (kill不要。killすると次のインスタンスが
@@ -32,8 +33,8 @@ if [[ -f "$COLORS" ]]; then
 fi
 
 if pgrep -x borders >/dev/null 2>&1; then
-    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0xff${muted}" width=8.0
+    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0xff${muted}" width=8.0 order=above
 else
-    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0xff${muted}" width=8.0 &
+    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0xff${muted}" width=8.0 order=above &
     disown
 fi
