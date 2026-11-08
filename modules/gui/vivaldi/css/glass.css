@@ -334,17 +334,50 @@ webview {
 }
 
 /* --- 自動非表示 (auto-hide) ラッパーの角丸 --- */
-.auto-hide-wrapper,
-.auto-hide-wrapper::before,
-.auto-hide-wrapper.left,
-.auto-hide-wrapper.left::before,
-.auto-hide-wrapper.right,
-.auto-hide-wrapper.right::before,
+/* 上部ホバーバー (タイトルバー/アドレスバー等): Webページに面する下側の角丸を18pxに */
 .auto-hide-wrapper.top,
-.auto-hide-wrapper.top::before,
+.auto-hide-wrapper.top::before {
+    border-bottom-left-radius: 18px !important;
+    border-bottom-right-radius: 18px !important;
+    border-top-left-radius: 14px !important;
+    border-top-right-radius: 14px !important;
+    overflow: hidden !important;
+}
+
+/* 下部ホバーバー (ステータスバー等): Webページに面する上側の角丸を18pxに */
 .auto-hide-wrapper.bottom,
 .auto-hide-wrapper.bottom::before {
-    border-radius: 10px !important;
+    border-top-left-radius: 18px !important;
+    border-top-right-radius: 18px !important;
+    border-bottom-left-radius: 14px !important;
+    border-bottom-right-radius: 14px !important;
+    overflow: hidden !important;
+}
+
+/* 左側ホバーバー: 右側の角丸を18pxに */
+.auto-hide-wrapper.left,
+.auto-hide-wrapper.left::before {
+    border-top-right-radius: 18px !important;
+    border-bottom-right-radius: 18px !important;
+    border-top-left-radius: 14px !important;
+    border-bottom-left-radius: 14px !important;
+    overflow: hidden !important;
+}
+
+/* 右側ホバーバー: 左側の角丸を18pxに */
+.auto-hide-wrapper.right,
+.auto-hide-wrapper.right::before {
+    border-top-left-radius: 18px !important;
+    border-bottom-left-radius: 18px !important;
+    border-top-right-radius: 14px !important;
+    border-bottom-right-radius: 14px !important;
+    overflow: hidden !important;
+}
+
+/* 汎用フォールバック */
+.auto-hide-wrapper,
+.auto-hide-wrapper::before {
+    border-radius: 18px !important;
     overflow: hidden !important;
 }
 
