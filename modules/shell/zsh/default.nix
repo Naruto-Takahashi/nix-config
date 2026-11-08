@@ -144,6 +144,16 @@
       win = "$HOME/win";
     };
 
+    # .zshenv: 全てのシェルで .zshrc より先に読まれる。
+    # GUI アプリ (Raycast 等) 経由で WezTerm を起動すると、__NIX_DARWIN_SET_ENVIRONMENT_DONE だけが
+    # 引き継がれ、/etc/zshenv が Nix の PATH を足さないことがある (atuin / ghq / fzf が見つからなくなる)。
+    # Nix の PATH が欠けているときだけ、ここで先頭に補う。
+    envExtra = ''
+      if [[ -d /etc/profiles/per-user/$USER/bin && ":$PATH:" != *":/etc/profiles/per-user/$USER/bin:"* ]]; then
+        path=($HOME/.nix-profile/bin /etc/profiles/per-user/$USER/bin /run/current-system/sw/bin /nix/var/nix/profiles/default/bin $path)
+      fi
+    '';
+
     # 環境固有の設定，キーバインド，カスタム関数（.zshrcへの流し込み）
     initContent = ''
       # Homebrew (macOS) は PATH の末尾に足す。Nix の同名コマンド (git, uv 等) を隠さないため
