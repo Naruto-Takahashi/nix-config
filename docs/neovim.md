@@ -53,14 +53,13 @@ Lua で独自実装された，開発・執筆を高速化するオリジナル�
 | **`<Leader>qs`** / **`ql`** | セッション復元 / 前回復元 | [persistence.nvim](../modules/cli/neovim/nvim/lua/plugins/persistence.lua) |
 
 ### Git 連携 (住み分け)
-Neovim 内で Git 操作を完結させるため，用途別に4つのツールを使い分けています．
+Neovim 内で Git 操作を完結させるため，用途別に3つのツールを使い分けています．
 
 | ツール | キーバインド | 主な用途 |
 | :--- | :--- | :--- |
 | **Lazygit** | **`<Leader>lg`** | フローティング TUI による Git 操作全般 (ステージ・コミット・プッシュ) |
 | **gitsigns** | **`]c`** / **`[c`**, **`<Leader>hs`** | エディタ内での Hunk（差分行）ジャンプ・部分ステージ |
 | **diffview** | **`<Leader>ld`** / **`lh`** / **`lc`** | 2ペインでの本格差分レビュー・ファイル履歴閲覧 |
-| **octo** | **`<Leader>gp`** / **`gi`** | GitHub PR・Issue の一覧閲覧・作成・インラインレビュー |
 
 ---
 
