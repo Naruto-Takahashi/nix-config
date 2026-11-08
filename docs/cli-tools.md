@@ -71,7 +71,7 @@ atuin はシェル履歴の記録・暗号化同期の**バックエンド**と�
 
 ## delta — git diff の美しい表示
 
-インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`programs.git.settings.core.pager`、`modules/cli/git` で管理)。lazygit内蔵の差分パネルも別途 `git.pagers` (`modules/cli/lazygit`) で delta を使うよう明示している。
+インストールするだけで `git diff` / `git log -p` の差分がシンタックスハイライト付きになります (`programs.git.settings.core.pager`、`modules/cli/git` で管理)。lazygit内蔵の差分パネルも別途 `git.diffRenderers` (`modules/cli/lazygit`) で delta を使うよう明示している。
 
 | 操作 | 動作 |
 | :--- | :--- |

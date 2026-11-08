@@ -14,10 +14,10 @@
       # 使っており、~/.gitconfigのcore.pager=deltaとは無関係。ここでもdeltaを
       # 使うよう明示する (git diff/showと同じ見た目に揃える)。
       git = {
-        pagers = [
+        diffRenderers = [
           {
             colorArg = "always";
-            pager = "delta --dark --paging=never";
+            command = "delta --dark --paging=never";
           }
         ];
       };
