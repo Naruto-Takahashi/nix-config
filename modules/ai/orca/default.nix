@@ -6,6 +6,7 @@
 # 汎用のエンジニアリング・ワークフロースキルは modules/ai/agent-skills を参照。
 {
   config,
+  pkgs,
   lib,
   skillSources,
   ...
@@ -16,9 +17,16 @@ let
 
   orcaSrc = skillSources.orca;
 
+  orcaChatSkillsDir =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "Library/Application Support/orca/antigravity-chat/config/skills"
+    else
+      ".config/orca/antigravity-chat/config/skills";
+
   skillFiles = name: {
     ".claude/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
     ".gemini/config/skills/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
+    "${orcaChatSkillsDir}/${name}/SKILL.md".source = "${orcaSrc}/skills/${name}/SKILL.md";
   };
 in
 {

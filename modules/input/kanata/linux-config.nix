@@ -7,7 +7,4 @@
 # home-manager 側 (kanata.nix) と NixOS システムサービス側
 # (hosts/nixos/default.nix) の両方がこのテキストを共有する。
 # macOS は置換内容が異なるため hosts/mac/default.nix に別実装がある。
-builtins.replaceStrings
-  [ "eisu" "kana" ]
-  [ "muhenkan" "henkan" ]
-  (builtins.readFile ./config.kbd)
+builtins.replaceStrings [ "eisu" "kana" ] [ "muhenkan" "henkan" ] (builtins.readFile ./config.kbd)
