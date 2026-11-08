@@ -274,3 +274,41 @@
 .quick-command-container .modal-wrapper input.quick-command-search-hint {
     border-bottom: 1px solid rgba(var(--glass-tint), 0.10) !important;
 }
+
+/* ==========================================================================
+   Webページ表示領域 (フローティングカードの余白・角丸を除去しウィンドウ端に密着)
+   ========================================================================== */
+/* Vivaldi 7.0/8.0+ の浮き出しUIによって生じるWebページ周囲のマージンと角丸を
+   リセットし、ウィンドウ枠 (JankyBorders) のすぐ内側まで隙間なく広げる */
+#browser,
+.inner,
+#main,
+#main > div,
+.active-tabview,
+#webpage-stack,
+#webview-container,
+.webview-container,
+#webpages {
+    gap: 0px !important;
+    padding: 0px !important;
+    margin: 0px !important;
+    border: none !important;
+}
+
+.webpageview,
+.website-wrapper,
+webview {
+    border: none !important;
+    margin: 0px !important;
+    padding: 0px !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+}
+
+#browser.ui-rounded .website-wrapper,
+#browser.ui-rounded #webpage-stack,
+#browser.ui-rounded .webpageview {
+    border-radius: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
