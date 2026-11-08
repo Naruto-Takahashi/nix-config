@@ -187,16 +187,11 @@ WSL版の簡略版。YASB/komorebi/ロック画面などWindows固有部分を�
         AeroSpace(JankyBorders)の枠色(accent/muted)を反映する
 ```
 
-- 壁紙変更の入口は2つ:
-  - `ctrl-cmd-w` → `wallpaper-pick-popup.sh` が Raycast の Grid 拡張機能
-    (`raycast-wallpaper-picker`) を起動し (未登録時は Vivaldi ポップアップにフォールバック)、
-    `~/Pictures/Wallpapers` のサムネイルグリッドをポップアップ表示する。
-    クリックすると壁紙変更(`osascript`でSystem Eventsに設定)→`matugen-apply`が
-    即座に走り、完了後サーバは自動終了する。
-  - `wallpaper-pick` (fzfのターミナル版。WSL `wallpaper-pick.sh` と同系統) も
-    引き続き使える。プレビューは `chafa --format symbols` (WezTerm imgcatは
-    fzfの再描画でエスケープシーケンスが崩れるため不採用)。見た目は
-    `modules/shell/zsh/functions.zsh` と同じ `FZF_DEFAULT_OPTS` を読む。
+- 壁紙変更の入口:
+  - `ctrl-cmd-w` (または Raycast の "Change Wallpaper" コマンド) → `raycast-wallpaper-picker`
+    が起動し、`~/Pictures/Wallpapers` のサムネイルグリッドをフロート表示する。
+    選択すると壁紙変更 (`osascript` で System Events に設定) → `matugen-apply` が
+    即座に走り、システムおよび全ターミナル・エディタ・枠線へテーマが同期反映される。
 - `home-manager switch` (`darwin-rebuild switch`) のたびに、`home.activation`
   フックがその時点の壁紙で自動的に一度 `matugen-apply` を実行する
   (初回・Automation許可待ちなどで失敗してもビルド自体は止めない)。
@@ -307,7 +302,7 @@ Mac側 (`modules/wm/aerospace/launch-borders.sh` のAeroSpace枠色フォール�
 | パレット抽出 | palette.css の CSS変数から | mac-palette.css の CSS変数から (WSLと同じ変数名) | matugen が colors.lua を直接生成 |
 | 色相回転・プレースホルダ後処理 (yazi/lazygit) | `modules/theming/matugen/lib/` (共通) | `modules/theming/matugen/lib/` (共通) | `modules/theming/matugen/lib/` (共通) |
 | starship 生成方式 | render-template.sh (共通テンプレート) | render-template.sh (共通テンプレート) | render-template.sh (共通テンプレート) |
-| 壁紙変更の入口 | YASBウィジェット / `ALT+W` (Vivaldiポップアップ) / `wallpaper-pick` (fzf) | `ctrl-cmd-w` (Vivaldiポップアップ) / `wallpaper-pick` (fzf) | rofi (`wppicker.sh`) |
+| 壁紙変更の入口 | YASBウィジェット / `ALT+W` (Vivaldiポップアップ) / `wallpaper-pick` (fzf) | `ctrl-cmd-w` (Raycastグリッドピッカー) | rofi (`wppicker.sh`) |
 | WM枠色の反映方式 | komorebi.json を sed → 同期 reload | `borders` へ同じコマンドを再実行 (IPCで生きたまま更新) | hyprland の post_hook |
 | 反映先が Windows | あり (/mnt/c へ配置 + sed) | なし | なし |
 

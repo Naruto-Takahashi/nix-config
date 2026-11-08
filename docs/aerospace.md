@@ -91,9 +91,7 @@
 
 ## 壁紙ピッカー
 
-`Alt + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が起動します．クリックすると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
-
-このポップアップウィンドウはタイル化させず，`on-window-detected` コールバックでフローティング表示に固定しています（ウィンドウタイトル `"wallpaper picker"` で判定，他のVivaldiウィンドウには影響しません）．
+`Alt + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が呼び出されます．選択すると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
 
 ```toml
 on-window-detected = [
@@ -142,5 +140,5 @@ aerospace reload-config
 | `modules/wm/aerospace/default.nix` | LaunchAgentの定義とシンボリックリンク配線 |
 | `modules/wm/aerospace/aerospace.toml` | AeroSpace の設定ファイル本体 (キーマップ・レイアウト・gaps) |
 | `modules/wm/aerospace/launch-borders.sh` | JankyBordersの起動・matugen配色連携スクリプト |
-| `modules/theming/matugen/mac/wallpaper-pick-popup.sh` | 壁紙ピッカーのポップアップ起動スクリプト |
-| `modules/theming/matugen/mac/wallpaper-pick-gui.py` | 壁紙ピッカーのローカルHTTPサーバ本体 |
+| `modules/theming/matugen/mac/wallpaper-pick-popup.sh` | Raycast 壁紙ピッカーの起動スクリプト |
+| `modules/theming/matugen/mac/raycast-wallpaper-picker/` | Raycast グリッド拡張機能本体 |

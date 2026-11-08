@@ -13,10 +13,8 @@
 }:
 
 {
-  # chafa: wezterm imgcatが使えない場合の壁紙プレビューのフォールバック用
   home.packages = [
     pkgs.matugen
-    pkgs.chafa
   ];
 
   # 壁紙フォルダを自動確保
@@ -28,9 +26,6 @@
   };
   home.file.".local/bin/matugen-apply" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac/matugen-apply.sh";
-  };
-  home.file.".local/bin/wallpaper-pick" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac/wallpaper-pick.sh";
   };
   home.file.".local/bin/wallpaper-pick-popup" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac/wallpaper-pick-popup.sh";
