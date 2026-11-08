@@ -10,6 +10,7 @@
   imports = [
     ../../profiles/base.nix
     ../../modules/wm/aerospace
+    ../../modules/wm/hammerspoon
     ../../modules/theming/matugen/mac
     ../../modules/gui/vivaldi
   ];

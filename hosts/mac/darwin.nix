@@ -50,6 +50,7 @@ in
     casks = [
       "aerospace" # タイリングウィンドウマネージャ
       "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，docs/aerospace.md参照)
+      "hammerspoon" # トラックパッドジェスチャーによるワークスペース移動・ウィンドウ操作
     ];
     # 手動で入れるアプリ (自己更新するため宣言しない): Vivaldi / Raycast / Zotero / Obsidian /
     # Google Drive / Orca (同名の cask "orca" は plotly 用の別アプリなので使わないこと)。
