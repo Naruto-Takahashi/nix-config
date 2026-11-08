@@ -23,7 +23,7 @@
   a     s     d     f     g     h     j     k     l
   z     x     c     v     b     n     m
   left  down  up    rght
-  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12
+  f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12 ;; frow-src
 )
 
 ;; -------------------------------------------------------------------
@@ -144,7 +144,7 @@
   a     s     d     f     g     h     j     k     l
   _     _     _     _     _     _     _
   left  down  up    rght
-  @fk1  @fk2  @fk3  @fk4  f5    f6    @fk7  @fk8  @fk9  @fk10 @fk11 @fk12
+  @fk1  @fk2  @fk3  @fk4  f5    f6    @fk7  @fk8  @fk9  @fk10 @fk11 @fk12 ;; frow-base
 )
 
 ;; -------------------------------------------------------------------
@@ -158,7 +158,7 @@
   @hyp-a @hyp-s @hyp-t @hyp-f _     @hyp-h @hyp-j @hyp-k @hyp-l
   _     _     @hyp-c @hyp-v @hyp-b @hyp-n @hyp-m
   @hyp-left @hyp-down @hyp-up @hyp-rght
-  _     _     _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _ ;; frow-l1
 )
 
 ;; -------------------------------------------------------------------
@@ -171,7 +171,7 @@
   home  _     @whisper _  _     left  down  up    right
   _     del   _     _     bspc  _     _
   _     _     _     _
-  _     _     _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _ ;; frow-l2
 )
 
 ;; -------------------------------------------------------------------
@@ -185,7 +185,7 @@
   _     _     _     _     _     @hyp-ctrl-h @hyp-ctrl-j @hyp-ctrl-k @hyp-ctrl-l
   _     _     _     _     _     _     _
   _     _     _     _
-  _     _     _     _     _     _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _     _     _     _ ;; frow-l3
 )
 
 ;; -------------------------------------------------------------------
@@ -206,4 +206,27 @@
 )
 (platform (linux win winiov2 wintercept)
   (t! fkeys f1 f2 f3 f4 f7 f8 f9 f10 f11 f12)
+)
+
+;; -------------------------------------------------------------------
+;; macOS: Fn を押している間だけ F1-F12 を本来の F キーにする
+;; 内蔵キーボードの F 行は単独押しがメディアキー (上の fkeys)。Fn 併用で素の F キー。
+;; Fn キー自体も素通しする (multi fn ...) ので、Globe キーの標準機能 (絵文字等) は
+;; 残る想定だが、kanata が Fn を検知・再送できるかは実機確認が必要。
+;; fn 列は構造差分なので mac-config.nix が defsrc と各レイヤーの F 行末尾に追加する
+;; (frow-* コメントを目印に置換)。Linux / WSL には fn 列は無く、この節は評価されない。
+;; -------------------------------------------------------------------
+(platform (macos)
+  (defalias fnk (multi fn (layer-while-held fnrow)))
+)
+(platform (macos)
+  (deflayer fnrow
+    _     _     _     _     _     _     _     _
+    _     _     _     _     _     _     _     _     _     _
+    _     _     _     _     _     _     _     _     _     _     _     _
+    _     _     _     _     _     _     _     _     _
+    _     _     _     _     _     _     _
+    _     _     _     _
+    f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12   _
+  )
 )

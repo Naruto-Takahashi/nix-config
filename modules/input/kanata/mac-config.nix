@@ -9,6 +9,7 @@
 #   2. US配列実機対応: スペース左右の物理Command (lmet / rmet) を defsrc に追加
 #   3. IME切り替え: 左右Command単押しで英数/かな (Tap: eisu/kana / Hold: 通常のCommand)
 #   4. WM操作: 左右Alt (Option) 長押しでウィンドウ操作レイヤー (alt-layer) を起動
+#   5. Fnキー: defsrc と各レイヤーの F 行末尾に fn 列を追加 (frow-* コメントを目印に置換)
 #   5. Superwhisper: 最下段の物理左Controlを rctl (@whisper) に割り当てて録音キーとして使用 (CapsLockは通常のlctlのまま維持、FnキーはOS標準の機能として開放)
 let
   original = builtins.readFile ./config.kbd;
@@ -23,6 +24,11 @@ let
         "@alt-ctrl-toggle _ @hyp-d _ @alt-ctrl-toggle _"
         "(deflayer nav\n  _     _     _     _     _     _"
         "(deflayer alt-ctrl-layer\n  _     _     _            _     _     _"
+        ";; frow-src"
+        ";; frow-base"
+        ";; frow-l1"
+        ";; frow-l2"
+        ";; frow-l3"
       ]
       [
         "\"Apple Internal Keyboard / Trackpad\"\n    \"Keychron Q11 Ultra 8K L\"\n    \"Keychron Q11 Ultra 8K R\"\n    \"Keychron Q11 Ultra 8K\"\n    \"Keychron Q11 Ultra\"\n    \"HHKB-Hybrid_2\""
@@ -32,6 +38,11 @@ let
         "@alt-ctrl-toggle _ _ @hyp-d _ _ @alt-ctrl-toggle _"
         "(deflayer nav\n  _     _     _     _     _     _     _     _"
         "(deflayer alt-ctrl-layer\n  _     _     _     _     _     _     _     _"
+        "fn ;; fn"
+        "@fnk ;; fn"
+        "_ ;; fn"
+        "_ ;; fn"
+        "_ ;; fn"
       ]
       original;
 in
