@@ -5,6 +5,7 @@
 #   just --list      利用可能なタスク一覧を表示
 #   just switch [host]  現在の環境に合わせて switch を実行 (host で明示指定も可。新規ファイルは git add -N)
 #   just check       全構成の静的評価・構文検証 (CI と同等)
+#   just lint        全リント検証 (shellcheck / starship同期 / ドキュメントリンク)
 #   just fmt         全 Nix ファイルを nixfmt で自動整形
 #   just sync-win    Windows 側へ設定を同期 (WSL 専用)
 #   just restore-secrets [item] [path]  Bitwarden から ~/.env を復元
@@ -19,6 +20,32 @@ default:
 # 全構成の静的評価・Flake 検証 (CI と同等)
 check:
     nix flake check --no-build
+
+# 全リント検証 (CI lint ジョブと同等)
+lint: lint-shell lint-starship check-links
+    @echo "✅ すべてのリント検証を通過しました。"
+
+# シェルスクリプトの静的解析 (shellcheck)
+lint-shell:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    files=$(git ls-files '*.sh' | while read -r f; do head -1 "$f" | grep -q zsh || echo "$f"; done)
+    if [ -n "$files" ]; then
+        echo "$files" | xargs nix run nixpkgs#shellcheck -- --severity=warning
+        echo "✅ shellcheck: 警告なし"
+    fi
+
+# starship.toml のフォールバック版と matugen テンプレート版の同期チェック
+lint-starship:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    strip() { awk '/^\[palettes\.matugen\]/{exit} !/^#/' "$1"; }
+    if ! diff -u <(strip modules/shell/starship/starship.toml) \
+                 <(strip modules/theming/matugen/templates/starship.toml); then
+        echo "::error:: starship.toml のフォールバック版とテンプレート版の内容が乖離しています" >&2
+        exit 1
+    fi
+    echo "✅ starship.toml: テンプレート同期正常"
 
 # 全 Nix ファイルの自動フォーマット
 fmt:

@@ -1,6 +1,6 @@
 # CLI ユーティリティ 使い方チートシート
 
-`profiles/base.nix` で全ホスト共通に導入している小物 CLI/TUI ツールの基本操作集です。
+`profiles/core.nix` で全ホスト共通に導入している小物 CLI/TUI ツールの基本操作集です。
 atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dragon フォールバック) です ([matugen-palette.md](matugen-palette.md) 参照)。
 
 ---
@@ -131,7 +131,7 @@ atuin はシェル履歴の記録・暗号化同期の**バックエンド**と�
 
 | ファイル | 役割 |
 | :--- | :--- |
-| `profiles/base.nix` | 各ツールの導入宣言・atuin 設定・テーマのシード処理 |
+| `profiles/core.nix` | 各ツールの導入宣言・atuin 設定・テーマのシード処理 |
 | `modules/theming/matugen/templates/{atuin-theme.toml,btop.theme}` | Matugen テンプレート (@@KEY@@ 置換) |
 | `modules/theming/matugen/fallbacks/` | kanagawa-dragon フォールバックテーマ |
 | `modules/theming/matugen/lib/tealdeer-config.py` | tealdeer 用配色生成 (hex→rgb 変換) |
