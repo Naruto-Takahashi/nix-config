@@ -23,7 +23,6 @@
     ../modules/shell/zsh
     ../modules/shell/starship
     ../modules/shell/direnv
-    ../modules/shell/fastfetch
     ../modules/shell/atuin
     ../modules/cli/neovim
     ../modules/cli/yazi

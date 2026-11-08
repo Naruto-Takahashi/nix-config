@@ -70,7 +70,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 │   ├── input/                 # 入力系 (kanata キーリマップ[NixOS/Mac/WSL], ahk[WSL])
 │   ├── platform/              # プラットフォーム共通オプション (wsl.nix: Windows 側ユーザー名・ホーム)
 │   ├── services/              # ユーザーサービス (obsidian-brain 外部脳連携)
-│   ├── shell/                 # シェル・端末環境 (zsh, starship, fastfetch, direnv, atuin)
+│   ├── shell/                 # シェル・端末環境 (zsh, starship, direnv, atuin)
 │   └── theming/               # Matugen 共通ロジック / テンプレート (lib, templates) とホスト別パイプライン
 ├── profiles/                  # 役割別プロファイル
 │   ├── core.nix               # 最小共通 CLI (modules/cli/* + modules/shell/*)
