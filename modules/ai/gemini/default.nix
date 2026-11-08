@@ -32,7 +32,6 @@ in
 
   config = lib.mkIf cfg.enable {
     home.packages = [
-      pkgs.gemini-cli
       pkgs.antigravity-cli # バイナリ名は agy
     ];
 
