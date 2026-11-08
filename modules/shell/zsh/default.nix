@@ -71,12 +71,6 @@
       v = "nvim";
       lg = "lazygit";
 
-      # GitHub Copilot（Manual Install - v1.0.63+）
-      chat = "copilot";
-      ask = "copilot -i";
-      exp = "copilot -i 'explain '";
-      copilot = "copilot";
-
       # モダンCLIユーティリティへの置き換え
       ls = "eza --icons";
       ll = "eza -alF --icons";

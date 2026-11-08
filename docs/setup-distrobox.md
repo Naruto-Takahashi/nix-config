@@ -98,7 +98,7 @@ cd nix-config
 
 ホストの`~/.zshrc`(host-native手動管理版)に`nixcli`関数を定義しておくと，
 普段はhost-nativeの最低限環境を使いつつ，必要な時だけ`nixcli`と打つだけで
-フル機能版 (Node同梱のcopilot.lua，lrpymrpc等の開発コンテナ操作を含む) に入れる:
+フル機能版 (Node同梱，lrpymrpc等の開発コンテナ操作を含む) に入れる:
 
 ```bash
 nixcli() {
@@ -130,13 +130,13 @@ nixcli() {
 ## この構成で有効になるもの
 
 [`profiles/base.nix`](../profiles/base.nix) のCLIツール一式 (zsh / starship / neovim / yazi /
-git / lazygit / eza / bat / btop / atuin 等) がコンテナ内で完全な形 (Node同梱copilot.lua含む)
+git / lazygit / eza / bat / btop / atuin 等) がコンテナ内で完全な形
 で使える。GUI/ウィンドウマネージャー・systemdユーザーサービス・カーネル入力リマップ
 (kanata) 等，コンテナに乗らないものは含まれない。詳細は [neovim.md](neovim.md) /
 [yazi.md](yazi.md) / [cli-tools.md](cli-tools.md) を参照。
 
 ホスト側 (コンテナの外) には，最低限の開発環境を別途手動でインストールしておくと安全。
-zsh / starship / atuin / eza / bat / git / nvim (Node無し，copilot無効) をスタンドアロン
+zsh / starship / atuin / eza / bat / git / nvim (Node無し) をスタンドアロン
 バイナリで導入し，設定ファイルはこのリポジトリへのシンボリックリンクにする
 (`home-manager`には依存しない，純粋な手動管理)。コンテナが起動しない場合の
 フォールバックとして機能する。

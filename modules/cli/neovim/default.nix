@@ -88,7 +88,7 @@ in
     # init.lua はリポジトリ側 (mkOutOfStoreSymlink) で直接管理するため、
     # HM 側の自動生成 initLua はラッパー経由でサイドロードしファイル衝突を防ぐ
     sideloadInitLua = true;
-    # Copilot.luaはNeovim内でNode.jsを使うため，Neovim自体にも同梱します．
+    # Node.js ベースのツールや LSP 用に Node.js プロバイダを有効化
     withNodeJs = true;
     # stateVersion < 26.05 の従来デフォルトを明示 (デフォルト変更警告の抑止)
     withRuby = true;
