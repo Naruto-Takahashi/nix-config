@@ -18,6 +18,7 @@
 | [hyprland.md](hyprland.md) | NixOS: Hyprland (Wayland) のキーバインド |
 | [komorebi.md](komorebi.md) | WSL2: komorebi + YASB (Windows側) のキーバインド |
 | [aerospace.md](aerospace.md) | macOS: AeroSpace のキーバインド・配色連携・壁紙ピッカー |
+| [hammerspoon.md](hammerspoon.md) | macOS: Hammerspoon によるトラックパッドジェスチャー (ワークスペース移動・ウィンドウ操作・コーナータップ) |
 | [kanata.md](kanata.md) | 3ホスト共通のキーボードリマップ層 (SandS・IME切替・CapsLock改修)。OSごとの実装方式の違いもここに整理 |
 
 ## 配色・テーマ

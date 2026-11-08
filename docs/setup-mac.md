@@ -29,11 +29,16 @@ cd nix-config
    ```
 
 3. **Homebrew のインストール**
-   Nix-darwin による Cask アプリ（AeroSpace, Vivaldi, Raycast, Alt-Tab など）の管理に
-   必要となるため，事前にインストールしておきます．
+   nix-darwin は Homebrew 本体を入れてくれず，`darwin.nix` に宣言した cask / brew
+   （AeroSpace, Hammerspoon, Stats, borders, libomp など）を入れるだけなので，事前にインストールしておきます．
+   本体は Nix 管理にせず公式インストーラで入れる（sudo が必要）．
    ```bash
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
    ```
+   インストーラが表示する `~/.zprofile` への PATH 追記は不要です（`~/.zprofile` は Home Manager 管理の
+   読み取り専用ファイルで書き込めません）．`/opt/homebrew/bin` は zsh 設定
+   （`modules/shell/zsh/default.nix`）が PATH の**末尾**に足します．先頭に足す `brew shellenv` は，
+   Nix 管理の `git` や `uv` を隠してしまうため使いません．
 
 4. **設定の構築とシステムへの適用**
    リポジトリを `ghq` 規定位置に配置した状態で，システム構成を適用します．
@@ -123,24 +128,26 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 - [ ] **機密情報・SSH鍵**: `just restore-secrets` で `~/.env` を，`just restore-ssh` で `~/.ssh/` を復元する (手順 5)．
 - [ ] **Raycast**: 書き出した `.rayconfig` を Raycast のコマンド `Import Settings & Data` で取り込む．
 - [ ] **手動インストールのアプリ**: 自己更新するため，cask では管理せず公式サイトから個別に入れる
-      (WM 周りの AeroSpace / AeroSpaceBar / borders だけが Homebrew 管理)．
+      (Homebrew で入れて `darwin.nix` に宣言するのは，WM 周りの AeroSpace / AeroSpaceBar / Hammerspoon / borders，
+      小さなユーティリティの Stats，LightGBM が必要とする libomp)．
   - Vivaldi (<https://vivaldi.com/download/>)
   - Raycast (<https://www.raycast.com/>)
   - Zotero (<https://www.zotero.org/download/>)
   - Obsidian (<https://obsidian.md/download>)
   - Google Drive for desktop (<https://www.google.com/drive/download/>)
-  - Stats (<https://github.com/exelban/stats>)。メニューバーにCPU・RAMなどの使用状況を出す．`brew install --cask stats` でも入る．
   - Orca (<https://github.com/stablyai/orca>)。同名の Homebrew cask `orca` は別のアプリなので使わない．
   - マウスのドライバ (KensingtonWorks / Logi Options+) は使う機種に合わせて入れる．
 - [ ] **Homebrew の掃除方針**: すべてのアプリが宣言どおりに入ったら，`hosts/mac/darwin.nix` の
       `homebrew.onActivation.cleanup` を `"uninstall"` に変える．以後は宣言から外した cask が
       switch で自動削除され，宣言と実態がずれなくなる．
+      **切り替える前に**，`brew` で入れたのに `darwin.nix` に未宣言の cask（現状は moonlight / spokenly）を
+      `casks` に足すか手放すか決めること．未宣言のまま切り替えると，それらは switch で削除される．
 
 ---
 
 ## この構成で有効になるもの
 
-AeroSpace (WM) + JankyBorders，Kanata (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りのみ。他のアプリは手動インストール)。詳細は [aerospace.md](aerospace.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
+AeroSpace (WM) + JankyBorders，Hammerspoon (トラックパッドジェスチャー)，Kanata (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りと小さなユーティリティのみ。他のアプリは手動インストール)。詳細は [aerospace.md](aerospace.md) / [hammerspoon.md](hammerspoon.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
 
 ---
 
