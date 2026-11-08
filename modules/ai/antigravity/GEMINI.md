@@ -1,6 +1,6 @@
-# グローバル指示 (Antigravity CLI / Gemini CLI)
+# グローバル指示 (Antigravity CLI)
 
-このファイルは `modules/ai/gemini` が生成する `~/.gemini/GEMINI.md` のベース部分である。機能別の追加ルール（Obsidian外部脳連携など）は `programs.geminiCli.extraInstructions` 経由でこの下に自動追記される。
+このファイルは `modules/ai/antigravity` が生成する `~/.gemini/GEMINI.md` のベース部分である。機能別の追加ルール（Obsidian外部脳連携など）は `programs.antigravityCli.extraInstructions` 経由でこの下に自動追記される。
 
 ---
 

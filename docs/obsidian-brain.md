@@ -71,4 +71,4 @@ obsidian-vault/
 | `<Vault>/_scripts/ob.sh`, `sync.sh`, `check-secrets.sh` | `ob` CLI 本体・双方向 Git 同期・`gitleaks` 機密検査スクリプトの正本 |
 | `modules/services/obsidian-brain.nix` | `services.obsidianBrain` オプション・Nix 依存解決ラッパー・Skill 配線・自動同期タイマー |
 | `modules/ai/claude-code/default.nix`, `CLAUDE.md` | `~/.claude/CLAUDE.md` の生成・Claude Code 設定 |
-| `modules/ai/gemini/default.nix`, `GEMINI.md` | `~/.gemini/GEMINI.md` の生成・Antigravity CLI / Gemini CLI 設定 |
+| `modules/ai/antigravity/default.nix`, `GEMINI.md` | `~/.gemini/GEMINI.md` の生成・Antigravity CLI 設定 |

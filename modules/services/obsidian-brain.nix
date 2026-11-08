@@ -102,9 +102,9 @@ in
       OBSIDIAN_VAULT_PATH = cfg.vaultPath;
     };
 
-    # Claude Code と Gemini/Antigravity 両方のグローバル指示に最小ポインタを注入
+    # Claude Code と Antigravity CLI 両方のグローバル指示に最小ポインタを注入
     programs.claudeCode.extraInstructions = [ obsidianBrainInstructions ];
-    programs.geminiCli.extraInstructions = [ obsidianBrainInstructions ];
+    programs.antigravityCli.extraInstructions = [ obsidianBrainInstructions ];
 
     # Vault 自体が持つ .agents/skills/obsidian-brain/SKILL.md を
     # Claude Code と Antigravity CLI の両方のグローバルスキルへ直結する。
