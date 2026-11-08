@@ -146,6 +146,10 @@
 
     # 環境固有の設定，キーバインド，カスタム関数（.zshrcへの流し込み）
     initContent = ''
+      # Homebrew (macOS) は PATH の末尾に足す。Nix の同名コマンド (git, uv 等) を隠さないため
+      # `brew shellenv` (先頭に追加) は使わない。
+      [[ -d /opt/homebrew/bin ]] && path+=(/opt/homebrew/bin /opt/homebrew/sbin)
+
       # 静的な追加設定 (関数・オプション・キーバインド) は実ファイルから読み込む
       source ~/.config/zsh/functions.zsh
 
