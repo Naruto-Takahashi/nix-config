@@ -2,7 +2,7 @@
 # =========================================================================
 # matugen-apply (mac) — 現在のデスクトップ壁紙から matugen でパレットを抽出し、
 # 各アプリへ展開する。OS 共通部分は lib/palette.sh にあり、ここには Mac 固有の
-# 処理 (壁紙の取得・AeroSpace の枠線) だけを置く。
+# 処理 (壁紙の取得・AeroSpace の枠線・macOSシステムカラー設定) を置く。
 # =========================================================================
 # 呼び出し:
 #   matugen-apply             現在の壁紙 (System Events経由) を自動検出して適用
@@ -34,8 +34,12 @@ if [[ "${1:-}" == "--reapply" ]]; then
 elif [[ -n "${1:-}" ]]; then
     img="$1"
 else
-    # 現在のデスクトップ壁紙のパスを取得する (初回はSystem Eventsのオートメーション許可が必要)
+    # 現在のデスクトップ壁紙のパスを取得する
     img="$(osascript -e 'tell application "System Events" to tell first desktop to get picture' 2>/dev/null || true)"
+    if [[ -z "${img:-}" || "$img" == "missing value" || ! -f "$img" ]]; then
+        # macOS Sonoma以降で missing value になる場合のフォールバック (直近キャッシュ)
+        [[ -f "$HOME/.cache/matugen/last-wallpaper" ]] && img="$(cat "$HOME/.cache/matugen/last-wallpaper")"
+    fi
 fi
 
 if [[ -z "${img:-}" || ! -f "$img" ]]; then
@@ -61,9 +65,55 @@ fi
 matugen_render_common
 
 # -------------------------------------------------------------------------
-# 3. AeroSpace (JankyBorders) の枠色を追従させる
+# 3. AeroSpace (JankyBorders) の枠色を追従させる (補色を優先利用)
 # -------------------------------------------------------------------------
 [[ -x "$HOME/.local/bin/aerospace-launch-borders" ]] && \
     "$HOME/.local/bin/aerospace-launch-borders" || true
+
+# -------------------------------------------------------------------------
+# 4. macOS 本体のアクセントカラー & ハイライトカラーを追従させる
+# -------------------------------------------------------------------------
+# accent色から色相を計算し、最も近いmacOSプリセット色をAppleAccentColorに、
+# 実RGB値をAppleHighlightColor (テキスト選択ハイライト) に適用する。
+python3 - <<PY || true
+import colorsys, subprocess
+
+hex_color = "${accent}".lstrip("#")
+r, g, b = (int(hex_color[i:i+2], 16) / 255.0 for i in (0, 2, 4))
+h, l, s = colorsys.rgb_to_hls(r, g, b)
+deg = h * 360.0
+
+# AppleAccentColor:
+# -1: Graphite, 0: Red, 1: Orange, 2: Yellow, 3: Green, 4: Blue, 5: Purple, 6: Pink
+if s < 0.12:
+    accent_val = -1
+    aqua_val = 6
+elif deg >= 350 or deg < 15:
+    accent_val = 0
+    aqua_val = 1
+elif deg < 40:
+    accent_val = 1
+    aqua_val = 1
+elif deg < 75:
+    accent_val = 2
+    aqua_val = 1
+elif deg < 165:
+    accent_val = 3
+    aqua_val = 1
+elif deg < 255:
+    accent_val = 4
+    aqua_val = 1
+elif deg < 305:
+    accent_val = 5
+    aqua_val = 1
+else:
+    accent_val = 6
+    aqua_val = 1
+
+subprocess.run(["defaults", "write", "-g", "AppleAccentColor", "-int", str(accent_val)], check=False)
+subprocess.run(["defaults", "write", "-g", "AppleAquaColorVariant", "-int", str(aqua_val)], check=False)
+highlight_str = f"{r:.6f} {g:.6f} {b:.6f}"
+subprocess.run(["defaults", "write", "-g", "AppleHighlightColor", "-string", highlight_str], check=False)
+PY
 
 echo "matugen-apply (mac): 適用完了 (accent=${accent})"

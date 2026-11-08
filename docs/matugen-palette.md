@@ -73,7 +73,7 @@
 | ホスト | 配置先 | ピッカー |
 | :--- | :--- | :--- |
 | **WSL** | `<Windowsユーザープロファイル>\Pictures\wallpapers`<br>(WSL側からは `/mnt/c/Users/<user>/Pictures/wallpapers`) | YASBの `wallpapers` ウィジェット、`ALT+W` (`wallpaper-pick-popup.sh`, Vivaldiポップアップ + 色候補クリック適用)、または `wallpaper-pick` (fzf端末版) |
-| **Mac** | `~/Pictures/Wallpapers` | `ctrl-cmd-w` (Vivaldiポップアップ、`wallpaper-pick-gui.py`) / `wallpaper-pick` (fzf端末版)。`MATUGEN_WALLPAPER_DIR` 環境変数で変更可 |
+| **Mac** | `~/Pictures/Wallpapers` | `ctrl-cmd-w` (Raycastポップアップ、`raycast-wallpaper-picker`) / `wallpaper-pick-gui.py` (Vivaldiフォールバック) / `wallpaper-pick` (fzf端末版)。`MATUGEN_WALLPAPER_DIR` 環境変数で変更可 |
 | **NixOS (Hyprland)** | `~/Pictures/wallpapers` | rofiの壁紙ピッカー (`wppicker.sh`) |
 
 ### WSL (Windows / komorebi + YASB)
@@ -188,8 +188,8 @@ WSL版の簡略版。YASB/komorebi/ロック画面などWindows固有部分を�
 ```
 
 - 壁紙変更の入口は2つ:
-  - `ctrl-cmd-w` → `wallpaper-pick-popup.sh` がローカルHTTPサーバ
-    (`wallpaper-pick-gui.py`) を起動し、Vivaldiのapp-modeウィンドウで
+  - `ctrl-cmd-w` → `wallpaper-pick-popup.sh` が Raycast の Grid 拡張機能
+    (`raycast-wallpaper-picker`) を起動し (未登録時は Vivaldi ポップアップにフォールバック)、
     `~/Pictures/Wallpapers` のサムネイルグリッドをポップアップ表示する。
     クリックすると壁紙変更(`osascript`でSystem Eventsに設定)→`matugen-apply`が
     即座に走り、完了後サーバは自動終了する。

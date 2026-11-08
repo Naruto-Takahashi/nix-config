@@ -91,7 +91,7 @@
 
 ## 壁紙ピッカー
 
-`Alt + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Vivaldiのapp-modeウィンドウでサムネイルグリッドのポップアップが開きます．クリックすると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
+`Alt + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が起動します．クリックすると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
 
 このポップアップウィンドウはタイル化させず，`on-window-detected` コールバックでフローティング表示に固定しています（ウィンドウタイトル `"wallpaper picker"` で判定，他のVivaldiウィンドウには影響しません）．
 

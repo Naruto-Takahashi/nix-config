@@ -19,6 +19,9 @@
     pkgs.chafa
   ];
 
+  # 壁紙フォルダを自動確保
+  home.file."Pictures/Wallpapers/.keep".text = "";
+
   xdg.configFile."matugen-mac" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac";
     force = true;
@@ -31,6 +34,11 @@
   };
   home.file.".local/bin/wallpaper-pick-popup" = {
     source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac/wallpaper-pick-popup.sh";
+  };
+
+  # Raycast 拡張機能（Grid UIの壁紙ピッカー）
+  home.file.".config/raycast/extensions/wallpaper-picker" = {
+    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac/raycast-wallpaper-picker";
   };
 
   # home-manager switch のたびに、その時点の壁紙で一度パレットを反映しておく。
