@@ -38,6 +38,8 @@ in
       # 既存の手動インストールアプリを誤って削除しないよう保護。新しい Mac では宣言と
       # 実態が一致した状態から始められるため、移行後に "uninstall" へ切り替える
       # (宣言から外した cask が switch で自動削除されるようになる。docs/setup-mac.md 参照)。
+      # 注意: 切り替え前に、brew で入れたのに未宣言の cask (moonlight, spokenly 等) を
+      # casks に足すか手放すか決めること。未宣言のまま切り替えると switch で削除される。
       cleanup = "none";
     };
     taps = [
