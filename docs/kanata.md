@@ -132,6 +132,22 @@ Kanata をバックグラウンドサービスとして稼働させることで�
 
 ---
 
+## 4.5 ファンクション行 (macOS のメディアキー)
+
+macOS 内蔵キーボードの F1〜F12 は、単独押しで輝度・音量などのメディア機能を送ります。kanata が入力を横取りして仮想キーボード経由で再送すると、これが「素の F キー」になりメディア機能が失われる (F11 でデスクトップ表示になる) ため、macOS だけ明示的に割り当てています (`config.kbd` の `fkeys` テンプレート)。
+
+| キー | macOS | Linux / WSL |
+| :---: | :--- | :--- |
+| F1 / F2 | 輝度 下げ / 上げ (`brdn` / `brup`) | 素の F1 / F2 |
+| F3 / F4 | Mission Control / Launchpad (`mctl` / `lpad`) | 素の F3 / F4 |
+| F5 / F6 | 素の F5 / F6 | 素の F5 / F6 |
+| F7 / F8 / F9 | 前の曲 / 再生・停止 / 次の曲 (`prev` / `pp` / `next`) | 素の F7 / F8 / F9 |
+| F10 / F11 / F12 | ミュート / 音量 下げ / 上げ (`mute` / `vold` / `volu`) | 素の F10 / F11 / F12 |
+
+制約: Fn キーを押しながらの本来の F キー (Fn+F5 など) は未実装です。kanata が Apple 内蔵キーボードの Fn を検知できるか未確認のためで、現状 macOS では F1〜F4・F7〜F12 を素の F キーとして送れません。
+
+---
+
 ## 5. Windows専用の補完: AutoHotkey (modules/input/ahk)
 
 kanataはクロスプラットフォームだが，WezTermとの連携やExplorer統合(Everything検索)等，kanataだけでは実現できない機能があるため，`modules/input/ahk/main.ahk` をAutoHotkeyの実行ファイルとして併用している。役割としてはkanataと同じ「キーボードリマップ」層に属するため`modules/input/`配下に置いているが，実装はWindows専用。
