@@ -360,6 +360,21 @@ webview {
     overflow: hidden !important;
 }
 
+/* 右側のパネル・バー全体の外側の角丸 (Webページに面する左上の角と左下の角) */
+#tabs-tabbar-container.right,
+#panels-container.right,
+#panels-container:not(.left),
+#panels,
+#panels .panel-group,
+.panel-group,
+.auto-hide-wrapper.right {
+    border-top-left-radius: 18px !important;
+    border-bottom-left-radius: 18px !important;
+    border-top-right-radius: 14px !important;
+    border-bottom-right-radius: 14px !important;
+    overflow: hidden !important;
+}
+
 /* 内部コンテナの四角いはみ出しを強制クリップ */
 :is(#tabs-tabbar-container, #panels-container, #panels, .tabbar-wrapper, #switch) {
     border-radius: inherit !important;
