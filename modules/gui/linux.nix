@@ -27,11 +27,6 @@
     pkgs.wl-clipboard
     pkgs.kanata
 
-    # ジョークツール・装飾
-    pkgs.cowsay
-    pkgs.fortune
-    pkgs.lolcat
-
     # --- カスタムパッケージ定義 ---
 
     # vivaldiのラッパーパッケージ：XRDPセッション（DISPLAY>=10）時はプロファイルを分けて多重起動できるようにします．

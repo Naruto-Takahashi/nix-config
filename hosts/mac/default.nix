@@ -32,16 +32,6 @@
   # /usr/local/bin/kanata へ署名コピーされるため、ユーザープロファイルには置かない。
   # hackgen-nf-font は darwin.nix の fonts.packages でシステムフォントとして配置。
   home.packages = with pkgs; [
-    cowsay
-    # fortune依存のrecode(3.7.16)がテストフェーズでセグフォルトしビルド不能
-    # (このnixpkgsピン・aarch64-darwinで発生、upstreamのバグ)。テストだけ
-    # 無効化して回避する(recode自体の挙動は変わらない)。
-    (fortune.override {
-      recode = recode.overrideAttrs (_: {
-        doCheck = false;
-      });
-    })
-    lolcat
     nodejs_22
   ];
 
