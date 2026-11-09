@@ -7,9 +7,9 @@ start-at-login = true
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# ポップアップやドロップダウンの誤消滅・誤フォーカス奪取を防ぐため，
-# マウス追従 (focus-follows-mouse) は無効化します．
-focus-follows-mouse.enabled = false
+# マウスカーソルが乗ったウィンドウに自動でフォーカスを移します（focus follows mouse）．
+# ※キー操作時のカーソル強制ワープ（on-focus-changed move-mouse）はポップアップ誤消滅を防ぐため無効のままにします．
+focus-follows-mouse.enabled = true
 
 # AeroSpace起動完了時にJankyBorders（アクティブウィンドウ枠線表示ツール）をバックグラウンド実行します．
 # 色はmatugenパレット(~/.cache/matugen/colors.lua)のaccent/mutedに追従します
