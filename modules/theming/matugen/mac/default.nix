@@ -32,9 +32,14 @@
   };
 
   # Raycast 拡張機能（Grid UIの壁紙ピッカー）
-  home.file.".config/raycast/extensions/wallpaper-picker" = {
-    source = config.lib.file.mkOutOfStoreSymlink "${dotfilesPath}/modules/theming/matugen/mac/raycast-wallpaper-picker";
-  };
+  # ※ シンボリックリンクにすると Node.js の realpath 解決で dotfiles 側の
+  #   node_modules/react が二重ロードされ、Raycast 本体の React と衝突して
+  #   Cannot read properties of null (reading 'useState') が発生するため、
+  #   実ディレクトリとして dist 成果物をコピー配置する。
+  home.activation.raycastWallpaperPicker = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    $DRY_RUN_CMD mkdir -p "$HOME/.config/raycast/extensions/wallpaper-picker"
+    $DRY_RUN_CMD cp -R "${dotfilesPath}/modules/theming/matugen/mac/raycast-wallpaper-picker/dist/"* "$HOME/.config/raycast/extensions/wallpaper-picker/"
+  '';
 
   # home-manager switch のたびに、その時点の壁紙で一度パレットを反映しておく。
   # 初回(壁紙未取得・Automation許可待ち等)で失敗してもビルド自体は止めない。

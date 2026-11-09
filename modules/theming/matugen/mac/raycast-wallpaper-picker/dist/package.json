@@ -1,0 +1,30 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "wallpaper-picker",
+  "title": "Wallpaper Picker",
+  "description": "Select desktop wallpaper and apply matugen theme colors",
+  "icon": "extension_icon.png",
+  "author": "nalt",
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "pick-wallpaper",
+      "title": "Pick Wallpaper",
+      "description": "Choose a wallpaper from ~/Pictures/Wallpapers and apply colors",
+      "mode": "view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.104.25",
+    "@raycast/utils": "^1.16.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.8.10",
+    "@types/react": "^19.0.0",
+    "typescript": "^5.4.5"
+  },
+  "scripts": {
+    "build": "ray build -e dist -o dist",
+    "dev": "ray develop"
+  }
+}
