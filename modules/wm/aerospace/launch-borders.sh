@@ -8,7 +8,7 @@
 # 非アクティブ枠線(inactive_color)は完全透明(0x00000000)にする。AeroSpaceは
 # 非表示ワークスペースのウィンドウを画面右下に1pxだけ残して退避させる仕様の
 # ため、非アクティブ枠線に色を付けると画面右下に太い枠線の角が飛び出して見える。
-# order=above でウィンドウ手前に枠線を描画し、ウィンドウ自体の極細な黒いフチを隠す。
+# order=below (デフォルト) でウィンドウ背面に枠線を描画し、マウス移動時のチラつき(Layer Churn)を防ぐ。
 #
 # borders は既に起動中のインスタンスがあれば、同じコマンドを再実行するだけで
 # IPC経由で設定を生きたまま更新する (kill不要。killすると次のインスタンスが
@@ -33,8 +33,8 @@ if [[ -f "$COLORS" ]]; then
 fi
 
 if pgrep -x borders >/dev/null 2>&1; then
-    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0x00000000" width=8.0 order=above
+    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0x00000000" width=8.0
 else
-    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0x00000000" width=8.0 order=above &
+    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0x00000000" width=8.0 &
     disown
 fi
