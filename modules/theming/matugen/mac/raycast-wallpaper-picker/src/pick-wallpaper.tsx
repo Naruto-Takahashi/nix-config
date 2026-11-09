@@ -46,21 +46,25 @@ export default function Command() {
       const osa = `tell application "System Events" to tell every desktop to set picture to (POSIX file "${wp.path.replace(/"/g, '\\"')}")`;
       const applyScript = path.join(os.homedir(), ".local/bin/matugen-apply");
 
-      exec(`osascript -e '${osa}' && "${applyScript}" "${wp.path}"`, (err, stdout, stderr) => {
-        if (err) {
-          showToast({
-            style: Toast.Style.Failure,
-            title: "反映に失敗しました",
-            message: stderr || err.message,
-          });
-        } else {
-          showToast({
-            style: Toast.Style.Success,
-            title: "壁紙と配色を適用しました",
-            message: wp.name,
-          });
+      exec(
+        `osascript -e '${osa}' && "${applyScript}" "${wp.path}"`,
+        { env: { ...process.env, LC_ALL: "C.UTF-8" } },
+        (err, stdout, stderr) => {
+          if (err) {
+            showToast({
+              style: Toast.Style.Failure,
+              title: "反映に失敗しました",
+              message: stderr || err.message,
+            });
+          } else {
+            showToast({
+              style: Toast.Style.Success,
+              title: "壁紙と配色を適用しました",
+              message: wp.name,
+            });
+          }
         }
-      });
+      );
     } catch (e) {
       console.error(e);
     }
