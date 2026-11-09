@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 # =========================================================================
 # aerospace-launch-borders — JankyBorders (borders) をmatugenパレットの
-# triad(色相120度回転)/muted色で(再)起動する。
+# triad(色相120度回転)色で(再)起動する。
 # =========================================================================
 # 壁紙と同化して見失わないよう、枠線色(active_color)には色相120度回転の
 # triad を優先して使う (無ければ complement / accent を使う)。
+# 非アクティブ枠線(inactive_color)は完全透明(0x00000000)にする。AeroSpaceは
+# 非表示ワークスペースのウィンドウを画面右下に1pxだけ残して退避させる仕様の
+# ため、非アクティブ枠線に色を付けると画面右下に太い枠線の角が飛び出して見える。
 # order=above でウィンドウ手前に枠線を描画し、ウィンドウ自体の極細な黒いフチを隠す。
 #
 # borders は既に起動中のインスタンスがあれば、同じコマンドを再実行するだけで
@@ -14,14 +17,12 @@ set -euo pipefail
 
 COLORS="$HOME/.cache/matugen/colors.lua"
 border_color="a2c9fd"
-muted="c3c6cf"
 
 if [[ -f "$COLORS" ]]; then
     # 壁紙と枠線が同化しないよう、色相120度回転の triad を優先利用
     t="$(grep -m1 '^\s*triad\s*=' "$COLORS" | grep -oE '#[0-9a-fA-F]{6}' | tr -d '#' || true)"
     c="$(grep -m1 '^\s*complement\s*=' "$COLORS" | grep -oE '#[0-9a-fA-F]{6}' | tr -d '#' || true)"
     a="$(grep -m1 '^\s*accent\s*=' "$COLORS" | grep -oE '#[0-9a-fA-F]{6}' | tr -d '#' || true)"
-    m="$(grep -m1 '^\s*muted\s*=' "$COLORS" | grep -oE '#[0-9a-fA-F]{6}' | tr -d '#' || true)"
     if [[ -n "$t" ]]; then
         border_color="$t"
     elif [[ -n "$c" ]]; then
@@ -29,12 +30,11 @@ if [[ -f "$COLORS" ]]; then
     elif [[ -n "$a" ]]; then
         border_color="$a"
     fi
-    [[ -n "$m" ]] && muted="$m"
 fi
 
 if pgrep -x borders >/dev/null 2>&1; then
-    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0xff${muted}" width=8.0 order=above
+    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0x00000000" width=8.0 order=above
 else
-    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0xff${muted}" width=8.0 order=above &
+    /opt/homebrew/bin/borders "active_color=0xff${border_color}" "inactive_color=0x00000000" width=8.0 order=above &
     disown
 fi

@@ -314,6 +314,21 @@
     box-shadow: none !important;
 }
 
+/* Vivaldi 8.x の unified-ui は #webpage-stack::before (1px 枠線) と
+   #webpage-stack::after (上下左右 1px + 四隅の radial-gradient マスクで
+   --browserBlurredImage = スタートページ壁紙を塗る擬似要素) を Webページ上に
+   重ねるため、これらを無効化しないとウィンドウ外周に壁紙色が 1px 露出する */
+#webpage-stack::before,
+#webpage-stack::after,
+#webpage-stack > .tiled::before,
+#webpage-stack > .tiled::after,
+#webpage-stack .webpageview.tiled.visible::before,
+#webpage-stack .webpageview.tiled.visible::after,
+.webpageview.tiled.visible::after {
+    content: none !important;
+    display: none !important;
+}
+
 .webpageview,
 .website-wrapper,
 webview {

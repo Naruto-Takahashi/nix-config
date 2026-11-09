@@ -81,7 +81,7 @@
 
 ## 配色連携 (Matugen) と枠線 (JankyBorders)
 
-アクティブウィンドウの枠線ハイライトは Homebrew の `borders` (JankyBorders) が担当します．色は壁紙から抽出した [Matugen](matugen-palette.md) のパレット (`~/.cache/matugen/colors.lua` の `accent`/`muted`) に自動追従します．
+アクティブウィンドウの枠線ハイライトは Homebrew の `borders` (JankyBorders) が担当します．色は壁紙から抽出した [Matugen](matugen-palette.md) のパレット (`~/.cache/matugen/colors.lua` の `triad`/`complement`/`accent`) に自動追従します．非アクティブウィンドウの枠線 (`inactive_color`) は完全透明 (`0x00000000`) にしています（AeroSpaceが別ワークスペースのウィンドウを画面右下に1px残して退避させる仕様のため，非アクティブ枠線を描画すると画面右下に枠線の角が飛び出して見えるのを防ぐため）．
 
 - 起動スクリプトは [`launch-borders.sh`](../modules/wm/aerospace/launch-borders.sh)．**`borders` は起動中に同じコマンドを再実行するとIPC経由で設定を生きたまま更新する仕様**なので，`pkill`して再起動する必要はありません（`pkill`すると次のインスタンスが上がるまでの一瞬，枠ハイライトが消えるため意図的に避けています）．
 - matugenキャッシュが無い場合は，WSL/NixOS側と同じ青ベースのフォールバック配色を使います．
