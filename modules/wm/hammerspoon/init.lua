@@ -9,11 +9,13 @@
 -- エッジスクロール (右端を指1本でなぞる):
 --   右端を上下になぞる: 音量調整 (macOS標準HUD表示付き)
 
+-- Hammerspoon CLI (hs) および AppleScript の外部制御を許可
+pcall(require, "hs.ipc")
 hs.allowAppleScript(true)
 hs.dockicon.hide()
 hs.autoLaunch(true)
 
--- スタイリッシュでミニマルな HUD スタイル
+-- スタイリッシュでミニマルな HUD スタイル (壁紙の抽出色に動的追従)
 local alertStyle = {
     strokeWidth  = 0,
     strokeColor = { white = 0, alpha = 0 },
@@ -27,7 +29,48 @@ local alertStyle = {
     fadeOutDuration = 0.2
 }
 
-local function showHUD(text)
+-- Matugen パレット (~/.cache/matugen/colors.lua) から triad (120度回転色) を読み込み反映
+local function updateAlertStyle()
+    local colorsPath = os.getenv("HOME") .. "/.cache/matugen/colors.lua"
+    local f = loadfile(colorsPath)
+    if not f then return end
+    local ok, colors = pcall(f)
+    if not ok or type(colors) ~= "table" then return end
+
+    -- 壁紙から抽出した色相120度回転色 (triad: ウィンドウ枠線やmacOSハイライト色と同色)
+    local bgHex = colors.triad or colors.complement or colors.accent
+    if bgHex then
+        alertStyle.fillColor = { hex = bgHex, alpha = 0.90 }
+
+        -- 背景色の明度 (luminance) を計算し、常に高コントラストな文字色を選択
+        local c = hs.drawing.color.asRGB({ hex = bgHex, alpha = 1.0 })
+        if c and c.red and c.green and c.blue then
+            local lum = 0.299 * c.red + 0.587 * c.green + 0.114 * c.blue
+            if lum > 0.55 then
+                alertStyle.textColor = { hex = colors.surface or "#18120c", alpha = 1.0 }
+            else
+                alertStyle.textColor = { hex = colors.text or "#ffffff", alpha = 1.0 }
+            end
+        end
+    end
+end
+
+-- 初期ロード時にスタイルを適用
+updateAlertStyle()
+
+-- colors.lua の変更を自動監視してスタイルを動的更新
+colorsWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.cache/matugen", function(files)
+    for _, file in ipairs(files) do
+        if file:match("colors%.lua$") then
+            updateAlertStyle()
+            break
+        end
+    end
+end)
+colorsWatcher:start()
+
+function showHUD(text)
+    updateAlertStyle()
     hs.alert.show(text, alertStyle, 0.35)
 end
 
