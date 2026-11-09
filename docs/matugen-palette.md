@@ -171,11 +171,11 @@ WSL版の簡略版。YASB/komorebi/ロック画面などWindows固有部分を�
 ```
 壁紙変更 (ctrl-cmd-w のポップアップピッカー、または手動でSystem Settings)
   → matugen-apply [壁紙パス | 省略時はSystem Events経由で現在の壁紙を自動検出]
-     1. matugen image <壁紙> -c ~/.config/matugen-mac/config.toml
-        → テンプレート palette.css (WSL版と同じCSS変数構成) から
-          ~/.cache/matugen/mac-palette.css を生成 (matugenが作るのはこの1枚だけ)
+     1. 壁紙から抽出した色を macOS 標準プリセット8色のうち最も近い色へスナップし、
+        matugen color hex <メインプリセットHEX> -c ~/.config/matugen-mac/config.toml
+        で ~/.cache/matugen/mac-palette.css を生成
      2. WSL版と共通の lib/palette.sh で抽出→派生色計算→レンダリングを行う
-        (surface には --surface2 を使う):
+        (surface には --surface2 を使い、triad は +120度回転後の macOS プリセット色に揃える):
         - CSS変数からMaterial roleを抽出し一時colors.luaを組み立てる
         - derive-colors.py (共通lib) でcomplement/triad/accent_pale/selection_bgを追記
         - render-template.sh (共通lib) でstarship/lazygit/cz.toml/yazi theme.toml/
@@ -184,7 +184,10 @@ WSL版の簡略版。YASB/komorebi/ロック画面などWindows固有部分を�
      3. colors.lua を ~/.config/wezterm/matugen-colors.lua と
         ~/.cache/matugen/colors.lua へコピー
      4. aerospace-launch-borders (modules/wm/aerospace/launch-borders.sh) を呼び、
-        AeroSpace(JankyBorders)の枠色(accent/muted)を反映する
+        AeroSpace(JankyBorders)の枠色(120度回転後のmacOSプリセット色 triad)を反映する
+     5. AppKit の NSColorSetUserAccentColor / NSColorSetUserHighlightColor を呼び、
+        macOS 本体のアクセントカラー (Mission Control 選択枠・Finder サイドバー等) も
+        同じ 120度回転後の macOS プリセット色へ即時反映する
 ```
 
 - 壁紙変更の入口:

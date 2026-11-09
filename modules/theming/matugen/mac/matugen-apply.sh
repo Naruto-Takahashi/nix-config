@@ -26,7 +26,7 @@ trap 'rmdir "$LOCK_DIR" 2>/dev/null || true' EXIT
 CACHE="$HOME/.cache/matugen/mac-palette.css"
 
 # -------------------------------------------------------------------------
-# 1. 壁紙の決定と matugen 実行
+# 1. 壁紙から代表色を抽出し、macOS プリセット色にスナップして matugen 実行
 # -------------------------------------------------------------------------
 if [[ "${1:-}" == "--reapply" ]]; then
     img=""
@@ -48,7 +48,70 @@ if [[ -z "${img:-}" || ! -f "$img" ]]; then
     exit 1
 fi
 
-matugen image "$img" -m dark --source-color-index 0 \
+# 壁紙から抽出した色を macOS の8つのシステムプリセット色のうち最も近い色へスナップし、
+# さらに +120度回転させた先の macOS プリセット色 (ウィンドウ枠線 & macOS アクセントカラー用) も決定する。
+read -r main_preset_id main_preset_hex rot_preset_id rot_accent_hex < <(
+    python3 - "$img" <<'PY'
+import colorsys, json, subprocess, sys
+
+img = sys.argv[1]
+raw = subprocess.check_output(
+    ["matugen", "image", img, "-m", "dark", "--source-color-index", "0", "--dry-run", "-j", "hex"],
+    text=True,
+)
+raw_primary = json.loads(raw)["colors"]["primary"]["dark"]["color"].lstrip("#")
+r, g, b = (int(raw_primary[i:i+2], 16) / 255.0 for i in (0, 2, 4))
+h, l, s = colorsys.rgb_to_hls(r, g, b)
+deg = h * 360.0
+
+# macOS 標準アクセントカラーの sRGB 実測値とダークモード primary 派生値
+# (-1: Graphite, 0: Red, 1: Orange, 2: Yellow, 3: Green, 4: Blue, 5: Purple, 6: Pink)
+PRESETS = {
+    -1: ("#98989d", "#acc7ff"),
+     0: ("#ff4245", "#ffb3ae"),
+     1: ("#ff9230", "#ffb781"),
+     2: ("#ffd600", "#ddc56e"),
+     3: ("#30d158", "#9ed49d"),
+     4: ("#0091ff", "#a4c9fe"),
+     5: ("#db34f2", "#ecb4ec"),
+     6: ("#ff375f", "#ffb2b7"),
+}
+
+# 色相環上の +120度回転に対応する macOS プリセット遷移マップ
+ROTATE_120 = {
+    -1: -1,
+     0: 3,  # Red    -> Green
+     1: 3,  # Orange -> Green
+     2: 4,  # Yellow -> Blue
+     3: 5,  # Green  -> Purple
+     4: 6,  # Blue   -> Pink
+     5: 2,  # Purple -> Yellow
+     6: 3,  # Pink   -> Green
+}
+
+if s < 0.12:
+    main_id = -1
+elif deg >= 350 or deg < 15:
+    main_id = 0  # Red
+elif deg < 40:
+    main_id = 1  # Orange
+elif deg < 75:
+    main_id = 2  # Yellow
+elif deg < 185:
+    main_id = 3  # Green (ティール・エメラルド系も含む)
+elif deg < 255:
+    main_id = 4  # Blue
+elif deg < 315:
+    main_id = 5  # Purple
+else:
+    main_id = 6  # Pink
+
+rot_id = ROTATE_120[main_id]
+print(main_id, PRESETS[main_id][0], rot_id, PRESETS[rot_id][1])
+PY
+)
+
+matugen color hex "$main_preset_hex" -m dark \
     -c "$HOME/.config/matugen-mac/config.toml"
 printf '%s\n' "$img" > "$HOME/.cache/matugen/last-wallpaper"
 
@@ -63,58 +126,37 @@ if ! matugen_build_palette "$CACHE" surface2; then
     echo "matugen-apply: パレット抽出に失敗した (必須キー欠落: $CACHE)" >&2
     exit 1
 fi
+
+# triad (120度回転色) も macOS プリセット由来の色 (rot_accent_hex) に揃える
+triad="$rot_accent_hex"
+sed -i '' "s|triad = \"#[0-9a-fA-F]*\"|triad = \"${triad}\"|" "$MATUGEN_LUA"
+
 matugen_render_common
 
 # -------------------------------------------------------------------------
-# 3. AeroSpace (JankyBorders) の枠色を追従させる (補色を優先利用)
+# 3. AeroSpace (JankyBorders) の枠色を追従させる (120度回転後の macOS プリセット色)
 # -------------------------------------------------------------------------
 [[ -x "$HOME/.local/bin/aerospace-launch-borders" ]] && \
     "$HOME/.local/bin/aerospace-launch-borders" || true
 
 # -------------------------------------------------------------------------
-# 4. macOS 本体のアクセントカラー & ハイライトカラーを追従させる
+# 4. macOS 本体のアクセントカラー & ハイライトカラーを 120度回転色へ追従させる
 # -------------------------------------------------------------------------
-# accent色から色相を計算し、最も近いmacOSプリセット色をAppleAccentColorに、
-# 実RGB値をAppleHighlightColor (テキスト選択ハイライト) に適用する。
-python3 - <<PY || true
-import colorsys, subprocess
+# Mission Control の選択枠・Finder サイドバーアイコン・標準コントロール色を
+# AeroSpace のウィンドウ枠線と同じ 120度回転後の macOS プリセット色に統一する。
+# macOS「システム設定 > 外観」が内部で呼ぶ AppKit の NSColorSetUserAccentColor /
+# NSColorSetUserHighlightColor (notify=True) を直接呼び出すことで、再起動なしで
+# Finder・Dock(Mission Control)を含む全アプリへ即時反映させる。
+python3 - "$rot_preset_id" <<'PY' || true
+import ctypes, sys
 
-hex_color = "${accent}".lstrip("#")
-r, g, b = (int(hex_color[i:i+2], 16) / 255.0 for i in (0, 2, 4))
-h, l, s = colorsys.rgb_to_hls(r, g, b)
-deg = h * 360.0
+accent_val = int(sys.argv[1])
+appkit = ctypes.cdll.LoadLibrary("/System/Library/Frameworks/AppKit.framework/AppKit")
+appkit.NSColorSetUserAccentColor.argtypes = [ctypes.c_long, ctypes.c_bool]
+appkit.NSColorSetUserHighlightColor.argtypes = [ctypes.c_long, ctypes.c_void_p, ctypes.c_bool]
 
-# AppleAccentColor:
-# -1: Graphite, 0: Red, 1: Orange, 2: Yellow, 3: Green, 4: Blue, 5: Purple, 6: Pink
-if s < 0.12:
-    accent_val = -1
-    aqua_val = 6
-elif deg >= 350 or deg < 15:
-    accent_val = 0
-    aqua_val = 1
-elif deg < 40:
-    accent_val = 1
-    aqua_val = 1
-elif deg < 75:
-    accent_val = 2
-    aqua_val = 1
-elif deg < 165:
-    accent_val = 3
-    aqua_val = 1
-elif deg < 255:
-    accent_val = 4
-    aqua_val = 1
-elif deg < 305:
-    accent_val = 5
-    aqua_val = 1
-else:
-    accent_val = 6
-    aqua_val = 1
-
-subprocess.run(["defaults", "write", "-g", "AppleAccentColor", "-int", str(accent_val)], check=False)
-subprocess.run(["defaults", "write", "-g", "AppleAquaColorVariant", "-int", str(aqua_val)], check=False)
-highlight_str = f"{r:.6f} {g:.6f} {b:.6f}"
-subprocess.run(["defaults", "write", "-g", "AppleHighlightColor", "-string", highlight_str], check=False)
+appkit.NSColorSetUserAccentColor(accent_val, True)
+appkit.NSColorSetUserHighlightColor(accent_val, None, True)
 PY
 
-echo "matugen-apply (mac): 適用完了 (accent=${accent})"
+echo "matugen-apply (mac): 適用完了 (main_preset=${main_preset_id}:${main_preset_hex}, accent=${accent}, rot_preset=${rot_preset_id}:${triad})"
