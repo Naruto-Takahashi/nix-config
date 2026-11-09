@@ -37,6 +37,12 @@
       flake = false;
     };
 
+    # Pre-built nix-index データベース (command-not-found / comma 高速化)
+    nix-index-database = {
+      url = "github:nix-community/nix-index-database";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nix-darwin の入力ソース定義
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -50,6 +56,7 @@
       home-manager,
       kanagawa-dragon-yazi,
       darwin,
+      nix-index-database,
       ...
     }:
     let
@@ -71,7 +78,10 @@
         host:
         home-manager.lib.homeManagerConfiguration {
           pkgs = nixpkgs.legacyPackages."x86_64-linux";
-          modules = [ ./hosts/${host} ];
+          modules = [
+            ./hosts/${host}
+            nix-index-database.homeModules.nix-index
+          ];
           extraSpecialArgs = specialArgs;
         };
 
@@ -82,6 +92,9 @@
         home-manager.users.nalt = import ./hosts/${host};
         home-manager.extraSpecialArgs = specialArgs;
         home-manager.backupFileExtension = "backup";
+        home-manager.sharedModules = [
+          nix-index-database.homeModules.nix-index
+        ];
       };
 
       forSystems = f: nixpkgs.lib.genAttrs [ "x86_64-linux" "aarch64-darwin" ] f;

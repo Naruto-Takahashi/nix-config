@@ -90,6 +90,9 @@
     enableZshIntegration = true;
   };
 
+  # nix-index-database 提供の pre-built DB を用いて comma (`, <cmd>`) を高速化
+  programs.nix-index-database.comma.enable = true;
+
   home.packages = [
     pkgs.fd # 高速 find (fzf バックエンド)
     pkgs.curl # HTTPクライアント
@@ -102,7 +105,6 @@
     pkgs.gh # GitHub CLI
     pkgs.jq # JSON整形・抽出
     pkgs.poppler-utils # PDF を画像・テキストに変換 (Claude Code の PDF 読み取りが pdftoppm を使う)
-    pkgs.comma # 一時パッケージ実行
     pkgs.just # コマンドランナー
     pkgs.uv # Python 開発ツール (全環境共通)
     pkgs.bitwarden-cli # Bitwarden CLI (bw)
