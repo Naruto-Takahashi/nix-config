@@ -1,12 +1,14 @@
 # =========================================================================
 # AI エージェント用共通スキル (Agent Skills) 宣言的配置モジュール
 # =========================================================================
-# Claude Code (~/.claude/skills) および Antigravity CLI (~/.gemini/config/skills)
+# Claude Code (~/.claude/skills), Antigravity CLI (~/.gemini/skills),
+# Orca (~/.agents/skills & ~/Library/Application Support/orca/antigravity-chat/config/skills)
 # に共通で配備する汎用エンジニアリング・ワークフロースキル群。
 # 上流リポジトリは flake inputs (flake.lock) で固定し、週次の lock 更新で追従する。
 {
   config,
   lib,
+  pkgs,
   skillSources,
   ...
 }:
@@ -15,55 +17,51 @@ let
   cfg = config.programs.agentSkills;
 
   vercelSkillsSrc = skillSources.vercel-skills;
-
   anthropicsSkillsSrc = skillSources.anthropic-skills;
-
   vercelAgentSkillsSrc = skillSources.vercel-agent-skills;
-
   mattpocockSkillsSrc = skillSources.mattpocock-skills;
 
-  findSkillsFiles = lib.mkIf cfg.enableFindSkills {
-    ".claude/skills/find-skills/SKILL.md".source = "${vercelSkillsSrc}/skills/find-skills/SKILL.md";
-    ".gemini/config/skills/find-skills/SKILL.md".source =
-      "${vercelSkillsSrc}/skills/find-skills/SKILL.md";
+  orcaChatSkillsDir =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "Library/Application Support/orca/antigravity-chat/config/skills"
+    else
+      ".config/orca/antigravity-chat/config/skills";
+
+  deploySkill = name: src: {
+    ".claude/skills/${name}".source = src;
+    ".agents/skills/${name}".source = src;
+    ".gemini/skills/${name}".source = src;
+    ".gemini/config/skills/${name}".source = src;
+    "${orcaChatSkillsDir}/${name}".source = src;
   };
 
-  frontendSkillsFiles = lib.mkIf cfg.enableFrontendSkills {
-    ".claude/skills/frontend-design/SKILL.md".source =
-      "${anthropicsSkillsSrc}/skills/frontend-design/SKILL.md";
-    ".gemini/config/skills/frontend-design/SKILL.md".source =
-      "${anthropicsSkillsSrc}/skills/frontend-design/SKILL.md";
-    ".claude/skills/web-design-guidelines/SKILL.md".source =
-      "${vercelAgentSkillsSrc}/skills/web-design-guidelines/SKILL.md";
-    ".gemini/config/skills/web-design-guidelines/SKILL.md".source =
-      "${vercelAgentSkillsSrc}/skills/web-design-guidelines/SKILL.md";
-  };
+  findSkillsFiles = lib.mkIf cfg.enableFindSkills (
+    deploySkill "find-skills" "${vercelSkillsSrc}/skills/find-skills"
+  );
 
-  architectureSkillsFiles = lib.mkIf cfg.enableArchitectureSkills {
-    ".claude/skills/improve-codebase-architecture".source =
-      "${mattpocockSkillsSrc}/skills/engineering/improve-codebase-architecture";
-    ".gemini/config/skills/improve-codebase-architecture".source =
-      "${mattpocockSkillsSrc}/skills/engineering/improve-codebase-architecture";
-    ".claude/skills/codebase-design".source =
-      "${mattpocockSkillsSrc}/skills/engineering/codebase-design";
-    ".gemini/config/skills/codebase-design".source =
-      "${mattpocockSkillsSrc}/skills/engineering/codebase-design";
-  };
+  frontendSkillsFiles = lib.mkIf cfg.enableFrontendSkills (
+    lib.mkMerge [
+      (deploySkill "frontend-design" "${anthropicsSkillsSrc}/skills/frontend-design")
+      (deploySkill "web-design-guidelines" "${vercelAgentSkillsSrc}/skills/web-design-guidelines")
+    ]
+  );
 
-  workflowSkillsFiles = lib.mkIf cfg.enableWorkflowSkills {
-    ".claude/skills/grill-me".source = "${mattpocockSkillsSrc}/skills/productivity/grill-me";
-    ".gemini/config/skills/grill-me".source = "${mattpocockSkillsSrc}/skills/productivity/grill-me";
-    ".claude/skills/diagnosing-bugs".source =
-      "${mattpocockSkillsSrc}/skills/engineering/diagnosing-bugs";
-    ".gemini/config/skills/diagnosing-bugs".source =
-      "${mattpocockSkillsSrc}/skills/engineering/diagnosing-bugs";
-    ".claude/skills/skill-creator".source = "${anthropicsSkillsSrc}/skills/skill-creator";
-    ".gemini/config/skills/skill-creator".source = "${anthropicsSkillsSrc}/skills/skill-creator";
-    ".claude/skills/xlsx".source = "${anthropicsSkillsSrc}/skills/xlsx";
-    ".gemini/config/skills/xlsx".source = "${anthropicsSkillsSrc}/skills/xlsx";
-    ".claude/skills/pdf".source = "${anthropicsSkillsSrc}/skills/pdf";
-    ".gemini/config/skills/pdf".source = "${anthropicsSkillsSrc}/skills/pdf";
-  };
+  architectureSkillsFiles = lib.mkIf cfg.enableArchitectureSkills (
+    lib.mkMerge [
+      (deploySkill "improve-codebase-architecture" "${mattpocockSkillsSrc}/skills/engineering/improve-codebase-architecture")
+      (deploySkill "codebase-design" "${mattpocockSkillsSrc}/skills/engineering/codebase-design")
+    ]
+  );
+
+  workflowSkillsFiles = lib.mkIf cfg.enableWorkflowSkills (
+    lib.mkMerge [
+      (deploySkill "grill-me" "${mattpocockSkillsSrc}/skills/productivity/grill-me")
+      (deploySkill "diagnosing-bugs" "${mattpocockSkillsSrc}/skills/engineering/diagnosing-bugs")
+      (deploySkill "skill-creator" "${anthropicsSkillsSrc}/skills/skill-creator")
+      (deploySkill "xlsx" "${anthropicsSkillsSrc}/skills/xlsx")
+      (deploySkill "pdf" "${anthropicsSkillsSrc}/skills/pdf")
+    ]
+  );
 in
 {
   options.programs.agentSkills = {

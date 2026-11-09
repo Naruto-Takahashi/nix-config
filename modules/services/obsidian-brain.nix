@@ -20,6 +20,12 @@
 let
   cfg = config.services.obsidianBrain;
 
+  orcaChatSkillsDir =
+    if pkgs.stdenv.hostPlatform.isDarwin then
+      "Library/Application Support/orca/antigravity-chat/config/skills"
+    else
+      ".config/orca/antigravity-chat/config/skills";
+
   # --- 双方向Git自動同期ラッパー (実体は Vault 内の _scripts/sync.sh) ---
   obsidian-vault-sync = pkgs.writeShellApplication {
     name = "obsidian-vault-sync";
@@ -107,10 +113,16 @@ in
     programs.antigravityCli.extraInstructions = [ obsidianBrainInstructions ];
 
     # Vault 自体が持つ .agents/skills/obsidian-brain/SKILL.md を
-    # Claude Code と Antigravity CLI の両方のグローバルスキルへ直結する。
+    # Claude Code, Antigravity CLI, Orca の各グローバルスキルへ直結する。
     home.file.".claude/skills/obsidian-brain/SKILL.md".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
+    home.file.".agents/skills/obsidian-brain/SKILL.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
+    home.file.".gemini/skills/obsidian-brain/SKILL.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
     home.file.".gemini/config/skills/obsidian-brain/SKILL.md".source =
+      config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
+    home.file."${orcaChatSkillsDir}/obsidian-brain/SKILL.md".source =
       config.lib.file.mkOutOfStoreSymlink "${cfg.vaultPath}/.agents/skills/obsidian-brain/SKILL.md";
 
     # 旧 @bitbonsai/mcpvault 設定を空にして不要な Node.js MCP 起動を防ぐ
