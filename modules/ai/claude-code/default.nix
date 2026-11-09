@@ -34,7 +34,11 @@ in
     home.packages = [ pkgs.claude-code ];
 
     home.file.".claude/CLAUDE.md".text = lib.concatStringsSep "\n\n" (
-      [ (builtins.readFile ./CLAUDE.md) ] ++ cfg.extraInstructions
+      [
+        (builtins.readFile ./CLAUDE.md)
+        (builtins.readFile ../common-rules.md)
+      ]
+      ++ cfg.extraInstructions
     );
 
     # settings.json は管理しない: Claude Code 本体・Orca (hooks 注入)・/config が書き込むため、

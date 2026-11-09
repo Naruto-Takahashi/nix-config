@@ -41,7 +41,11 @@ in
     ];
 
     home.file.".gemini/GEMINI.md".text = lib.concatStringsSep "\n\n" (
-      [ (builtins.readFile ./GEMINI.md) ] ++ cfg.extraInstructions
+      [
+        (builtins.readFile ./GEMINI.md)
+        (builtins.readFile ../common-rules.md)
+      ]
+      ++ cfg.extraInstructions
     );
   };
 }
