@@ -1,4 +1,6 @@
 # AeroSpace Configuration
+config-version = 2
+persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
 
 # ログイン時に起動します．
 start-at-login = true
@@ -7,9 +9,9 @@ start-at-login = true
 default-root-container-layout = 'tiles'
 default-root-container-orientation = 'auto'
 
-# マウスカーソルが乗ったウィンドウに自動でフォーカスを移します（focus follows mouse）．
-# ※キー操作時のカーソル強制ワープ（on-focus-changed move-mouse）はポップアップ誤消滅を防ぐため無効のままにします．
-focus-follows-mouse.enabled = true
+# ポップアップ・ミニツールバー（PowerPoint等）やメニューバーの誤消滅・フォーカス強奪を防ぐため，
+# マウス追従 (focus-follows-mouse) およびカーソルワープ (move-mouse) は無効化します．
+focus-follows-mouse.enabled = false
 
 # AeroSpace起動完了時にJankyBorders（アクティブウィンドウ枠線表示ツール）をバックグラウンド実行します．
 # 色はmatugenパレット(~/.cache/matugen/colors.lua)のaccent/mutedに追従します
@@ -20,11 +22,23 @@ after-startup-command = [
 ]
 
 # 特定の固定サイズアプリ・ダイアログ・ポップアップのフローティング例外ルール
-# (最低限の元凶のみ登録し，ハードコードの肥大化を防ぎます)
+# 新規GUIアプリ追加時は，以下の基準に該当する場合ここへ登録する（詳細は docs/aerospace.md）:
+#   1. 独自ポップアップ・ミニツールバーを別ウィンドウ生成するアプリ (Microsoft Office等)
+#   2. 固定サイズのユーティリティ・認証・設定画面 (システム設定, Bitwarden, KensingtonWorks, Spokenly等)
+#   3. 動画の小窓 (Picture-in-Picture) やランチャー系ポップアップ
 on-window-detected = [
   { if = 'test %{window-title} ~= "wallpaper picker"', run = 'layout floating' },
+  { if = 'test %{window-title} ~= "(?i)picture.in.picture"', run = 'layout floating' },
   { if = 'test %{app-bundle-id} = "com.apple.systempreferences"', run = 'layout floating' },
-  { if = 'test %{app-bundle-id} = "com.apple.finder"', run = 'layout floating' }
+  { if = 'test %{app-bundle-id} = "com.apple.finder"', run = 'layout floating' },
+  # Microsoft Office（図形右クリック等のミニツールバー・サブウィンドウ保護）
+  { if = 'test %{app-bundle-id} = "com.microsoft.Powerpoint"', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = "com.microsoft.Excel"', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = "com.microsoft.Word"', run = 'layout floating' },
+  # 固定サイズ・常駐ポップアップ系ユーティリティ
+  { if = 'test %{app-bundle-id} = "com.bitwarden.desktop"', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = "com.kensington.kensingtonworks2.app"', run = 'layout floating' },
+  { if = 'test %{app-bundle-id} = "app.spokenly"', run = 'layout floating' }
 ]
 
 # ワークスペースとモニタの割り当て（メイン: 1〜5 / サブモニタ: 6〜9）
@@ -71,17 +85,20 @@ ctrl-cmd-p = 'resize width +50'
 ctrl-cmd-o = 'resize height +50'
 ctrl-cmd-i = 'resize height -50'
 
-# リサイズモードへの移行（Alt + R）
+# リサイズ・管理モードへの移行（Alt + R）
 ctrl-cmd-r = 'mode resize'
 
-# ウィンドウ分割方向の切り替え（Alt + Shift + T）
-# NixOS(togglesplit)・WSL(cycle-layout)と同じ Shift+T に統一している．
+# ウィンドウ分割方向の切り替え（Alt + Shift + D が ctrl-cmd-shift-t を送信）
 ctrl-cmd-shift-t = 'layout tiles horizontal vertical'
 
-# フローティング/タイリングの切り替え（Alt + Shift + Space）
+# フローティング/タイリングの切り替え（Alt + T が ctrl-cmd-shift-space を送信）
 ctrl-cmd-shift-space = 'layout floating tiling'
 
-# ゴーストウィンドウ（空ノード）の解消・ツリー平坦化（Alt + Shift + Backspace）
+# AeroSpace自体の一時停止 / 再開トグル（Alt + Shift + E）
+ctrl-cmd-shift-e = 'enable toggle'
+
+# ゴーストウィンドウ（空ノード）の解消・ツリー平坦化（Alt + E または Ctrl+Cmd+Shift+Backspace）
+ctrl-cmd-e = 'flatten-workspace-tree'
 ctrl-cmd-shift-backspace = 'flatten-workspace-tree'
 
 # ウィンドウサイズの均等化（Alt + Shift + B）
@@ -96,8 +113,8 @@ ctrl-cmd-m = 'macos-native-minimize'
 # ウィンドウを閉じる（Alt + Q が Ctrl+Cmd+Shift+W を送信します）．
 ctrl-cmd-shift-w = 'close'
 
-# 設定ファイルの再読み込みを行います．
-ctrl-cmd-shift-r = 'reload-config'
+# 設定ファイルの再読み込み＋ゴースト枠解消＋開いている全窓へのルール遡及適用（Alt + Shift + R）
+ctrl-cmd-shift-r = ['reload-config', 'flatten-workspace-tree', 'run-callback --for-every-window on-window-detected']
 
 # ワークスペース間のフォーカス移動（Alt + S / Alt + A が ctrl-cmd-s / ctrl-cmd-a を送信します）．
 ctrl-cmd-s = 'workspace next'
@@ -128,8 +145,7 @@ ctrl-cmd-shift-7 = ['move-node-to-workspace 7', 'workspace 7']
 ctrl-cmd-shift-8 = ['move-node-to-workspace 8', 'workspace 8']
 ctrl-cmd-shift-9 = ['move-node-to-workspace 9', 'workspace 9']
 
-# アプリケーションのクイック起動を行います．起動系キーは全ホストで
-# 「アプリ名の頭文字」に揃えている (N=Neovim, Y=Yazi, V=Vivaldi)．
+# アプリケーションのクイック起動を行います．
 ctrl-cmd-enter = 'exec-and-forget open -n -a WezTerm'
 ctrl-cmd-y = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/yazi'
 ctrl-cmd-n = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc/profiles/per-user/nalt/bin/nvim'
@@ -142,7 +158,7 @@ ctrl-cmd-alt-j = 'join-with down'
 ctrl-cmd-alt-k = 'join-with up'
 ctrl-cmd-alt-l = 'join-with right'
 
-# リサイズモードの設定（escapeのかわりにescキーを使用します）．
+# リサイズモードの設定
 [mode.resize.binding]
 h = 'resize width -50'
 l = 'resize width +50'
