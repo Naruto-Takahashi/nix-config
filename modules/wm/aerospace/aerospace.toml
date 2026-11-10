@@ -21,6 +21,9 @@ after-startup-command = [
   'exec-and-forget /Users/nalt/.local/bin/aerospace-launch-borders'
 ]
 
+# フォーカス変更時に枠線色を更新する (フローティング中は補色に切り替わる)．
+on-focus-changed = ['exec-and-forget /Users/nalt/.local/bin/aerospace-launch-borders']
+
 # 特定の固定サイズアプリ・ダイアログ・ポップアップのフローティング例外ルール
 # 新規GUIアプリ追加時は，以下の基準に該当する場合ここへ登録する（詳細は docs/aerospace.md）:
 #   1. 独自ポップアップ・ミニツールバーを別ウィンドウ生成するアプリ (Microsoft Office等)
@@ -67,63 +70,57 @@ outer.right = 8
 # キーバインド設定（Main Mode）
 # macOS標準および一般コピペ（Cmd）と衝突させないため，すべての操作プレフィックスに Ctrl+Cmd (ctrl-cmd) を使用します．
 [mode.main.binding]
-# ウィンドウ間のフォーカス移動（Alt + HJKL）
+# ウィンドウ間のフォーカス移動（Option + HJKL）
 ctrl-cmd-h = 'focus left'
 ctrl-cmd-j = 'focus down'
 ctrl-cmd-k = 'focus up'
 ctrl-cmd-l = 'focus right'
 
-# ウィンドウの移動（Alt + Shift + HJKL）
+# ウィンドウの移動（Option + Shift + HJKL）
 ctrl-cmd-shift-h = 'move left'
 ctrl-cmd-shift-j = 'move down'
 ctrl-cmd-shift-k = 'move up'
 ctrl-cmd-shift-l = 'move right'
 
-# ウィンドウサイズの簡易調整（Alt + UIPO）
+# ウィンドウサイズの簡易調整（Option + UIPO）
 ctrl-cmd-u = 'resize width -50'
 ctrl-cmd-p = 'resize width +50'
 ctrl-cmd-o = 'resize height +50'
 ctrl-cmd-i = 'resize height -50'
 
-# リサイズ・管理モードへの移行（Alt + R）
-ctrl-cmd-r = 'mode resize'
+# service モードへの移行（Option + R）．リサイズ・フロート切替・均等化・設定リロードなど
+# 「たまに使う調整系」の操作はこのモードの中の1キーに集約しています（AeroSpaceデフォルトの service モードと同じ考え方）．
+ctrl-cmd-r = 'mode service'
 
-# ウィンドウ分割方向の切り替え（Alt + Shift + D が ctrl-cmd-shift-t を送信）
-ctrl-cmd-shift-t = 'layout tiles horizontal vertical'
+# 分割方向の切り替え（Option + /．AeroSpaceデフォルトの alt-slash と同じ）
+ctrl-cmd-slash = 'layout tiles horizontal vertical'
 
-# フローティング/タイリングの切り替え（Alt + T が ctrl-cmd-shift-space を送信）
-ctrl-cmd-shift-space = 'layout floating tiling'
+# アコーディオンレイアウトの切り替え（Option + ,．AeroSpaceデフォルトの alt-comma と同じ）
+ctrl-cmd-comma = 'layout accordion horizontal vertical'
 
-# AeroSpace自体の一時停止 / 再開トグル（Alt + Shift + E）
-ctrl-cmd-shift-e = 'enable toggle'
-
-# ゴーストウィンドウ（空ノード）の解消・ツリー平坦化（Alt + E または Ctrl+Cmd+Shift+Backspace）
+# ゴーストウィンドウ（空ノード）の解消・ツリー平坦化（Option + E）
 ctrl-cmd-e = 'flatten-workspace-tree'
-ctrl-cmd-shift-backspace = 'flatten-workspace-tree'
 
-# ウィンドウサイズの均等化（Alt + Shift + B）
-ctrl-cmd-shift-b = 'balance-sizes'
+# AeroSpace自体の一時停止/再開はキーに割り当てない．停止中は全バインドが無効になりキーから再開できないため，
+# 必要なときはターミナルから `aerospace enable off` / `aerospace enable on` を実行する．
 
-# フルスクリーン表示の切り替え（Alt + F）
+# フルスクリーン表示の切り替え（Option + F）
 ctrl-cmd-f = 'fullscreen'
 
-# ウィンドウの最小化（Alt + M）
+# ウィンドウの最小化（Option + M）
 ctrl-cmd-m = 'macos-native-minimize'
 
-# ウィンドウを閉じる（Alt + Q が Ctrl+Cmd+Shift+W を送信します）．
+# ウィンドウを閉じる（Option + Q が Ctrl+Cmd+Shift+W を送信します）．
 ctrl-cmd-shift-w = 'close'
 
-# 設定ファイルの再読み込み＋ゴースト枠解消＋開いている全窓へのルール遡及適用（Alt + Shift + R）
-ctrl-cmd-shift-r = ['reload-config', 'flatten-workspace-tree', 'run-callback --for-every-window on-window-detected']
-
-# ワークスペース間のフォーカス移動（Alt + S / Alt + A が ctrl-cmd-s / ctrl-cmd-a を送信します）．
+# ワークスペース間のフォーカス移動（Option + S / Option + A が ctrl-cmd-s / ctrl-cmd-a を送信します）．
 ctrl-cmd-s = 'workspace next'
 ctrl-cmd-a = 'workspace prev'
 
-# 直近のワークスペースと切り替え（Alt + D が ctrl-cmd-t を送信します）．
+# 直近のワークスペースと切り替え（Option + D が ctrl-cmd-t を送信します）．
 ctrl-cmd-t = 'workspace-back-and-forth'
 
-# 特定ワークスペースへのダイレクトジャンプ（Alt + 1-9）
+# 特定ワークスペースへのダイレクトジャンプ（Option + 1-9）
 ctrl-cmd-1 = 'workspace 1'
 ctrl-cmd-2 = 'workspace 2'
 ctrl-cmd-3 = 'workspace 3'
@@ -134,7 +131,7 @@ ctrl-cmd-7 = 'workspace 7'
 ctrl-cmd-8 = 'workspace 8'
 ctrl-cmd-9 = 'workspace 9'
 
-# フォーカスウィンドウを別ワークスペースへ移動し，フォーカスも追従させます（Alt + Shift + 1-9）．
+# フォーカスウィンドウを別ワークスペースへ移動し，フォーカスも追従させます（Option + Shift + 1-9）．
 ctrl-cmd-shift-1 = ['move-node-to-workspace 1', 'workspace 1']
 ctrl-cmd-shift-2 = ['move-node-to-workspace 2', 'workspace 2']
 ctrl-cmd-shift-3 = ['move-node-to-workspace 3', 'workspace 3']
@@ -152,17 +149,24 @@ ctrl-cmd-n = 'exec-and-forget /etc/profiles/per-user/nalt/bin/wezterm start /etc
 ctrl-cmd-v = 'exec-and-forget open -n -a Vivaldi'
 ctrl-cmd-w = 'exec-and-forget /Users/nalt/.local/bin/wallpaper-pick-popup'
 
-# ウィンドウの結合（Alt + Ctrl + HJKL）
+# ウィンドウの結合（Option + Ctrl + HJKL）
 ctrl-cmd-alt-h = 'join-with left'
 ctrl-cmd-alt-j = 'join-with down'
 ctrl-cmd-alt-k = 'join-with up'
 ctrl-cmd-alt-l = 'join-with right'
 
-# リサイズモードの設定
-[mode.resize.binding]
+# service モード（Option + R で入る）
+# h/j/k/l のリサイズだけはモードに留まり連続操作できる．それ以外は実行後に main へ戻る．
+[mode.service.binding]
 h = 'resize width -50'
 l = 'resize width +50'
 k = 'resize height +50'
 j = 'resize height -50'
+# フロート/タイリングの切り替え（枠線色もフロート時は補色に更新）
+f = ['layout floating tiling', 'exec-and-forget /Users/nalt/.local/bin/aerospace-launch-borders', 'mode main']
+# ウィンドウサイズの均等化
+b = ['balance-sizes', 'mode main']
+# 設定の再読み込み＋ゴースト枠解消＋開いている全窓へのルール遡及適用
+c = ['reload-config', 'flatten-workspace-tree', 'run-callback --for-every-window on-window-detected', 'mode main']
 esc = 'mode main'
 enter = 'mode main'

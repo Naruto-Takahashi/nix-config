@@ -21,7 +21,7 @@
   grv   1     2     3     4     5     6     7     8     9
   tab   q     w     e     r     t     y     u     i     o     p     ret
   a     s     d     f     g     h     j     k     l
-  z     x     c     v     b     n     m
+  z     x     c     v     b     n     m     ,     /
   left  down  up    rght
   f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12 ;; frow-src
 )
@@ -98,6 +98,8 @@
     hyp-k       (concat $p k)      ;; Alt + k   -> Super + k（上へフォーカス）
     hyp-l       (concat $p l)      ;; Alt + l   -> Super + l（右へフォーカス）
     hyp-m       (concat $p m)      ;; Alt + m   -> Super + m（最小化）
+    hyp-comma   (concat $p ,)      ;; Option + , -> Ctrl+Cmd + ,（accordionレイアウト切替 / AeroSpace）
+    hyp-slash   (concat $p /)      ;; Option + / -> Ctrl+Cmd + /（分割方向切替 / AeroSpace）
     hyp-v       (concat $p v)      ;; Alt + v   -> Super + v（分割トグル）
 
     ;; その他のアプリケーション・ツール用 Super ショートカット
@@ -142,7 +144,7 @@
   grv   1     2     3     4     5     6     7     8     9
   tab   q     w     e     r     t     y     u     i     o     p     ret
   a     s     d     f     g     h     j     k     l
-  _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _
   left  down  up    rght
   @fk1  @fk2  @fk3  @fk4  f5    f6    @fk7  @fk8  @fk9  @fk10 @fk11 @fk12 ;; frow-base
 )
@@ -156,7 +158,7 @@
   @hyp-grv @hyp-1 @hyp-2 @hyp-3 @hyp-4 @hyp-5 @hyp-6 @hyp-7 @hyp-8 @hyp-9
   @hyp-tab @hyp-q @hyp-w @hyp-e @hyp-r @hyp-sft-spc @hyp-y @hyp-u @hyp-i @hyp-o @hyp-p @hyp-ret
   @hyp-a @hyp-s @hyp-t @hyp-f _     @hyp-h @hyp-j @hyp-k @hyp-l
-  _     _     @hyp-c @hyp-v @hyp-b @hyp-n @hyp-m
+  _     _     @hyp-c @hyp-v @hyp-b @hyp-n @hyp-m @hyp-comma @hyp-slash
   @hyp-left @hyp-down @hyp-up @hyp-rght
   _     _     _     _     _     _     _     _     _     _     _     _ ;; frow-l1
 )
@@ -169,7 +171,7 @@
   _     _     _     _     _     _     _     _     _     _
   _     _     _     end   _     _     _     @undo-key _     _     _     _
   home  _     @whisper _  _     left  down  up    right
-  _     del   _     _     bspc  _     _
+  _     del   _     _     bspc  _     _     _     _
   _     _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _ ;; frow-l2
 )
@@ -183,7 +185,7 @@
   _     _     _     _     _     _     _     _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _
   _     _     _     _     _     @hyp-ctrl-h @hyp-ctrl-j @hyp-ctrl-k @hyp-ctrl-l
-  _     _     _     _     _     _     _
+  _     _     _     _     _     _     _     _     _
   _     _     _     _
   _     _     _     _     _     _     _     _     _     _     _     _ ;; frow-l3
 )
@@ -225,7 +227,7 @@
     _     _     _     _     _     _     _     _     _     _
     _     _     _     _     _     _     _     _     _     _     _     _
     _     _     _     _     _     _     _     _     _
-    _     _     _     _     _     _     _
+    _     _     _     _     _     _     _     _     _
     _     _     _     _
     f1    f2    f3    f4    f5    f6    f7    f8    f9    f10   f11   f12   _
   )

@@ -5,6 +5,9 @@
 # =========================================================================
 # 壁紙と同化して見失わないよう、枠線色(active_color)には色相120度回転の
 # triad を優先して使う (無ければ complement / accent を使う)。
+# フォーカス中ウィンドウがフローティングのときだけ、補色(complement)に切り替えて
+# タイリングと見分けられるようにする (aerospace.toml の on-focus-changed と
+# レイアウトトグルキーから都度呼ばれる)。
 # 非アクティブ枠線(inactive_color)は完全透明(0x00000000)にする。AeroSpaceは
 # 非表示ワークスペースのウィンドウを画面右下に1pxだけ残して退避させる仕様の
 # ため、非アクティブ枠線に色を付けると画面右下に太い枠線の角が飛び出して見える。
@@ -30,6 +33,12 @@ if [[ -f "$COLORS" ]]; then
     elif [[ -n "$a" ]]; then
         border_color="$a"
     fi
+fi
+
+# フォーカス中ウィンドウがフローティングなら補色を使う
+layout="$(/opt/homebrew/bin/aerospace list-windows --focused --format '%{window-layout}' 2>/dev/null || true)"
+if [[ "$layout" == "floating" && -n "${c:-}" ]]; then
+    border_color="$c"
 fi
 
 if pgrep -x borders >/dev/null 2>&1; then

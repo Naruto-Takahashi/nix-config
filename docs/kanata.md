@@ -88,7 +88,7 @@ Kanata をバックグラウンドサービスとして稼働させることで�
 | キー | 実際に送信される信号 |
 | :---: | :--- |
 | **`SPACE`** | `Super + D` |
-| **`T`** | `Super + Shift + Space` |
+| **`T`** | `Super + Shift + Space` (macOSのAeroSpaceでは未割り当て) |
 | **`D`** | `Super + T` |
 | **`Return`** | `Super + Enter` |
 | **`TAB`** | `Super + Tab` |
@@ -96,6 +96,8 @@ Kanata をバックグラウンドサービスとして稼働させることで�
 | **`F`** | `Super + F` |
 | **`V`** | `Super + V` |
 | **`M`** | `Super + M` |
+| **`,`** | `Super + ,` (macOS: AeroSpaceのアコーディオン切替) |
+| **`/`** | `Super + /` (macOS: AeroSpaceの分割方向切替) |
 | **`H / J / K / L`** | `Super + HJKL` |
 | **`U / I / O / P`** | `Super + UIOP` |
 | **`S / A`** | `Super + S / A` |

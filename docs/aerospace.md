@@ -2,13 +2,13 @@
 
 **macOS専用**です．[modules/wm/aerospace/default.nix](../modules/wm/aerospace/default.nix) で宣言的に管理されているタイル型ウィンドウマネージャ **AeroSpace** の操作・配色連携・自動化まわりを解説します．NixOSの[Hyprland](hyprland.md)，Windows/WSLの[komorebi](komorebi.md)に相当する役割です．
 
-物理キーは全て `Alt` 長押しですが，Kanataがそれを `Ctrl+Cmd` (`ctrl-cmd-*`) に変換してAeroSpaceへ送っています（macOS標準のCmd単体ショートカットと衝突しないようにするため）．変換の仕組みは [kanata.md](kanata.md) の「対象OS・実装方式の違い」を参照してください．
+物理キーは全て `Option` 長押しですが，Kanataがそれを `Ctrl+Cmd` (`ctrl-cmd-*`) に変換してAeroSpaceへ送っています（macOS標準のCmd単体ショートカットと衝突しないようにするため）．変換の仕組みは [kanata.md](kanata.md) の「対象OS・実装方式の違い」を参照してください．
 
 ---
 
 ## キーバインド (Main Mode)
 
-すべて `Alt + <キー>` （実際に送信されるのは `Ctrl+Cmd + <キー>`）です．
+すべて `Option + <キー>` （実際に送信されるのは `Ctrl+Cmd + <キー>`）です．
 
 ### フォーカス・ウィンドウ移動
 
@@ -24,20 +24,32 @@
 | :---: | :--- |
 | `U` / `P` | 幅を -50 / +50 |
 | `O` / `I` | 高さを +50 / -50 |
-| `Shift + B` | ワークスペース内の全ウィンドウサイズを均等化 (`balance-sizes`) |
-| `R` | リサイズモードへ移行 (`H/J/K/L`でリサイズ，`Esc`/`Enter`で戻る) |
+| `R` | service モードへ移行 (下記参照) |
 
 ### レイアウト
 
 | キー | 動作 |
 | :---: | :--- |
-| `Shift + T` | 分割方向をタイル横⇄縦に切り替え (NixOS/WSLと同じ`Shift+T`に統一．以前は`V`単体だったが，起動系キーの統一のためVivaldi起動に譲った) |
-| `Shift + Space` | フローティング⇄タイリングを切り替え |
-| `Shift + Backspace` | ゴーストウィンドウ（空ノード）の解消・ツリー平坦化 (`flatten-workspace-tree`) |
+| `/` | 分割方向をタイル横⇄縦に切り替え (AeroSpaceデフォルトの `alt-slash` と同じ) |
+| `,` | アコーディオンレイアウトの横⇄縦切り替え (AeroSpaceデフォルトの `alt-comma` と同じ) |
+| `E` | ゴーストウィンドウ（空ノード）の解消・ツリー平坦化 (`flatten-workspace-tree`) |
 | `F` | フルスクリーン切り替え |
 | `M` | ウィンドウを最小化 (macOSネイティブ) |
-| `Shift + W` | ウィンドウを閉じる |
-| `Shift + R` | 設定ファイルの再読み込み (`reload-config`) |
+| `Q` | ウィンドウを閉じる (実送信は `ctrl-cmd-shift-w`．Cmd+Shift+Q のログアウトと衝突させないため) |
+
+AeroSpace自体の一時停止/再開はキーに割り当てていません．停止中は全バインド（`enable` を含むものも）が無効になりキーから再開できないためで，必要なときはターミナルから `aerospace enable off` / `aerospace enable on` を実行します．
+
+### service モード (`Option + R` で入る)
+
+AeroSpaceデフォルトの `service` モードと同じ考え方で，「たまに使う調整系の操作」を修飾キーなしの1キーに集約しています．`H/J/K/L` 以外は実行後に自動でメインモードへ戻ります．
+
+| キー | 動作 |
+| :---: | :--- |
+| `H` / `J` / `K` / `L` | 幅 -50 / 高さ -50 / 高さ +50 / 幅 +50 でリサイズ (モードに留まり連続操作可) |
+| `F` | フローティング⇄タイリング切り替え (フロート中の枠線は補色に変わる) |
+| `B` | ワークスペース内の全ウィンドウサイズを均等化 (`balance-sizes`) |
+| `C` | 設定再読み込み (`reload-config`) + ゴースト枠解消 + 開いている全窓へのルール遡及適用 |
+| `Esc` / `Enter` | 何もせずメインモードへ戻る |
 
 ### ワークスペース
 
@@ -73,9 +85,9 @@
 1. **ポップアップ・コンテキストメニューの消失防止**
    - `focus-follows-mouse` (マウス追従) は有効化していますが，キー操作時にマウスを中央へジャンプさせるカーソルワープ (`move-mouse window-lazy-center`) は無効化しています．これにより，フォーカス移動時にカーソルが勝手に吹っ飛んでポップアップが消滅する事故を防ぎつつ，マウス追従の軽快さを維持しています．
 2. **ゴーストウィンドウ（空の分割枠）の即座解消**
-   - マウスの「×」ボタン等でウィンドウを閉じた際に空の分割枠が残った場合，`Alt + Shift + Backspace` (`flatten-workspace-tree`) を押すと一瞬で余白が詰められます．
+   - マウスの「×」ボタン等でウィンドウを閉じた際に空の分割枠が残った場合，`Option + E` (`flatten-workspace-tree`) を押すと一瞬で余白が詰められます．
 3. **固定サイズアプリの自動フローティング**
-   - 純正の「システム設定」やFinderは自動でフローティング化されます．それ以外のアプリも `Alt + Shift + Space` でいつでも手動でタイリング⇄フローティングをトグルできます．
+   - 純正の「システム設定」やFinderは自動でフローティング化されます．それ以外のアプリも `Option + R` → `F` (service モード) でいつでも手動でタイリング⇄フローティングをトグルできます．
 
 ---
 
@@ -83,6 +95,7 @@
 
 アクティブウィンドウの枠線ハイライトは Homebrew の `borders` (JankyBorders) が担当します．色は壁紙から抽出した [Matugen](matugen-palette.md) のパレット (`~/.cache/matugen/colors.lua` の `triad`/`complement`/`accent`) に自動追従します．非アクティブウィンドウの枠線 (`inactive_color`) は完全透明 (`0x00000000`) にしています（AeroSpaceが別ワークスペースのウィンドウを画面右下に1px残して退避させる仕様のため，非アクティブ枠線を描画すると画面右下に枠線の角が飛び出して見えるのを防ぐため）．
 
+- **フローティング中は枠線が補色 (`complement`) に変わります**．タイリング中は `triad` のままです．AeroSpaceにはレイアウト変更通知がないため，`on-focus-changed` とservice モードのフロート切替 (`Option + R` → `F`) から `aerospace-launch-borders` を都度呼び，フォーカス中ウィンドウの `%{window-layout}` が `floating` かどうかで色を切り替えます．
 - 起動スクリプトは [`launch-borders.sh`](../modules/wm/aerospace/launch-borders.sh)．**`borders` は起動中に同じコマンドを再実行するとIPC経由で設定を生きたまま更新する仕様**なので，`pkill`して再起動する必要はありません（`pkill`すると次のインスタンスが上がるまでの一瞬，枠ハイライトが消えるため意図的に避けています）．
 - matugenキャッシュが無い場合は，WSL/NixOS側と同じ青ベースのフォールバック配色を使います．
 - ギャップ (`[gaps]`) は `inner.horizontal/vertical = 10`，`outer.left/bottom/right = 8`，`outer.top = 4`．WSL側komorebiの値 (`default_container_padding=6` / `default_workspace_padding=1`) と揃える案も試しましたが，見た目の好みでMac独自の値に戻しています．
@@ -91,7 +104,7 @@
 
 ## 壁紙ピッカー
 
-`Alt + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が呼び出されます．選択すると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
+`Option + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が呼び出されます．選択すると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
 
 ```toml
 on-window-detected = [
@@ -117,7 +130,7 @@ aerospace reload-config
 
 ## 設定変更時の注意
 
-`aerospace.toml` は `modules/wm/aerospace/aerospace.toml` から `mkOutOfStoreSymlink` で直結されているため，`darwin-rebuild switch` を叩かなくてもファイルを編集するだけで即座に反映可能です．ファイルを書き換えた後は，`aerospace reload-config`（または Alt+Shift+R / `ctrl-cmd-shift-r`）を実行してください．
+`aerospace.toml` は `modules/wm/aerospace/aerospace.toml` から `mkOutOfStoreSymlink` で直結されているため，`darwin-rebuild switch` を叩かなくてもファイルを編集するだけで即座に反映可能です．ファイルを書き換えた後は，`aerospace reload-config`（または `Option + R` → `C`）を実行してください．
 
 ---
 
