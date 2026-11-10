@@ -5,7 +5,6 @@
 -- 右手特化タップ (右利き用・左側の誤爆防止):
 --   右上の角: コピー (Cmd + C -> Copied)
 --   右下の角: ペースト (Cmd + V -> Pasted)
---   下端中央: 画面全体スクリーンショット -> クリップボード直行 (Captured)
 -- エッジスクロール (右端を指1本でなぞる):
 --   右端を上下になぞる: 音量調整 (macOS標準HUD表示付き)
 
@@ -162,7 +161,7 @@ local function handleEdgesAndTaps(touches)
             touchTracker.active = false
 
             -- 0.38秒以内のクイックタップ かつ スライドしていない
-            -- 右利き特化: 左半分(x < 0.25)や上端中央の誤爆要因を全廃し、右手で自然に届く右側・下端中央のみに限定
+            -- 右利き特化: 左半分や上端中央・下端中央の誤爆要因を全廃し、右手で自然に届く右側のみに限定
             if not didSlide and not moved and duration > 0.03 and duration < 0.38 and (now - touchTracker.lastTriggered) > 0.30 then
                 if maxF == 1 then
                     -- 1本指タップ
@@ -174,15 +173,11 @@ local function handleEdgesAndTaps(touches)
                             showHUD("Copied")
                         end
                     elseif y <= 0.25 then
-                        -- 下端エリア: 右下の角 Paste、下端中央 Captured (左下角は無効化)
+                        -- 下端エリア: 右下の角のみ Paste (左下角・中央は無効化)
                         if x >= 0.75 then
                             touchTracker.lastTriggered = now
                             hs.eventtap.keyStroke({"cmd"}, "v")
                             showHUD("Pasted")
-                        elseif x >= 0.25 then
-                            touchTracker.lastTriggered = now
-                            showHUD("Captured")
-                            hs.task.new("/usr/sbin/screencapture", nil, {"-c"}):start()
                         end
                     end
                 end
