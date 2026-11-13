@@ -35,6 +35,26 @@ let
     "${orcaChatSkillsDir}/${name}".source = src;
   };
 
+  # 自作スキル: 実体 (正本) は各リポジトリ側に置き、ここからシンボリックリンクで配置する
+  # (obsidian-brain と同じ方式。リポジトリ側の編集が、再 switch なしで即座に反映される)。
+  # リポジトリを clone していないマシンではリンク切れになるだけで、実害はない。
+  localSkills = {
+    # デスクトップペット「もちペット」の開発・拡張の知見と手順 (Naruto-Takahashi/mochi-pet、プライベート)
+    mochi-pet = "${config.home.homeDirectory}/ghq/github.com/Naruto-Takahashi/mochi-pet/skills/mochi-pet";
+  };
+
+  deployLocalSkill = name: path: {
+    ".claude/skills/${name}".source = config.lib.file.mkOutOfStoreSymlink path;
+    ".agents/skills/${name}".source = config.lib.file.mkOutOfStoreSymlink path;
+    ".gemini/skills/${name}".source = config.lib.file.mkOutOfStoreSymlink path;
+    ".gemini/config/skills/${name}".source = config.lib.file.mkOutOfStoreSymlink path;
+    "${orcaChatSkillsDir}/${name}".source = config.lib.file.mkOutOfStoreSymlink path;
+  };
+
+  localSkillsFiles = lib.mkIf cfg.enableLocalSkills (
+    lib.mkMerge (lib.mapAttrsToList deployLocalSkill localSkills)
+  );
+
   findSkillsFiles = lib.mkIf cfg.enableFindSkills (
     deploySkill "find-skills" "${vercelSkillsSrc}/skills/find-skills"
   );
@@ -85,6 +105,12 @@ in
       description = "コードベース設計・アーキテクチャ改善スキル (improve-codebase-architecture / codebase-design) を配置するかどうか。";
     };
 
+    enableLocalSkills = lib.mkOption {
+      type = lib.types.bool;
+      default = true;
+      description = "自作スキル (mochi-pet など。実体は各リポジトリ側) をシンボリックリンクで配置するかどうか。";
+    };
+
     enableWorkflowSkills = lib.mkOption {
       type = lib.types.bool;
       default = true;
@@ -98,6 +124,7 @@ in
       frontendSkillsFiles
       architectureSkillsFiles
       workflowSkillsFiles
+      localSkillsFiles
     ];
   };
 }
