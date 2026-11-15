@@ -1,0 +1,24 @@
+# AutoRaise configuration file
+# Managed by nix-config (modules/wm/autoraise/config)
+
+# マウスホバー時のポーリング間隔 (ms, 最小20)
+pollMillis=50
+
+# ウィンドウを最前面化するまでの遅延 (pollMillis の倍数: 2 = 100ms)
+delay=2
+
+# ウィンドウにフォーカスを当てるまでの遅延 (pollMillis の倍数: 2 = 100ms)
+focusDelay=2
+
+# マウス静止を検知してからフォーカス/レイズするか
+requireMouseStop=true
+
+# 一時無効化キー (control / option / disabled)
+disableKey=control
+
+# ワープ機能は無効化 (AeroSpace 側の move-mouse window-lazy-center を使用)
+warpX=0
+warpY=0
+
+# ポップアップ誤消滅・チラつき防止のための除外アプリリスト
+ignoreApps="Microsoft Word,Microsoft Excel,Microsoft PowerPoint,Microsoft Outlook,Microsoft OneNote,Microsoft Teams"

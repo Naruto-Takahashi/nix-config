@@ -53,12 +53,14 @@ in
       "nikitabobko/tap"
       "FelixKratz/formulae"
       "rdrkr/tap"
+      "dimentium/autoraise"
     ];
     # WM 周り (インフラ) だけを cask で管理する。aerospace は CLI が /opt/homebrew/bin に入り、
     # アクセシビリティ権限も /Applications 固定のパスで安定する。
     casks = [
       "aerospace" # タイリングウィンドウマネージャ
       "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，docs/aerospace.md参照)
+      "dimentium/autoraise/autoraiseapp" # マウスホバーフォーカス追従 (AutoRaise.app)
       "hammerspoon" # トラックパッドジェスチャーによるワークスペース移動・ウィンドウ操作
       "stats" # メニューバーに CPU・メモリ・ネットワーク等を表示するシステムモニタ
     ];

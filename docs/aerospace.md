@@ -146,6 +146,15 @@ aerospace reload-config
 
 ---
 
+## マウスホバー追従 (AutoRaise)
+
+macOSにおけるマウスホバーによるウィンドウフォーカス追従は，AeroSpace標準の `focus-follows-mouse` ではなく，専用ユーティリティ **AutoRaise** (`modules/wm/autoraise/`) を併用しています．
+- **ホバー遅延**: `100ms` のディレイを設けることで，マウス通過時の誤爆を防止．
+- **Officeソフト誤動作防止**: `Microsoft Word` / `Excel` / `PowerPoint` / `Teams` 等のポップアップ・ミニツールバー誤消滅を防ぐため，これらを除外リストに登録．
+- **マウスワープ**: AeroSpace 側の `move-mouse window-lazy-center`（キーボード操作でウィンドウ切替時のみマウスを新ウィンドウ中央へ追従）と役割分担しています．
+
+---
+
 ## 関連ファイル
 
 | ファイル | 役割 |
@@ -153,5 +162,7 @@ aerospace reload-config
 | `modules/wm/aerospace/default.nix` | LaunchAgentの定義とシンボリックリンク配線 |
 | `modules/wm/aerospace/aerospace.toml` | AeroSpace の設定ファイル本体 (キーマップ・レイアウト・gaps) |
 | `modules/wm/aerospace/launch-borders.sh` | JankyBordersの起動・matugen配色連携スクリプト |
+| `modules/wm/autoraise/default.nix` | AutoRaise の Home Manager 設定モジュール (設定リンク & defaults) |
+| `modules/wm/autoraise/config` | AutoRaise の設定ファイル本体 (ディレイ・除外アプリ等) |
 | `modules/theming/matugen/mac/wallpaper-pick-popup.sh` | Raycast 壁紙ピッカーの起動スクリプト |
 | `modules/theming/matugen/mac/raycast-wallpaper-picker/` | Raycast グリッド拡張機能本体 |
