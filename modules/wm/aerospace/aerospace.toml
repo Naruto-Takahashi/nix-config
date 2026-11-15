@@ -47,7 +47,9 @@ on-window-detected = [
   # 固定サイズ・常駐ポップアップ系ユーティリティ
   { if = 'test %{app-bundle-id} = "com.bitwarden.desktop"', run = 'layout floating' },
   { if = 'test %{app-bundle-id} = "com.kensington.kensingtonworks2.app"', run = 'layout floating' },
-  { if = 'test %{app-bundle-id} = "app.spokenly"', run = 'layout floating' }
+  { if = 'test %{app-bundle-id} = "app.spokenly"', run = 'layout floating' },
+  # メニューバー整理ツール Thaw の設定画面 (タイル化されると画面外へ退避されて操作不能になる)
+  { if = 'test %{app-bundle-id} = "com.stonerl.Thaw"', run = 'layout floating' }
 ]
 
 # ワークスペースとモニタの割り当て（メイン: 1〜5 / サブモニタ: 6〜9）

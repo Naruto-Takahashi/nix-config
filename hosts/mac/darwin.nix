@@ -63,6 +63,7 @@ in
       "dimentium/autoraise/autoraiseapp" # マウスホバーフォーカス追従 (AutoRaise.app)
       "hammerspoon" # トラックパッドジェスチャーによるワークスペース移動・ウィンドウ操作
       "stats" # メニューバーに CPU・メモリ・ネットワーク等を表示するシステムモニタ
+      "thaw" # メニューバー整理ツール (Ice のフォーク。macOS 26 以降は Ice が動かないため)
     ];
     # 手動で入れるアプリ (自己更新するため宣言しない): Vivaldi / Raycast / Zotero / Obsidian /
     # Google Drive / Orca (同名の cask "orca" は plotly 用の別アプリなので使わないこと)。
