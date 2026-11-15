@@ -114,7 +114,16 @@ vim.api.nvim_create_autocmd("ColorScheme", {
         hl(0, "StatusLineNC", no_bg)
         hl(0, "LineNr", { bg = "none" })
         hl(0, "CursorLineNr", { bg = "none", bold = true })
-        hl(0, "CursorLine", { bg = mc.selection_bg })
+        -- パンくず (dropbar.nvim の winbar): 地は透過、文字は muted。区切りと、今いる
+        -- 階層 (最後) だけ、少し目立たせる
+        hl(0, "WinBar", { bg = "none", fg = mc.muted })
+        hl(0, "WinBarNC", { bg = "none", fg = mc.muted })
+        hl(0, "DropBarIconUISeparator", { fg = mc.muted })
+        hl(0, "DropBarCurrentContext", { bg = "none", bold = true })
+        -- カーソル行: 本文 (surface) より少し明るい accent 寄りの淡い色。
+        -- 以前の surface そのままだと、透過で明るく見える本文より暗くなり、
+        -- カーソル行だけ沈んで見えたため
+        hl(0, "CursorLine", { bg = require("blend")(mc.surface, mc.accent, 0.12) })
         hl(0, "CursorColumn", { bg = mc.selection_bg })
         -- hl(0, "CursorLine", { bg = "none", underline = true }) -- カーソル行の背景を表示するためにコメントアウト
 
