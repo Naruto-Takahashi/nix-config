@@ -101,12 +101,28 @@ end
 -- タブバー設定
 ----------------------------------------------------
 -- タイトルバーを非表示にし，マウスでのドラッグリサイズを有効化します．
+-- 信号ボタンの統合 (INTEGRATED_BUTTONS) は試したが、他のエディタから開いたターミナルと
+-- 見た目が変わってしまう (ボタンの分の空きなど) ため使わない
 config.window_decorations = (is_darwin or is_windows) and "RESIZE" or "NONE"
 config.show_tabs_in_tab_bar = true
 config.hide_tab_bar_if_only_one_tab = true
+-- + (新規タブ) と × (閉じる) のボタンは表示しない。タブは Cmd+T / Cmd+W などで開閉する。
+-- (× は自前描画のレトロタブバーでは出ない。fancy タブバー専用の設定)
 config.show_new_tab_button_in_tab_bar = false
 config.show_close_tab_button_in_tabs = false
-config.tab_max_width = 24
+-- タブは全幅を等分して使う (format-tab-title が max_width ちょうどの幅で描く。
+-- max_width は + ボタンの予約分を引いた、使える幅の等分)。
+-- 既定の上限 (24) だと幅が頭打ちになるので、実質無制限にする
+config.tab_max_width = 400
+-- タブバーの右側は、ボタン (+ やウィンドウボタン) 用に幅が予約される。ボタンは使わないので
+-- 文字を空にして、予約を減らす (右端は、Leader キーを押したときのモード表示
+-- (keybinds.lua の update-right-status) の領域として使われる)
+config.tab_bar_style = {
+  new_tab = "", new_tab_hover = "",
+  window_hide = "", window_hide_hover = "",
+  window_maximize = "", window_maximize_hover = "",
+  window_close = "", window_close_hover = "",
+}
 -- fancyタブバーを試したが、タブ形状(角丸/影)が固定でconfigから
 -- 調整できず、縦線セパレータとも噛み合わなかったためレトロに戻す。
 -- レトロタブバーはウィンドウ上端に常に張り付く仕様で、window_padding
@@ -128,8 +144,18 @@ local function hex_to_rgb(hex)
   hex = hex:gsub("#", "")
   return tonumber(hex:sub(1, 2), 16), tonumber(hex:sub(3, 4), 16), tonumber(hex:sub(5, 6), 16)
 end
+
+local function blend_hex(h1, h2, t)
+  local r1, g1, b1 = hex_to_rgb(h1)
+  local r2, g2, b2 = hex_to_rgb(h2)
+  return string.format("#%02x%02x%02x",
+    math.floor(r1 + (r2 - r1) * t + 0.5),
+    math.floor(g1 + (g2 - g1) * t + 0.5),
+    math.floor(b1 + (b2 - b1) * t + 0.5))
+end
+-- タブバーの地: 帯の色はやめて、本文と同じ地 (surface + 同じ透過度) にする
 local bg_r, bg_g, bg_b = hex_to_rgb(colors.surface)
-local BAR_BG = string.format("rgba(%d, %d, %d, 0.95)", bg_r, bg_g, bg_b)
+local BAR_BG = string.format("rgba(%d, %d, %d, %s)", bg_r, bg_g, bg_b, tostring(config.window_background_opacity))
 
 config.colors = {
   ansi = scheme_ansi,
@@ -159,50 +185,108 @@ config.colors = {
   selection_fg = colors.surface,
 }
 
--- タブの形状: フラット・縦線区切り (YASBバーの "|" セパレータ意匠に統一)．
---   背景ブロックは塗らず、アクティブ = accentの文字色+太字で区別する
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-  -- プロセス名からタブ名を決めます．
-  local title_text = tab.active_pane.title
-  local process = tab.active_pane.foreground_process_name or ""
+-- タブの形状: 全幅を開いているタブで等分する (バッジなし)。文字は各タブの中央。
+--   タブの境目は、右上がりの斜辺「/」 (nvim のタブ・ステータスと同じ向き) の平行四辺形。
+--   アクティブ = 淡い accent の地 (30%) + accent の太字 / 非アクティブ = さらに薄い accent の地 (12%)。
+--   タブバーは画面の一番上。切り替えは tab_bar_at_bottom (true で下)。
+config.tab_bar_at_bottom = false
 
+local SLANT_L = "\u{e0ba}" -- ◢ 先頭タブの左端の斜辺 "/"
+local SLANT = "\u{e0bc}"   -- ◤ タブ同士の境目 / 最後のタブの右端の斜辺 "/"
+
+-- グレーは使わず、accent (黄色) 1色の濃淡だけで塗り分ける。
+-- アクティブ = surface を accent へ 30% の面 + accent の太字 / 非アクティブ = 12% の面 + muted。
+-- nvim のバッファタブ (heirline-tabline.lua) も同じ式 (本体 12%・頭 28%) で、色味をそろえている
+local TAB_ON_BG, TAB_ON_FG = blend_hex(colors.surface, colors.accent, 0.30), colors.accent
+local TAB_OFF_BG, TAB_OFF_FG = blend_hex(colors.surface, colors.accent, 0.12), colors.muted
+
+-- プロセス名からタブ名を決めます．
+local function resolve_title(title_text, process)
+  title_text = title_text or ""
+  process = process or ""
   if title_text:find("^✳") or title_text:lower():find("claude") then
-    title_text = "Claude"
+    return "Claude"
   elseif process:find("nvim") or title_text == "nvim" then
-    title_text = "Neovim"
+    return "Neovim"
   elseif process:find("cmd.exe") then
-    title_text = "CMD"
+    return "CMD"
   elseif process:find("powershell.exe") or process:find("pwsh.exe") then
-    title_text = "PowerShell"
+    return "PowerShell"
   elseif process:find("wsl.exe") or process:find("wslhost.exe") then
-    title_text = "Ubuntu"
+    return "Ubuntu"
   end
+  -- ペインのタイトルが空のとき (プログラム終了直後など) はプロセス名で補う
+  if title_text == "" then
+    return process:match("([^/\\]+)$") or ""
+  end
+  return title_text
+end
 
-  local title = " " .. wezterm.truncate_right(title_text, max_width) .. " "
+-- 文字列を幅 w のセルの中央に置く (左右は空白で埋める。日本語など全角の幅も考慮)
+local function center(text, w)
+  local tw = wezterm.column_width(text)
+  if tw >= w then return wezterm.truncate_right(text, w) .. string.rep(" ", w - wezterm.column_width(wezterm.truncate_right(text, w))) end
+  local left = math.floor((w - tw) / 2)
+  return string.rep(" ", left) .. text .. string.rep(" ", w - tw - left)
+end
 
-  local fg = hover and colors.text or colors.muted
-  local bold = "Normal"
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+  local title_text = resolve_title(tab.active_pane.title, tab.active_pane.foreground_process_name)
+  local is_first = tab.tab_index == 0
+  local is_last = tab.tab_index == #tabs - 1
+
+  local bg, fg
   if tab.is_active then
-    fg = colors.accent
-    bold = "Bold"
+    bg, fg = TAB_ON_BG, TAB_ON_FG
+  else
+    bg, fg = TAB_OFF_BG, TAB_OFF_FG
+    if hover then fg = colors.text end
   end
+
+  -- 右端の斜辺の背景 = 隣のタブの地の色 (最後のタブは帯の地)
+  local next_bg = BAR_BG
+  if not is_last then
+    local nxt = tabs[tab.tab_index + 2]
+    next_bg = (nxt and nxt.is_active) and TAB_ON_BG or TAB_OFF_BG
+  end
+
+  -- 使える幅を等分する (max_width は、予約分を引いた、タブ1枚あたりの幅)。
+  -- Leader キーなどのモード表示 (右ステータス) が出ているときは、その幅の分だけ縮めて、
+  -- 表示の場所を空ける (そうしないと、タブが全幅を使い切って、モード表示が見切れる)
+  local slot = max_width
+  local status_w = wezterm.GLOBAL["right_status_w_" .. tostring(tab.window_id)] or 0
+  if status_w > 0 and #tabs > 0 then
+    slot = math.floor((max_width * #tabs - status_w) / #tabs)
+  end
+  -- 1タブの幅 = slot。右端の斜辺(1)を引いた残りが、文字を中央に置く本体の幅。
+  -- 先頭の左 (余白1 + 斜辺1) と最後の右 (余白1) は、ウィンドウの角丸との距離
+  local body_w = slot - 1
+  if is_first then body_w = body_w - 2 end
+  if is_last then body_w = body_w - 1 end
+  body_w = math.max(body_w, 1)
 
   local elements = {}
-  if tab.tab_index > 0 then
+  if is_first then
     table.insert(elements, { Background = { Color = BAR_BG } })
-    table.insert(elements, { Foreground = { Color = colors.muted } })
-    table.insert(elements, { Text = "│" })
-  else
-    -- 左端のウィンドウ角丸に文字がビタづけしないよう、先頭タブだけ余白を足す
-    table.insert(elements, { Background = { Color = BAR_BG } })
-    table.insert(elements, { Text = "  " })
+    table.insert(elements, { Text = " " })
+    table.insert(elements, { Foreground = { Color = bg } })
+    table.insert(elements, { Text = SLANT_L })
   end
-  table.insert(elements, { Background = { Color = BAR_BG } })
+  table.insert(elements, { Background = { Color = bg } })
   table.insert(elements, { Foreground = { Color = fg } })
-  table.insert(elements, { Attribute = { Intensity = bold } })
-  table.insert(elements, { Text = title })
+  if tab.is_active then
+    table.insert(elements, { Attribute = { Intensity = "Bold" } })
+  end
+  table.insert(elements, { Text = center(title_text, body_w) })
   table.insert(elements, { Attribute = { Intensity = "Normal" } })
-
+  -- 右端の斜辺 (左上がこのタブの地、右下が隣のタブの地)
+  table.insert(elements, { Background = { Color = next_bg } })
+  table.insert(elements, { Foreground = { Color = bg } })
+  table.insert(elements, { Text = SLANT })
+  if is_last then
+    table.insert(elements, { Background = { Color = BAR_BG } })
+    table.insert(elements, { Text = " " })
+  end
   return elements
 end)
 

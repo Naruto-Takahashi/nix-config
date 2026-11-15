@@ -28,10 +28,14 @@ end
 -- ステータスバーへのアクティブなキーテーブル表示設定を行います．
 wezterm.on("update-right-status", function(window, pane)
   local name = window:active_key_table()
+  local text = ""
   if name then
-    name = "TABLE: " .. name
+    text = " TABLE: " .. name .. " "
   end
-  window:set_right_status(name or "")
+  -- 右ステータスの幅 (セル数) を共有する。タブは全幅を使い切るので、wezterm.lua の
+  -- format-tab-title がこの幅の分だけタブを縮めて、モード表示の場所を空ける
+  wezterm.GLOBAL["right_status_w_" .. tostring(window:window_id())] = wezterm.column_width(text)
+  window:set_right_status(text)
 end)
 
 return {
