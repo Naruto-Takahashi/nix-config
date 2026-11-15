@@ -8,10 +8,10 @@ format = """
 ${custom.nixcli_badge}\
 ${custom.ssh_host}\
 $directory\
-[](fg:accent bg:dark)\
+[](fg:accent bg:accent_tonal)\
 $git_branch\
 $git_status\
-[](fg:dark)\
+[](fg:accent_tonal)\
 \n$character\
 """
 
@@ -45,29 +45,25 @@ printf '⠀nixcli in %s⠀' "$(hostname -s 2>/dev/null || hostname)"
 # ブロック自体が丸ごと消える不具合になった (実機で確認・撤回済み)
 shell = ["sh"]
 when = '[ -n "$container" ]'
-style = "fg:on_accent bg:tertiary bold"
-# 直後に続くssh_hostブロックの背景はsecondaryなので、区切り三角形も
-# secondaryに合わせる (以前はaccentのままでssh_host/PSブロックの色と
-# 食い違い、三角形だけ浮いて見える不具合があった)
-format = "[$output]($style)[](fg:tertiary bg:secondary)"
+style = "fg:accent bg:accent_tonal bold"
+# コンテナ内では ssh_host は出ない (排他) ので、直後に続くのは directory (accent)。
+# 区切り三角形は、淡い accent の地 → accent に合わせる
+format = "[$output]($style)[](fg:accent_tonal bg:accent)"
 
 [custom.ssh_host]
 command = '''
-if [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; then
-  # directoryブロック等と同じ余白感に揃える。starshipのcustomモジュールは
-  # 出力の前後の空白文字(スペース含む)をトリムしてしまうため、
-  # 空白扱いされないbraille blank(⠀)でパディングする
-  printf '⠀%s⠀' "$(hostname -s 2>/dev/null || hostname)"
-else
-  # アイコン無し: 幅2のブロック (以前のちょうど良い幅)
-  echo "⠀"
-fi
+# directoryブロック等と同じ余白感に揃える。starshipのcustomモジュールは
+# 出力の前後の空白文字(スペース含む)をトリムしてしまうため、
+# 空白扱いされないbraille blank(⠀)でパディングする
+printf '⠀%s⠀' "$(hostname -s 2>/dev/null || hostname)"
 '''
 # nixcli_badgeと同じ理由でshellをsh固定にする
 shell = ["sh"]
-when = '[ -z "$container" ]'
-style = "fg:on_accent bg:secondary bold"
-format = "[$output]($style)[](fg:secondary bg:accent)"
+# SSH 接続のときだけ出す (空の装飾ブロックはなくした)。出力が空でも format の区切り三角形は
+# 描かれてしまうため、「SSH のときだけ」の条件は command ではなく when に置く
+when = '[ -z "$container" ] && { [ -n "$SSH_CONNECTION" ] || [ -n "$SSH_CLIENT" ]; }'
+style = "fg:accent bg:accent_tonal bold"
+format = "[$output]($style)[](fg:accent_tonal bg:accent)"
 
 [username]
 disabled = true
@@ -100,12 +96,12 @@ disabled = true
 
 [git_branch]
 symbol = ""
-style = "bg:dark"
-format = '[[ $symbol $branch ](fg:accent bg:dark)]($style)'
+style = "bg:accent_tonal"
+format = '[[ $symbol $branch ](fg:accent bg:accent_tonal)]($style)'
 
 [git_status]
-style = "bg:dark"
-format = '[[($all_status$ahead_behind )](fg:accent bg:dark)]($style)'
+style = "bg:accent_tonal"
+format = '[[($all_status$ahead_behind )](fg:accent bg:accent_tonal)]($style)'
 # deleted の既定 ✘ (U+2718 HEAVY BALLOT X) はフォントによって隣のシンボルと
 # 重なって見えることがあったため、ASCII文字のハイフンに変更
 # (diffの削除行と同じ記号で直感的、幅計算のブレによる崩れも起きない)
@@ -122,8 +118,8 @@ time_format = "%R"
 format = '[[  $time ](fg:muted)]($style)'
 
 [character]
-success_symbol = "[❯](bold secondary)"
-error_symbol = "[❯](bold secondary)"
+success_symbol = "[❯](bold accent)"
+error_symbol = "[❯](bold accent)"
 vicmd_symbol = "[❯](bold #8e8e8e)"
 
 # フォールバック配色 (このファイルを更新した時点の実際の壁紙色を焼き込み)
@@ -132,6 +128,7 @@ vicmd_symbol = "[❯](bold #8e8e8e)"
 [palettes.matugen]
 accent = "#a2c9fd"
 accent_pale = "#c7dffe" # accent を白側に40%寄せた控えめな装飾色
+accent_tonal = "#3d4754" # surface を accent へ 18% 寄せた「淡い accent の地」
 tertiary = "#d7bde4"
 secondary = "#bbc7db"
 muted = "#c3c6cf"
