@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""colors.lua に accent 由来の派生色 (complement/triad/accent_pale) を
+"""colors.lua に accent 由来の派生色 (complement/triad/accent_pale/accent_tonal) を
 追記する (冪等)。
 
 WSL の matugen-apply.sh に元々あった計算式をそのまま移植したもの。
@@ -21,6 +21,14 @@ def blend_white(hex_color: str, amount: float) -> str:
     h = hex_color.lstrip("#")
     r, g, b = (int(h[i:i + 2], 16) for i in (0, 2, 4))
     return "#%02x%02x%02x" % tuple(round(v + (255 - v) * amount) for v in (r, g, b))
+
+
+def mix(hex_a: str, hex_b: str, amount: float) -> str:
+    """hex_a を hex_b へ amount (0..1) だけ線形ブレンドする。"""
+    a = hex_a.lstrip("#")
+    b = hex_b.lstrip("#")
+    ra, rb = (int(a[i:i + 2], 16) for i in (0, 2, 4)), (int(b[i:i + 2], 16) for i in (0, 2, 4))
+    return "#%02x%02x%02x" % tuple(round(x + (y - x) * amount) for x, y in zip(ra, rb))
 
 
 def main() -> int:
@@ -45,6 +53,13 @@ def main() -> int:
         additions.append(f'  triad = "{rotate_hue(accent, 0.3333333)}",')
     if not re.search(r"^\s*accent_pale\s*=", text, re.MULTILINE):
         additions.append(f'  accent_pale = "{blend_white(accent, 0.4)}",')
+    if not re.search(r"^\s*accent_tonal\s*=", text, re.MULTILINE):
+        # 「淡い accent の地」: surface を accent へ 18% ブレンド。nvim・WezTerm・Yazi が
+        # それぞれ同じ式 (surface → accent / モード色 へ 0.18) で計算している淡い地と
+        # そろえるため、starship の palette にも渡す (starship は色の計算ができないため)
+        sm = re.search(r'^\s*surface\s*=\s*"(#[0-9a-fA-F]{6})"', text, re.MULTILINE)
+        if sm:
+            additions.append(f'  accent_tonal = "{mix(sm.group(1), accent, 0.18)}",')
     if not re.search(r"^\s*selection_bg\s*=", text, re.MULTILINE):
         # fzf の選択行背景。surface をそのまま使う
         # (starship の git_branch 表示と同じ色に揃えるため)。

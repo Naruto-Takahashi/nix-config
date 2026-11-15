@@ -45,16 +45,26 @@ muted="$(lua_val muted)"
 surface="$(lua_val surface)"
 on_accent="$(lua_val on_accent)"
 accent_pale="$(lua_val accent_pale)"
+# accent_tonal は後から追加した派生色。古い colors.lua に無いときは、derive-colors.py と
+# 同じ式 (surface を accent へ 18% ブレンド) でここで計算する
+accent_tonal="$(lua_val accent_tonal || true)"
+if [[ -z "$accent_tonal" && -n "$accent" && -n "$surface" ]]; then
+  accent_tonal="$(python3 -c '
+import sys
+a, s = sys.argv[1].lstrip("#"), sys.argv[2].lstrip("#")
+print("#%02x%02x%02x" % tuple(round(int(s[i:i+2], 16) + (int(a[i:i+2], 16) - int(s[i:i+2], 16)) * 0.18) for i in (0, 2, 4)))
+' "$accent" "$surface")"
+fi
 error="$(lua_val error)"
 # shellcheck disable=SC2034  # sub_kv() 内で ${!var} 間接参照により使われる
 selection_bg="$(lua_val selection_bg)"
 
-for v in accent tertiary secondary complement triad text muted surface on_accent accent_pale error selection_bg; do
+for v in accent tertiary secondary complement triad text muted surface on_accent accent_pale accent_tonal error selection_bg; do
   [[ -n "${!v}" ]] || { echo "エラー: $CACHE から $v を読み取れなかった" >&2; exit 1; }
 done
 
 echo "現在のパレット:"
-for v in accent tertiary secondary complement triad text muted surface on_accent accent_pale error selection_bg; do
+for v in accent tertiary secondary complement triad text muted surface on_accent accent_pale accent_tonal error selection_bg; do
   printf '  %-12s %s\n' "$v" "${!v}"
 done
 
@@ -109,6 +119,7 @@ bake_starship() {
   sedi -E \
     -e "s/^(accent = )\"#[0-9a-fA-F]{6}\"/\1\"${accent}\"/" \
     -e "s/^(accent_pale = )\"#[0-9a-fA-F]{6}\"/\1\"${accent_pale}\"/" \
+    -e "s/^(accent_tonal = )\"#[0-9a-fA-F]{6}\"/\1\"${accent_tonal}\"/" \
     -e "s/^(tertiary = )\"#[0-9a-fA-F]{6}\"/\1\"${tertiary}\"/" \
     -e "s/^(secondary = )\"#[0-9a-fA-F]{6}\"/\1\"${secondary}\"/" \
     -e "s/^(muted = )\"#[0-9a-fA-F]{6}\"/\1\"${muted}\"/" \

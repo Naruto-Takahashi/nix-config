@@ -30,7 +30,7 @@ matugen_pal() {
 # matugen_build_palette <palette.css> <surface に使う CSS 変数名>
 # 成功すると 0 を返し、以下のシェル変数を設定する (呼び出し側で参照するためグローバル):
 #   accent tertiary secondary text muted surface on_accent error outline
-#   complement triad accent_pale selection_bg
+#   complement triad accent_pale accent_tonal selection_bg
 #   MATUGEN_LUA (共通 colors.lua を書いた一時ファイル。matugen_render_common が削除する)
 # 必須キーが欠けていれば 1 を返す。
 matugen_build_palette() {
@@ -71,9 +71,11 @@ EOF
     complement="$(grep -m1 '^\s*complement\s*=' "$base_lua" | grep -oE '#[0-9a-fA-F]{6}' || true)"
     triad="$(grep -m1 '^\s*triad\s*=' "$base_lua" | grep -oE '#[0-9a-fA-F]{6}' || true)"
     accent_pale="$(grep -m1 '^\s*accent_pale\s*=' "$base_lua" | grep -oE '#[0-9a-fA-F]{6}' || true)"
+    accent_tonal="$(grep -m1 '^\s*accent_tonal\s*=' "$base_lua" | grep -oE '#[0-9a-fA-F]{6}' || true)"
     rm -f "$base_lua"
 
     [[ -n "$accent_pale" ]] || accent_pale="#c7dffe"
+    [[ -n "$accent_tonal" ]] || accent_tonal="$surface"
     [[ -n "$complement" ]] || complement="#f2d4ad"
     [[ -n "$triad" ]] || triad="#f2adcb"
     [[ -n "$error" ]] || error="#ffb4ab"
@@ -96,6 +98,7 @@ return {
   surface = "${surface}",
   on_accent = "${on_accent}",
   accent_pale = "${accent_pale}",
+  accent_tonal = "${accent_tonal}",
   error = "${error}",
   selection_bg = "${selection_bg}",
 }

@@ -22,6 +22,7 @@
 | `surface` | Material surface_container_high | 暗色セグメントの地 (黒ブロック) |
 | `on_accent` | Material surface | accent 等の明色地に載せる暗い文字色 |
 | `accent_pale` | accent を**白へ 40% ブレンド** (計算生成) | 装飾ブロック用のパステル色 |
+| `accent_tonal` | surface を **accent へ 18% ブレンド** (計算生成) | 「淡い accent の地」。starship の git ブロックなど (nvim・WezTerm・Yazi は同じ式を各自で計算) |
 
 - 色相回転 (`complement` / `triad`) は HLS の H だけ回して計算する
   (彩度は accent の 0.75 倍に抑える)。明度は accent と同じなのでパレットに馴染む。
