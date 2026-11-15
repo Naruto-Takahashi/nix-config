@@ -18,6 +18,10 @@
 * **背景透過とテーマ連携**:
   - メイン配色は **Kanagawa Dragon**，動的壁紙配色時は **Matugen** に追従します．
   - `ColorScheme` イベントにより，エディタ背景・フローティング窓・サインコラムを完全透過（`none`）し，WezTerm の透過背景と調和させます．
+* **タブ・ステータス・パンくず**:
+  - バッファタブ ([heirline-tabline.lua](../modules/cli/neovim/nvim/lua/plugins/heirline-tabline.lua)) は，番号の頭 + ファイル名の本体の**斜めバッジ**．配色は accent 1色の濃淡 (アクティブの頭はソリッド，非アクティブの頭は 28%，本体は 12%)．
+  - ステータス ([lualine.lua](../modules/cli/neovim/nvim/lua/plugins/lualine.lua)) は，塗りを左端のモードと右端の位置の2か所に絞り，両端と区切りは斜め「/」．ファイル名は左右の幅を揃えて真の中央に置きます．
+  - パンくず ([dropbar.lua](../modules/cli/neovim/nvim/lua/plugins/dropbar.lua)) は，ウィンドウ上部に「パス › ファイル › 関数 …」を出します．各階層はクリックでメニューが開きます．
 * **Treesitter パーサーの Nix 管理**:
   - C/C++ 等のコンパイル環境に依存せず高速かつ正確な構文解析を行うため，主要パーサーの `.so` は Nix 側でビルド済み共有ライブラリとして配置しています．
 
@@ -43,6 +47,7 @@ Lua で独自実装された，開発・執筆を高速化するオリジナル�
 | **`Tab`** / **`Shift + Tab`** | 右 / 左のバッファタブへ切り替え ([heirline.nvim](../modules/cli/neovim/nvim/lua/plugins/heirline-tabline.lua)) |
 | **`Q`** / **`<Leader>bd`** | 現在のバッファタブを閉じる |
 | **`<Leader>bo`** | 現在のバッファ以外をすべて閉じる |
+| **`<Leader>;`** | パンくず ([dropbar.nvim](../modules/cli/neovim/nvim/lua/plugins/dropbar.lua)) の階層を選んで開く |
 
 ### 検索・ファイル操作
 | キーバインド | 動作内容 | プラグイン |

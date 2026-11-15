@@ -40,12 +40,12 @@
 
 | 場所 | accent | secondary | tertiary | complement | triad |
 | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Starship** | ディレクトリ地 / git 文字 | 左端ブロック (OSロゴ/PS) | — | — | — |
-| **WezTerm タブ** | アクティブタブ | — | カーソル色 | — | — |
-| **lualine** | Normal モード | 左端ブロック (Normal時) | Insert モード | Visual モード | — |
-| **yazi ステータスバー** | Normal モード | 左端ブロック (Normal時) | — | Select モード | — |
+| **Starship** | ディレクトリ (ソリッド) / git (文字 + 淡い地 `accent_tonal`) / `❯` | — | — | — | — |
+| **WezTerm タブ** | アクティブ (30% の面) / 非アクティブ (12% の面) | — | カーソル色 | — | — |
+| **lualine** | Normal モード (左端) / git (文字) / 位置 (淡い地・文字) | — | Insert モード | Visual モード | — |
+| **yazi ステータスバー** | Normal モード (左端) / 位置 (淡い地・文字) | — | — | Select モード | — |
 | **yazi ファイル色** | — | フォルダ名/アイコン | ドキュメント・テキスト系 | スクリプト・メディア系 | Web・データ系 |
-| **nvim タブライン** | アクティブタブ | — | — | — | — |
+| **nvim タブライン** | アクティブ (頭ソリッド・本体 12%) / 非アクティブ (頭 28%) | — | — | — | — |
 | **nvim ダッシュボード** | メニューアイコン | ロゴ / 起動メッセージ | キー割当 (f, r...) | — | — |
 | **Neo-tree** | — | フォルダ名/アイコン | — | — | — |
 | **komorebi 枠** | single / floating | — | monocle (ALT+F) | — | — |
@@ -53,8 +53,9 @@
 | **YASB** | フォーカス島 / アクティブWS | — | cava 波形 / 空WSドット | — | — |
 
 補足:
-- Insert/Visual などモード変化時、lualine / yazi の左端ブロックは
-  「モード色を白へ 40% 寄せたパステル版」になる (Normal の secondary と同じ関係)。
+- Insert/Visual などモード変化時、lualine / yazi のモード・git・位置の色は、そのモード色に
+  追従する (Normal は accent)。位置の淡い地は surface をモード色へ 22% 混ぜて作る
+  (Starship だけは色の計算ができないため、`accent_tonal` を palette で渡す)。
 - 赤系 (Replace モード、yazi のコンパイル言語/アーカイブ、lazygit の未ステージ、Quit) は
   matugen の `error` 色 (colors.lua にも出力) を使用。
 - komorebi の unfocused 枠は matugen の outline トーン、yazi のフルボーダーは

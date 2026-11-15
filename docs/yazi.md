@@ -14,7 +14,7 @@
   - `enableZshIntegration = true` により，Yazi を終了（`q`）すると，**Yazi 内で開いていたディレクトリへ自動的にシェルのカレントディレクトリが移動**します（CWDを更新せず終了したい場合は `Q`）．
 * **Kanagawa Dragon & Matugen 動的配色**:
   - 既定は `kanagawa-dragon` フレーバー．壁紙配色（Matugen）実行時は，フォルダ色・ファイル種別・ステータスバーが自動連動します．
-  - ステータスバーのグラデーション配色は，Neovim と共通の [`modules/theming/lib/blend.lua`](../modules/theming/lib/blend.lua) による 2 色補間で描画されます．
+  - ステータスバーは Neovim の lualine と同じ「一点集中」の配色です．塗るのは左端の**モード** (モード色のソリッド) と右端の**位置** (モード色の淡い地) だけで，サイズ・割合などは本文と同じ地の上の文字です．区切りは斜め「/」．淡い地は，Neovim と共通の [`modules/theming/lib/blend.lua`](../modules/theming/lib/blend.lua) による 2 色補間 (surface → モード色) で描きます．
 * **リッチプレビュー (`rich-preview`)**:
   - Markdown, CSV, JSON, Jupyter Notebook は `rich-cli` を通じて装飾付きで美麗にレンダリング表示されます．
 
