@@ -79,11 +79,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1794935940,
-        "narHash": "sha256-yxO/0rX4KRgsEJMe9EaGbI9tcj0wmUoEDEf8qrRls0w=",
+        "lastModified": 1794945584,
+        "narHash": "sha256-rT6XiuBn+WlhESgx3tnUh1/juO7yHoP8Xch4FeFOXdg=",
         "owner": "Naruto-Takahashi",
         "repo": "mail-secretary",
-        "rev": "9b01709a02004512a1ab56c8a8cf170028880e07",
+        "rev": "0853ba7361d6499011f73fb318ea48b08f74b81b",
         "type": "github"
       },
       "original": {
