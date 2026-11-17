@@ -33,7 +33,9 @@ jobs:
       - name: evaluate nixosConfigurations
         run: nix eval '.#nixosConfigurations.nixos.config.system.build.toplevel.drvPath'
       - name: evaluate darwinConfigurations
-        run: nix eval '.#darwinConfigurations."mac".config.system.build.toplevel.drvPath'
+        run: |
+          nix eval '.#darwinConfigurations."mac".config.system.build.toplevel.drvPath'
+          nix eval '.#darwinConfigurations."macmini".config.system.build.toplevel.drvPath'
 
   lint:
     runs-on: ubuntu-latest

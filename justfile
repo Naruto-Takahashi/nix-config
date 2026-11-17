@@ -76,7 +76,12 @@ switch host="":
     #   - どれにも当てはまらない場合は誤った構成を適用しないようエラーで止める。
     if [ -z "$host" ]; then
         if [[ "$OSTYPE" == darwin* ]]; then
-            host=mac
+            # Mac mini (常時稼働機) だけ、メール秘書の定期実行を含む macmini 構成を使う
+            if [ "$(scutil --get LocalHostName 2>/dev/null)" = "Mac-mini" ]; then
+                host=macmini
+            else
+                host=mac
+            fi
         elif [ -f /etc/NIXOS ]; then
             host=nixos
         elif [ -n "${DISTROBOX_ENTER_PATH:-}" ]; then
@@ -86,14 +91,14 @@ switch host="":
         elif grep -qi microsoft /proc/version 2>/dev/null; then
             host=wsl
         else
-            echo "::error:: 環境を判別できません。'just switch <mac|nixos|wsl|distrobox|sandbox>' で明示してください。" >&2
+            echo "::error:: 環境を判別できません。'just switch <mac|macmini|nixos|wsl|distrobox|sandbox>' で明示してください。" >&2
             exit 1
         fi
     fi
     echo "▶ host=$host の構成を適用します..."
     case "$host" in
-        mac)
-            sudo darwin-rebuild switch --flake .#mac ;;
+        mac|macmini)
+            sudo darwin-rebuild switch --flake ".#$host" ;;
         nixos)
             sudo nixos-rebuild switch --flake .#nixos ;;
         wsl)

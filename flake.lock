@@ -72,6 +72,26 @@
         "type": "github"
       }
     },
+    "mail-secretary": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794910976,
+        "narHash": "sha256-gu5hwFbtsi4dYGvjNZD3YtbrLfgQSysk4ICJO9sDFzo=",
+        "ref": "refs/heads/main",
+        "rev": "231b9edf923b85114aec5c05159a6e2a8c084d27",
+        "revCount": 3,
+        "type": "git",
+        "url": "ssh://git@github.com/Naruto-Takahashi/mail-secretary"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/Naruto-Takahashi/mail-secretary"
+      }
+    },
     "mattpocock-skills": {
       "flake": false,
       "locked": {
@@ -130,6 +150,7 @@
         "darwin": "darwin",
         "home-manager": "home-manager",
         "kanagawa-dragon-yazi": "kanagawa-dragon-yazi",
+        "mail-secretary": "mail-secretary",
         "mattpocock-skills": "mattpocock-skills",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",

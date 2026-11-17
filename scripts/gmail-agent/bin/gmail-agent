@@ -1,6 +1,0 @@
-#!/usr/bin/env bash
-# gmail-agent の起動ラッパー。どこから呼んでも動く。
-set -euo pipefail
-DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-export PYTHONPATH="$DIR/src${PYTHONPATH:+:$PYTHONPATH}"
-exec uv run --quiet --project "$DIR" python -m gmail_agent "$@"

@@ -43,6 +43,12 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # メール秘書 (private リポジトリ。home-manager モジュールで定期実行を宣言する)
+    mail-secretary = {
+      url = "git+ssh://git@github.com/Naruto-Takahashi/mail-secretary";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # nix-darwin の入力ソース定義
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -63,6 +69,7 @@
       # 全モジュールに渡す追加引数 (使わないモジュールは単に受け取らない)
       specialArgs = {
         inherit kanagawa-dragon-yazi;
+        inherit (inputs) mail-secretary;
         skillSources = {
           inherit (inputs)
             vercel-skills
@@ -131,6 +138,16 @@
           ./hosts/mac/darwin.nix
           home-manager.darwinModules.home-manager
           (hmIntegration "mac")
+        ];
+      };
+
+      # Mac mini (常時稼働): mac の構成に、メール秘書の定期実行を加えたもの
+      darwinConfigurations."macmini" = darwin.lib.darwinSystem {
+        system = "aarch64-darwin";
+        modules = [
+          ./hosts/mac/darwin.nix
+          home-manager.darwinModules.home-manager
+          (hmIntegration "macmini")
         ];
       };
 
