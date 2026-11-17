@@ -1,0 +1,9 @@
+[project]
+name = "gmail-agent"
+version = "0.2.0"
+description = "Gmail の自動整理と AI 重要度判定、Discord 通知"
+requires-python = ">=3.11"
+dependencies = ["google-api-python-client", "google-auth-oauthlib"]
+
+[tool.uv]
+package = false

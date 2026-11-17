@@ -1,0 +1,17 @@
+# Discord への通知 (`gmail-agent run`)。
+
+# 緊急: 新着を判定したらすぐ送る。iPhone はメンションされないとプッシュ通知が来ない設定のためメンションを付ける。
+[urgent]
+ping = true
+
+# 要対応: ためておいて、決まった時刻にまとめて送る (メンションなし)。
+[digest]
+times = ["08:00", "18:00"]   # ローカル時刻
+levels = ["action"]
+ping = false
+
+# 実行間隔 (launchd 側の設定と合わせる)。ここでは「どれだけ遡って取得するか」の参考値に使う。
+[run]
+interval_minutes = 10
+lookback_hours = 24
+max_mails = 100
