@@ -41,6 +41,11 @@
           "01_重要/決済・明細"
           "02_就活・大学"
         ];
+        # 既存メールへのラベル付け (backfill) で、AI を呼ばずに「無視」にするラベル
+        backfill.rule_ignore_labels = [
+          "04_プロモ/ショッピング"
+          "05_SNS・娯楽"
+        ];
       };
       filters.github.label = "03_開発/GitHub";
     };
