@@ -55,6 +55,9 @@
    - コミットメッセージは `type(scope): 説明` 形式とする（gitmoji は hook が自動付与するため手動で絵文字を付けない）。
 4. **リポジトリに入れる文書**:
    - リポジトリには確定した文書（設計書、ADR、要件定義など）のみを入れ、一時的な引き継ぎメモや試作報告は Issue/PR コメントまたは外部脳に置く。
+5. **Google ドライブの扱い (macOS)**:
+   - Mac には Google ドライブがローカルにマウントされている（`~/Library/CloudStorage/GoogleDrive-broken.copycat@gmail.com/マイドライブ`）。Drive 上のファイルを読み書きするときは、MCP コネクタ（10MB 超は取得不可）より先に、このマウントを通常のファイル操作（`cp` 等）で扱う。
+   - Drive 経由で受け渡した認証情報（`credentials.json` 等）は、Vault の `90-local/91-private/` 等に移したあと、Drive 側の元ファイルの削除をユーザーに促す。
 
 ---
 
