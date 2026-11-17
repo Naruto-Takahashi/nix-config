@@ -43,9 +43,9 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # メール秘書 (private リポジトリ。home-manager モジュールで定期実行を宣言する)
+    # メール秘書 (home-manager モジュールで定期実行を宣言する。個人用の設定は hosts/macmini に置く)
     mail-secretary = {
-      url = "git+ssh://git@github.com/Naruto-Takahashi/mail-secretary";
+      url = "github:Naruto-Takahashi/mail-secretary";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

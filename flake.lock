@@ -79,17 +79,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1794910976,
-        "narHash": "sha256-gu5hwFbtsi4dYGvjNZD3YtbrLfgQSysk4ICJO9sDFzo=",
-        "ref": "refs/heads/main",
-        "rev": "231b9edf923b85114aec5c05159a6e2a8c084d27",
-        "revCount": 3,
-        "type": "git",
-        "url": "ssh://git@github.com/Naruto-Takahashi/mail-secretary"
+        "lastModified": 1794911491,
+        "narHash": "sha256-688fIOETwoRLiRZR9gt/65x0xJF3+pYQx0ZucjUrwXs=",
+        "owner": "Naruto-Takahashi",
+        "repo": "mail-secretary",
+        "rev": "7562078169dc035add39ce3e20132cf70c88354d",
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "ssh://git@github.com/Naruto-Takahashi/mail-secretary"
+        "owner": "Naruto-Takahashi",
+        "repo": "mail-secretary",
+        "type": "github"
       }
     },
     "mattpocock-skills": {
