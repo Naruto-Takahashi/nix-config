@@ -59,13 +59,23 @@ bars:
       - memory
       - battery
       - lines
-      - wallpapers
-      - lines
       - volume
       - lines
       - notifications
-      - language
       - control_center
+  hidden-bar:
+    enabled: true
+    screens:
+    - '*'
+    dimensions:
+      width: 0
+      height: 0
+    window_flags:
+      windows_app_bar: false
+      always_on_top: false
+    widgets:
+      left:
+      - wallpapers
 widgets:
   home:
     type: yasb.home.HomeWidget
@@ -471,8 +481,8 @@ widgets:
   memory:
     type: "yasb.memory.MemoryWidget"
     options:
-      label: "<span>\uf4bc</span> {virtual_mem_used}/{virtual_mem_total}"
-      label_alt: "<span>\uf4bc</span> VIRT: {virtual_mem_percent}% SWAP: {swap_mem_percent}%"
+      label: "<span>\uf538</span> {virtual_mem_percent}%"
+      label_alt: "<span>\uf538</span> {virtual_mem_used}/{virtual_mem_total}"
       update_interval: 5000
       callbacks:
         on_left: "toggle_label"

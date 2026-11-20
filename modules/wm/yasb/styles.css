@@ -1873,3 +1873,184 @@ which is 16 pixels same as the other sections. */
 .audio-visualizer-widget .audio-visualizer-canvas {
     qproperty-fillbrush: var(--accent);
 }
+
+/* =========================================================================
+   Window Switcher Popup
+   ========================================================================= */
+.window-switcher-popup {
+    background-color: var(--base);
+    padding: 16px;
+    border-radius: var(--border-radius);
+}
+.window-switcher-popup .item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    margin: 6px;
+    padding: 10px;
+    cursor: pointer;
+    border: 3px solid transparent;
+}
+.window-switcher-popup .item:hover {
+    background-color: rgba(255, 255, 255, 0.08);
+}
+.window-switcher-popup .item.active {
+    border: 3px solid var(--highlight);
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.window-switcher-popup .item-title {
+    color: var(--text);
+    font-size: 13px;
+    font-family: var(--system-font);
+    padding-bottom: 4px;
+}
+.window-switcher-popup .title {
+    padding: 10px 10px 5px 10px;
+    color: var(--text);
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 10px;
+    border-top: 1px solid var(--border);
+}
+
+/* =========================================================================
+   Notifications Menu
+   ========================================================================= */
+.notification-menu {
+    background-color: var(--base);
+    min-width: 380px;
+    max-width: 420px;
+    min-height: 480px;
+    max-height: 640px;
+    padding: 8px;
+    border-radius: var(--border-radius);
+}
+.notification-menu .header {
+    padding: 12px 14px 8px 14px;
+}
+.notification-menu .header .title {
+    font-family: var(--system-font);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+.notification-menu .header .dnd,
+.notification-menu .header .clear-all {
+    color: var(--text);
+    padding: 4px 10px;
+    margin-left: 6px;
+    border-radius: 6px;
+    background-color: rgba(255, 255, 255, 0.06);
+}
+.notification-menu .header .dnd {
+    font-family: var(--icons-font);
+    font-size: 14px;
+    padding: 6px 8px;
+}
+.notification-menu .header .clear-all {
+    font-family: var(--system-font);
+    font-size: 12px;
+}
+.notification-menu .header .dnd.active {
+    color: var(--highlight);
+}
+.notification-menu .header .dnd:hover,
+.notification-menu .header .clear-all:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+}
+.notification-menu .contents .section {
+    margin: 0 10px 10px 10px;
+}
+.notification-menu .contents .section-header {
+    padding: 4px 4px 8px 4px;
+}
+.notification-menu .contents .section-header .icon {
+    margin-right: 8px;
+}
+.notification-menu .contents .section-header .name {
+    font-family: var(--system-font);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--subtext1);
+}
+.notification-menu .contents .section-header .clear-app,
+.notification-menu .contents .item .dismiss {
+    font-family: var(--icons-font);
+    font-size: 10px;
+    color: var(--subtext0);
+    padding: 4px;
+    border-radius: 4px;
+}
+.notification-menu .contents .section-header .clear-app:hover,
+.notification-menu .contents .item .dismiss:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+.notification-menu .contents .item {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 6px;
+}
+.notification-menu .contents .item:hover {
+    background-color: rgba(255, 255, 255, 0.09);
+}
+.notification-menu .contents .item .hero {
+    margin-bottom: 10px;
+}
+.notification-menu .contents .item .avatar {
+    margin-right: 10px;
+}
+.notification-menu .contents .item .title {
+    font-family: var(--system-font);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+.notification-menu .contents .item .time {
+    font-family: var(--system-font);
+    font-size: 11px;
+    color: var(--subtext0);
+    margin-left: 8px;
+}
+.notification-menu .contents .item .body {
+    font-family: var(--system-font);
+    font-size: 13px;
+    color: var(--subtext1);
+    margin-top: 3px;
+    max-height: 60px;
+}
+.notification-menu .contents .item .attribution {
+    font-family: var(--system-font);
+    font-size: 11px;
+    color: var(--subtext0);
+    margin-top: 2px;
+}
+.notification-menu .contents .more {
+    font-family: var(--system-font);
+    font-size: 12px;
+    color: var(--highlight);
+    padding: 4px;
+}
+.notification-menu .contents .empty {
+    padding: 48px 0;
+}
+.notification-menu .contents .empty .icon {
+    font-family: var(--icons-font);
+    font-size: 40px;
+    color: var(--subtext0);
+}
+.notification-menu .contents .empty .text {
+    font-family: var(--system-font);
+    font-size: 14px;
+    color: var(--subtext1);
+    margin-top: 12px;
+}
+.notification-menu .footer {
+    border-top: 1px solid var(--border);
+    padding: 10px 14px;
+}
+.notification-menu .footer .label {
+    font-family: var(--system-font);
+    font-size: 12px;
+    color: var(--highlight);
+}
