@@ -46,6 +46,7 @@ bars:
       - komorebi_workspaces
       - lines
       - quick_launch
+      - window_switcher
       - active_window
       center:
       - clock
@@ -53,9 +54,10 @@ bars:
       - media
       right:
       - systray
-      #- lines
-      #- memory
-      #- cpu
+      - lines
+      - cpu
+      - memory
+      - battery
       - lines
       - wallpapers
       - lines
@@ -142,10 +144,20 @@ widgets:
       label_alt: '{count} notifications'
       hide_empty: true
       tooltip: false
+      menu:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        app_icon_size: 16
       callbacks:
-        on_left: toggle_notification
-        on_right: do_nothing
-        on_middle: do_nothing
+        on_left: "toggle_menu"
+        on_right: "toggle_notification"
+        on_middle: "do_nothing"
   power_menu:
     type: yasb.power_menu.PowerMenuWidget
     options:
@@ -609,3 +621,45 @@ widgets:
         count: 30
         size: 1
         gap: 2
+  window_switcher:
+    type: "yasb.window_switcher.WindowSwitcherWidget"
+    options:
+      label: "<span>\uf2d2</span>"
+      label_alt: ""
+      icon_size: 48
+      max_visible_apps: 6
+      show_title: true
+      preview:
+        enabled: true
+        width: 240
+      popup:
+        blur: true
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "System"
+        dark_mode: true
+      callbacks:
+        on_left: "toggle_window_switcher"
+        on_middle: "do_nothing"
+        on_right: "do_nothing"
+  battery:
+    type: "yasb.battery.BatteryWidget"
+    options:
+      label: "<span>{icon}</span> {percent}%"
+      label_alt: "<span>{icon}</span> {percent}% ({time_remaining})"
+      update_interval: 5000
+      time_remaining_natural: true
+      charging_options:
+        icon_format: "{charging_icon} {icon}"
+        blink_charging_icon: true
+        blink_interval: 1000
+      status_thresholds:
+        critical: 15
+        low: 30
+        medium: 60
+        high: 85
+        full: 100
+      callbacks:
+        on_left: "toggle_label"
+        on_middle: "do_nothing"
+        on_right: "exec ms-settings:batterysaver"
