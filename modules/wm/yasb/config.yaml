@@ -481,8 +481,8 @@ widgets:
   memory:
     type: "yasb.memory.MemoryWidget"
     options:
-      label: "<span>\uf4bc</span> {virtual_mem_used}/{virtual_mem_total}"
-      label_alt: "<span>\uf4bc</span> VIRT: {virtual_mem_percent}% SWAP: {swap_mem_percent}%"
+      label: "<span>\uf1c0</span> {virtual_mem_percent}%"
+      label_alt: "<span>\uf1c0</span> {virtual_mem_used}/{virtual_mem_total}"
       update_interval: 5000
       callbacks:
         on_left: "toggle_label"
