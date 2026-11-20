@@ -11,7 +11,7 @@
 #      Win32 API (ImmSetOpenStatus) 経由のIME制御が必要。kanata単体では
 #      Windows上でこれを直接行えないため、既存の動作実績があるAHKの
 #      ime_functions.ahkへ `cmd` アクションで委譲する)
-#   3. danger-enable-cmd の有効化、caps -> f13
+#   3. danger-enable-cmd の有効化、notify-error no による通知抑制、caps -> f13
 #
 # home-manager (modules/input/kanata/wsl.nix) がこのテキストをWindows側へ
 # 配置する。sync-win/matugen-apply等と同じくAHK側 (modules/input/ahk/) の
@@ -52,7 +52,7 @@ let
         "@ime-on (multi ralt (layer-while-held alt-layer)))"
         "@ime-off"
         "@ime-on"
-        "process-unmapped-keys yes\n  danger-enable-cmd yes"
+        "process-unmapped-keys yes\n  danger-enable-cmd yes\n  notify-error no"
         "f13   lalt"
       ]
       base;
