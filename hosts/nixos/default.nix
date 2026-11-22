@@ -36,6 +36,11 @@
   # デフォルトターミナル環境変数の設定
   home.sessionVariables = {
     TERMINAL = "wezterm";
+    # NixOS には /etc/ssl/cert.pem もハッシュ名の証明書リンクもないため、
+    # 外部配布のバイナリ（Orca が落とす Antigravity の agy_acp_server.par など）が
+    # 内蔵 OpenSSL の既定パスで CA を見つけられず CERTIFICATE_VERIFY_FAILED になる。
+    # OpenSSL が必ず参照する SSL_CERT_FILE で明示する。
+    SSL_CERT_FILE = "/etc/ssl/certs/ca-certificates.crt";
   };
 
   # カーソルテーマの設定 (Bibata Modern Ice)
