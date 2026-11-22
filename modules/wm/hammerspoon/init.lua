@@ -2,9 +2,12 @@
 -- 3本指スワイプ: ワークスペース切り替え (左: prev / 右: next)
 -- 4本指スワイプ: フォーカスウィンドウを連れて移動 (左: prev / 右: next)
 -- 4本指下スワイプ: ウィンドウ/タブを確実に閉じる (Cmd+W -> 閉じなければ AeroSpace close)
--- 右手特化タップ (右利き用・左側の誤爆防止):
---   右上の角: コピー (Cmd + C -> Copied)
---   右下の角: ペースト (Cmd + V -> Pasted)
+-- トラックパッドの角・上中央の物理クリック (1本指で押し込んだときだけ発火):
+--   右上: コピー (Cmd+C, 結果が見えないので "Copied" を表示)
+--   右下: ペースト (Cmd+V)
+--   左下: 取り消し (Cmd+Z) / 左上: やり直し (Cmd+Shift+Z)
+--   上中央: 範囲指定スクショ (Cmd+Shift+4)
+--   ペースト・取り消し等は結果が画面に見えるため HUD は出さない
 -- エッジスクロール (右端を指1本でなぞる):
 --   右端を上下になぞる: 音量調整 (macOS標準HUD表示付き)
 
@@ -14,63 +17,48 @@ hs.allowAppleScript(true)
 hs.dockicon.hide()
 hs.autoLaunch(true)
 
--- スタイリッシュでミニマルな HUD スタイル (壁紙の抽出色に動的追従)
-local alertStyle = {
-    strokeWidth  = 0,
-    strokeColor = { white = 0, alpha = 0 },
-    fillColor   = { white = 0.08, alpha = 0.85 },
-    textColor   = { white = 0.95, alpha = 1.0 },
-    textFont    = ".AppleSystemUIFont",
-    textSize    = 15,
-    radius      = 10,
-    atScreenEdge = 0,
-    fadeInDuration  = 0.08,
-    fadeOutDuration = 0.2
-}
-
--- Matugen パレット (~/.cache/matugen/colors.lua) から triad (120度回転色) を読み込み反映
-local function updateAlertStyle()
-    local colorsPath = os.getenv("HOME") .. "/.cache/matugen/colors.lua"
-    local f = loadfile(colorsPath)
-    if not f then return end
-    local ok, colors = pcall(f)
-    if not ok or type(colors) ~= "table" then return end
-
-    -- 壁紙から抽出した色相120度回転色 (triad: ウィンドウ枠線やmacOSハイライト色と同色)
-    local bgHex = colors.triad or colors.complement or colors.accent
-    if bgHex then
-        alertStyle.fillColor = { hex = bgHex, alpha = 0.90 }
-
-        -- 背景色の明度 (luminance) を計算し、常に高コントラストな文字色を選択
-        local c = hs.drawing.color.asRGB({ hex = bgHex, alpha = 1.0 })
-        if c and c.red and c.green and c.blue then
-            local lum = 0.299 * c.red + 0.587 * c.green + 0.114 * c.blue
-            if lum > 0.55 then
-                alertStyle.textColor = { hex = colors.surface or "#18120c", alpha = 1.0 }
-            else
-                alertStyle.textColor = { hex = colors.text or "#ffffff", alpha = 1.0 }
-            end
-        end
-    end
-end
-
--- 初期ロード時にスタイルを適用
-updateAlertStyle()
-
--- colors.lua の変更を自動監視してスタイルを動的更新
-colorsWatcher = hs.pathwatcher.new(os.getenv("HOME") .. "/.cache/matugen", function(files)
-    for _, file in ipairs(files) do
-        if file:match("colors%.lua$") then
-            updateAlertStyle()
-            break
-        end
-    end
-end)
-colorsWatcher:start()
-
+-- HUD: 半透明の黒いカプセル + 白の細い縁線 + 柔らかい影 (macOS の音量 HUD に近い無彩色)
+local hudCanvas, hudTimer
 function showHUD(text)
-    updateAlertStyle()
-    hs.alert.show(text, alertStyle, 0.35)
+    if hudTimer then hudTimer:stop(); hudTimer = nil end
+    if hudCanvas then hudCanvas:delete(); hudCanvas = nil end
+
+    local font = { name = ".AppleSystemUIFont", size = 15 }
+    local styled = hs.styledtext.new(text, {
+        font = font,
+        color = { white = 1, alpha = 0.94 },
+        paragraphStyle = { alignment = "center" },
+    })
+    local size = hs.drawing.getTextDrawingSize(styled)
+    local pad, H, margin = 28, 44, 28          -- margin: 影のための余白
+    local W = math.ceil(size.w) + pad * 2
+
+    local f = hs.screen.mainScreen():frame()
+    hudCanvas = hs.canvas.new({
+        x = f.x + (f.w - W) / 2 - margin,
+        y = f.y + f.h - H - 64 - margin,
+        w = W + margin * 2, h = H + margin * 2,
+    })
+    hudCanvas:level(hs.canvas.windowLevels.overlay)
+    hudCanvas:behavior({ "canJoinAllSpaces", "stationary" })
+    hudCanvas:appendElements(
+        { type = "rectangle", action = "strokeAndFill",
+          frame = { x = margin, y = margin, w = W, h = H },
+          roundedRectRadii = { xRadius = H / 2, yRadius = H / 2 },
+          fillColor = { white = 0.12, alpha = 0.62 },
+          strokeColor = { white = 1, alpha = 0.16 }, strokeWidth = 1,
+          withShadow = true,
+          shadow = { blurRadius = 18, color = { white = 0, alpha = 0.45 }, offset = { h = -6, w = 0 } } },
+        { type = "text",
+          frame = { x = margin, y = margin + (H - size.h) / 2, w = W, h = size.h + 2 },
+          text = styled })
+    hudCanvas:show(0.08)
+
+    hudTimer = hs.timer.doAfter(0.7, function()
+        local c = hudCanvas
+        hudCanvas, hudTimer = nil, nil
+        if c then c:hide(0.2); hs.timer.doAfter(0.3, function() c:delete() end) end
+    end)
 end
 
 local AEROSPACE = "/opt/homebrew/bin/aerospace"
@@ -86,16 +74,95 @@ local touchTracker = {
     accumulatedDelta = 0,
     didSlide = false,
     moved = false,
-    lastTriggered = 0,
-    maxFingers = 0
+    maxFingers = 0,
+    quietAtDown = false,  -- 指を置いた時点でカーソルが静止していたか
+    resting = false,      -- 置きっぱなし(手のひら等)の接触が含まれたか
+    volArmed = false,     -- 音量スライドが「意図した操作」と確定したか
+    curCount = 0,         -- 現在の接触本数
+    curX = 0, curY = 0,   -- 1本指のときの現在位置
+    lastTouchEnd = 0,     -- 最後に全ての指が離れた時刻
+    lastMultiTouch = 0    -- 最後に3本指以上が触れていた時刻
 }
+
+-- 角クリック(物理的な押し込み)の割り当て
+local CORNER_ZONE = 0.20          -- 各角のエリアの大きさ (0〜1)
+local CENTER_HALF_WIDTH = 0.15    -- 上中央エリアの半幅 (x が 0.5 ± この値)
+local CURSOR_QUIET_SEC = 0.30   -- 指を置く直前にカーソルが動いていたら、音量スライドは開始しない
+local TAP_CLICK_GRACE = 0.06      -- 指が離れた直後のクリックは「タップ」とみなして無視
+-- 配置: 右列=クリップボード(上コピー/下ペースト)、左列=取り消し(下)/やり直し(上)、上中央=範囲スクショ
+-- 下中央は通常クリックの領域なので未割り当て
+local CORNER_ACTIONS = {
+    topRight     = function() hs.eventtap.keyStroke({"cmd"}, "c"); showHUD("Copied") end,
+    bottomRight  = function() hs.eventtap.keyStroke({"cmd"}, "v") end,
+    bottomLeft   = function() hs.eventtap.keyStroke({"cmd"}, "z") end,
+    topLeft      = function() hs.eventtap.keyStroke({"cmd", "shift"}, "z") end,
+    topCenter    = function() hs.eventtap.keyStroke({"cmd", "shift"}, "4") end,
+}
+
+-- 音量スライドの誤爆対策パラメータ
+local VOL_EDGE_X_MIN = 0.94     -- 右端エリア: x がこれ以上
+local VOL_DEADZONE = 0.08       -- この縦移動量を超えるまで音量は変えない
+local VOL_VERTICAL_RATIO = 2.0  -- 縦移動が横移動のこの倍以上のときだけ有効
+local VOL_STEP = 0.04           -- 音量1段あたりの縦移動量
+
+-- 3本指以上のあいだはスクロールをアプリに渡さない
+-- (ブラウザ等の「横スクロール=戻る」が、3本指スワイプで誤爆するのを防ぐ)
+-- 普段のスクロールが Hammerspoon を通らないよう、監視は3本指が触れている間だけ有効にする
+local SCROLL_BLOCK_GRACE = 0.25   -- 指が離れた後の慣性スクロールも少し止める
+local scrollStopTimer = nil
+
+local function scrollBlockActive()
+    local now = hs.timer.secondsSinceEpoch()
+    return touchTracker.curCount >= 3 or (now - touchTracker.lastMultiTouch) < SCROLL_BLOCK_GRACE
+end
+
+scrollBlockTap = hs.eventtap.new({ hs.eventtap.event.types.scrollWheel }, function()
+    return scrollBlockActive()
+end)
+
+local function scheduleScrollBlockStop()
+    if scrollStopTimer then return end
+    scrollStopTimer = hs.timer.doAfter(SCROLL_BLOCK_GRACE + 0.05, function()
+        scrollStopTimer = nil
+        if scrollBlockActive() then
+            scheduleScrollBlockStop()   -- まだ3本指が触れている/直後なら延長
+        else
+            scrollBlockTap:stop()
+        end
+    end)
+end
+
+local cursorTracker = { pos = hs.mouse.absolutePosition(), lastMove = 0 }
 
 local function handleEdgesAndTaps(touches)
     local now = hs.timer.secondsSinceEpoch()
     local n = #touches
 
+    -- カーソルの最終移動時刻を更新 (ジェスチャーイベントごとに確認)
+    local mp = hs.mouse.absolutePosition()
+    if mp.x ~= cursorTracker.pos.x or mp.y ~= cursorTracker.pos.y then
+        cursorTracker.pos = mp
+        cursorTracker.lastMove = now
+    end
+
+    touchTracker.curCount = n
+    if n >= 3 then
+        touchTracker.lastMultiTouch = now
+        if not scrollBlockTap:isEnabled() then scrollBlockTap:start() end
+    elseif scrollBlockTap:isEnabled() then
+        scheduleScrollBlockStop()
+    end
+    if n > 0 then
+        touchTracker.curX = touches[1].normalizedPosition.x
+        touchTracker.curY = touches[1].normalizedPosition.y
+    else
+        touchTracker.lastTouchEnd = now
+    end
+
     if n > 0 then
         if not touchTracker.active then
+            touchTracker.quietAtDown = (now - cursorTracker.lastMove) > CURSOR_QUIET_SEC
+            touchTracker.resting = false
             touchTracker.active = true
             touchTracker.startTime = now
             touchTracker.maxFingers = n
@@ -108,9 +175,11 @@ local function handleEdgesAndTaps(touches)
             touchTracker.accumulatedDelta = 0
             touchTracker.didSlide = false
             touchTracker.moved = false
+            touchTracker.volArmed = false
 
             -- 1本指で右端からスタートした場合のみ音量調整 (左端は誤爆防止のため無効化)
-            if n == 1 and x >= 0.93 then
+            -- カーソル操作中に触れただけの場合は対象外
+            if n == 1 and x >= VOL_EDGE_X_MIN and touchTracker.quietAtDown then
                 touchTracker.edge = "right"   -- 音量
             else
                 touchTracker.edge = nil
@@ -118,6 +187,11 @@ local function handleEdgesAndTaps(touches)
         else
             if n > touchTracker.maxFingers then
                 touchTracker.maxFingers = n
+            end
+
+            -- 置きっぱなし判定の接触が含まれていれば、タップ扱いにしない
+            for _, tt in ipairs(touches) do
+                if tt.resting then touchTracker.resting = true end
             end
 
             -- 指の移動距離チェック (タップ判定用: 0.05まで許容)
@@ -129,62 +203,74 @@ local function handleEdgesAndTaps(touches)
             end
 
             -- エッジスライド処理 (1本指: 右端の音量調整のみ)
-            if n == 1 and touchTracker.edge == "right" then
+            if n == 1 and touchTracker.edge == "right" and not touchTracker.resting then
                 local y = t.normalizedPosition.y
-                local deltaY = y - touchTracker.lastY
-                touchTracker.lastY = y
-                touchTracker.accumulatedDelta = touchTracker.accumulatedDelta + deltaY
-
-                local step = 0.04
-                if math.abs(touchTracker.accumulatedDelta) >= step then
-                    touchTracker.didSlide = true
-                    if touchTracker.accumulatedDelta > 0 then
-                        hs.eventtap.event.newSystemKeyEvent("SOUND_UP", true):post()
-                        hs.eventtap.event.newSystemKeyEvent("SOUND_UP", false):post()
-                    else
-                        hs.eventtap.event.newSystemKeyEvent("SOUND_DOWN", true):post()
-                        hs.eventtap.event.newSystemKeyEvent("SOUND_DOWN", false):post()
+                if not touchTracker.volArmed then
+                    -- 不感帯: 十分な縦移動 かつ 縦方向が優勢 になるまで何もしない
+                    local totalDy = math.abs(y - touchTracker.startY)
+                    if totalDy >= VOL_DEADZONE and totalDy >= dx * VOL_VERTICAL_RATIO then
+                        touchTracker.volArmed = true
+                        touchTracker.lastY = y
+                        touchTracker.accumulatedDelta = 0
                     end
-                    touchTracker.accumulatedDelta = 0
+                else
+                    local deltaY = y - touchTracker.lastY
+                    touchTracker.lastY = y
+                    touchTracker.accumulatedDelta = touchTracker.accumulatedDelta + deltaY
+
+                    if math.abs(touchTracker.accumulatedDelta) >= VOL_STEP then
+                        touchTracker.didSlide = true
+                        local key = touchTracker.accumulatedDelta > 0 and "SOUND_UP" or "SOUND_DOWN"
+                        hs.eventtap.event.newSystemKeyEvent(key, true):post()
+                        hs.eventtap.event.newSystemKeyEvent(key, false):post()
+                        touchTracker.accumulatedDelta = 0
+                    end
                 end
             end
         end
     elseif n == 0 then
-        -- 指が離れた (タップ判定)
-        if touchTracker.active then
-            local duration = now - touchTracker.startTime
-            local x = touchTracker.startX
-            local y = touchTracker.startY
-            local didSlide = touchTracker.didSlide
-            local moved = touchTracker.moved
-            local maxF = touchTracker.maxFingers
-            touchTracker.active = false
-
-            -- 0.38秒以内のクイックタップ かつ スライドしていない
-            -- 右利き特化: 左半分や上端中央・下端中央の誤爆要因を全廃し、右手で自然に届く右側のみに限定
-            if not didSlide and not moved and duration > 0.03 and duration < 0.38 and (now - touchTracker.lastTriggered) > 0.30 then
-                if maxF == 1 then
-                    -- 1本指タップ
-                    if y >= 0.75 then
-                        -- 上端エリア: 右上の角のみ Copy (左上や上端中央は無効化)
-                        if x >= 0.75 then
-                            touchTracker.lastTriggered = now
-                            hs.eventtap.keyStroke({"cmd"}, "c")
-                            showHUD("Copied")
-                        end
-                    elseif y <= 0.25 then
-                        -- 下端エリア: 右下の角のみ Paste (左下角・中央は無効化)
-                        if x >= 0.75 then
-                            touchTracker.lastTriggered = now
-                            hs.eventtap.keyStroke({"cmd"}, "v")
-                            showHUD("Pasted")
-                        end
-                    end
-                end
-            end
-        end
+        touchTracker.active = false
     end
 end
+
+-- 角の物理クリック: 1本指で角を押し込んだときだけ割り当てを実行し、クリック自体は握りつぶす
+local swallowMouseUp = false
+local function cornerAt(x, y)
+    local z = CORNER_ZONE
+    if x >= 1 - z and y >= 1 - z then return "topRight" end
+    if x >= 1 - z and y <= z then return "bottomRight" end
+    if x <= z and y >= 1 - z then return "topLeft" end
+    if x <= z and y <= z then return "bottomLeft" end
+    if math.abs(x - 0.5) <= CENTER_HALF_WIDTH and y >= 1 - z then return "topCenter" end
+    return nil
+end
+
+cornerClickTap = hs.eventtap.new({
+    hs.eventtap.event.types.leftMouseDown,
+    hs.eventtap.event.types.leftMouseUp,
+}, function(event)
+    local t = event:getType()
+    if t == hs.eventtap.event.types.leftMouseUp then
+        if swallowMouseUp then
+            swallowMouseUp = false
+            return true
+        end
+        return false
+    end
+
+    -- leftMouseDown: 指を置いたまま押し込んだ物理クリックか確認
+    local now = hs.timer.secondsSinceEpoch()
+    if touchTracker.curCount ~= 1 then return false end
+    if now - touchTracker.lastTouchEnd < TAP_CLICK_GRACE then return false end
+    local corner = cornerAt(touchTracker.curX, touchTracker.curY)
+    local action = corner and CORNER_ACTIONS[corner]
+    if not action then return false end
+
+    swallowMouseUp = true
+    hs.timer.doAfter(0, action)
+    return true
+end)
+cornerClickTap:start()
 
 -- スワイプ検出器生成関数
 local function createSwipeDetector(fingers, onLeft, onRight, onUp, onDown)
@@ -341,3 +427,10 @@ trackpadWatcher = hs.eventtap.new({ gesture }, function(event)
 end)
 
 trackpadWatcher:start()
+
+-- 見張り: macOS が eventtap を無効化(タイムアウト等)しても自動で復帰させる
+tapWatchdog = hs.timer.doEvery(2, function()
+    for _, tap in ipairs({ trackpadWatcher, cornerClickTap }) do
+        if not tap:isEnabled() then tap:start() end
+    end
+end)
