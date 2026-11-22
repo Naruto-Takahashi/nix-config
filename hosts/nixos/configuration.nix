@@ -109,6 +109,16 @@
     xwayland.enable = true;
   };
 
+  # Steam の有効化
+  programs.steam = {
+    enable = true;
+  };
+
+  # Cloudflare WARP (学内規制バイパス用トンネル)
+  services.cloudflare-warp = {
+    enable = true;
+  };
+
   # パッケージインストール許可
   nixpkgs.config.allowUnfree = true;
 
@@ -169,7 +179,11 @@
 
   # リモートアクセス (Windowsノート → 研究室PC)
   # Tailscale で大学NATを越え、Sunshine (KMSキャプチャ) で Wayland 無人接続、SSH は復旧用
-  services.tailscale.enable = true;
+  # Cloudflare WARP と DNS (/etc/resolv.conf) が競合しないよう Tailscale 側の DNS 管理は無効化
+  services.tailscale = {
+    enable = true;
+    extraSetFlags = [ "--accept-dns=false" ];
+  };
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
   services.sunshine = {
