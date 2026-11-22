@@ -16,7 +16,11 @@
     ../../modules/gui/linux.nix
     ../../modules/wm/hyprland
     ../../modules/gui/vivaldi
+    ../../modules/ai/orca
   ];
+
+  # Orca デスクトップアプリの有効化
+  programs.orca.enable = true;
 
   # ユーザーメタデータ
   home.username = "nalt";
