@@ -27,10 +27,13 @@
    ライトテーマは暗いページ上でも暗い文字が読めるよう --glass-bg を濃いめ
    (0.65、macOS のライトのガラスに近い濃さ) にする */
 .theme-dark {
-    --glass-bg: rgba(0, 0, 0, 0.22);
+    --glass-bg: rgba(0, 0, 0, 0.25);
+    /* 白いページが透けても白文字が読めるよう、背面を暗くする */
+    --glass-blur: blur(12px) saturate(140%) brightness(0.82);
+    --glass-blur-strong: blur(20px) saturate(140%) brightness(0.82);
     --glass-bg-strong: rgba(30, 30, 30, 0.55);
     --glass-tint: 255, 255, 255;
-    --glass-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+    --glass-edge: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
 }
 .theme-light {
     --glass-bg: rgba(255, 255, 255, 0.65);
