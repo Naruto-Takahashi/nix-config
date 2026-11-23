@@ -186,6 +186,52 @@
   };
   networking.firewall.trustedInterfaces = [ "tailscale0" ];
 
+  # Cloudflare WARP (優先度 5209 + inet cloudflare-warp policy drop) が
+  # tailscaled の外向き通信 (fwmark 0x80000 / 41641/udp) を遮断するため、
+  # pref 5205 と最小限の nftables 許可ルールを冪等に差し込んで直通を維持する。
+  # WARP の接続完了待ちや再接続時のテーブル再生成にも追従できるよう 30 秒周期で検査する。
+  systemd.services.tailscale-warp-bypass = {
+    description = "Allow tailscaled traffic (fwmark 0x80000) to bypass Cloudflare WARP";
+    after = [ "network-online.target" "cloudflare-warp.service" "tailscaled.service" ];
+    wants = [ "network-online.target" ];
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = pkgs.writeShellScript "tailscale-warp-bypass" ''
+        set -euo pipefail
+        ip="${pkgs.iproute2}/bin/ip"
+        nft="${pkgs.nftables}/bin/nft"
+        grep="${pkgs.gnugrep}/bin/grep"
+
+        for fam in -4 -6; do
+          if ! "$ip" "$fam" rule list | "$grep" -qE '^5205:'; then
+            "$ip" "$fam" rule add pref 5205 from all fwmark 0x80000/0xff0000 lookup main
+          fi
+        done
+
+        if "$nft" list table inet cloudflare-warp >/dev/null 2>&1; then
+          if ! "$nft" list chain inet cloudflare-warp output | "$grep" -qE '0x(00)?080000'; then
+            "$nft" insert rule inet cloudflare-warp output meta mark '&' 0x00ff0000 == 0x00080000 accept
+          fi
+          if ! "$nft" list chain inet cloudflare-warp input | "$grep" -qE '0x(00)?080000'; then
+            "$nft" insert rule inet cloudflare-warp input ct mark '&' 0x00ff0000 == 0x00080000 accept
+          fi
+          if ! "$nft" list chain inet cloudflare-warp input | "$grep" -q 'dport 41641'; then
+            "$nft" insert rule inet cloudflare-warp input udp dport 41641 accept
+          fi
+        fi
+      '';
+    };
+  };
+
+  systemd.timers.tailscale-warp-bypass = {
+    description = "Periodically ensure Tailscale bypasses Cloudflare WARP";
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnBootSec = "10s";
+      OnUnitActiveSec = "30s";
+    };
+  };
+
   services.sunshine = {
     enable = true;
     package = pkgs.sunshine.override { cudaSupport = true; }; # NVENC ハードウェアエンコード有効化
