@@ -45,6 +45,10 @@
   whisper  rctl
 
   alt-ctrl-toggle (layer-toggle alt-ctrl-layer)
+
+  ;; Moonlight ストリーミング切断 (Ctrl + Option/Alt + Shift + Q)
+  ;; 左右Altが alt-layer 専用で素の Option を送れないため、alt-ctrl-layer 経由で直接送出する
+  ml-quit  C-A-S-q
 )
 
 ;; -------------------------------------------------------------------
@@ -183,7 +187,7 @@
 (deflayer alt-ctrl-layer
   _     _     _            _     _     _
   _     _     _     _     _     _     _     _     _     _
-  _     _     _     _     _     _     _     _     _     _     _     _
+  _     @ml-quit _  _     _     _     _     _     _     _     _     _
   _     _     _     _     _     @hyp-ctrl-h @hyp-ctrl-j @hyp-ctrl-k @hyp-ctrl-l
   _     _     _     _     _     _     _     _     _
   _     _     _     _

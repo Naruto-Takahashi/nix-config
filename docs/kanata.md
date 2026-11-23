@@ -103,6 +103,15 @@ Kanata をバックグラウンドサービスとして稼働させることで�
 | **`S / A`** | `Super + S / A` |
 | **`[1~9]`** | `Super + [1~9]` |
 
+### Alt + Ctrl 長押し中 (`alt-ctrl-layer`) のキーマッピング
+
+`Alt`（macOS は `Option`）を先に押し続けてから `Ctrl`（`CapsLock` 長押しまたは物理 `Ctrl`）を同時押ししたときに入ります。
+
+| キー | 実際に送信される信号 | 用途 |
+| :---: | :--- | :--- |
+| **`Q`** | `Ctrl + Alt(Option) + Shift + Q` | Moonlight ストリーミング切断（`Alt` 層に素の Option が無いことの回避） |
+| **`H / J / K / L`** | `Super + Alt + HJKL`（macOS は `Ctrl+Cmd+Alt + HJKL`） | 隣接ウィンドウとのコンテナ結合 (`join-with`) |
+
 ---
 
 ## 3. Mac風・快適日本語入力 (IME Integration)
