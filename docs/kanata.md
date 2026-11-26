@@ -1,5 +1,8 @@
 # Kanata キーボードリマッパー設定・キーマップ詳細
 
+> **MacBook は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../modules/input/karabiner/default.nix))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．レイヤーを変えるときは `config.kbd` (NixOS / Mac mini) と `karabiner/default.nix` (MacBook) の両方を直してください．Mac mini は引き続き Kanata です．
+
+
 このドキュメントでは、[modules/input/kanata/config.kbd](../modules/input/kanata/config.kbd) に定義されている Kanata デーモンの独自キーレイヤー設定および IME 統合動作について詳細に解説します。
 
 ## 対象OS・実装方式の違い (重要)

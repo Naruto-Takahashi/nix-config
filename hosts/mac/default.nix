@@ -29,8 +29,6 @@
   # -----------------------------------------------------------------------
   # インストールするパッケージの定義 (Mac固有パッケージ)
   # -----------------------------------------------------------------------
-  # kanata は hosts/mac/darwin.nix の systemPackages + postActivation で
-  # /usr/local/bin/kanata へ署名コピーされるため、ユーザープロファイルには置かない。
   # hackgen-nf-font は darwin.nix の fonts.packages でシステムフォントとして配置。
   home.packages = with pkgs; [
     nodejs_22
@@ -38,9 +36,4 @@
 
   # フォントの設定を有効化
   fonts.fontconfig.enable = true;
-
-  # Mac向け Kanata 設定ファイルの動的生成（置換ロジックは mac-config.nix に集約）
-  # 英数/かな切り替え・WM操作ともKanata側（config.kbd）で完結させるため，
-  # Karabiner-Elements本体（karabiner.json）は導入しない．
-  xdg.configFile."kanata/config.kbd".text = import ../../modules/input/kanata/mac-config.nix;
 }

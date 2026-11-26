@@ -3,7 +3,7 @@
 [README.md](../README.md) の「どれがどのOSで動くか」対応表も参照してください。
 
 M1 Mac などの macOS 環境でシステム設定およびアプリケーション群を統合管理する手順です．
-キーボード操作 (Kanata) と壁紙配色連携 (Matugen) は macOS の TCC (権限管理) の都合上，
+キーボード操作 (Karabiner-Elements / Mac mini は Kanata) と壁紙配色連携 (Matugen) は macOS の TCC (権限管理) の都合上，
 Nixの適用だけでは完結せず，何点か手動でのGUI操作が必要です．下記の順番通りに進めてください．
 
 Mac を買い替える場合は，先に下の「[移行チェックリスト](#移行チェックリスト)」で旧 Mac
@@ -62,13 +62,24 @@ cd nix-config
    ※ Bitwarden デスクトップアプリの SSH Agent（Touch ID での鍵供給）を利用する場合は，
    Bitwarden の設定で SSH Agent を有効化してください．
 
-6. **ドライバの機能拡張を有効化 (初回のみ・手動)**
-   上記でインストール・有効化リクエストまでは自動化されていますが，**実際に
-   有効化するトグルはSIPの制約上どうしても手動操作が必要**です．
-   `システム設定 → 一般 → ログイン項目と機能拡張 → ドライバの機能拡張` を開き，
-   `Karabiner DriverKit VirtualHIDDevice` を有効化してください．
+6. **Karabiner-Elements の許可 (MacBook・初回のみ・手動)**
+   MacBook のキーボードリマップは Karabiner-Elements です (cask は switch で自動インストール、
+   設定は [`modules/input/karabiner`](../modules/input/karabiner/default.nix) から
+   `~/.config/karabiner/karabiner.json` へ配置されます)．SIP の制約上、次の許可だけは手動です．
+   - `システム設定 → 一般 → ログイン項目と機能拡張 → ドライバの機能拡張` で
+     `Karabiner-VirtualHIDDevice-Manager` / `Karabiner-DriverKit-VirtualHIDDevice` を有効化
+   - `システム設定 → プライバシーとセキュリティ → 入力監視` で
+     `karabiner_grabber` と `karabiner_observer` を許可
+   - `システム設定 → 一般 → ログイン項目と機能拡張 → バックグラウンドで許可` で
+     Karabiner-Elements の項目を許可
 
-7. **Kanataへの権限付与 (初回のみ)**
+   外付けキーボードの後付け接続や再起動後の接続順は Karabiner が自前で処理するので、
+   Kanata 時代のような再起動の手当ては不要です．設定は `karabiner.json` が読み取り専用リンク
+   なので、GUI では編集せず Nix 側を直して switch してください．
+
+7. **Mac mini: Kanata の権限付与 (初回のみ・手動)**
+   Mac mini は引き続き Kanata です (`hosts/mac/kanata-darwin.nix`)．ドライバの機能拡張
+   (`Karabiner DriverKit VirtualHIDDevice`) を有効化したうえで、
    `システム設定 → プライバシーとセキュリティ` で以下2つを許可してください．
    `/usr/local/bin/kanata` をFinderの `Cmd+Shift+G` で直接パス入力して追加する
    のが確実です．
@@ -81,7 +92,7 @@ cd nix-config
    sudo launchctl kickstart -k system/org.nixos.kanata
    ```
 
-   署名用の証明書 (`hosts/mac/darwin.nix` の `KANATA_CERT_NAME`) が変わると，macOSは
+   署名用の証明書 (`hosts/mac/kanata-darwin.nix` の `KANATA_CERT_NAME`) が変わると，macOSは
    Kanataを別アプリとみなし権限が外れます (ログに `needs macOS Accessibility permission`
    等が出る)．その場合は両方の一覧から既存の `kanata` を「−」で削除し，上記の手順で
    追加し直してから再起動してください (オフ→オンだけでは古い署名の情報が残ります)．
@@ -147,7 +158,7 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 
 ## この構成で有効になるもの
 
-AeroSpace (WM) + JankyBorders，Hammerspoon (トラックパッドジェスチャー)，Kanata (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りと小さなユーティリティのみ。他のアプリは手動インストール)。詳細は [aerospace.md](aerospace.md) / [hammerspoon.md](hammerspoon.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
+AeroSpace (WM) + JankyBorders，Hammerspoon (トラックパッドジェスチャー)，Karabiner-Elements (キーリマップ，`Ctrl+Cmd`変換。Mac mini は Kanata)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りと小さなユーティリティのみ。他のアプリは手動インストール)。詳細は [aerospace.md](aerospace.md) / [hammerspoon.md](hammerspoon.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
 
 ---
 

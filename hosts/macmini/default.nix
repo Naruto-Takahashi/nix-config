@@ -12,6 +12,12 @@
     mail-secretary.homeManagerModules.default
   ];
 
+  # Mac mini は Kanata を使う (MacBook は Karabiner-Elements、hosts/macbook 参照)。
+  # kanata 本体は hosts/mac/kanata-darwin.nix の systemPackages + postActivation で
+  # /usr/local/bin/kanata へ署名コピーされるため、ユーザープロファイルには置かない。
+  # Mac向け Kanata 設定ファイルの動的生成（置換ロジックは mac-config.nix に集約）。
+  xdg.configFile."kanata/config.kbd".text = import ../../modules/input/kanata/mac-config.nix;
+
   services.mailSecretary = {
     enable = true;
     interval = 600; # 10 分おき

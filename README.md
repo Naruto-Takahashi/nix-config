@@ -33,7 +33,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | :--- | :---: | :---: | :---: |
 | **タイルWM** | [Hyprland](docs/hyprland.md) ✅ | [komorebi](docs/komorebi.md) (Windows) | [AeroSpace](docs/aerospace.md) ✅ |
 | **ステータスバー** | [Waybar](docs/hyprland.md) ✅ | [YASB](docs/komorebi.md) (Windows) | macOS標準メニューバー |
-| **キーボードリマップ** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)※1 | [Kanata](docs/kanata.md) ✅※2 |
+| **キーボードリマップ** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)※1 | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅※2 (Mac miniはKanata) |
 | **壁紙連動の動的配色** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows側) | [Matugen](docs/matugen-palette.md) ✅ |
 | **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](docs/kanata.md)) |
 | **リモートデスクトップ** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (接続元クライアント) | ➖ |
@@ -140,7 +140,7 @@ Legend: ✅ enabled · ➖ not set up in this config · (Windows) runs on the Wi
 | :--- | :---: | :---: | :---: |
 | **Tiling WM** | [Hyprland](docs/hyprland.md) ✅ | [komorebi](docs/komorebi.md) (Windows) | [AeroSpace](docs/aerospace.md) ✅ |
 | **Status bar** | [Waybar](docs/hyprland.md) ✅ | [YASB](docs/komorebi.md) (Windows) | native macOS menu bar |
-| **Keyboard remapping** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)* | [Kanata](docs/kanata.md) ✅** |
+| **Keyboard remapping** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)* | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅** (Mac mini: Kanata) |
 | **Wallpaper-driven theming** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows side) | [Matugen](docs/matugen-palette.md) ✅ |
 | **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](docs/kanata.md)) |
 | **Remote desktop** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (client only) | ➖ |

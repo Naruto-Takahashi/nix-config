@@ -131,21 +131,23 @@
         ];
       };
 
-      # Mac (nix-darwin) 環境用プロファイル
+      # Mac (MacBook, nix-darwin) 環境用プロファイル。キーボードリマップは Karabiner-Elements
       darwinConfigurations."mac" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
           ./hosts/mac/darwin.nix
+          ./hosts/macbook/darwin.nix
           home-manager.darwinModules.home-manager
-          (hmIntegration "mac")
+          (hmIntegration "macbook")
         ];
       };
 
-      # Mac mini (常時稼働): mac の構成に、メール秘書の定期実行を加えたもの
+      # Mac mini (常時稼働): 共通の Mac 構成に、Kanata とメール秘書の定期実行を加えたもの
       darwinConfigurations."macmini" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
           ./hosts/mac/darwin.nix
+          ./hosts/mac/kanata-darwin.nix
           home-manager.darwinModules.home-manager
           (hmIntegration "macmini")
         ];
