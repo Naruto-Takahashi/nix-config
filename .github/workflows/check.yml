@@ -39,6 +39,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: DeterminateSystems/nix-installer-action@v16
       - name: shellcheck (zsh スクリプトは対象外)
         run: |
@@ -47,7 +49,7 @@ jobs:
             | xargs nix run nixpkgs#shellcheck -- --severity=warning
       - name: starship fallback / template 同期チェック
         # 2ファイルは palettes.matugen ブロック以外同一に保つ規約
-        # (docs/matugen-palette.md 参照)。コメント行を除いた本文を比較する。
+        # (modules/theming/matugen/README.md 参照)。コメント行を除いた本文を比較する。
         run: |
           strip() { awk '/^\[palettes\.matugen\]/{exit} !/^#/' "$1"; }
           if ! diff <(strip modules/shell/starship/starship.toml) \
@@ -56,29 +58,20 @@ jobs:
             exit 1
           fi
       - name: ドキュメント内リンクの死活チェック
-        # docs/*.md と README.md 内の相対リンク (Markdown [text](path) 形式) が
-        # 実在ファイルを指しているかを検証する。リポジトリ構成変更 (ホスト削除等)
-        # の際にドキュメント側の参照更新漏れを検出するのが目的。
-        # #以降のアンカー、http(s)/mailto、`![](...)`のような記法説明用の
-        # プレースホルダは対象外。
-        run: |
-          fail=0
-          while IFS= read -r file; do
-            dir=$(dirname "$file")
-            while IFS= read -r link; do
-              path="${link%%#*}"
-              [ -z "$path" ] && continue
-              case "$path" in
-                http://*|https://*|mailto:*|"...") continue ;;
-              esac
-              target="$dir/$path"
-              if [ ! -e "$target" ]; then
-                echo "::error file=$file::broken link -> $link"
-                fail=1
-              fi
-            done < <(grep -oE '\]\([^)]+\)' "$file" | sed -E 's/^\]\((.*)\)$/\1/')
-          done < <(git ls-files 'docs/*.md' README.md)
-          exit $fail
+        # 全 *.md の相対リンクが実在ファイルを指しているかを検証する。実装は justfile
+        # (check-links) に一本化している。リポジトリ構成の変更でドキュメント側の
+        # 参照更新を忘れるのを検出するのが目的。
+        run: nix run nixpkgs#just -- check-links
+      - name: 対になる実装の整合性チェック (SYNC-PAIR)
+        # 同じ役割を別ツールで実装しているファイル (kanata/karabiner/ahk、
+        # aerospace/hyprland/komorebi など) が、互いを参照し合っているかを検証する。
+        # 書式と運用は CONTRIBUTING.md を参照。
+        run: nix run nixpkgs#just -- check-sync
+      - name: 対になる実装の更新漏れ (警告のみ)
+        # PR で、片方だけ変更して対になる実装を変更していないファイルを警告する。
+        # 失敗にはしない (意図的に片方だけ直す場合があるため)。
+        if: github.event_name == 'pull_request'
+        run: nix run nixpkgs#just -- check-sync-changed "${{ github.event.pull_request.base.sha }}"
 
   build-linux:
     runs-on: ubuntu-latest

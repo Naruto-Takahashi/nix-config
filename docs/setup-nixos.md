@@ -51,4 +51,4 @@ cd nix-config
 
 ## この構成で有効になるもの
 
-Hyprland (WM) + Waybar，Kanata (キーリマップ，`Super`変換)，fcitx5+Mozc，Matugen壁紙配色，Tailscale+Sunshine無人リモート接続。詳細は各ドキュメント ([hyprland.md](hyprland.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md)) を参照してください。
+Hyprland (WM) + Waybar，Kanata (キーリマップ，`Super`変換)，fcitx5+Mozc，Matugen壁紙配色，Tailscale+Sunshine無人リモート接続。詳細は各ドキュメント ([hyprland.md](../modules/wm/hyprland/README.md) / [kanata.md](../modules/input/kanata/README.md) / [matugen-palette.md](../modules/theming/matugen/README.md)) を参照してください。

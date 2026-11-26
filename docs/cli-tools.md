@@ -1,7 +1,7 @@
 # CLI ユーティリティ 使い方チートシート
 
 `profiles/core.nix` で全ホスト共通に導入している小物 CLI/TUI ツールの基本操作集です。
-atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dragon フォールバック) です ([matugen-palette.md](matugen-palette.md) 参照)。
+atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dragon フォールバック) です ([matugen-palette.md](../modules/theming/matugen/README.md) 参照)。
 
 ---
 
@@ -22,7 +22,7 @@ atuin / btop / tealdeer の配色は Matugen 連携 (壁紙由来 + kanagawa-dra
 | `»` | **renamed** — ファイル名が変更された |
 | `-` | **deleted** — 削除されたファイルがある |
 
-- `deleted` だけ既定の `✘` (U+2718 HEAVY BALLOT X) から `-` (ハイフン) に変更している。`✘`/軽量版の `✗` (U+2717) も試したが、フォントによって隣の記号 (特に `renamed` の `»` 等) と重なって崩れて見えることがあったため、幅計算がブレないASCII文字に変更した (`modules/shell/starship/starship.toml` と `modules/theming/matugen/templates/starship.toml` の `[git_status]` セクション参照。2ファイルは内容を揃える規約、[matugen-palette.md](matugen-palette.md) 参照)
+- `deleted` だけ既定の `✘` (U+2718 HEAVY BALLOT X) から `-` (ハイフン) に変更している。`✘`/軽量版の `✗` (U+2717) も試したが、フォントによって隣の記号 (特に `renamed` の `»` 等) と重なって崩れて見えることがあったため、幅計算がブレないASCII文字に変更した (`modules/shell/starship/starship.toml` と `modules/theming/matugen/templates/starship.toml` の `[git_status]` セクション参照。2ファイルは内容を揃える規約、[matugen-palette.md](../modules/theming/matugen/README.md) 参照)
 - 他の記号は starship の既定のまま (フォントの表示崩れが確認されていないため)
 
 ---

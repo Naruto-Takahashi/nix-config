@@ -20,7 +20,7 @@ matugen image --source-color-index 0 "$SELECTED_PATH"
 # === DERIVE + RENDER (WSL/NixOS 共通ロジック, modules/theming/matugen) ===
 # matugen テンプレートでは色相回転ができないため、生成後の colors.lua に
 # 派生色 (complement/triad) を追記し、@@プレースホルダ@@ テンプレートを
-# レンダリングする。詳細は docs/matugen-palette.md を参照。
+# レンダリングする。詳細は modules/theming/matugen/README.md を参照。
 COLORS_LUA="$HOME/.cache/matugen/colors.lua"
 LIB="$HOME/.config/matugen-common/lib"
 TPL="$HOME/.config/matugen-common/templates"

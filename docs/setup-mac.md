@@ -81,7 +81,7 @@ cd nix-config
    `ctrl-cmd-w` (壁紙ピッカー) や `matugen-apply` を初めて実行すると，現在の壁紙を
    取得するために「システムイベント」のオートメーション許可を求めるダイアログが
    出ることがあります．許可すると以後は自動で通ります．詳細は
-   [matugen-palette.md](matugen-palette.md) を参照してください．
+   [matugen-palette.md](../modules/theming/matugen/README.md) を参照してください．
 
 9. **AeroSpace設定の再読み込み (通常は不要)**
    ログイン20秒後にAeroSpaceの設定リロードとborders起動を自動で行うLaunchAgent
@@ -135,7 +135,7 @@ Nix で再現できないもの (認証情報・アプリ内データ・手動�
 
 ## この構成で有効になるもの
 
-AeroSpace (WM) + JankyBorders，Hammerspoon (トラックパッドジェスチャー)，Karabiner-Elements (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りと小さなユーティリティのみ。他のアプリは手動インストール)。詳細は [aerospace.md](aerospace.md) / [hammerspoon.md](hammerspoon.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) を参照してください。
+AeroSpace (WM) + JankyBorders，Hammerspoon (トラックパッドジェスチャー)，Karabiner-Elements (キーリマップ，`Ctrl+Cmd`変換)，Matugen壁紙配色 (壁紙ピッカー含む)，Homebrew管理 (WM 周りと小さなユーティリティのみ。他のアプリは手動インストール)。詳細は [aerospace.md](../modules/wm/aerospace/README.md) / [hammerspoon.md](../modules/wm/hammerspoon/README.md) / [kanata.md](../modules/input/kanata/README.md) / [matugen-palette.md](../modules/theming/matugen/README.md) を参照してください。
 
 ---
 

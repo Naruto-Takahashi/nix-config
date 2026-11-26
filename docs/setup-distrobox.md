@@ -132,8 +132,8 @@ nixcli() {
 [`profiles/base.nix`](../profiles/base.nix) のCLIツール一式 (zsh / starship / neovim / yazi /
 git / lazygit / eza / bat / btop / atuin 等) がコンテナ内で完全な形
 で使える。GUI/ウィンドウマネージャー・systemdユーザーサービス・カーネル入力リマップ
-(kanata) 等，コンテナに乗らないものは含まれない。詳細は [neovim.md](neovim.md) /
-[yazi.md](yazi.md) / [cli-tools.md](cli-tools.md) を参照。
+(kanata) 等，コンテナに乗らないものは含まれない。詳細は [neovim.md](../modules/cli/neovim/README.md) /
+[yazi.md](../modules/cli/yazi/README.md) / [cli-tools.md](cli-tools.md) を参照。
 
 ホスト側 (コンテナの外) には，最低限の開発環境を別途手動でインストールしておくと安全。
 zsh / starship / atuin / eza / bat / git / nvim (Node無し) をスタンドアロン

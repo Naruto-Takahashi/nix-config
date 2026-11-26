@@ -1,21 +1,26 @@
 # Kanata キーボードリマッパー設定・キーマップ詳細
 
-> **macOS (MacBook / Mac mini とも) は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../modules/input/karabiner/default.nix))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．このファイルの macOS 向けの記述 (表の macOS 行・`(platform (macos) ...)`・Fn 行など) は移行前の kanata 実装の記録で、現在は使われていません．レイヤーを変えるときは `config.kbd` (NixOS / WSL) と `karabiner/default.nix` (Mac) の両方を直してください．
+> **役割**: NixOS / WSL のキーボードリマップ (SandS・IME 切替・CapsLock 改修)。OS ごとの実装方式の違いもここに整理
+> **対象ホスト**: NixOS / WSL (macOS は Karabiner に移行済み)
+> **対になる実装**: [Karabiner](../karabiner/default.nix) (Mac) / [AutoHotkey](../ahk/main.ahk) (WSL のフォールバック)。同じ役割の別実装なので、レイヤーを変えたら全部確認する
+> **注意**: `config.kbd` は NixOS と WSL で共有する1ファイル。OS ごとの差は `platform` と `deftemplate` で解決する。キーを変えたらこのドキュメントも直す
+
+> **macOS (MacBook / Mac mini とも) は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../karabiner/default.nix))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．このファイルの macOS 向けの記述 (表の macOS 行・`(platform (macos) ...)`・Fn 行など) は移行前の kanata 実装の記録で、現在は使われていません．レイヤーを変えるときは `config.kbd` (NixOS / WSL) と `karabiner/default.nix` (Mac) の両方を直してください．
 
 
-このドキュメントでは、[modules/input/kanata/config.kbd](../modules/input/kanata/config.kbd) に定義されている Kanata デーモンの独自キーレイヤー設定および IME 統合動作について詳細に解説します。
+このドキュメントでは、[modules/input/kanata/config.kbd](config.kbd) に定義されている Kanata デーモンの独自キーレイヤー設定および IME 統合動作について詳細に解説します。
 
 ## 対象OS・実装方式の違い (重要)
 
-**Windows/WSL2環境では、kanataはWindows側でネイティブに動く別バイナリとして稼働します**（WSL上のプロセスはWindows側のキーボード入力を物理的に捕まえられないため、WSL内でkanataを動かすのではなく、Windows用にビルドされたkanataバイナリをWindows側で直接起動する構成)。従来はWindows専用の [AutoHotkeyスクリプト](../modules/input/ahk/main.ahk) がSandS/CapsLock/Alt-IME切り替えを独自実装していたが、AHKの `Key & Key` コンボ実装がキー状態を稀に取りこぼし「押されっぱなし」になる不具合があったため、その部分をkanataへ移行した(`modules/input/kanata/wsl.nix` / `wsl-config.nix`)。AHK側の実装は削除せず、kanata稼働中は自動的に無効化される形で残してあり(`main.ahk`の`KanataActive()`)、kanataのプロセスを終了するだけで即座にAHK実装へロールバックできる。komorebi固有のWMショートカット(Alt+文字)は元々AHK側で素のAlt修飾として直接実装されているため変更していない。
+**Windows/WSL2環境では、kanataはWindows側でネイティブに動く別バイナリとして稼働します**（WSL上のプロセスはWindows側のキーボード入力を物理的に捕まえられないため、WSL内でkanataを動かすのではなく、Windows用にビルドされたkanataバイナリをWindows側で直接起動する構成)。従来はWindows専用の [AutoHotkeyスクリプト](../ahk/main.ahk) がSandS/CapsLock/Alt-IME切り替えを独自実装していたが、AHKの `Key & Key` コンボ実装がキー状態を稀に取りこぼし「押されっぱなし」になる不具合があったため、その部分をkanataへ移行した(`modules/input/kanata/wsl.nix` / `wsl-config.nix`)。AHK側の実装は削除せず、kanata稼働中は自動的に無効化される形で残してあり(`main.ahk`の`KanataActive()`)、kanataのプロセスを終了するだけで即座にAHK実装へロールバックできる。komorebi固有のWMショートカット(Alt+文字)は元々AHK側で素のAlt修飾として直接実装されているため変更していない。
 
 Kanataを使う3ホストの間で、レイヤー定義 (`config.kbd`) は共通の1ファイルです。ホストごとに変わる「信号」(WM修飾子・Alt+Space/Tab・Undo など) は、`config.kbd` 内の `(platform (macos) ...)` / `(platform (linux) ...)` / `(platform (win winiov2 wintercept) ...)` と `deftemplate` (`wm-aliases`) で **kanata 自身が実行時に解決**します。Nix 側の文字列置換は、物理配列など構造そのものが違う部分にだけ残しています。
 
 | ホスト | WM修飾子 (`wm-aliases` の `p`) | 連携するWM | 備考 |
 | :--- | :--- | :--- | :--- |
-| **NixOS** | `M-` (Super単体) | Hyprland ([hyprland.md](hyprland.md)) | `modules/input/kanata/linux-config.nix` は `eisu`/`kana` → `muhenkan`/`henkan` のみ置換 |
-| **macOS** | `C-M-` (Ctrl+Cmd) | AeroSpace ([aerospace.nix](../modules/wm/aerospace/default.nix)) | macOS標準の`Cmd`単体ショートカットと衝突しないよう二重修飾にしている |
-| **WSL** | `A-` (Alt単体) | komorebi ([komorebi.md](komorebi.md)) | `modules/input/kanata/wsl-config.nix`。既存のAHK側 `!` (Alt) ホットキー群と同じ信号になるためkomorebi.ahk側は無変更で動く |
+| **NixOS** | `M-` (Super単体) | Hyprland ([hyprland.md](../../wm/hyprland/README.md)) | `modules/input/kanata/linux-config.nix` は `eisu`/`kana` → `muhenkan`/`henkan` のみ置換 |
+| **macOS** | `C-M-` (Ctrl+Cmd) | AeroSpace ([aerospace.nix](../../wm/aerospace/default.nix)) | macOS標準の`Cmd`単体ショートカットと衝突しないよう二重修飾にしている |
+| **WSL** | `A-` (Alt単体) | komorebi ([komorebi.md](../../wm/komorebi/README.md)) | `modules/input/kanata/wsl-config.nix`。既存のAHK側 `!` (Alt) ホットキー群と同じ信号になるためkomorebi.ahk側は無変更で動く |
 
 `wm-aliases` の引数 (`p close dact tabact cp`) のホスト別の値:
 
@@ -84,7 +89,7 @@ Kanata をバックグラウンドサービスとして稼働させることで�
 
 ### Alt長押し中のキーマッピング一覧
 
-このレイヤーが送信する**信号自体**は3ホスト共通ですが、その信号にWM側が何を割り当てるかはホストごと・時期によって独立して変わりうるため、**発動するアクションの正はホストごとのドキュメントを見てください**：NixOSは[hyprland.md](hyprland.md)、macOSは[aerospace.md](aerospace.md)、WSLは[komorebi.md](komorebi.md) (WSLはKanataではなくAutoHotkeyの独自実装なので、下表の信号とは無関係にキーが割り当てられています)。
+このレイヤーが送信する**信号自体**は3ホスト共通ですが、その信号にWM側が何を割り当てるかはホストごと・時期によって独立して変わりうるため、**発動するアクションの正はホストごとのドキュメントを見てください**：NixOSは[hyprland.md](../../wm/hyprland/README.md)、macOSは[aerospace.md](../../wm/aerospace/README.md)、WSLは[komorebi.md](../../wm/komorebi/README.md) (WSLはKanataではなくAutoHotkeyの独自実装なので、下表の信号とは無関係にキーが割り当てられています)。
 
 起動系のキー (`N`=Neovim、`Y`=Yazi、`V`=Vivaldi) は3ホストで意味が揃うように統一済みです。`D`と`B`は逆に「無理に意味を揃えない」方針にしており、`B`はどのホストでも未使用，`D`はホストごとに個別の(既存の別キーと重複する)動作のままにしています。
 
@@ -169,7 +174,7 @@ macOS 内蔵キーボードの F1〜F12 は、単独押しで輝度・音量な�
 
 kanataはクロスプラットフォームだが，WezTermとの連携やExplorer統合(Everything検索)等，kanataだけでは実現できない機能があるため，`modules/input/ahk/main.ahk` をAutoHotkeyの実行ファイルとして併用している。役割としてはkanataと同じ「キーボードリマップ」層に属するため`modules/input/`配下に置いているが，実装はWindows専用。
 
-* エントリポイントは `main.ahk` の1つのみ。komorebi固有のホットキー定義 (`modules/wm/komorebi/komorebi.ahk`、[komorebi.md](komorebi.md) 参照) はここから絶対パスで `#Include` される
+* エントリポイントは `main.ahk` の1つのみ。komorebi固有のホットキー定義 (`modules/wm/komorebi/komorebi.ahk`、[komorebi.md](../../wm/komorebi/README.md) 参照) はここから絶対パスで `#Include` される
 * IME制御関数 (`ImmGetDefaultIMEWnd` 等のWin32 API呼び出し) は `modules/input/ahk/lib/ime_functions.ahk` に切り出している。kanataからも `cmd` アクション経由で `ime-off.ahk`/`ime-on.ahk` (同ライブラリを使う一発実行スクリプト) が呼ばれる
 * `sync-win` が `~/.config/ahk` 配下をまるごと Windows の `Tools\Customization\` へコピーする
 * SandS/CapsLock/Alt-IME切り替えの実装自体は上記の通りkanataへ移行済みだが、main.ahk側にも同等のコードを残してあり、kanataが起動していない間は自動的に有効化される (`KanataActive()`)。ロールバックはkanataのプロセスを終了するだけでよい

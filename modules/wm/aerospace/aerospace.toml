@@ -1,3 +1,4 @@
+# SYNC-PAIR: modules/wm/hyprland/config/hypr/configs/keybinds.conf, modules/wm/komorebi/komorebi.ahk
 # AeroSpace Configuration
 config-version = 2
 persistent-workspaces = ["1", "2", "3", "4", "5", "6", "7", "8", "9"]
@@ -31,7 +32,7 @@ on-focus-changed = [
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 
 # 特定の固定サイズアプリ・ダイアログ・ポップアップのフローティング例外ルール
-# 新規GUIアプリ追加時は，以下の基準に該当する場合ここへ登録する（詳細は docs/aerospace.md）:
+# 新規GUIアプリ追加時は，以下の基準に該当する場合ここへ登録する（詳細は modules/wm/aerospace/README.md）:
 #   1. 独自ポップアップ・ミニツールバーを別ウィンドウ生成するアプリ (Microsoft Office等)
 #   2. 固定サイズのユーティリティ・認証・設定画面 (システム設定, Bitwarden, KensingtonWorks, Spokenly等)
 #   3. 動画の小窓 (Picture-in-Picture) やランチャー系ポップアップ

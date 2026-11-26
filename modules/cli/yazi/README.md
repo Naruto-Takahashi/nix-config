@@ -1,6 +1,11 @@
 # Yazi 設計・拡張機能・操作ガイド
 
-このドキュメントでは，[modules/cli/yazi/default.nix](../modules/cli/yazi/default.nix) で管理されている Rust 製高速ファイラー **Yazi** の独自拡張，配色連携，および代表的な操作について解説します．
+> **役割**: Yazi の独自拡張 (rich-preview, compress) と操作チートシート
+> **対象ホスト**: 全ホスト
+> **対になる実装**: なし
+> **注意**: 色の補間 (`blend.lua`) は [theming/lib/blend.lua](../../theming/lib/blend.lua) を Neovim と共有している (Neovim 側はシンボリックリンク)
+
+このドキュメントでは，[modules/cli/yazi/default.nix](default.nix) で管理されている Rust 製高速ファイラー **Yazi** の独自拡張，配色連携，および代表的な操作について解説します．
 
 > [!TIP]
 > **内蔵ヘルプ機能**:
@@ -14,7 +19,7 @@
   - `enableZshIntegration = true` により，Yazi を終了（`q`）すると，**Yazi 内で開いていたディレクトリへ自動的にシェルのカレントディレクトリが移動**します（CWDを更新せず終了したい場合は `Q`）．
 * **Kanagawa Dragon & Matugen 動的配色**:
   - 既定は `kanagawa-dragon` フレーバー．壁紙配色（Matugen）実行時は，フォルダ色・ファイル種別・ステータスバーが自動連動します．
-  - ステータスバーは Neovim の lualine と同じ「一点集中」の配色です．塗るのは左端の**モード** (モード色のソリッド) と右端の**位置** (モード色の淡い地) だけで，サイズ・割合などは本文と同じ地の上の文字です．区切りは斜め「/」．淡い地は，Neovim と共通の [`modules/theming/lib/blend.lua`](../modules/theming/lib/blend.lua) による 2 色補間 (surface → モード色) で描きます．
+  - ステータスバーは Neovim の lualine と同じ「一点集中」の配色です．塗るのは左端の**モード** (モード色のソリッド) と右端の**位置** (モード色の淡い地) だけで，サイズ・割合などは本文と同じ地の上の文字です．区切りは斜め「/」．淡い地は，Neovim と共通の [`modules/theming/lib/blend.lua`](../../theming/lib/blend.lua) による 2 色補間 (surface → モード色) で描きます．
 * **リッチプレビュー (`rich-preview`)**:
   - Markdown, CSV, JSON, Jupyter Notebook は `rich-cli` を通じて装飾付きで美麗にレンダリング表示されます．
 
@@ -57,7 +62,7 @@
 
 | パス | 役割 |
 | :--- | :--- |
-| [`modules/cli/yazi/default.nix`](../modules/cli/yazi/default.nix) | Yazi 本体定義・プラグイン設定・キーマップ割り当て |
-| [`modules/cli/yazi/init.lua`](../modules/cli/yazi/init.lua) | UI レイアウト・ステータスバー・配色ロジック |
-| [`modules/cli/yazi/theme-template.toml`](../modules/cli/yazi/theme-template.toml) | Matugen 動的配色のプレースホルダーテンプレート |
-| [`modules/theming/lib/blend.lua`](../modules/theming/lib/blend.lua) | ステータスバーグラデーション描画用の色補間ライブラリ |
+| [`modules/cli/yazi/default.nix`](default.nix) | Yazi 本体定義・プラグイン設定・キーマップ割り当て |
+| [`modules/cli/yazi/init.lua`](init.lua) | UI レイアウト・ステータスバー・配色ロジック |
+| [`modules/cli/yazi/theme-template.toml`](theme-template.toml) | Matugen 動的配色のプレースホルダーテンプレート |
+| [`modules/theming/lib/blend.lua`](../../theming/lib/blend.lua) | ステータスバーグラデーション描画用の色補間ライブラリ |

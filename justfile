@@ -22,7 +22,7 @@ check:
     nix flake check --no-build
 
 # 全リント検証 (CI lint ジョブと同等)
-lint: lint-shell lint-starship check-links
+lint: lint-shell lint-starship check-links check-sync
     @echo "✅ すべてのリント検証を通過しました。"
 
 # シェルスクリプトの静的解析 (shellcheck)
@@ -148,8 +148,60 @@ check-links:
           fail=1
         fi
       done < <(grep -oE "\]\([^)]+\)" "$file" | sed -E "s/^\]\((.*)\)$/\1/")
-    done < <(git ls-files "docs/*.md" README.md)
+    done < <(git ls-files "*.md")
     if [ "$fail" -eq 0 ]; then
       echo "✅ すべてのドキュメント内リンクが正常です。"
     fi
     exit $fail
+
+# 対になる実装 (SYNC-PAIR) の整合性を検査する。
+#   - 参照先のファイルが実在すること
+#   - 相互に参照し合っていること (片方だけに書いて忘れない)
+# 書式と運用は CONTRIBUTING.md を参照。
+check-sync:
+    #!/usr/bin/env bash
+    fail=0
+    while IFS= read -r hit; do
+      file="${hit%%:*}"; rest="${hit#*:}"; rest="${rest#*:}"
+      kind=SYNC-PAIR
+      targets="${rest#*${kind}:}"
+      targets="${targets%\*/*}"
+      IFS=',' read -ra arr <<<"$targets"
+      for t in "${arr[@]}"; do
+        t=$(echo "$t" | xargs)
+        [ -z "$t" ] && continue
+        if [ ! -f "$t" ]; then
+          echo "::error file=$file::$kind の参照先が存在しません -> $t"; fail=1; continue
+        fi
+        if ! git grep -q -E "${kind}:.*${file}" -- "$t"; then
+          echo "::error file=$file::$kind が片方向です。$t にも '$kind: $file' を書いてください"; fail=1
+        fi
+      done
+    done < <(git grep -n -I -E 'SYNC-PAIR:' -- . ':!*.md' ':!justfile' ':!.github')
+    [ "$fail" -eq 0 ] && echo "✅ 対になる実装の整合性は問題ありません。"
+    exit $fail
+
+# 変更したファイルの「対になる実装」が、同じ変更に含まれているか確認する (警告のみ)。
+# 使い方: just check-sync-changed [比較元(既定: main)]。CI では PR の base を渡す。
+check-sync-changed base="main":
+    #!/usr/bin/env bash
+    changed=$(git diff --name-only "{{base}}")
+    warned=0
+    while IFS= read -r hit; do
+      file="${hit%%:*}"; rest="${hit#*:}"; rest="${rest#*:}"
+      grep -qxF "$file" <<<"$changed" || continue
+      targets="${rest#*:}"; targets="${targets%\*/*}"
+      IFS=',' read -ra arr <<<"$targets"
+      touched=0; list=""
+      for t in "${arr[@]}"; do
+        t=$(echo "$t" | xargs); [ -z "$t" ] && continue
+        list="$list $t"
+        grep -qxF "$t" <<<"$changed" && touched=1
+      done
+      if [ "$touched" -eq 0 ]; then
+        echo "::warning file=$file::対になる実装も更新が必要か確認してください:$list"
+        warned=1
+      fi
+    done < <(git grep -n -I -E 'SYNC-PAIR:' -- . ':!*.md' ':!justfile' ':!.github')
+    [ "$warned" -eq 0 ] && echo "✅ 変更したファイルの対になる実装は、同じ変更に含まれています。"
+    exit 0

@@ -1,5 +1,10 @@
 # Matugen パレット — 色の名前と用途
 
+> **役割**: 壁紙連動の動的配色 (Matugen) の仕組み・色の定義・各ホストのパイプライン
+> **対象ホスト**: Mac / NixOS / WSL
+> **対になる実装**: Mac の `mac/` と WSL の `wsl/` に、適用スクリプトとパレットの別実装がある。NixOS は Hyprland 側 (`modules/wm/hyprland/config/matugen`)
+> **注意**: starship のフォールバック版とテンプレート版は、`[palettes.matugen]` 以外を同一に保つ規約 (CI で検査)
+
 壁紙から matugen で抽出・生成される動的パレットの一覧。
 `matugen-apply` (WSL: `~/.local/bin/matugen-apply`) が壁紙変更のたびに
 `~/.cache/matugen/colors.lua` へ書き出し、各アプリがそこから読む。

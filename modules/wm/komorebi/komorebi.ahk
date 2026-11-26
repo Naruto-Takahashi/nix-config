@@ -1,8 +1,9 @@
+; SYNC-PAIR: modules/wm/aerospace/aerospace.toml, modules/wm/hyprland/config/hypr/configs/keybinds.conf
 /*
     =============================================================================
     komorebi & YASB 用 AutoHotkey スクリプト (GlazeWM のキーバインド再現)
     =============================================================================
-    キーバインドを変更したら docs/komorebi.md も直すこと
+    キーバインドを変更したら modules/wm/komorebi/README.md も直すこと
     (このファイルから自動生成されるドキュメントではないため乖離に注意)。
 */
 

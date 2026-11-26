@@ -31,22 +31,38 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 
 | 機能 / モジュール | NixOS | WSL2 | macOS |
 | :--- | :---: | :---: | :---: |
-| **タイルWM** | [Hyprland](docs/hyprland.md) ✅ | [komorebi](docs/komorebi.md) (Windows) | [AeroSpace](docs/aerospace.md) ✅ |
-| **ステータスバー** | [Waybar](docs/hyprland.md) ✅ | [YASB](docs/komorebi.md) (Windows) | macOS標準メニューバー |
-| **キーボードリマップ** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)※1 | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅※2 |
-| **壁紙連動の動的配色** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows側) | [Matugen](docs/matugen-palette.md) ✅ |
-| **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](docs/kanata.md)) |
+| **タイルWM** | [Hyprland](modules/wm/hyprland/README.md) ✅ | [komorebi](modules/wm/komorebi/README.md) (Windows) | [AeroSpace](modules/wm/aerospace/README.md) ✅ |
+| **ステータスバー** | [Waybar](modules/wm/hyprland/README.md) ✅ | [YASB](modules/wm/komorebi/README.md) (Windows) | macOS標準メニューバー |
+| **キーボードリマップ** | [Kanata](modules/input/kanata/README.md) ✅ | [AutoHotkey](modules/input/kanata/README.md) (Windows)※1 | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅※2 |
+| **壁紙連動の動的配色** | [Matugen](modules/theming/matugen/README.md) ✅ | [Matugen](modules/theming/matugen/README.md) ✅ (Windows側) | [Matugen](modules/theming/matugen/README.md) ✅ |
+| **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](modules/input/kanata/README.md)) |
 | **リモートデスクトップ** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (接続元クライアント) | ➖ |
-| **Obsidian 外部脳連携** | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ |
+| **Obsidian 外部脳連携** | [Obsidian Brain](modules/services/README.md) ✅ | [Obsidian Brain](modules/services/README.md) ✅ | [Obsidian Brain](modules/services/README.md) ✅ |
 | **Homebrew Cask管理** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
-| [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
-| [Neovim](docs/neovim.md) | ✅ | ✅ | ✅ |
-| [Yazi](docs/yazi.md) | ✅ | ✅ | ✅ |
+| [WezTerm](modules/gui/wezterm/README.md) | ✅ | ✅ | ✅ |
+| [Neovim](modules/cli/neovim/README.md) | ✅ | ✅ | ✅ |
+| [Yazi](modules/cli/yazi/README.md) | ✅ | ✅ | ✅ |
 | [lazygit / eza / bat / btop / atuin / starship等](docs/cli-tools.md) | ✅ | ✅ | ✅ |
-| [gitmoji](docs/gitmoji.md) (git-hooks) | ✅ | ✅ | ✅ |
+| [gitmoji](modules/cli/git-hooks/README.md) (git-hooks) | ✅ | ✅ | ✅ |
 
 ※1 WSLからはWindows側の物理キーボードを直接掴めないため，Kanataではなく [`modules/input/ahk/main.ahk`](modules/input/ahk/main.ahk) が同等の機能を別実装しています．
-※2 macOSはWM操作の変換先が`Ctrl+Cmd`（NixOSは`Super`単体）になるなど，キー配線が一部異なります．詳細は[kanata.md](docs/kanata.md)の「対象OS・実装方式の違い」を参照．
+※2 macOSはWM操作の変換先が`Ctrl+Cmd`（NixOSは`Super`単体）になるなど，キー配線が一部異なります．詳細は[kanata.md](modules/input/kanata/README.md)の「対象OS・実装方式の違い」を参照．
+
+## 運用ルールと二重管理の一覧
+
+- **変更・追加の手順、置き場所のルール、確認コマンド**は [CONTRIBUTING.md](CONTRIBUTING.md) にまとめています。人も AI も、作業の前に読んでください ([AGENTS.md](AGENTS.md) から誘導しています)。
+- **ホストごとの索引** (そのホストが何を使っているか): [mac](hosts/mac/README.md) / [nixos](hosts/nixos/README.md) / [wsl](hosts/wsl/README.md) / [distrobox](hosts/distrobox/README.md) / [sandbox](hosts/sandbox/README.md)
+- 各ツールの解説は、そのツールのフォルダにある `README.md` です (例: [AeroSpace](modules/wm/aerospace/README.md))。冒頭に「役割・対象ホスト・対になる実装・注意」があります。
+
+### 同じ役割の別実装 (どれかを直したら、他も確認する)
+
+OSごとにツールが違うため、同じ役割の実装が複数あります。**片方を直したら、下の「対になる実装」も確認してください。** 該当ファイルの先頭に `SYNC-PAIR:` のコメントがあり、CI が相互参照を検査します (`just check-sync`)。
+
+| 役割 | macOS | NixOS | WSL2 |
+| :--- | :--- | :--- | :--- |
+| キーボードリマップ | [Karabiner](modules/input/karabiner/default.nix) | [Kanata](modules/input/kanata/config.kbd) | Kanata (同じ `config.kbd`) / [AutoHotkey](modules/input/ahk/main.ahk) (フォールバック) |
+| WM のキーバインド | [aerospace.toml](modules/wm/aerospace/aerospace.toml) | [keybinds.conf](modules/wm/hyprland/config/hypr/configs/keybinds.conf) | [komorebi.ahk](modules/wm/komorebi/komorebi.ahk) |
+| Matugen の適用スクリプト | [mac/](modules/theming/matugen/mac) | [Hyprland 側](modules/wm/hyprland/config/matugen) | [wsl/](modules/theming/matugen/wsl) |
 
 ![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
 
@@ -55,14 +71,17 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 ```
 .
 ├── flake.nix                  # Flake エントリーポイント（システム構成の定義）
-├── justfile                   # 共通タスクランナー (switch, check, fmt, restore-secrets 等)
+├── justfile                   # 共通タスクランナー (switch, check, fmt, lint, restore-secrets 等)
+├── AGENTS.md                  # AI エージェント向けの入口 (CONTRIBUTING.md を読ませる)
+├── CONTRIBUTING.md            # 変更・追加・保守の手順と、置き場所のルール
 ├── hosts/                     # ホスト別の設定エントリーポイント (全ホスト default.nix = Home Manager)
 │   ├── nixos/                 # NixOS 設定 (configuration.nix [システム] ＋ default.nix [HM])
 │   ├── wsl/                   # WSL2用 Home Manager スタンドアロン設定 (default.nix + sync-win.nix)
 │   ├── mac/                   # macOS用 nix-darwin (darwin.nix) + Home Manager (default.nix) 統合設定
 │   ├── distrobox/             # rootless podman コンテナ用 CLI プロファイル (default.nix)
 │   └── sandbox/               # 実データ非共有コンテナ用 最小CLI プロファイル (default.nix)
-├── modules/                   # ドメイン別・再利用可能な共通設定モジュール群
+│                              #   各ホストに README.md (そのホストが使うものの索引) がある
+├── modules/                   # 機能別の設定モジュール群 (各ツールのフォルダに README.md = 解説)
 │   ├── wm/                    # ウィンドウマネージャー設定 (hyprland[Linux], komorebi/yasb[Win], aerospace/hammerspoon[Mac])
 │   ├── ai/                    # AIエージェント開発環境 (claude-code, antigravity, agent-skills)
 │   ├── cli/                   # ターミナルツール・TUI (bat, btop, eza, git, git-hooks, lazygit, neovim, yazi)
@@ -77,7 +96,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 │   ├── desktop.nix            # デスクトップ GUI 共通 (modules/gui/wezterm + modules/theming/*)
 │   ├── ai-agent.nix           # AIエージェント統合 (modules/ai/* + modules/services/obsidian-brain.nix)
 │   └── base.nix               # 開発機向けフルセット (desktop.nix + ai-agent.nix)
-└── docs/                      # 各種仕様・キーマップ解説ドキュメント ([索引](docs/README.md))
+└── docs/                      # セットアップ手順書と、複数ツールにまたがる文書 ([索引](docs/README.md))
 ```
 
 ![divider](https://capsule-render.vercel.app/api?type=rect&height=3&color=0:c6c6c6,50:999999,100:999999)
@@ -112,6 +131,7 @@ OSごとの詳しい手順は個別ページに分けています．上の対応
 just switch            # 現在のOSを自動判別して設定を適用 (新規ファイルは git add -N で自動的に評価対象へ)
 just check             # 全構成の静的評価・構文検証 (CIと同等)
 just fmt               # 全Nixコードの自動フォーマット (nixfmt)
+just lint              # リンク切れ・対になる実装の整合性などを検査 (CIと同等)
 just sync-win          # Windows側への設定同期 (WSL専用)
 just restore-secrets   # Bitwarden CLI から ~/.env を安全に復元 (chmod 600)
 just restore-ssh       # Bitwarden CLI から SSH 鍵と config を復元 (chmod 600)
@@ -138,30 +158,32 @@ Legend: ✅ enabled · ➖ not set up in this config · (Windows) runs on the Wi
 
 | Feature / Module | NixOS | WSL2 | macOS |
 | :--- | :---: | :---: | :---: |
-| **Tiling WM** | [Hyprland](docs/hyprland.md) ✅ | [komorebi](docs/komorebi.md) (Windows) | [AeroSpace](docs/aerospace.md) ✅ |
-| **Status bar** | [Waybar](docs/hyprland.md) ✅ | [YASB](docs/komorebi.md) (Windows) | native macOS menu bar |
-| **Keyboard remapping** | [Kanata](docs/kanata.md) ✅ | [AutoHotkey](docs/kanata.md) (Windows)* | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅** |
-| **Wallpaper-driven theming** | [Matugen](docs/matugen-palette.md) ✅ | [Matugen](docs/matugen-palette.md) ✅ (Windows side) | [Matugen](docs/matugen-palette.md) ✅ |
-| **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](docs/kanata.md)) |
+| **Tiling WM** | [Hyprland](modules/wm/hyprland/README.md) ✅ | [komorebi](modules/wm/komorebi/README.md) (Windows) | [AeroSpace](modules/wm/aerospace/README.md) ✅ |
+| **Status bar** | [Waybar](modules/wm/hyprland/README.md) ✅ | [YASB](modules/wm/komorebi/README.md) (Windows) | native macOS menu bar |
+| **Keyboard remapping** | [Kanata](modules/input/kanata/README.md) ✅ | [AutoHotkey](modules/input/kanata/README.md) (Windows)* | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅** |
+| **Wallpaper-driven theming** | [Matugen](modules/theming/matugen/README.md) ✅ | [Matugen](modules/theming/matugen/README.md) ✅ (Windows side) | [Matugen](modules/theming/matugen/README.md) ✅ |
+| **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](modules/input/kanata/README.md)) |
 | **Remote desktop** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (client only) | ➖ |
-| **Obsidian External Brain** | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ | [Obsidian Brain](docs/obsidian-brain.md) ✅ |
+| **Obsidian External Brain** | [Obsidian Brain](modules/services/README.md) ✅ | [Obsidian Brain](modules/services/README.md) ✅ | [Obsidian Brain](modules/services/README.md) ✅ |
 | **Homebrew Cask management** | ➖ | ➖ | [darwin.nix](hosts/mac/darwin.nix) ✅ |
-| [WezTerm](docs/wezterm.md) | ✅ | ✅ | ✅ |
-| [Neovim](docs/neovim.md) | ✅ | ✅ | ✅ |
-| [Yazi](docs/yazi.md) | ✅ | ✅ | ✅ |
+| [WezTerm](modules/gui/wezterm/README.md) | ✅ | ✅ | ✅ |
+| [Neovim](modules/cli/neovim/README.md) | ✅ | ✅ | ✅ |
+| [Yazi](modules/cli/yazi/README.md) | ✅ | ✅ | ✅ |
 | [lazygit / eza / bat / btop / atuin / starship, etc.](docs/cli-tools.md) | ✅ | ✅ | ✅ |
-| [gitmoji](docs/gitmoji.md) (git-hooks) | ✅ | ✅ | ✅ |
+| [gitmoji](modules/cli/git-hooks/README.md) (git-hooks) | ✅ | ✅ | ✅ |
 
 \* WSL can't grab Windows' physical keyboard directly, so [`modules/input/ahk/main.ahk`](modules/input/ahk/main.ahk)
 reimplements the equivalent behavior separately instead of using Kanata.
 \*\* macOS translates the WM modifier to `Ctrl+Cmd` (vs. bare `Super` on NixOS) and a few
-other keys differ — see "OS別の違い" in [kanata.md](docs/kanata.md).
+other keys differ — see "OS別の違い" in [kanata.md](modules/input/kanata/README.md).
 
 ## Repository Structure
 
 * `hosts/`: Host-specific entry points (NixOS, WSL2, macOS).
 * `modules/`: Shared reusable configurations (Window managers, CLI apps, Zsh configs).
-* `docs/`: In-depth manuals and keyboard shortcuts mapping lists.
+* `docs/`: Setup guides and cross-cutting documents. Each tool's own documentation lives in a `README.md` next to its code.
+* [`CONTRIBUTING.md`](CONTRIBUTING.md): Where things go and how to change them. AI agents are pointed there from [`AGENTS.md`](AGENTS.md).
+* Some roles are implemented separately per OS (key remapping: Karabiner / Kanata / AutoHotkey; WM keybindings: AeroSpace / Hyprland / komorebi). Files carry a `SYNC-PAIR:` comment naming their counterparts, checked by CI (`just check-sync`). See the table in "運用ルールと二重管理の一覧".
 
 ## Quick Start
 

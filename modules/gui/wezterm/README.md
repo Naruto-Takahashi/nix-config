@@ -1,12 +1,17 @@
 # WezTerm ターミナルエミュレータ設定・キーバインド詳細
 
-このドキュメントでは，[modules/gui/wezterm/](../modules/gui/wezterm/) に定義されている WezTerm ターミナルの機能設計，外観カスタマイズ，およびキーバインドについて詳細に解説します．
+> **役割**: WezTerm の外観・キーバインド
+> **対象ホスト**: 全ホスト
+> **対になる実装**: なし
+> **注意**: 配色は Matugen と連動する
+
+このドキュメントでは，[modules/gui/wezterm/](.) に定義されている WezTerm ターミナルの機能設計，外観カスタマイズ，およびキーバインドについて詳細に解説します．
 
 ---
 
 ## 美しい外観と機能設計 (Design & Aesthetics)
 
-配色は Matugen パレット (壁紙連動．[matugen-palette.md](matugen-palette.md) 参照) に追従します．
+配色は Matugen パレット (壁紙連動．[matugen-palette.md](../../theming/matugen/README.md) 参照) に追従します．
 
 * **HackGen フォントの統合**: 日本語対応等幅フォント「`HackGen Console NF`」を指定しています．
 * **95% 透過**: `window_background_opacity = 0.95` と `macos_window_background_blur = 20` で本体を半透明化し，壁紙が薄く透けます．
@@ -43,7 +48,7 @@
 WezTermの標準ショートカットをすべて無効化（`disable_default_key_bindings = true`）し，**独自の Leader キー操作系**（tmux/screen風）で完全に制御します．
 
 * **Leader キー**: **`Ctrl + ;`** (本来のバインド) または **`Ctrl + Space`** (補助的な代替キー，入力後2秒間入力待ち受け)。
-  `Ctrl + ;` が本来のバインドなのは，CapsLock→Ctrl改修 ([kanata.md](kanata.md) 参照) 環境でCtrl+Spaceだと同じ指での連続操作になり打ちにくいため．
+  `Ctrl + ;` が本来のバインドなのは，CapsLock→Ctrl改修 ([kanata.md](../../input/kanata/README.md) 参照) 環境でCtrl+Spaceだと同じ指での連続操作になり打ちにくいため．
 
 ### 1. タブ操作 (Tab Management)
 

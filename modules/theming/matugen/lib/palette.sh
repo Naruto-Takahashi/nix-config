@@ -6,7 +6,7 @@
 # Material role を抽出し、派生色 (complement/triad/accent_pale) を計算して、
 # OS に依存しないアプリ (WezTerm/nvim/yazi/starship/lazygit/cz/eza/tealdeer/
 # btop/fzf) へ展開する。OS 固有の処理 (YASB/komorebi/AeroSpace 等) は
-# 呼び出し側に残す。CSS 変数名と role の対応は docs/matugen-palette.md を参照。
+# 呼び出し側に残す。CSS 変数名と role の対応は modules/theming/matugen/README.md を参照。
 
 MATUGEN_LIB="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MATUGEN_TPL="$MATUGEN_LIB/../templates"

@@ -1,6 +1,11 @@
 # Obsidian External Brain (メダリオン構造 × 軽量 Johnny.Decimal)
 
-**全OS共通 (WSL2 / macOS / NixOS / Distrobox)** です。[modules/services/obsidian-brain.nix](../modules/services/obsidian-brain.nix) および [modules/ai/claude-code/default.nix](../modules/ai/claude-code/default.nix) で管理されている、Obsidian の Vault を日常・大学・研究・開発すべての一元管理基盤および AI エージェントの「外部脳」として使う仕組みです。
+> **役割**: Obsidian を日常管理・AI エージェントの外部脳として使う連携基盤 (`ob` CLI / 共通 Skill / 自動 Git 同期)
+> **対象ホスト**: 全ホスト
+> **対になる実装**: なし
+> **注意**: Vault の記録規則は Vault 側の AGENTS.md が正本
+
+**全OS共通 (WSL2 / macOS / NixOS / Distrobox)** です。[modules/services/obsidian-brain.nix](obsidian-brain.nix) および [modules/ai/claude-code/default.nix](../ai/claude-code/default.nix) で管理されている、Obsidian の Vault を日常・大学・研究・開発すべての一元管理基盤および AI エージェントの「外部脳」として使う仕組みです。
 
 ---
 

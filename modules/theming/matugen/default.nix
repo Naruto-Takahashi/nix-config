@@ -3,7 +3,7 @@
 # =========================================================================
 # WSL (matugen-apply.sh) / NixOS (wppicker.sh) の壁紙変更フローが共通で呼ぶ
 # 「色相回転計算 (complement/triad) + @@プレースホルダ@@ テンプレート置換」
-# の実装を1箇所にまとめる。詳細は docs/matugen-palette.md を参照。
+# の実装を1箇所にまとめる。詳細は modules/theming/matugen/README.md を参照。
 {
   config,
   pkgs,

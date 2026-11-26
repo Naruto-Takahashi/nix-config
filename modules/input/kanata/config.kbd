@@ -1,7 +1,8 @@
-;; Rebinding a key here? Update docs/kanata.md too (it's a doc, not
+;; SYNC-PAIR: modules/input/karabiner/default.nix, modules/input/ahk/main.ahk
+;; Rebinding a key here? Update modules/input/kanata/README.md too (it's a doc, not
 ;; generated from this file, so it drifts silently otherwise). Also
 ;; note the actual WM-side action for a given Super+X signal lives in
-;; each host's own doc (docs/hyprland.md, docs/aerospace.md) and can
+;; each host's own doc (modules/wm/hyprland/README.md, modules/wm/aerospace/README.md) and can
 ;; drift independently of what's written here.
 
 ;; Force Kanata reload

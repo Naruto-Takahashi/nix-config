@@ -1,3 +1,4 @@
+# SYNC-PAIR: modules/input/kanata/config.kbd, modules/input/ahk/main.ahk
 # =========================================================================
 # Karabiner-Elements 設定 (MacBook 用。~/.config/karabiner/karabiner.json を生成)
 # =========================================================================

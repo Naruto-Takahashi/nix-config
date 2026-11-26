@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SYNC-PAIR: modules/theming/matugen/wsl/matugen-apply.sh
 # =========================================================================
 # matugen-apply (mac) — 現在のデスクトップ壁紙から matugen でパレットを抽出し、
 # 各アプリへ展開する。OS 共通部分は lib/palette.sh にあり、ここには Mac 固有の

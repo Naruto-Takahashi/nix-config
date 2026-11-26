@@ -45,4 +45,4 @@ cd nix-config
 
 ## この構成で有効になるもの
 
-キーボードリマップは、Windows 側でネイティブ動作する [Kanata (Windows版)](kanata.md) が SandS / CapsLock / IME 切り替えを担当し、komorebi の WM 操作ホットキーは [AutoHotkey](../modules/input/ahk/main.ahk) が連携します（AHK 側にも同等のフォールバック実装があり、Kanata 終了時は自動で AHK 実装へロールバックします）。komorebi (WM) + YASB (ステータスバー) は Windows 側で動作し、`sync-win` で設定を配置します。Matugen 壁紙配色は Windows 側の壁紙から WSL 経由で自動生成します。詳細は [komorebi.md](komorebi.md) / [kanata.md](kanata.md) / [matugen-palette.md](matugen-palette.md) / [obsidian-brain.md](obsidian-brain.md) を参照してください。
+キーボードリマップは、Windows 側でネイティブ動作する [Kanata (Windows版)](../modules/input/kanata/README.md) が SandS / CapsLock / IME 切り替えを担当し、komorebi の WM 操作ホットキーは [AutoHotkey](../modules/input/ahk/main.ahk) が連携します（AHK 側にも同等のフォールバック実装があり、Kanata 終了時は自動で AHK 実装へロールバックします）。komorebi (WM) + YASB (ステータスバー) は Windows 側で動作し、`sync-win` で設定を配置します。Matugen 壁紙配色は Windows 側の壁紙から WSL 経由で自動生成します。詳細は [komorebi.md](../modules/wm/komorebi/README.md) / [kanata.md](../modules/input/kanata/README.md) / [matugen-palette.md](../modules/theming/matugen/README.md) / [obsidian-brain.md](../modules/services/README.md) を参照してください。

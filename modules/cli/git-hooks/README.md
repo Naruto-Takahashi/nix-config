@@ -1,5 +1,10 @@
 # gitmoji 自動付与
 
+> **役割**: git commit への gitmoji 自動付与フックと commitizen 設定
+> **対象ホスト**: 全ホスト
+> **対になる実装**: なし
+> **注意**: コミットメッセージは `type(scope): 説明` 形式にする。絵文字は hook が自動付与するので手動で付けない
+
 `modules/cli/git-hooks` が、個人リポジトリ (`~/ghq/github.com/Naruto-Takahashi/**`) での
 `git commit` にgitmojiを自動で付与する。git CLI直接実行、lazygit(nvim内/外)、
 Claude CodeなどのAIエージェント経由のコミットも `git commit` を呼ぶ限り対象になる。

@@ -1,15 +1,20 @@
 # Hammerspoon (macOS トラックパッドジェスチャー)
 
+> **役割**: macOS の Hammerspoon によるトラックパッドジェスチャー (ワークスペース移動・ウィンドウ操作・コーナータップ)
+> **対象ホスト**: Mac
+> **対になる実装**: なし (Mac 専用)
+> **注意**: AeroSpace のコマンドを呼ぶので、AeroSpace のキーバインドやワークスペース名を変えたら確認する
+
 macOS 専用。Hammerspoon でトラックパッドのジェスチャーを拾い，AeroSpace の操作や
 コピー・ペーストなどに割り当てています。右利き向けに，左半分や中央の誤爆しやすい操作は外してあります。
 
 ## 設定の場所
 
-- 実体: [`modules/wm/hammerspoon/init.lua`](../modules/wm/hammerspoon/init.lua)
-- 配置: [`modules/wm/hammerspoon/default.nix`](../modules/wm/hammerspoon/default.nix) が
+- 実体: [`modules/wm/hammerspoon/init.lua`](init.lua)
+- 配置: [`modules/wm/hammerspoon/default.nix`](default.nix) が
   `~/.hammerspoon/init.lua` へ直結リンク（`mkOutOfStoreSymlink`）で置く．
   Home Manager の switch は不要で，Hammerspoon の `Reload Config` で即時反映できる．
-- アプリ本体: [`hosts/mac/darwin.nix`](../hosts/mac/darwin.nix) の `casks` に `hammerspoon` を宣言（Homebrew 経由）．
+- アプリ本体: [`hosts/mac/darwin.nix`](../../../hosts/mac/darwin.nix) の `casks` に `hammerspoon` を宣言（Homebrew 経由）．
 
 ## ジェスチャー一覧
 
@@ -37,6 +42,6 @@ macOS 専用。Hammerspoon でトラックパッドのジェスチャーを拾�
 ## 注意
 
 - **権限**: 初回は「システム設定 > プライバシーとセキュリティ」の「アクセシビリティ」で Hammerspoon を許可する
-  （手動．詳しくは [setup-mac.md](setup-mac.md) の「手動作業が残る理由」）．
+  （手動．詳しくは [setup-mac.md](../../../docs/setup-mac.md) の「手動作業が残る理由」）．
 - AeroSpace の実行ファイルは `/opt/homebrew/bin/aerospace` を直接呼ぶ．AeroSpace 側の設定は
-  [aerospace.md](aerospace.md) を参照．
+  [aerospace.md](../aerospace/README.md) を参照．

@@ -1,11 +1,16 @@
 # komorebi ウィンドウマネージャ キーバインド一覧
 
+> **役割**: WSL2 (Windows 側) の komorebi + YASB のキーバインド
+> **対象ホスト**: WSL
+> **対になる実装**: [AeroSpace](../aerospace/README.md) (Mac) / [Hyprland](../hyprland/README.md) (NixOS)。WM キーバインドの三系統
+> **注意**: Windows 側の設定は `just sync-win` で反映する。`komorebi.ahk` を変えたらここも直す
+
 Windows環境のタイル型ウィンドウマネージャ **komorebi** の操作チートシートです．
 キーバインドは AutoHotkey (`modules/wm/komorebi/komorebi.ahk`) で定義され，`sync-win` で Windows 側 (`C:\Users\tnaru\.config\komorebi\`) に同期されます．
-起動するAHKプロセスは `modules/input/ahk/main.ahk` (IME制御等，[kanata.md](kanata.md) 参照) 1つに集約されており，`komorebi.ahk` はそこから絶対パスで `#Include` されます．
+起動するAHKプロセスは `modules/input/ahk/main.ahk` (IME制御等，[kanata.md](../../input/kanata/README.md) 参照) 1つに集約されており，`komorebi.ahk` はそこから絶対パスで `#Include` されます．
 **AHK スクリプトの変更はタスクトレイの AutoHotkey アイコン → Reload This Script で再読み込みが必要です (main.ahkとkomorebi.ahkどちらを直しても，リロードするのはmain.ahk側のプロセスです)．**
 
-配色 (枠線色など) は Matugen 連携で壁紙から自動生成されます ([matugen-palette.md](matugen-palette.md) 参照)．
+配色 (枠線色など) は Matugen 連携で壁紙から自動生成されます ([matugen-palette.md](../../theming/matugen/README.md) 参照)．
 
 ---
 

@@ -47,7 +47,7 @@
     casks = [
       "karabiner-elements" # キーボードリマップ (設定は modules/input/karabiner から配置)
       "aerospace" # タイリングウィンドウマネージャ
-      "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，docs/aerospace.md参照)
+      "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，modules/wm/aerospace/README.md参照)
       "dimentium/autoraise/autoraiseapp" # マウスホバーフォーカス追従 (AutoRaise.app)
       "hammerspoon" # トラックパッドジェスチャーによるワークスペース移動・ウィンドウ操作
       "stats" # メニューバーに CPU・メモリ・ネットワーク等を表示するシステムモニタ

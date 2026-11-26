@@ -1,16 +1,21 @@
 # Hyprland キーバインド・操作詳細 (Hyprland Workflows)
 
+> **役割**: NixOS の Hyprland (Wayland) のキーバインド
+> **対象ホスト**: NixOS
+> **対になる実装**: [AeroSpace](../aerospace/README.md) (Mac) / [komorebi](../komorebi/README.md) (WSL)。WM キーバインドの三系統
+> **注意**: Super 系の信号は [Kanata](../../input/kanata/config.kbd) の alt-layer が送る。設定ファイルから自動生成される文書ではないので、キーバインドを変えたらここも直す
+
 このドキュメントは、NixOS環境で使用する **Hyprland** Waylandコンポジタのキーバインドとワークフローに関する詳細設定を解説します。
 
-Kanataキーリマップ（Alt長押しでSuperキーへ変換）と連携し、物理 `Alt` キーを起点として快適なハッカー向けウィンドウマネージャー操作を実現しています。実体は [`modules/wm/hyprland/config/hypr/configs/keybinds.conf`](../modules/wm/hyprland/config/hypr/configs/keybinds.conf)（`$mainMod` = `SUPER`）です。
+Kanataキーリマップ（Alt長押しでSuperキーへ変換）と連携し、物理 `Alt` キーを起点として快適なハッカー向けウィンドウマネージャー操作を実現しています。実体は [`modules/wm/hyprland/config/hypr/configs/keybinds.conf`](config/hypr/configs/keybinds.conf)（`$mainMod` = `SUPER`）です。
 
-**注意**: Kanataが送信する信号自体 (`Super+X`) は [kanata.md](kanata.md) と共通ですが、Hyprland側でそのSuperキーに何を割り当てるかは各バインド定義に依存し、経緯上ずれているキーがあります (コメントに `moved from ...` とある箇所)。ここでは実際の`keybinds.conf`の内容を正としています。
+**注意**: Kanataが送信する信号自体 (`Super+X`) は [kanata.md](../../input/kanata/README.md) と共通ですが、Hyprland側でそのSuperキーに何を割り当てるかは各バインド定義に依存し、経緯上ずれているキーがあります (コメントに `moved from ...` とある箇所)。ここでは実際の`keybinds.conf`の内容を正としています。
 
 ---
 
 ## 1. アプリケーションの起動と管理 (App Launchers)
 
-起動系キーは3ホスト共通で「アプリ名の頭文字」に統一しています (`N`=Neovim, `Y`=Yazi, `V`=Vivaldi)．[kanata.md](kanata.md)参照．
+起動系キーは3ホスト共通で「アプリ名の頭文字」に統一しています (`N`=Neovim, `Y`=Yazi, `V`=Vivaldi)．[kanata.md](../../input/kanata/README.md)参照．
 
 | 操作内容 | ショートカットキー | 内部で送信されるキー |
 | :--- | :--- | :--- |
@@ -79,7 +84,7 @@ Kanataキーリマップ（Alt長押しでSuperキーへ変換）と連携し、
 
 ## 現在使われていないキー
 
-`Alt` + `B` (`SUPER` + `B`) はKanata側の`hyp-b`エイリアスとしては存在しますが，Hyprland側の対応するバインドが無く，押しても何も起こりません．NixOS/macOS/WSLの3ホストで共通して未使用に統一しています (経緯は[kanata.md](kanata.md)参照)．WSL側で同等機能 (レイアウト反転) が必要な場合は`Alt`+`Shift`+`B`を使ってください．
+`Alt` + `B` (`SUPER` + `B`) はKanata側の`hyp-b`エイリアスとしては存在しますが，Hyprland側の対応するバインドが無く，押しても何も起こりません．NixOS/macOS/WSLの3ホストで共通して未使用に統一しています (経緯は[kanata.md](../../input/kanata/README.md)参照)．WSL側で同等機能 (レイアウト反転) が必要な場合は`Alt`+`Shift`+`B`を使ってください．
 
 なお `Alt` + `D` (物理キー，`SUPER` + `T`) は上表の「フローティング切替」で実際に機能しますが，同じ操作は`Alt`+`Shift`+`Space`でも行えるため，こちらを主に使う必要はありません．
 

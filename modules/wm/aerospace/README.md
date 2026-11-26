@@ -1,8 +1,13 @@
 # AeroSpace ウィンドウマネージャ キーバインド・設定詳細
 
-**macOS専用**です．[modules/wm/aerospace/default.nix](../modules/wm/aerospace/default.nix) で宣言的に管理されているタイル型ウィンドウマネージャ **AeroSpace** の操作・配色連携・自動化まわりを解説します．NixOSの[Hyprland](hyprland.md)，Windows/WSLの[komorebi](komorebi.md)に相当する役割です．
+> **役割**: macOS のタイリングウィンドウマネージャ AeroSpace のキーバインド・配色連携・壁紙ピッカー
+> **対象ホスト**: Mac
+> **対になる実装**: [Hyprland](../hyprland/README.md) (NixOS) / [komorebi](../komorebi/README.md) (WSL)。WM キーバインドの三系統で、同じ操作は同じキーになるよう揃える
+> **注意**: キー信号 (Ctrl+Cmd+キー) は [Karabiner](../../input/karabiner/default.nix) が Option 長押しレイヤーから送る。キーバインドを変えたら Karabiner 側と、このドキュメントも直す
 
-物理キーは全て `Option` 長押しですが，Kanataがそれを `Ctrl+Cmd` (`ctrl-cmd-*`) に変換してAeroSpaceへ送っています（macOS標準のCmd単体ショートカットと衝突しないようにするため）．変換の仕組みは [kanata.md](kanata.md) の「対象OS・実装方式の違い」を参照してください．
+**macOS専用**です．[modules/wm/aerospace/default.nix](default.nix) で宣言的に管理されているタイル型ウィンドウマネージャ **AeroSpace** の操作・配色連携・自動化まわりを解説します．NixOSの[Hyprland](../hyprland/README.md)，Windows/WSLの[komorebi](../komorebi/README.md)に相当する役割です．
+
+物理キーは全て `Option` 長押しですが，Kanataがそれを `Ctrl+Cmd` (`ctrl-cmd-*`) に変換してAeroSpaceへ送っています（macOS標準のCmd単体ショートカットと衝突しないようにするため）．変換の仕組みは [kanata.md](../../input/kanata/README.md) の「対象OS・実装方式の違い」を参照してください．
 
 ---
 
@@ -74,7 +79,7 @@ AeroSpaceデフォルトの `service` モードと同じ考え方で，「たま
 | `Y` | WezTerm内でYazi |
 | `N` | WezTerm内でNeovim |
 | `V` | Vivaldi (以前は`B`だったが，起動系キーの統一のため変更) |
-| `W` | 壁紙ピッカー ([matugen-palette.md](matugen-palette.md#壁紙ファイルの配置場所) 参照) |
+| `W` | 壁紙ピッカー ([matugen-palette.md](../../theming/matugen/README.md#壁紙ファイルの配置場所) 参照) |
 
 ---
 
@@ -93,10 +98,10 @@ AeroSpaceデフォルトの `service` モードと同じ考え方で，「たま
 
 ## 配色連携 (Matugen) と枠線 (JankyBorders)
 
-アクティブウィンドウの枠線ハイライトは Homebrew の `borders` (JankyBorders) が担当します．色は壁紙から抽出した [Matugen](matugen-palette.md) のパレット (`~/.cache/matugen/colors.lua` の `triad`/`complement`/`accent`) に自動追従します．非アクティブウィンドウの枠線 (`inactive_color`) は完全透明 (`0x00000000`) にしています（AeroSpaceが別ワークスペースのウィンドウを画面右下に1px残して退避させる仕様のため，非アクティブ枠線を描画すると画面右下に枠線の角が飛び出して見えるのを防ぐため）．
+アクティブウィンドウの枠線ハイライトは Homebrew の `borders` (JankyBorders) が担当します．色は壁紙から抽出した [Matugen](../../theming/matugen/README.md) のパレット (`~/.cache/matugen/colors.lua` の `triad`/`complement`/`accent`) に自動追従します．非アクティブウィンドウの枠線 (`inactive_color`) は完全透明 (`0x00000000`) にしています（AeroSpaceが別ワークスペースのウィンドウを画面右下に1px残して退避させる仕様のため，非アクティブ枠線を描画すると画面右下に枠線の角が飛び出して見えるのを防ぐため）．
 
 - **フローティング中は枠線が補色 (`complement`) に変わります**．タイリング中は `triad` のままです．AeroSpaceにはレイアウト変更通知がないため，`on-focus-changed` とservice モードのフロート切替 (`Option + R` → `F`) から `aerospace-launch-borders` を都度呼び，フォーカス中ウィンドウの `%{window-layout}` が `floating` かどうかで色を切り替えます．
-- 起動スクリプトは [`launch-borders.sh`](../modules/wm/aerospace/launch-borders.sh)．**`borders` は起動中に同じコマンドを再実行するとIPC経由で設定を生きたまま更新する仕様**なので，`pkill`して再起動する必要はありません（`pkill`すると次のインスタンスが上がるまでの一瞬，枠ハイライトが消えるため意図的に避けています）．
+- 起動スクリプトは [`launch-borders.sh`](launch-borders.sh)．**`borders` は起動中に同じコマンドを再実行するとIPC経由で設定を生きたまま更新する仕様**なので，`pkill`して再起動する必要はありません（`pkill`すると次のインスタンスが上がるまでの一瞬，枠ハイライトが消えるため意図的に避けています）．
 - matugenキャッシュが無い場合は，WSL/NixOS側と同じ青ベースのフォールバック配色を使います．
 - ギャップ (`[gaps]`) は `inner.horizontal/vertical = 10`，`outer.left/bottom/right = 8`，`outer.top = 4`．WSL側komorebiの値 (`default_container_padding=6` / `default_workspace_padding=1`) と揃える案も試しましたが，見た目の好みでMac独自の値に戻しています．
 
@@ -104,7 +109,7 @@ AeroSpaceデフォルトの `service` モードと同じ考え方で，「たま
 
 ## 壁紙ピッカー
 
-`Option + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../modules/theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が呼び出されます．選択すると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](matugen-palette.md) を参照してください．
+`Option + W` (`ctrl-cmd-w`) で [`wallpaper-pick-popup.sh`](../../theming/matugen/mac/wallpaper-pick-popup.sh) が起動し，Raycast のサムネイルグリッド拡張機能（`raycast-wallpaper-picker`）が呼び出されます．選択すると即座に壁紙変更とMatugen配色反映（このAeroSpaceの枠線色を含む）が走ります．詳細は [matugen-palette.md](../../theming/matugen/README.md) を参照してください．
 
 ```toml
 on-window-detected = [

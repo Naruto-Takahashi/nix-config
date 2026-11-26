@@ -1,3 +1,4 @@
+; SYNC-PAIR: modules/input/kanata/config.kbd, modules/input/karabiner/default.nix
 /*
     =============================================================================
     メイン AutoHotkey スクリプト (Main AutoHotkey Script)

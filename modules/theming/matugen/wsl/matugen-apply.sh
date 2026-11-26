@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# SYNC-PAIR: modules/theming/matugen/mac/matugen-apply.sh
 # =========================================================================
 # matugen-apply — 壁紙から matugen でパレットを抽出し、各アプリへ展開する
 # =========================================================================
@@ -6,7 +7,7 @@
 #   matugen-apply <壁紙パス (win/wsl)>  YASB の wallpapers ウィジェット run_after から
 #   matugen-apply --reapply             sync-win から (前回の壁紙でフル再生成)
 #
-# 全体の流れ (docs/matugen-palette.md も参照):
+# 全体の流れ (modules/theming/matugen/README.md も参照):
 #   1. matugen がテンプレート palette.css から yasb-palette.css を生成する
 #   2. Mac と共通の modules/theming/matugen/lib/palette.sh がパレットを抽出し、
 #      派生色 (complement/triad/accent_pale) の計算と OS 共通アプリ
@@ -97,7 +98,7 @@ if [[ -n "${img:-}" ]]; then
 fi
 
 # -------------------------------------------------------------------------
-# 2. パレット抽出 (WSL / Mac 共通の lib/palette.sh。名前は docs/matugen-palette.md と対応)
+# 2. パレット抽出 (WSL / Mac 共通の lib/palette.sh。名前は modules/theming/matugen/README.md と対応)
 # -------------------------------------------------------------------------
 # shellcheck source=SCRIPTDIR/../lib/palette.sh
 source "$HOME/.config/matugen-common/lib/palette.sh"

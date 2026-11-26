@@ -33,7 +33,7 @@
         }
         {
           # commitizen (cz) で type/scope/subject を対話選択してコミット
-          # (docs/gitmoji.md, .cz.toml 参照)。stageされた変更がある前提。
+          # (modules/cli/git-hooks/README.md, .cz.toml 参照)。stageされた変更がある前提。
           # 既定のcommitChanges(通常コミット)を使わなくなったため、
           # 一等地の c キーをcustomCommandsで上書きする
           # (lazygitはcustomCommandsを既定キーバインドより優先する)。
