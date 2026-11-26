@@ -241,6 +241,24 @@ let
     }
   ];
 
+  # キーボードとポインティングデバイスを兼ねるデバイスは、Karabiner が既定ではリマップ対象から
+  # 外す (Keychron Q11 は VIA 用のマウス機能を持つため該当し、何もしないと効かない)。
+  # デバイス単位で ignore = false を明示して掴ませる。product_id が接続方法ごとに違うので、
+  # 効かない接続方法があれば `karabiner_cli --list-connected-devices` で調べて足す。
+  keychronVendorId = 13364;
+  keychronProductIds = [
+    4784 # Keychron Q11 Ultra 8K L (Bluetooth LE)
+  ];
+  devices = map (pid: {
+    identifiers = {
+      is_keyboard = true;
+      is_pointing_device = true;
+      product_id = pid;
+      vendor_id = keychronVendorId;
+    };
+    ignore = false;
+  }) keychronProductIds;
+
   config = {
     global = {
       check_for_updates_on_startup = false;
@@ -257,6 +275,7 @@ let
           };
           inherit rules;
         };
+        inherit devices;
         virtual_hid_keyboard.keyboard_type_v2 = "ansi";
       }
     ];
