@@ -45,6 +45,7 @@
     # WM 周り (インフラ) だけを cask で管理する。aerospace は CLI が /opt/homebrew/bin に入り、
     # アクセシビリティ権限も /Applications 固定のパスで安定する。
     casks = [
+      "karabiner-elements" # キーボードリマップ (設定は modules/input/karabiner から配置)
       "aerospace" # タイリングウィンドウマネージャ
       "aerospacebar" # AeroSpaceのワークスペースをメニューバーに表示 (rdrkr/tap。設定は手動，docs/aerospace.md参照)
       "dimentium/autoraise/autoraiseapp" # マウスホバーフォーカス追従 (AutoRaise.app)

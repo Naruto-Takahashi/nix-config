@@ -6,5 +6,5 @@
 # Linux では eisu/kana を JIS 無変換/変換 (muhenkan/henkan) に置換する。
 # home-manager 側 (kanata.nix) と NixOS システムサービス側
 # (hosts/nixos/default.nix) の両方がこのテキストを共有する。
-# macOS は置換内容が異なるため hosts/mac/default.nix に別実装がある。
+# macOS は Kanata ではなく Karabiner-Elements (modules/input/karabiner) を使う。
 builtins.replaceStrings [ "eisu" "kana" ] [ "muhenkan" "henkan" ] (builtins.readFile ./config.kbd)

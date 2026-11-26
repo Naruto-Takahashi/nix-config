@@ -43,12 +43,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # メール秘書 (home-manager モジュールで定期実行を宣言する。個人用の設定は hosts/macmini に置く)
-    mail-secretary = {
-      url = "github:Naruto-Takahashi/mail-secretary";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # nix-darwin の入力ソース定義
     darwin = {
       url = "github:LnL7/nix-darwin";
@@ -69,7 +63,6 @@
       # 全モジュールに渡す追加引数 (使わないモジュールは単に受け取らない)
       specialArgs = {
         inherit kanagawa-dragon-yazi;
-        inherit (inputs) mail-secretary;
         skillSources = {
           inherit (inputs)
             vercel-skills
@@ -131,25 +124,13 @@
         ];
       };
 
-      # Mac (MacBook, nix-darwin) 環境用プロファイル。キーボードリマップは Karabiner-Elements
+      # Mac (nix-darwin) 環境用プロファイル。MacBook / Mac mini 共通
       darwinConfigurations."mac" = darwin.lib.darwinSystem {
         system = "aarch64-darwin";
         modules = [
           ./hosts/mac/darwin.nix
-          ./hosts/macbook/darwin.nix
           home-manager.darwinModules.home-manager
-          (hmIntegration "macbook")
-        ];
-      };
-
-      # Mac mini (常時稼働): 共通の Mac 構成に、Kanata とメール秘書の定期実行を加えたもの
-      darwinConfigurations."macmini" = darwin.lib.darwinSystem {
-        system = "aarch64-darwin";
-        modules = [
-          ./hosts/mac/darwin.nix
-          ./hosts/mac/kanata-darwin.nix
-          home-manager.darwinModules.home-manager
-          (hmIntegration "macmini")
+          (hmIntegration "mac")
         ];
       };
 

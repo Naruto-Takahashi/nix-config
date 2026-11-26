@@ -72,26 +72,6 @@
         "type": "github"
       }
     },
-    "mail-secretary": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1795104883,
-        "narHash": "sha256-AW1pE4kkxhVgxP8Ns+pO9RDEZsOdRSqHtVNoJIem7BA=",
-        "owner": "Naruto-Takahashi",
-        "repo": "mail-secretary",
-        "rev": "c7558c4dae71fd123a3d03b2274eae6a9e64a8b8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "Naruto-Takahashi",
-        "repo": "mail-secretary",
-        "type": "github"
-      }
-    },
     "mattpocock-skills": {
       "flake": false,
       "locked": {
@@ -150,7 +130,6 @@
         "darwin": "darwin",
         "home-manager": "home-manager",
         "kanagawa-dragon-yazi": "kanagawa-dragon-yazi",
-        "mail-secretary": "mail-secretary",
         "mattpocock-skills": "mattpocock-skills",
         "nix-index-database": "nix-index-database",
         "nixpkgs": "nixpkgs",

@@ -1,6 +1,6 @@
 # Kanata キーボードリマッパー設定・キーマップ詳細
 
-> **MacBook は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../modules/input/karabiner/default.nix))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．レイヤーを変えるときは `config.kbd` (NixOS / Mac mini) と `karabiner/default.nix` (MacBook) の両方を直してください．Mac mini は引き続き Kanata です．
+> **macOS (MacBook / Mac mini とも) は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../modules/input/karabiner/default.nix))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．このファイルの macOS 向けの記述 (表の macOS 行・`(platform (macos) ...)`・Fn 行など) は移行前の kanata 実装の記録で、現在は使われていません．レイヤーを変えるときは `config.kbd` (NixOS / WSL) と `karabiner/default.nix` (Mac) の両方を直してください．
 
 
 このドキュメントでは、[modules/input/kanata/config.kbd](../modules/input/kanata/config.kbd) に定義されている Kanata デーモンの独自キーレイヤー設定および IME 統合動作について詳細に解説します。
@@ -34,7 +34,7 @@ WSLはさらに以下の点が個別の置換で上書きされています（`w
 - `eisu`/`kana` → `@ime-off`/`@ime-on` (Win32 API (`ImmSetOpenStatus`) 経由のIME制御はkanata単体ではWindows上で直接行えないため、`cmd`アクションで実績のあるAHKの`ime_functions.ahk` (`ime-off.ahk`/`ime-on.ahk`) へ委譲する。`danger-enable-cmd`が必要)
 - Alt長押しのhold動作を `(multi 実キー (layer-while-held alt-layer))` に変更 (OS標準のAlt+Tab連続切り替えのため)
 
-macOSはさらに以下の点が個別の置換で上書きされています（`modules/input/kanata/mac-config.nix`）。いずれも物理配列の列数が違うための構造差分です:
+(移行前の記録) macOSは物理配列の列数が違うため、以前は `mac-config.nix` が次の点を置換で上書きしていました:
 - デバイス指定に内蔵キーボード・Keychronを追加
 - `defsrc` と各レイヤーに左右Command (`lmet`/`rmet`) の列を追加し、Command単押しで英数/かな、左右Option長押しで `alt-layer`
 - 最下段の物理左Controlを `@whisper` (`rctl`) に割り当て、Superwhisper 録音キーとして使用 (CapsLockは通常の `lctl` のまま維持され録音は反応しない。FnキーはmacOS標準機能として開放。Nav レイヤーの Space+D とも併用可能)
@@ -160,7 +160,7 @@ macOS 内蔵キーボードの F1〜F12 は、単独押しで輝度・音量な�
 
 **Fn 併用で本来の F キー (macOS)**: Fn を押している間だけ `fnrow` レイヤーが有効になり、F1〜F12 が素の F キーを送ります (`config.kbd` 末尾の `(platform (macos) ...)`)。Fn キー自体も `(multi fn (layer-while-held fnrow))` で素通しします。
 
-- 物理配列の差分なので、`fn` 列は `mac-config.nix` が defsrc と各レイヤーの F 行末尾に追加します (`config.kbd` の `;; frow-*` コメントが置換の目印)。
+- (移行前の記録) 物理配列の差分なので、`fn` 列は以前 `mac-config.nix` が defsrc と各レイヤーの F 行末尾に追加していました。現在は Karabiner が F 行に触らないため不要です。
 - **実機確認が必要**: kanata が Apple 内蔵キーボードの Fn を検知・再送できるかは設定の検証だけでは分かりません。Fn+F11 が効かない場合は検知できていないので、`fn` 列の追加を外してください。Globe キー単体 (絵文字ピッカー等) が効かなくなる場合も同様です。
 
 ---
@@ -182,5 +182,4 @@ kanataはクロスプラットフォームだが，WezTermとの連携やExplore
 | :--- | :--- |
 | `modules/input/kanata/config.kbd` | レイヤー定義本体 (3ホスト共通) |
 | `modules/input/kanata/linux-config.nix` | NixOS向け`eisu`/`kana`置換ロジック |
-| `modules/input/kanata/mac-config.nix` | macOS向け物理配列まわりの置換ロジック |
 | `modules/input/ahk/main.ahk` | WSL/Windows向けの別実装 |

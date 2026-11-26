@@ -14,6 +14,7 @@
     ../../modules/wm/hammerspoon
     ../../modules/theming/matugen/mac
     ../../modules/gui/vivaldi
+    ../../modules/input/karabiner # キーボードリマップ (Karabiner-Elements)
   ];
 
   # -----------------------------------------------------------------------
