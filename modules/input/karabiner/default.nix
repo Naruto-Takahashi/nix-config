@@ -238,8 +238,20 @@ let
       ];
     }
     {
-      description = "左 Ctrl を右 Ctrl に (Superwhisper 録音キー)";
-      manipulators = [ (modKey "left_control" [ { key_code = "right_control"; } ] { }) ];
+      description = "内蔵キーボードの左 Ctrl を右 Ctrl に (Superwhisper / Spokenly 録音キー)";
+      # 内蔵キーボードだけに限定する。外付けキーボード (HHKB など) はファームウェアで
+      # CapsLock の位置を Ctrl にしていることがあり、全キーボードに適用すると、その Ctrl が
+      # 右 Ctrl に変換されて録音が勝手に起動する。
+      manipulators = [
+        (modKey "left_control" [ { key_code = "right_control"; } ] {
+          conditions = [
+            {
+              type = "device_if";
+              identifiers = [ { is_built_in_keyboard = true; } ];
+            }
+          ];
+        })
+      ];
     }
     {
       description = "左右 Command: 単押しで英数/かな";
