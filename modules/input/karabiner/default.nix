@@ -254,6 +254,16 @@ let
       ];
     }
     {
+      description = "変換/無変換キーを英数/かなに (HHKB のファームウェアが Command の位置に割り当てている)";
+      # HHKB のオンボード設定で、左右 Command の位置が変換 (xfer) / 無変換 (nfer) を送る。
+      # このキーは Command ではないので、下の「左右 Command」の規則には当たらない。
+      # 左 = 英数、右 = かな (Command の規則と同じ向き)。向きが逆なら、ここを入れ替える。
+      manipulators = [
+        (simple "japanese_pc_xfer" [ { key_code = "japanese_eisuu"; } ] { })
+        (simple "japanese_pc_nfer" [ { key_code = "japanese_kana"; } ] { })
+      ];
+    }
+    {
       description = "左右 Command: 単押しで英数/かな";
       manipulators = [
         (commandKey "left_command" "japanese_eisuu")
