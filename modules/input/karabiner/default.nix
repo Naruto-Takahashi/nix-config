@@ -168,11 +168,20 @@ let
     };
 
   # 左右 Command: 単押しで英数/かな、長押し・同時押しは通常の Command
+  # lazy = true が必須。無いと単押しでも先に Command が押され、Cmd+英数 として届いて
+  # macOS が IME を切り替えない (他のキーと同時に押されたときだけ Command を送る)。
   commandKey =
     key: ime:
-    simple key [ { key_code = key; } ] {
-      to_if_alone = [ { key_code = ime; } ];
-    };
+    simple key
+      [
+        {
+          key_code = key;
+          lazy = true;
+        }
+      ]
+      {
+        to_if_alone = [ { key_code = ime; } ];
+      };
 
   rules = [
     {
