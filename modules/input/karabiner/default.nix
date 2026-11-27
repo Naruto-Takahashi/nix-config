@@ -254,13 +254,34 @@ let
       ];
     }
     {
-      description = "変換/無変換キーを英数/かなに (HHKB のファームウェアが Command の位置に割り当てている)";
-      # HHKB のオンボード設定で、左右 Command の位置が変換 (xfer) / 無変換 (nfer) を送る。
-      # このキーは Command ではないので、下の「左右 Command」の規則には当たらない。
-      # 左 = 英数、右 = かな (Command の規則と同じ向き)。向きが逆なら、ここを入れ替える。
+      description = "外付けキーボードの左 Ctrl: 単押しで Esc+英数、長押しで Ctrl";
+      # HHKB は、ファームウェアで CapsLock の位置を Ctrl にしている。そのキーは caps_lock ではなく
+      # left_control として届くので、上の Caps Lock の規則には当たらない。内蔵キーボードでは
+      # 左 Ctrl は右 Ctrl (録音キー) に変換するため、内蔵キーボード以外に限定する。
       manipulators = [
-        (simple "japanese_pc_xfer" [ { key_code = "japanese_eisuu"; } ] { })
-        (simple "japanese_pc_nfer" [ { key_code = "japanese_kana"; } ] { })
+        (modKey "left_control" [ { key_code = "left_control"; } ] {
+          to_if_alone = [
+            { key_code = "escape"; }
+            { key_code = "japanese_eisuu"; }
+          ];
+          conditions = [
+            {
+              type = "device_unless";
+              identifiers = [ { is_built_in_keyboard = true; } ];
+            }
+          ];
+        })
+      ];
+    }
+    {
+      description = "変換/無変換キーを英数/かなに (HHKB の Windows モード用)";
+      # HHKB を Windows モードで使うと、左右の ◇ は Command ではなく、左 = 無変換 (nfer)、
+      # 右 = 変換 (xfer) を送る (キーマップはモードごとに別々に保存される)。
+      # Mac モードなら Command として届くので、下の「左右 Command」の規則が働く。
+      # どちらのモードでも、左 = 英数、右 = かな になるようにする (記録で確認済み)。
+      manipulators = [
+        (simple "japanese_pc_nfer" [ { key_code = "japanese_eisuu"; } ] { })
+        (simple "japanese_pc_xfer" [ { key_code = "japanese_kana"; } ] { })
       ];
     }
     {
