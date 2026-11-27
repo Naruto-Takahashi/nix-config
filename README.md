@@ -33,7 +33,7 @@ OSレベルのシステム定義から，シェル環境，ウィンドウマネ
 | :--- | :---: | :---: | :---: |
 | **タイルWM** | [Hyprland](modules/wm/hyprland/README.md) ✅ | [komorebi](modules/wm/komorebi/README.md) (Windows) | [AeroSpace](modules/wm/aerospace/README.md) ✅ |
 | **ステータスバー** | [Waybar](modules/wm/hyprland/README.md) ✅ | [YASB](modules/wm/komorebi/README.md) (Windows) | macOS標準メニューバー |
-| **キーボードリマップ** | [Kanata](modules/input/kanata/README.md) ✅ | [AutoHotkey](modules/input/kanata/README.md) (Windows)※1 | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅※2 |
+| **キーボードリマップ** | [Kanata](modules/input/kanata/README.md) ✅ | [AutoHotkey](modules/input/kanata/README.md) (Windows)※1 | [Karabiner-Elements](modules/input/karabiner/README.md) ✅※2 |
 | **壁紙連動の動的配色** | [Matugen](modules/theming/matugen/README.md) ✅ | [Matugen](modules/theming/matugen/README.md) ✅ (Windows側) | [Matugen](modules/theming/matugen/README.md) ✅ |
 | **日本語入力** | fcitx5 + Mozc ✅ | Google日本語入力 (kanata非搭載のため対象外) | macOS標準IME ([切替キー](modules/input/kanata/README.md)) |
 | **リモートデスクトップ** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (接続元クライアント) | ➖ |
@@ -160,7 +160,7 @@ Legend: ✅ enabled · ➖ not set up in this config · (Windows) runs on the Wi
 | :--- | :---: | :---: | :---: |
 | **Tiling WM** | [Hyprland](modules/wm/hyprland/README.md) ✅ | [komorebi](modules/wm/komorebi/README.md) (Windows) | [AeroSpace](modules/wm/aerospace/README.md) ✅ |
 | **Status bar** | [Waybar](modules/wm/hyprland/README.md) ✅ | [YASB](modules/wm/komorebi/README.md) (Windows) | native macOS menu bar |
-| **Keyboard remapping** | [Kanata](modules/input/kanata/README.md) ✅ | [AutoHotkey](modules/input/kanata/README.md) (Windows)* | [Karabiner-Elements](modules/input/karabiner/default.nix) ✅** |
+| **Keyboard remapping** | [Kanata](modules/input/kanata/README.md) ✅ | [AutoHotkey](modules/input/kanata/README.md) (Windows)* | [Karabiner-Elements](modules/input/karabiner/README.md) ✅** |
 | **Wallpaper-driven theming** | [Matugen](modules/theming/matugen/README.md) ✅ | [Matugen](modules/theming/matugen/README.md) ✅ (Windows side) | [Matugen](modules/theming/matugen/README.md) ✅ |
 | **Japanese input** | fcitx5 + Mozc ✅ | Google Japanese Input (no Kanata here) | native macOS IME ([switch keys](modules/input/kanata/README.md)) |
 | **Remote desktop** | [Tailscale+Sunshine](docs/setup-nixos.md#5-リモートデスクトップの初回認証tailscale--sunshine) ✅ | ➖ (client only) | ➖ |

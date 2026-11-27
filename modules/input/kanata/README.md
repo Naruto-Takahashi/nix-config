@@ -5,7 +5,7 @@
 > **対になる実装**: [Karabiner](../karabiner/default.nix) (Mac) / [AutoHotkey](../ahk/main.ahk) (WSL のフォールバック)。同じ役割の別実装なので、レイヤーを変えたら全部確認する
 > **注意**: `config.kbd` は NixOS と WSL で共有する1ファイル。OS ごとの差は `platform` と `deftemplate` で解決する。キーを変えたらこのドキュメントも直す
 
-> **macOS (MacBook / Mac mini とも) は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../karabiner/default.nix))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．このファイルの macOS 向けの記述 (表の macOS 行・`(platform (macos) ...)`・Fn 行など) は移行前の kanata 実装の記録で、現在は使われていません．レイヤーを変えるときは `config.kbd` (NixOS / WSL) と `karabiner/default.nix` (Mac) の両方を直してください．
+> **macOS (MacBook / Mac mini とも) は Karabiner-Elements に移行済み** ([`modules/input/karabiner`](../karabiner/README.md))．Kanata は起動時にしかデバイスを掴まず、外付けキーボードの後付け接続や再起動後の接続順に弱かったためです．キー割り当ての意味はこのドキュメントと同じで、全キーボードに一律適用されます (F 行は触らず macOS 標準のまま)．このファイルの macOS 向けの記述 (表の macOS 行・`(platform (macos) ...)`・Fn 行など) は移行前の kanata 実装の記録で、現在は使われていません．レイヤーを変えるときは `config.kbd` (NixOS / WSL) と `karabiner/default.nix` (Mac) の両方を直してください．
 
 
 このドキュメントでは、[modules/input/kanata/config.kbd](config.kbd) に定義されている Kanata デーモンの独自キーレイヤー設定および IME 統合動作について詳細に解説します。

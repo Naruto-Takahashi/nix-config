@@ -1,12 +1,13 @@
 # SYNC-PAIR: modules/input/kanata/config.kbd, modules/input/ahk/main.ahk
 # =========================================================================
-# Karabiner-Elements 設定 (MacBook 用。~/.config/karabiner/karabiner.json を生成)
+# Karabiner-Elements 設定 (Mac 共通。~/.config/karabiner/karabiner.json を生成)
 # =========================================================================
-# Kanata (modules/input/kanata/config.kbd + mac-config.nix) の macOS 版と同じ挙動を
-# Karabiner の complex_modifications で再現する。デバイスの抜き差し・再起動後の
-# 後付け接続は Karabiner 自身が処理するため、kanata で起きていた
+# macOS のキーボードリマップ。Esc / Caps / Command / Control / Space レイヤー /
+# Option レイヤー (ウィンドウ操作) を、Karabiner の complex_modifications で実現する。
+# キー割り当ての一覧、HHKB の注意、トラブルシュートは README.md を参照。
+# デバイスの抜き差し・再起動後の後付け接続は Karabiner 自身が処理するため、Kanata で起きていた
 # 「起動時に外付けキーボードが無いと効かない」問題が起きない。
-# 全キーボード (内蔵・HHKB・Keychron) に同じ設定を適用する。
+# 基本は全キーボードに同じ設定を適用する (内蔵限定・外付け限定の例外は device_if / device_unless)。
 #
 # レイヤーは変数で表現する (kanata の layer-toggle 相当)。
 #   alt_layer : 左右Option押下中 (WM 操作レイヤー。Option 自体は OS へ送らない)

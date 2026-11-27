@@ -20,6 +20,7 @@
 | [aerospace.md](../modules/wm/aerospace/README.md) | macOS: AeroSpace のキーバインド・配色連携・壁紙ピッカー |
 | [hammerspoon.md](../modules/wm/hammerspoon/README.md) | macOS: Hammerspoon によるトラックパッドジェスチャー (ワークスペース移動・ウィンドウ操作・コーナータップ) |
 | [kanata.md](../modules/input/kanata/README.md) | 3ホスト共通のキーボードリマップ層 (SandS・IME切替・CapsLock改修)。OSごとの実装方式の違いもここに整理 |
+| [karabiner](../modules/input/karabiner/README.md) | macOS: Karabiner-Elements によるキーボードリマップ (Esc・Caps・Command・Space / Option レイヤー)。HHKB のモードの注意も |
 
 ## 配色・テーマ
 
